@@ -118,7 +118,7 @@ const discordServers = ref([
 
 .shadow-text {
   color: orange;
-  text-shadow: 0 7px 10px black;
+  text-shadow: 0 3px 10px black;
 }
 </style>
 
