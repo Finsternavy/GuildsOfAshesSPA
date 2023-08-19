@@ -1,0 +1,36 @@
+{
+  "name": "GuildsOfAshes",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "firstRun": "npm run cpLocalEnv && parcel build index.html --no-optimize",
+    "cleanDist": "@powershell Remove-Item dist -Recurse",
+    "clean": "npm run cleanDist && npm run clearCache",
+    "cleanEnv": "@powershell Remove-Item .env",
+    "clearCache": "@powershell Remove-Item .parcel-cache -Recurse",
+    "cpLocalEnv": "@powershell Copy-Item .env-local .env",
+    "cpLocalDev": "@powershell Copy-Item .env-dev .env",
+    "setLocalEnv": "npm run cleanEnv && npm run cpLocalEnv",
+    "mkDist": "@powershell mkdir dist",
+    "cpPublicLocal": "@powershell Copy-Item -Path public -Destination \"dist\" -Recurse",
+    "runParcel": "parcel index.html --open",
+    "startGOA": "npm run clean && npm run setLocalEnv && npm run mkDist && npm run cpPublicLocal && npm run runParcel"
+  },
+  "dependencies": {
+    "pinia": "^2.1.3",
+    "uikit": "^3.16.22",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "@parcel/transformer-vue": "^2.9.3",
+    "@playwright/test": "^1.35.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.9"
+  }
+}
