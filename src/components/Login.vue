@@ -14,7 +14,7 @@ const doLogin = () => {
     store.setAuthenticated(true);
     console.log("Authenticated: ", store.getAuthenticated());
     console.log("User: ", store.getUser());
-    router.push('/');
+    router.push('/guild/home');
 }
 </script>
 

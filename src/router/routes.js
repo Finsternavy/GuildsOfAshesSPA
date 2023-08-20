@@ -3,6 +3,8 @@ import Home from '../views/Home.vue';
 import Login from '../components/Login.vue';
 import Guilds from '../views/Guilds.vue';
 import MyGuild from '../views/MyGuild.vue';
+import GuildHome from '../views/GuildHome.vue';
+import CreateGuild from '../views/CreateGuild.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -10,7 +12,8 @@ const router = createRouter({
     { path: '/', name: 'home',  component: Home },
     { path: '/guilds', name: 'guilds',  component: Guilds },
     { path: '/login', name: 'login',  component: Login },
-    { path: '/guild/home', name: 'guild-home',  component: MyGuild },
+    { path: '/guild/create', name: 'guild-create',  component: CreateGuild },
+    { path: '/guild/home', name: 'guild-home',  component: GuildHome },
     { path: '/guild/news', name: 'guild-news',  component: MyGuild },
     { path: '/guild/forums', name: 'guild-forum',  component: MyGuild },
     { path: '/guild/roster', name: 'guild-roster',  component: MyGuild },

@@ -32,6 +32,7 @@ const logout = () => {
 }
 .link {
   color: white;
+  margin-right: 20px;
 }
 </style>
 
@@ -56,12 +57,12 @@ const logout = () => {
           <RouterLink to="/guilds"><span class="link uk-margin-right">Browse Guilds</span></RouterLink>
           
         </div>
-        <div v-if="store.authenticated && store.user.guild" class="uk-flex uk-flex-between">
-          <RouterLink to="/guild/home"><span class="link">Home</span></RouterLink>
+        <div v-if="store.authenticated && store.user.guild" class="uk-flex uk-flex-center">
+          <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
           <RouterLink to="/guild/news"><span class="link">News</span></RouterLink>
           <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
           <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
-          <RouterLink to="/guild/apply"><span class="link">Apply</span></RouterLink>
+          <RouterLink to="/guild/apply"><span class="link">Tasks</span></RouterLink>
           <RouterLink to="/guild/about"><span class="link">About</span></RouterLink>
           <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
         </div>

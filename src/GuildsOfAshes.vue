@@ -1,9 +1,15 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+import { onBeforeMount, ref } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import Menu from "./components/Menu.vue";
 
 const imagePrefix = '../../public/AOCimages/';
+
+// Need to go over these images and change the resolution. 
+// Some of them do not load in time and will just show
+// a black background.
+
 const backgroundImages = [
   'AOC_castle.png',
   'AOC2023March.jpg',
@@ -21,11 +27,16 @@ const backgroundImages = [
   'AOCWaterfall.png',
 ]
 
-const randomImage = () => {
+const getRandomImage = () => {
   const index = Math.floor(Math.random() * backgroundImages.length);
   return backgroundImages[index];
 }
 
+onBeforeMount(() => {
+  console.log("PrimaryLayout mounted");
+  randomImage.value = getRandomImage;
+});
+const randomImage = ref();
 const currentYear = new Date().getFullYear();
 </script>
 
@@ -53,8 +64,8 @@ const currentYear = new Date().getFullYear();
 
     <section id="GlobalFooter" class="uk-section uk-margin-large-top uk-section-xsmall">
       <!-- <footer-navigation /> -->
-      <p class="uk-text-center">Site Developed by 
-        <a href="https://www.linkedin.com/in/christopher-finster/">Christopher Finster</a>
+      <p class="uk-text-center">Developed by 
+        <a href="https://www.linkedin.com/in/christopher-finster/" target="_blank">Christopher Finster</a>
         <span>. All rights reserved. {{ currentYear }}</span>
       </p>
     </section>
