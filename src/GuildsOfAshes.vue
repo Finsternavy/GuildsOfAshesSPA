@@ -62,7 +62,7 @@ const currentYear = new Date().getFullYear();
       </div>
     </section>
 
-    <section id="GlobalFooter" class="uk-section uk-margin-large-top uk-section-xsmall">
+    <section id="GlobalFooter" class="uk-section goa-container-no-radius uk-margin-large-top uk-section-xsmall uk-padding-remove">
       <!-- <footer-navigation /> -->
       <p class="uk-text-center">Developed by 
         <a href="https://www.linkedin.com/in/christopher-finster/" target="_blank">Christopher Finster</a>

@@ -9,6 +9,19 @@
   margin-top: 50px;
 }
 
+.goa-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 30px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.goa-container-no-radius {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  transition: background-color 0.3s ease-in-out;
+}
+
 @media (max-width: 768){
   .container {
     max-width: 95%;

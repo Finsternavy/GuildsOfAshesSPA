@@ -34,6 +34,11 @@ const logout = () => {
   color: white;
   margin-right: 20px;
 }
+
+.goa-dropnav {
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+}
 </style>
 
 <template>
@@ -68,8 +73,28 @@ const logout = () => {
         </div>
       </div>
       <div class="login-profile-container uk-text-right uk-width-1-6">
-        <RouterLink v-if="!store.authenticated" to="/login"><span class="link" uk-icon="icon: user" style="color: red"></span></RouterLink>
-        <RouterLink v-if="store.authenticated" to="/" @click="logout"><span class="link" uk-icon="icon: user" style="color: green"></span></RouterLink>
+        <div v-if="!store.authenticated" class="not-logged-in">
+          <RouterLink  to="/login"><span class="link" uk-icon="icon: user" style="color: red"></span></RouterLink>
+        </div>
+        <div v-else class="logged-in ">
+          <ul uk-dropnav="mode: hover; offset: 50" class="uk-margin-remove">
+            <span uk-icon="icon: user"></span>
+            <div class="uk-dropdown uk-background-secondary goa-dropnav">
+                <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
+                    <!-- <li class="uk-active"><a href="#">Active</a></li> -->
+                    <li>
+                      <RouterLink to="/guild/about"><span class="uk-align-center uk-margin-small uk-margin-remove-bottom">Settings</span></RouterLink>
+                    </li>
+                    <li>
+                      <RouterLink to="/guild/about"><span class="uk-align-center uk-margin-small uk-margin-remove-bottom">Profile</span></RouterLink>
+                    </li>
+                    <li>
+                      <RouterLink to="/"><span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">Log Out</span></RouterLink>
+                    </li>
+                </ul>
+            </div>
+          </ul>
+        </div>
       </div>
     </nav>
 
