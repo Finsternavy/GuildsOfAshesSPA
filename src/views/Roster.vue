@@ -1,6 +1,14 @@
 <script setup>
 
-import { computed, ref } from 'vue';
+import { computed, ref, watch, reactive } from 'vue';
+import Fighter from '../../public/AOC_Icons/fighter_icon.png';
+import Tank from '../../public/AOC_Icons/tank_icon.png';
+import Rogue from '../../public/AOC_Icons/rogue_icon.png';
+import Ranger from '../../public/AOC_Icons/ranger_icon.png';
+import Mage from '../../public/AOC_Icons/mage_icon.png';
+import Summoner from '../../public/AOC_Icons/summoner_icon.png';
+import Cleric from '../../public/AOC_Icons/cleric_icon.png';
+import Bard from '../../public/AOC_Icons/bard_icon.png';
 
 const selectedClass = ref();
 
@@ -407,6 +415,24 @@ const classes = {
     ],
 }
 
+const subclasses = computed(() => {
+    let subclasses = [];
+    const keys = Object.keys(classes);
+    console.log("Keys: ", keys);
+    keys.forEach(key => {
+        classes[key].forEach(subclass => {
+            console.log("Subclass: ", subclass);
+            subclasses.push(subclass);
+        })
+    })
+    return subclasses.sort((a, b) => {
+        if (a.name < b.name) {
+            return -1;
+        }
+        return 1;
+    });
+})
+
 const headers = computed(() => {
     return Object.keys(classes);
 })
@@ -414,6 +440,45 @@ const headers = computed(() => {
 const selectClass = (subclass) => {
     console.log(subclass);
     selectedClass.value = subclass;
+}
+
+watch(selectedClass, (newVal, oldVal) => {
+    console.log("Selected Class: ", newVal);
+})
+
+const checkWidthForTable = (() => {
+    let width = window.innerWidth;
+    if (width > 1300) {
+        return true;
+    }
+    return false;
+})
+
+const getClassIcon = (className) => {
+    if( className.toLowerCase() === 'fighter'){
+        return Fighter;
+    }
+    if( className.toLowerCase() === 'tank'){
+        return Tank;
+    }
+    if( className.toLowerCase() === 'rogue'){
+        return Rogue;
+    }
+    if( className.toLowerCase() === 'ranger'){
+        return Ranger;
+    }
+    if( className.toLowerCase() === 'mage'){
+        return Mage;
+    }
+    if( className.toLowerCase() === 'summoner'){
+        return Summoner;
+    }
+    if( className.toLowerCase() === 'cleric'){
+        return Cleric;
+    }
+    if( className.toLowerCase() === 'bard'){
+        return Bard;
+    }
 }
 </script>
 
@@ -440,7 +505,9 @@ const selectClass = (subclass) => {
 }
 
 .selected-types {
-    background-color: rgba(255, 165, 0, .3);
+    /* background-color: rgba(255, 165, 0, .3); */
+    outline: 1px solid orange!important;
+    border: 1px solid orange!important;
     /* color: black; */
 }
 
@@ -452,6 +519,19 @@ const selectClass = (subclass) => {
 .between {
     background-color: rgba(255, 255, 255, .2);
 }
+
+.orange {
+    outline: 1px solid orange!important;
+}
+
+.shadow {
+    /* box-shadow: 0 0 50px 20px rgba(0, 0, 0, 1);
+    clip-path: polygon(-50% -0, 150% 0, 150% 100%, -50% 100%); */
+}
+
+.gradient-black {
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0, 0, 0, 1) 60%, rgba(0,0,0,0) 100%);
+}
 </style>
 
 <template>
@@ -459,19 +539,31 @@ const selectClass = (subclass) => {
         <!-- <h3 class="uk-light uk-text-center">{ Guild name } Roster</h3> -->
         <h3 class="uk-light uk-text-center uk-padding uk-padding-remove-bottom uk-text-bold">Character Matrix</h3>
         <div class="uk-padding uk-padding-remove-top">
-            <table class="uk-table uk-table-justified uk-light">
+            <table v-if="checkWidthForTable()" class="uk-table uk-table-justified uk-light">
     
                 <thead>
                     <tr>
                         <td></td>
-                        <td v-for="header in headers" :class="{'uk-text-center title' : header, 'selected-types' : selectedClass && header == selectedClass.secondary}">{{ header }}</td>
+                        <td v-for="header in headers" 
+                        style="height: 50px;"
+                        :class="{'uk-text-center uk-padding-remove gradient-black' : header, 'orange' : selectedClass && header == selectedClass.secondary}">
+                            <div style="height: 50px; width: 50px;" 
+                            :class="{'uk-background-contain uk-align-center shadow': header}" 
+                            :data-src="getClassIcon(header.toLocaleLowerCase())" 
+                            uk-img></div>
+                        </td>
                     </tr>
                 </thead>
                 <tbody class="uk-padding">
                     <tr class="uk-text-center" v-for="key, index1 in Object.keys(classes)">
                         <td :class="{
-                            'uk-text-middle title uk-padding-remove-left' : key, 
-                            'selected-types' : selectedClass && key == selectedClass.primary}">{{ key }}</td>
+                            'uk-text-middle title uk-padding-remove-left uk-background-cover' : key, 
+                            'selected-types' : selectedClass && key == selectedClass.primary}"
+                            style="width: 50px;"
+                            :data-src="getClassIcon(key)" uk-img>
+                            <!-- {{ key }} -->
+                                <!-- <div class="uk-height-small uk-width-small uk-background-cover" :data-src="getClassIcon(key)" uk-img>{{ key }}</div> -->
+                        </td>
                         <td v-for="subclass, index2 in classes[key]" 
                             :key="subclass.name + '_tile'"
                             @click="selectClass(subclass)"
@@ -483,13 +575,45 @@ const selectClass = (subclass) => {
                                     'selected' : selectedClass && subclass.name == selectedClass.name
                                 }">
                             {{ subclass.name }}
-                            {{ index1 }} | {{ index2 }}
                         </td>
                     </tr>
                 </tbody>
                 <tfoot>
+                    <!-- <tr>
+                        <td></td>
+                        <td colspan="4">
+                            <span>Primary Archetype</span>{{ selectedClass ? selectedClass.primary : ''}}
+                        </td>
+                        <td colspan="4">
+                            <span>Secondary Archetype</span>{{ selectedClass ? selectedClass.secondary : ''}}
+                        </td>
+                    </tr> -->
                 </tfoot>
             </table>
+
+            <div v-if="!checkWidthForTable()">
+                <h3 class="uk-light">Select a Class</h3>
+                <div class="uk-flex uk-flex-column uk-margin-bottom">
+                    <label for="class-select">Select a Class</label>
+                    <select class="goa-input" name="class-select" id="class-select" v-model="selectedClass">
+                        <option class="uk-background-secondary" value=""></option>
+                        <option class="uk-background-secondary uk-text-center" v-for="subclass in subclasses" :value="subclass" @click="selectClass(subclass)">{{ subclass.name }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="uk-flex uk-flex-center">
+                <div v-if="selectedClass"  class="uk-flex-column uk-width-1-3@l">
+                    <div class="uk-flex uk-flex-between uk-margin-bottom">
+                        <label for="selected-primary">Primary Archetype</label>
+                        <input class="goa-input uk-text-center" type="text" id="selected-primary" disabled v-model="selectedClass.primary">
+                    </div>
+                    <div class="uk-flex uk-flex-between">
+                        <label for="selected-secondary">Secondary Archetype</label>
+                        <input class="goa-input uk-text-center" type="text" id="selected-secondary" disabled v-model="selectedClass.secondary">
+                    </div>
+                    <button class="goa-button uk-margin-remove-bottom uk-align-center">Save Choice to Profile</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>

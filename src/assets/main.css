@@ -22,6 +22,27 @@
   transition: background-color 0.3s ease-in-out;
 }
 
+.goa-input {
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  color: orange;
+}
+
+.goa-button {
+  border-radius: 20px;
+  background-color: transparent;
+  color: white;
+  padding: 5px 30px;
+  /* height: 40px; */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.goa-button:hover {
+  background-color: gold;
+  color: black;
+}
+
 @media (max-width: 768){
   .container {
     max-width: 95%;
