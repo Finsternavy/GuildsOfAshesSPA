@@ -39,70 +39,70 @@ const membersList = [
         favoriteActivity: 'Sieges',
     },
     {
-        ID: 1234,
-        name : 'CyFinXP',
-        subclass : 'SOULBOW',
-        primary : 'RANGER',
-        secondary : 'CLERIC',
-        role : 'Guild Leader',
-        trade1 : 'Leatherworker',
-        trade2 : 'Weaponsmith',
+        ID: 1237,
+        name : 'Player3',
+        subclass : 'ORACLE',
+        primary : 'CLERIC',
+        secondary : 'MAGE',
+        role : 'Soldier',
+        trade1 : 'Shipbuilder',
+        trade2 : 'Carpenter',
+        favoriteActivity: 'Ship Battles',
+    },
+    {
+        ID: 1238,
+        name : 'Player4',
+        subclass : 'ENCHANTER',
+        primary : 'SUMMONER',
+        secondary : 'BARD',
+        role : 'Soldier',
+        trade1 : 'Enchanter',
+        trade2 : 'Jeweler',
         favoriteActivity: 'Dungeons',
     },
     {
-        ID: 1234,
-        name : 'CyFinXP',
-        subclass : 'SOULBOW',
-        primary : 'RANGER',
-        secondary : 'CLERIC',
-        role : 'Guild Leader',
-        trade1 : 'Leatherworker',
-        trade2 : 'Weaponsmith',
+        ID: 1239,
+        name : 'Player5',
+        subclass : 'GUARDIAN',
+        primary : 'TANK',
+        secondary : 'TANK',
+        role : 'Soldier',
+        trade1 : 'Armorsmith',
+        trade2 : 'Alchemist',
+        favoriteActivity: 'Caravans',
+    },
+    {
+        ID: 1240,
+        name : 'Player6',
+        subclass : 'NIGHTSPELL',
+        primary : 'ROGUE',
+        secondary : 'MAGE',
+        role : 'Soldier',
+        trade1 : 'Leathersmith',
+        trade2 : 'Alchemist',
+        favoriteActivity: 'Sieges',
+    },
+    {
+        ID: 1241,
+        name : 'Player7',
+        subclass : 'TELLSWORD',
+        primary : 'BARD',
+        secondary : 'FIGHTER',
+        role : 'Soldier',
+        trade1 : 'Alchemist',
+        trade2 : 'Enchanter',
         favoriteActivity: 'Dungeons',
     },
     {
-        ID: 1234,
-        name : 'CyFinXP',
-        subclass : 'SOULBOW',
-        primary : 'RANGER',
-        secondary : 'CLERIC',
-        role : 'Guild Leader',
-        trade1 : 'Leatherworker',
+        ID: 1242,
+        name : 'Player',
+        subclass : 'SHADOWBLADE',
+        primary : 'FIGHTER',
+        secondary : 'ROGUE',
+        role : 'Soldier',
+        trade1 : 'Jeweler',
         trade2 : 'Weaponsmith',
-        favoriteActivity: 'Dungeons',
-    },
-    {
-        ID: 1234,
-        name : 'CyFinXP',
-        subclass : 'SOULBOW',
-        primary : 'RANGER',
-        secondary : 'CLERIC',
-        role : 'Guild Leader',
-        trade1 : 'Leatherworker',
-        trade2 : 'Weaponsmith',
-        favoriteActivity: 'Dungeons',
-    },
-    {
-        ID: 1234,
-        name : 'CyFinXP',
-        subclass : 'SOULBOW',
-        primary : 'RANGER',
-        secondary : 'CLERIC',
-        role : 'Guild Leader',
-        trade1 : 'Leatherworker',
-        trade2 : 'Weaponsmith',
-        favoriteActivity: 'Dungeons',
-    },
-    {
-        ID: 1234,
-        name : 'CyFinXP',
-        subclass : 'SOULBOW',
-        primary : 'RANGER',
-        secondary : 'CLERIC',
-        role : 'Guild Leader',
-        trade1 : 'Leatherworker',
-        trade2 : 'Weaponsmith',
-        favoriteActivity: 'Dungeons',
+        favoriteActivity: 'Sieges',
     },
 ]
 
@@ -135,55 +135,9 @@ const getClassIcon = (className) => {
 </script>
 
 <style scoped>
-.cell {
-    border: 1px solid rgba(255, 255, 255, .2);
-    height: 50px;
-}
-.cell:hover {
-    background-color: orange;
-    color: black;
-}
-
-.title {
-    color: orange;
-}
-
-.small-text {
-    font-size: 12px;
-}
-
-.true-class {
-    background-color: rgba(255, 165, 0, .2);
-}
-
-.selected-types {
-    /* background-color: rgba(255, 165, 0, .3); */
-    outline: 1px solid orange!important;
-    border: 1px solid orange!important;
-    /* color: black; */
-}
-
-.selected {
-    background-color: orange;
-    color: black;
-}
-
-.between {
-    background-color: rgba(255, 255, 255, .2);
-}
-
-.orange {
-    outline: 1px solid orange!important;
-}
-
 label {
     color: orange;
 }
-
-.gradient-black {
-    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 60%, rgba(0,0,0,0) 100%);
-}
-
 .gold {
     border: 1px solid gold;
 }
@@ -221,7 +175,7 @@ label {
     <div class="guild-roster">
         <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">
             <h3 class="uk-light uk-text-center   uk-text-bold">Guild Roster</h3>
-            <div class="uk-flex uk-flex-between">
+            <div class="uk-flex uk-child-width-1-4 uk-text-center">
                 <span class="uk-text-warning uk-text-large">Member</span>
                 <span class="uk-text-warning uk-text-large">Class</span>
                 <span class="uk-text-warning uk-text-large">Professions</span>
@@ -230,8 +184,8 @@ label {
         </div>
         <ul class="guild-members-list uk-list uk-margin-top">
             <li v-for="member in membersList" class="goa-container padding-small">
-                <div :key="member.ID" class="uk-flex uk-flex-middle uk-flex-between">
-                    <div class="member-name uk-margin-right">
+                <div :key="member.ID" class="uk-flex uk-child-width-1-4">
+                    <div class="member-name uk-text-center">
                         <label class="uk-margin-remove">{{ member.name }} ( {{ member.role }} )</label>
                         <p class="uk-margin-remove">XP: 345</p>
                     </div>
@@ -244,7 +198,7 @@ label {
                             <div class="uk-background-cover silver" style="width: 40px; height: 40px" :data-src="getClassIcon(member.secondary)" uk-img></div>
                         </div>
                     </div>
-                    <div class="trades-info uk-flex uk-flex-column">
+                    <div class="trades-info uk-flex uk-flex-column uk-text-center">
                         <div class="trade-label uk-text-center">
                             <label>Professions</label>
                         </div>
@@ -253,7 +207,7 @@ label {
                             <p class="uk-margin-remove">Trade 2: {{ member.trade2 }}</p>
                         </div>
                     </div>
-                    <div class="activities-info uk-margin-left">
+                    <div class="activities-info  uk-text-center">
                         <label class="uk-margin-remove">Favorite Activity</label>
                         <p class="uk-margin-remove">{{ member.favoriteActivity }}</p>
                     </div>

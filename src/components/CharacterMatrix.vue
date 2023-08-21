@@ -501,14 +501,6 @@ const getClassIcon = (className) => {
 </script>
 
 <style scoped>
-.cell {
-    border: 1px solid rgba(255, 255, 255, .2);
-    height: 50px;
-}
-.cell:hover {
-    background-color: orange;
-    color: black;
-}
 
 .title {
     color: orange;
