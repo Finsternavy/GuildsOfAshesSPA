@@ -17,25 +17,13 @@
     transition: background-color 0.3s ease-in-out;
 }
 
-.apply {
-    background: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 20px;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.apply:hover {
-    background-color: gold;
-    color: black;
-}
 </style>
 
 <template>
     <div class="guild-home">
         <div class="goa-container uk-padding uk-margin-bottom">
             <h1 class="uk-light uk-text-center uk-margin-remove">Guild Name </h1>
-            <button class="apply uk-light uk-position-top-left">Apply</button>
+            <button class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">Apply</button>
             <p class="uk-text-small uk-text-warning uk-text-center uk-margin-remove-top"> ( 43 members)</p>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus nobis aperiam quibusdam necessitatibus fuga illum adipisci tempore minus, nihil nemo animi at accusantium voluptates suscipit.</p>
         </div>

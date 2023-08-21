@@ -31,14 +31,14 @@ const doLogin = () => {
         <div class="login uk-padding uk-width-medium uk-align-center">
             <div class="uk-margin-bottom">
                 <label for="username">Username</label>
-                <input id="username" type="text" class="uk-input">
+                <input id="username" type="text" class="goa-input uk-width-1-1">
             </div>
             <div class="uk-margin-bottom">
                 <label for="password">Password</label>
-                <input id="password" type="password" class="uk-input">
+                <input id="password" type="password" class="goa-input uk-width-1-1">
             </div>
             <button 
-                class="uk-button uk-button-default uk-width-1-1 uk-light"
+                class="goa-button uk-width-1-1 uk-light uk-margin-top"
                 @click="doLogin">Login</button>
         </div>
     </div>

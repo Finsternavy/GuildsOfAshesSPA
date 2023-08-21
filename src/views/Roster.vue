@@ -415,6 +415,97 @@ const classes = {
     ],
 }
 
+const membersList = [
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+    {
+        ID: 1236,
+        name : 'Mason',
+        subclass : 'DREADNOUGHT',
+        primary : 'FIGHTER',
+        secondary : 'TANK',
+        role : 'Marshall',
+        trade1 : 'Armorsmith',
+        trade2 : 'Enchanter',
+        favoriteActivity: 'Sieges',
+    },
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+    {
+        ID: 1234,
+        name : 'CyFinXP',
+        subclass : 'SOULBOW',
+        primary : 'RANGER',
+        secondary : 'CLERIC',
+        role : 'Guild Leader',
+        trade1 : 'Leatherworker',
+        trade2 : 'Weaponsmith',
+        favoriteActivity: 'Dungeons',
+    },
+]
+
 const subclasses = computed(() => {
     let subclasses = [];
     const keys = Object.keys(classes);
@@ -501,7 +592,7 @@ const getClassIcon = (className) => {
 }
 
 .true-class {
-    background-color: rgba(255, 165, 0, .1);
+    background-color: rgba(255, 165, 0, .2);
 }
 
 .selected-types {
@@ -524,18 +615,26 @@ const getClassIcon = (className) => {
     outline: 1px solid orange!important;
 }
 
-.shadow {
-    /* box-shadow: 0 0 50px 20px rgba(0, 0, 0, 1);
-    clip-path: polygon(-50% -0, 150% 0, 150% 100%, -50% 100%); */
+label {
+    color: orange;
 }
 
 .gradient-black {
-    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0, 0, 0, 1) 60%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 60%, rgba(0,0,0,0) 100%);
+}
+
+.gold {
+    border: 1px solid gold;
+}
+
+.silver {
+    border: 1px solid silver;
 }
 </style>
 
 <template>
-    <div class="roster goa-container">
+<div class="roster">
+    <div class="goa-container">
         <!-- <h3 class="uk-light uk-text-center">{ Guild name } Roster</h3> -->
         <h3 class="uk-light uk-text-center uk-padding uk-padding-remove-bottom uk-text-bold">Character Matrix</h3>
         <div class="uk-padding uk-padding-remove-top">
@@ -602,18 +701,65 @@ const getClassIcon = (className) => {
                 </div>
             </div>
             <div class="uk-flex uk-flex-center">
-                <div v-if="selectedClass"  class="uk-flex-column uk-width-1-3@l">
+                <div v-if="selectedClass"  class="uk-flex-column uk-width-1-2@l">
                     <div class="uk-flex uk-flex-between uk-margin-bottom">
-                        <label for="selected-primary">Primary Archetype</label>
+                        <label for="selected-primary text-orange">Primary Archetype</label>
                         <input class="goa-input uk-text-center" type="text" id="selected-primary" disabled v-model="selectedClass.primary">
                     </div>
                     <div class="uk-flex uk-flex-between">
-                        <label for="selected-secondary">Secondary Archetype</label>
+                        <label for="selected-secondary text-orange">Secondary Archetype</label>
                         <input class="goa-input uk-text-center" type="text" id="selected-secondary" disabled v-model="selectedClass.secondary">
                     </div>
-                    <button class="goa-button uk-margin-remove-bottom uk-align-center">Save Choice to Profile</button>
+                    <div class="uk-flex uk-flex-between uk-child-width-1- uk-margin-top">
+                        <button class="goa-button uk-margin-right">Filter Roster</button>
+                        <button class="goa-button ">Update My Class</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="guild-roster">
+        <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">
+            <h3 class="uk-light uk-text-center   uk-text-bold">Guild Roster</h3>
+            <div class="uk-flex uk-flex-between">
+                <span class="uk-text-warning uk-text-large">Member</span>
+                <span class="uk-text-warning uk-text-large">Class</span>
+                <span class="uk-text-warning uk-text-large">Professions</span>
+                <span class="uk-text-warning uk-text-large">Favorite Activity</span>
+            </div>
+        </div>
+        <ul class="guild-members-list uk-list uk-margin-top">
+            <li v-for="member in membersList" class="goa-container padding-small">
+                <div :key="member.ID" class="uk-flex uk-flex-middle uk-flex-between">
+                    <div class="member-name uk-margin-right">
+                        <label class="uk-margin-remove">{{ member.name }} ( {{ member.role }} )</label>
+                        <p class="uk-margin-remove">XP: 345</p>
+                    </div>
+                    <div class="class-info uk-flex uk-flex-column">
+                        <div class="uk-text-center">
+                            <label class="uk-margin-remove">{{ member.subclass }}</label>
+                        </div>
+                        <div class="member-class-info uk-flex uk-flex-center">
+                            <div class="uk-background-cover gold" style="width: 40px; height: 40px" :data-src="getClassIcon(member.primary)" uk-img></div>
+                            <div class="uk-background-cover silver" style="width: 40px; height: 40px" :data-src="getClassIcon(member.secondary)" uk-img></div>
+                        </div>
+                    </div>
+                    <div class="trades-info uk-flex uk-flex-column">
+                        <div class="trade-label uk-text-center">
+                            <label>Professions</label>
+                        </div>
+                        <div>
+                            <p class="uk-margin-remove">Trade 1: {{ member.trade1 }}</p>
+                            <p class="uk-margin-remove">Trade 2: {{ member.trade2 }}</p>
+                        </div>
+                    </div>
+                    <div class="activities-info uk-margin-left">
+                        <label class="uk-margin-remove">Favorite Activity</label>
+                        <p class="uk-margin-remove">{{ member.favoriteActivity }}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 </template>

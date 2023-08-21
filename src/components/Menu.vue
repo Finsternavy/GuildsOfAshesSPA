@@ -55,7 +55,6 @@ const logout = () => {
       <div class="right-nav uk-text-center uk-width-2-3">
         <div v-if="!store.authenticated" class="page-links-container uk-link">
           <RouterLink to="/guilds"><span class="link uk-margin-right">Browse Guilds</span></RouterLink>
-          <RouterLink to="/login"><span class="link">Login</span></RouterLink>
         </div>
         <div v-if="store.authenticated && !store.user.guild" class="page-links-container uk-link">
           <RouterLink to="/"><span class="link">Home</span></RouterLink>
@@ -74,7 +73,7 @@ const logout = () => {
       </div>
       <div class="login-profile-container uk-text-right uk-width-1-6">
         <div v-if="!store.authenticated" class="not-logged-in">
-          <RouterLink  to="/login"><span class="link" uk-icon="icon: user" style="color: red"></span></RouterLink>
+          <RouterLink  to="/login"><span class="link" uk-icon="icon: user">Login </span></RouterLink>
         </div>
         <div v-else class="logged-in ">
           <ul uk-dropnav="mode: hover; offset: 50" class="uk-margin-remove">
