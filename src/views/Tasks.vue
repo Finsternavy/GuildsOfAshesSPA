@@ -2,14 +2,8 @@
 
 <style scoped>
 .completed {
-  /* background-color: rgba(0, 100, 0, 0.5); */
-  /* border: 3px solid green; */
-  box-shadow: inset 0 0 30px rgba(0, 128, 0, 0.5);
-  border: 1px solid rgba(0, 128, 0, 1);
-}
-.pending {
-  box-shadow: inset 0 0 30px rgba(255, 187, 1, 0.5);
-  border: 1px solid rgba(255, 187, 1, 1);
+  background-color: rgba(0, 100, 0, 0.5);
+  border: 3px solid black;
 }
 </style>
 
@@ -20,8 +14,8 @@
       <div class="task-filters uk-flex uk-child-width-1-4">
         <div v-for="nums in 4" class="uk-flex uk-flex-column">
           <label class="text-orange uk-margin-small-left" :for="'task-type-filter' + nums"
-            >Filter {{ nums }}
-          </label>
+            >Filter {{ nums }}</label
+          >
           <select
             :name="'task-type-filter' + nums"
             :id="'task-type-filter' + nums"
@@ -38,7 +32,7 @@
         <h3><span class="text-color">Active Tasks</span></h3>
         <ul class="uk-list uk-flex uk-child-width-1-1" uk-grid>
           <li v-for="num in 3" class="uk-margin-top">
-            <div class="goa-container uk-padding pending">
+            <div class="goa-container uk-padding">
               <h3><span class="text-orange">Task Name</span></h3>
               <p class="uk-margin-remove-bottom">We need to gather iron.</p>
               <div class="resources-stats uk-flex uk-flex-between uk-flex-middle">
