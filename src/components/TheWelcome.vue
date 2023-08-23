@@ -22,19 +22,30 @@ const selectedClass = ref();
       <h1 class="shadow-text uk-text-center uk-text-bold">GUILDS OF ASHES</h1>
       <h3 class="uk-text-center uk-light text-orange uk-text-bold">Sitewide Poll!</h3>
       <p class="uk-text-center">What class will you main in Ashes of Creation?</p>
-      <CharacterMatrix v-model="selectedClass"/>
+      <CharacterMatrix v-model="selectedClass" />
     </div>
-    <div v-if="selectedClass" class="goa-container selected-class uk-padding uk-margin-top">
+    <div
+      v-if="selectedClass"
+      class="goa-container selected-class uk-padding uk-margin-top"
+    >
       <h2><span class="text-orange">Community Statistics</span></h2>
-      <div class="goa-container uk-padding">
-        <h3 class="uk-text-center"><span class="text-orange">Your Class Details</span></h3>
-        <div class="your-choice goa-container uk-flex uk-flex-between uk-child-width-1-3">
-          <p class="uk-margin-remove uk-text-center"><span class="text-orange">Class: </span>{{ selectedClass.name }}</p>
-          <p class="uk-margin-remove uk-text-center"><span class="text-orange">Primary: </span> {{ selectedClass.primary }}</p>
-          <p class="uk-margin-remove uk-text-center"><span class="text-orange">Secondary: </span> {{ selectedClass.secondary }}</p>
+      <div class="uk-padding">
+        <h3 class="uk-text-center">
+          <span class="text-orange">Your Class Details</span>
+        </h3>
+        <div class="your-choice uk-flex uk-flex-between uk-child-width-1-3">
+          <p class="uk-margin-remove uk-text-center">
+            <span class="text-orange">Class: </span>{{ selectedClass.name }}
+          </p>
+          <p class="uk-margin-remove uk-text-center">
+            <span class="text-orange">Primary: </span> {{ selectedClass.primary }}
+          </p>
+          <p class="uk-margin-remove uk-text-center">
+            <span class="text-orange">Secondary: </span> {{ selectedClass.secondary }}
+          </p>
         </div>
       </div>
-      <table class="uk-table">
+      <table class="uk-table uk-text-center">
         <thead>
           <tr>
             <td></td>
@@ -72,9 +83,7 @@ const selectedClass = ref();
             <td class="cell">14</td>
           </tr>
         </tbody>
-        <tfoot>
-
-        </tfoot>
+        <tfoot></tfoot>
       </table>
     </div>
   </div>
