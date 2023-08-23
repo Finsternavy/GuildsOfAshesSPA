@@ -4,7 +4,7 @@
 
 <style scoped>
 .completed {
-    background-color: rgba(0, 100, 0, 0.5);
+    background-color: rgba(0, 50, 0, 0.7);
     border: 3px solid black;
 }
 </style>
@@ -30,7 +30,7 @@
         </div>
         <div class="task-list uk-flex uk-child-width-1-2">
             <div class="active-tasks uk-margin-right">
-                <h3><span class="text-color">Active Tasks</span></h3>
+                <h3 class="goa-container uk-padding-small uk-text-center text-orange uk-margin-remove"><span class="text-color">Active Tasks</span></h3>
                 <ul class="uk-list uk-flex uk-child-width-1-1" uk-grid>
                     <li v-for="num in 3" class="uk-margin-top">
                         <div class="goa-container uk-padding">
@@ -55,11 +55,11 @@
                 </ul>
             </div>
             <div class="completed-tasks">
-                <h3><span class="text-color">Completed Tasks</span></h3>
+                <h3 class="goa-container uk-padding-small uk-text-center text-orange uk-margin-remove"><span class="text-color ">Completed Tasks</span></h3>
                 <ul class="uk-list uk-flex uk-child-width-1-1" uk-grid>
                     <li v-for="num in 2" class="uk-margin-top">
                         <div class="goa-container uk-padding completed">
-                            <h3><span class="text-orange">Task Name</span></h3>
+                            <h3><span class="">Task Name</span></h3>
                             <p class="uk-margin-remove-bottom">We need to gather iron.</p>
                             <div class="resources-stats uk-flex uk-flex-between uk-flex-middle">
                                 <p class="uk-margin-remove"><span class="text-orange">Resources need: </span>500</p>
