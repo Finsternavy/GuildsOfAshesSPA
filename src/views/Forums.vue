@@ -50,6 +50,7 @@ const threads = ref([
 <style scoped></style>
 
 <template>
+  <!-- Need to make thread and comments sections collapsible-->
   <div class="forums uk-padding">
     <h2 class="goa-container uk-padding uk-light text-orange uk-text-center">
       GoA FORUMS

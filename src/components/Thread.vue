@@ -36,21 +36,43 @@ const comments = ref();
 .divider {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+.thread-toggle {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+}
+
+.thread-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 </style>
 
 <template>
   <div class="thread goa-container uk-padding">
-    <div class="thread-header uk-margin-bottom">
-      <h3 class="uk-light">
-        {{ data.title }}
-      </h3>
+    <div class="thread-header">
+      <button
+        class="thread-toggle uk-width-stretch uk-padding-small"
+        :uk-toggle="
+          'target: .thread-body-container' +
+          data.id +
+          '; animation: uk-animation-fade; duration: 200'
+        "
+      >
+        <h3 class="uk-light uk-margin-remove uk-text-left">
+          {{ data.title }}
+        </h3>
+      </button>
     </div>
-    <div class="thread-body-container uk-margin-bottom">
+    <div
+      :class="'thread-body-container' + data.id + '  uk-margin-bottom uk-margin-top'"
+      hidden
+    >
       <div class="thread-body uk-padding">
         <span class="text-orange uk-margin-small-right"> {{ data.author }} </span>
         <span class="uk-text-muted"> {{ data.timeDate }}</span>
         <hr class="divider" />
-        <p class="uk-margin-remove">{{ data.message }}</p>
+        <div class="uk-padding-small uk-margin-top uk-padding-remove-bottom">
+          {{ data.message }}
+        </div>
       </div>
       <div class="thread-footer uk-flex uk-flex-middle uk-flex-between uk-padding-small">
         <div class="button-container uk-flex">
@@ -66,13 +88,26 @@ const comments = ref();
             </button>
             <span>{{ data.dislikes }}</span>
           </div>
+          <div class="dislikes uk-text-center uk-margin-right">
+            <button
+              class="goa-button uk-button-small uk-margin-small-right"
+              :uk-toggle="
+                'target: .comments-container' +
+                data.id +
+                '; animation: uk-animation-fade; duration: 200'
+              "
+            >
+              <span uk-icon="icon: comment"></span>
+            </button>
+            <span>{{ data.comments.length }}</span>
+          </div>
         </div>
         <div class="comment uk-text-center">
           <button class="goa-button">Reply</button>
         </div>
       </div>
     </div>
-    <div class="comments-container uk-flex uk-flex-top">
+    <div :class="'comments-container' + data.id + ' uk-flex uk-flex-top'" hidden>
       <span
         v-if="data.comments.length > 0"
         class="reply text-orange uk-margin-left uk-margin-right uk-text-center"
