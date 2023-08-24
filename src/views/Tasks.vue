@@ -9,16 +9,16 @@
 
 .in-progress {
   /* box-shadow: inset 0 0 30px 0px rgb(249, 220, 0); */
-  outline: 3px solid rgba(249, 220, 0, 0.4);
-  outline-offset: -10px;
+  /* outline: 3px solid rgba(249, 220, 0, 0.4);
+  outline-offset: -10px; */
 }
 </style>
 
 <template>
   <!-- This needs to be converted to data driven.  Create a Task component and mock data -->
-  <div class="tasks uk-light">
+  <div class="tasks">
     <div class="task-menu goa-container uk-padding uk-margin-bottom">
-      <h3>Task Board</h3>
+      <h3 class="uk-light">Task Board</h3>
       <div class="task-filters uk-flex uk-child-width-1-4">
         <div v-for="nums in 4" class="uk-flex uk-flex-column">
           <label class="text-orange uk-margin-small-left" :for="'task-type-filter' + nums"
@@ -39,24 +39,23 @@
       <div class="active-tasks">
         <ul class="uk-list uk-flex uk-child-width-1-1" uk-grid>
           <li v-for="num in 3" class="uk-margin-top">
-            <div class="goa-container uk-padding in-progress">
-              <h3><span class="text-orange">Task Name</span></h3>
-              <p class="uk-margin-remove-bottom">We need to gather iron.</p>
+            <div class="map-container uk-padding in-progress uk-position-relative">
+              <div class="mission-accomplished"></div>
+              <h3><span class="text-black uk-text-bold">Task Name</span></h3>
+              <p class="uk-margin-remove-bottom text-black uk-text-bold">
+                We need to gather iron.
+              </p>
               <div class="resources-stats uk-flex uk-flex-between uk-flex-middle">
                 <p class="uk-margin-remove">
-                  <span class="text-orange">Resources need: </span>500
+                  <span class="text-black uk-text-bold">Obtained: </span> 200
                 </p>
-                <p><span class="text-orange">Obtained: </span> 200</p>
+                <p><span class="text-black uk-text-bold">Resources needed: </span>500</p>
               </div>
-              <progress
-                class="uk-progress"
-                :value="(200 / 500) * 100"
-                max="100"
-              ></progress>
-              <p>Volunteers:</p>
+              <progress class="" :value="100" max="100"></progress>
+              <p class="text-black uk-text-bold">Volunteers:</p>
               <div class="task-takers uk-flex uk-child-width-1-4" uk-grid>
                 <div v-for="num in 5" class="member uk-margin-small-top">
-                  <p class="uk-background-primary goa-container uk-text-center">
+                  <p class="uk-background-secondary uk-text-center">
                     <span>Member {{ num }} </span>
                   </p>
                 </div>
@@ -64,6 +63,11 @@
               <div class="volunteer uk-flex uk-flex-right">
                 <button class="goa-button uk-margin-top">Volunteer</button>
               </div>
+              <!-- <div
+                class="completed-stamp uk-background-contain uk-height-medium uk-width-large"
+                :data-src="'../../public/Images/mission_accomplished.png'"
+                uk-img
+              ></div> -->
             </div>
           </li>
         </ul>

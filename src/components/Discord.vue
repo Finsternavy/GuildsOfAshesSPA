@@ -1,14 +1,12 @@
 <script setup>
 import { ref } from "vue";
-import DiscordServer from "./DiscordServer.vue";
+import DiscordServer from "../components/DiscordServer.vue";
 
-let props = defineProps({
-  servers: Array,
-});
+let props = defineProps(["modelValue"]);
 
 const discord_ID = ref();
 
-const discordServers = ref(props.servers);
+const discordServers = ref(props.modelValue);
 
 const createDiscordWidget = async () => {
   let Id = this.discord_ID.value;
@@ -17,7 +15,10 @@ const createDiscordWidget = async () => {
     response;
     console.log(response);
     if (response.status === 200) {
-      console.log("Pushing to discordServers");
+      console.log(
+        "Pushing to discordServers: ",
+        `https://discord.com/widget?id=${Id}&theme=dark`
+      );
       discordServers.value.push({
         embedSrc: `https://discord.com/widget?id=${Id}&theme=dark`,
       });
@@ -78,25 +79,36 @@ const createDiscordWidget = async () => {
         <button class="add-server-button" type="button">
           <span uk-icon="icon: plus; ratio:1.5"> </span>
         </button>
-        <div class="add-server-container uk-width-large" uk-drop="mode: click; pos: bottom-right">
-          <div class="uk-form add-social-modal uk-text-center uk-flex uk-flex-middle uk-padding">
+        <div
+          class="add-server-container uk-width-large"
+          uk-drop="mode: click; pos: bottom-right"
+        >
+          <div
+            class="uk-form add-social-modal uk-text-center uk-flex uk-flex-middle uk-padding"
+          >
             <div class="modal-container uk-flex uk-flex-column uk-width-1-1">
-              <label class="uk-text-center uk-margin-small-bottom" for="discord_ID">Enter Discord Server ID</label>
-              <input class="pill uk-input uk-margin-bottom" id="discord_ID" type="number" v-model="discord_ID" />
-              <button  class="pill create-button uk-button uk-background-secondary"
-                @click="createDiscordWidget" >
-                 Add Server
+              <label class="uk-text-center uk-margin-small-bottom" for="discord_ID"
+                >Enter Discord Server ID</label
+              >
+              <input
+                class="pill uk-input uk-margin-bottom"
+                id="discord_ID"
+                type="number"
+                v-model="discord_ID"
+              />
+              <button
+                class="pill create-button uk-button uk-background-secondary"
+                @click="createDiscordWidget"
+              >
+                Add Server
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="discord-servers-container uk-flex uk-grid-small uk-child-width-1-2 uk-width-1-1 uk-margin-remove"
-      uk-grid
-    >
-      <DiscordServer v-for="servers in $props.servers" :embedSrc="servers.embedSrc" />
+    <div class="discord-servers-container uk-margin-remove">
+      <DiscordServer v-for="servers in discordServers" :embedSrc="servers.embedSrc" />
     </div>
   </div>
 </template>
