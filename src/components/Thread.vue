@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import Comment from "../components/Comment.vue";
+import uikit from "uikit";
 
 const props = defineProps({
   modelValue: {},
@@ -13,6 +14,14 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue"]);
 
 const comments = ref();
+
+const toggleChildren = () => {
+  // console.log(document.querySelector(`.comments-container${props.data.id}`));
+  if (!document.querySelector(`.comments-container${props.data.id}`).hidden) {
+    console.log("Trying to hide child toggle");
+    uikit.toggle(`.comments-container${props.data.id}`).toggle();
+  }
+};
 </script>
 <style scoped>
 .thread-body-container {
@@ -47,10 +56,11 @@ const comments = ref();
 </style>
 
 <template>
-  <div class="thread goa-container uk-padding">
+  <div class="thread goa-container">
     <div class="thread-header">
       <button
         class="thread-toggle uk-width-stretch uk-padding-small"
+        @click="toggleChildren"
         :uk-toggle="
           'target: .thread-body-container' +
           data.id +
@@ -62,10 +72,7 @@ const comments = ref();
         </h3>
       </button>
     </div>
-    <div
-      :class="'thread-body-container' + data.id + '  uk-margin-bottom uk-margin-top'"
-      hidden
-    >
+    <div :class="'thread-body-container' + data.id + ' uk-padding'" hidden>
       <div class="thread-body uk-padding">
         <span class="text-orange uk-margin-small-right"> {{ data.author }} </span>
         <span class="uk-text-muted"> {{ data.timeDate }}</span>
@@ -107,14 +114,25 @@ const comments = ref();
         </div>
       </div>
     </div>
-    <div :class="'comments-container' + data.id + ' uk-flex uk-flex-top'" hidden>
+    <div
+      :class="
+        'comments-container' +
+        data.id +
+        ' uk-padding uk-padding-remove-top uk-flex uk-flex-top'
+      "
+      hidden
+    >
       <span
         v-if="data.comments.length > 0"
         class="reply text-orange uk-margin-left uk-margin-right uk-text-center"
         uk-icon="icon: reply; ratio: 2;"
       ></span>
-      <div v-for="comment in data.comments" class="uk-width-stretch">
-        <Comment :data="comment" />
+      <div class="uk-width-stretch">
+        <Comment
+          class="uk-margin-bottom"
+          v-for="comment in data.comments"
+          :data="comment"
+        />
       </div>
     </div>
   </div>

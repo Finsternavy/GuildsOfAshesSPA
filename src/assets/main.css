@@ -10,7 +10,7 @@
 }
 
 .goa-container {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(5px);
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
