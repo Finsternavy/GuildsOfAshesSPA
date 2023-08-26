@@ -7,6 +7,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
+  transform: translateX(13px);
 }
 
 .goa-container {
@@ -21,8 +22,58 @@
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(5px);
   border-radius: 30px;
+  overflow: hidden;
   transition: background-color 0.3s ease-in-out;
   background-image: url('../../public/Images/old_paper.jpg');
+  /* background-size: cover; */
+  /* background-position: right bottom; */
+  background-repeat: no-repeat;
+}
+
+.map-container-no-radius {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  transition: background-color 0.3s ease-in-out;
+  background-image: url('../../public/Images/old_paper.jpg');
+  /* background-size: cover; */
+  /* background-position: right bottom; */
+  background-repeat: no-repeat;
+}
+
+.map-top-left{
+  background-position: top left;
+}
+
+.map-top-right{
+  background-position: top right;
+}
+
+.map-top-center{
+  background-position: top center;
+}
+
+.map-bottom-left{
+  background-position: bottom left;
+}
+
+.map-bottom-right{
+  background-position: bottom right;
+}
+
+.map-bottom-center{
+  background-position: bottom center;
+}
+
+.map-center{
+  background-position: center center;
+}
+
+.map-center-left{
+  background-position: center  left;
+}
+
+.map-center-right{
+  background-position: center right;
 }
 
 .goa-container-no-radius {
@@ -63,6 +114,8 @@
 }
 
 .text-black {
+  font-size: 20px;
+  font-weight: 500;
   color: rgb(48, 48, 48)!important;
 }
 
@@ -96,17 +149,70 @@ progress::-webkit-progress-value {
 
 .mission-accomplished {
   position: absolute;
-  transform: rotate(10deg);
-  width: 60%;
-  top: 30%;
+  width: 90%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 90%;
   height: 35%;
+  max-height: 15%;
   background-image: url('../../public/Images/mission_accomplished.png');
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 5;
+
+}
+
+.extend {
+  height: 100%;
+  min-height: 100vh!important;
+}
+
+.edge-shadow {
+  box-shadow: inset 0px 0px 30px 5px rgba(0, 0, 0, 1), 0px 0px 10px 5px rgba(0, 0, 0, 1);
+}
+
+
+/* Thread body */
+.thread-body-container,
+.comments-container {
+  overflow: hidden;
+  height: fit-content;
+  max-height: 0px;
+  padding: 0px;
+  opacity: 0;
+  transition: max-height 0.5s ease, padding 0.5s ease, opacity 0.5s 0.2s ease;
+}
+
+.hide {
+  max-height: 0;
+  padding: 0!important;
+  transition: height 0.5s ease-in-out;
+}
+
+.thread {
+  border-radius: 30px;
+  border: 2px solid rgb(62, 62, 62);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.thread-header {
+  /* border-radius: 30px; */
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.thread-header:hover {
+  background-color: black;
+}
+
+
+
+.show {
+  padding: 20px;
+  max-height: 900px;
+  opacity: 100%;
 }
 
 @media (max-width: 768){

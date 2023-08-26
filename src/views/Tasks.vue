@@ -1,4 +1,19 @@
-<script setup></script>
+<script setup>
+const randomBackground = () => {
+  let random = Math.floor(Math.random() * 6);
+  const root = "map-";
+  let locations = [
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+    "center-left",
+    "center-right",
+  ];
+  console.log("Setting random location: ", root + locations[random]);
+  return root + locations[random];
+};
+</script>
 
 <style scoped>
 .completed {
@@ -37,26 +52,34 @@
     </div>
     <div class="task-list uk-flex">
       <div class="active-tasks">
-        <ul class="uk-list uk-flex uk-child-width-1-1" uk-grid>
+        <ul class="uk-list uk-flex uk-child-width-1-3" uk-grid>
+          <!-- Need to replace this with a task component -->
           <li v-for="num in 3" class="uk-margin-top">
-            <div class="map-container uk-padding in-progress uk-position-relative">
+            <div
+              :class="
+                'map-container uk-padding in-progress uk-position-relative edge-shadow ' +
+                randomBackground()
+              "
+            >
               <div class="mission-accomplished"></div>
               <h3><span class="text-black uk-text-bold">Task Name</span></h3>
               <p class="uk-margin-remove-bottom text-black uk-text-bold">
                 We need to gather iron.
               </p>
               <div class="resources-stats uk-flex uk-flex-between uk-flex-middle">
-                <p class="uk-margin-remove">
+                <p class="uk-margin-remove text-black uk-text-bold">
                   <span class="text-black uk-text-bold">Obtained: </span> 200
                 </p>
-                <p><span class="text-black uk-text-bold">Resources needed: </span>500</p>
+                <p class="text-black uk-text-bold">
+                  <span class="text-black uk-text-bold">Resources needed: </span>500
+                </p>
               </div>
               <progress class="" :value="100" max="100"></progress>
               <p class="text-black uk-text-bold">Volunteers:</p>
-              <div class="task-takers uk-flex uk-child-width-1-4" uk-grid>
+              <div class="task-takers uk-flex uk-child-width-1-2" uk-grid>
                 <div v-for="num in 5" class="member uk-margin-small-top">
-                  <p class="uk-background-secondary uk-text-center">
-                    <span>Member {{ num }} </span>
+                  <p class="uk-text-center text-black">
+                    <span class="uk-text-bold">Member {{ num }} </span>
                   </p>
                 </div>
               </div>

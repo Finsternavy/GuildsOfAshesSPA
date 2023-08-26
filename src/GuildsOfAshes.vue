@@ -40,10 +40,12 @@ const randomImage = ref();
 const currentYear = new Date().getFullYear();
 </script>
 
+<style></style>
+
 <template>
   <div
     id="PrimaryLayout"
-    class="uk-background-cover uk-background-fixed"
+    class="uk-background-cover uk-background-fixed uk-width-1-1"
     :data-src="imagePrefix + getRandomImage()"
     uk-height-viewport="expand: true"
     uk-img

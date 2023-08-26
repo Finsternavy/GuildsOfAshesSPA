@@ -8,18 +8,13 @@ const props = defineProps({
 </script>
 <style scoped>
 .comment-container {
-  outline: 1px solid rgba(255, 255, 255, 0.2);
+  /* outline: 1px solid rgba(255, 255, 255, 0.2); */
   border-radius: 20px;
   overflow: hidden;
 }
 
 .comment {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.message {
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 20px 20px 0 0;
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
 
 .thread-footer {
@@ -28,19 +23,23 @@ const props = defineProps({
 }
 
 .divider {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 </style>
 
 <template>
-  <div class="comment-container">
+  <div class="comment-container map-container map-bottom-left">
     <div class="comment uk-padding">
       <div class="author-info">
-        <span class="text-orange uk-margin-small-right">{{ data.author }} </span>
-        <span class="uk-text-muted"> {{ data.timeDate }}</span>
+        <span class="text-black uk-text-bold uk-margin-small-right"
+          >{{ data.author }}
+        </span>
+        <span class="text-black"> {{ data.timeDate }}</span>
       </div>
       <hr class="divider" />
-      <div class="uk-padding-small uk-margin-top uk-padding-remove-bottom">
+      <div
+        class="uk-padding-small uk-margin-top uk-padding-remove-bottom text-black uk-text-bold"
+      >
         {{ data.message }}
       </div>
     </div>

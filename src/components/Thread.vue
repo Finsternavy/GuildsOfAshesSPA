@@ -3,6 +3,9 @@ import { ref } from "vue";
 import Comment from "../components/Comment.vue";
 import uikit from "uikit";
 
+const showThread = ref(false);
+const showComments = ref(false);
+
 const props = defineProps({
   modelValue: {},
   data: {},
@@ -17,21 +20,27 @@ const comments = ref();
 
 const toggleChildren = () => {
   // console.log(document.querySelector(`.comments-container${props.data.id}`));
-  if (!document.querySelector(`.comments-container${props.data.id}`).hidden) {
-    console.log("Trying to hide child toggle");
-    uikit.toggle(`.comments-container${props.data.id}`).toggle();
+  console.log("Toggling children: ", props.data.id);
+  showComments.value = !showComments.value;
+  console.log("showComments: ", showComments.value);
+};
+
+const toggleThread = () => {
+  console.log("Toggling thread: ", props.data.id);
+  showThread.value = !showThread.value;
+  console.log("showThread: ", showThread.value);
+  console.log("Checking comments: ", showComments.value);
+  if (showComments.value == true) {
+    toggleChildren();
   }
 };
 </script>
 <style scoped>
 .thread-body-container {
-  outline: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  overflow: hidden;
 }
 
 .thread-body {
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
 
 .thread-footer {
@@ -43,11 +52,11 @@ const toggleChildren = () => {
 }
 
 .divider {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 .thread-toggle {
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 30px 30px 0 0;
 }
 
 .thread-toggle:hover {
@@ -56,71 +65,76 @@ const toggleChildren = () => {
 </style>
 
 <template>
-  <div class="thread goa-container">
+  <div class="thread">
     <div class="thread-header">
-      <button
-        class="thread-toggle uk-width-stretch uk-padding-small"
-        @click="toggleChildren"
-        :uk-toggle="
-          'target: .thread-body-container' +
-          data.id +
-          '; animation: uk-animation-fade; duration: 200'
-        "
-      >
-        <h3 class="uk-light uk-margin-remove uk-text-left">
+      <div class="uk-width-stretch uk-padding-small" @click="toggleThread()">
+        <h4 class="uk-light uk-margin-remove uk-text-left text-orange">
           {{ data.title }}
-        </h3>
-      </button>
-    </div>
-    <div :class="'thread-body-container' + data.id + ' uk-padding'" hidden>
-      <div class="thread-body uk-padding">
-        <span class="text-orange uk-margin-small-right"> {{ data.author }} </span>
-        <span class="uk-text-muted"> {{ data.timeDate }}</span>
-        <hr class="divider" />
-        <div class="uk-padding-small uk-margin-top uk-padding-remove-bottom">
-          {{ data.message }}
-        </div>
+          <span class="interactions uk-float-right uk-text-primary"
+            >Interactions:
+            <span class="text-orange">{{
+              data.comments.length + data.likes + data.dislikes
+            }}</span></span
+          >
+        </h4>
       </div>
-      <div class="thread-footer uk-flex uk-flex-middle uk-flex-between uk-padding-small">
-        <div class="button-container uk-flex">
-          <div class="likes uk-text-center uk-margin-right">
-            <button class="goa-button uk-button-small uk-margin-small-right">
-              <span uk-icon="icon: arrow-up"></span>
-            </button>
-            <span>{{ data.likes }}</span>
-          </div>
-          <div class="dislikes uk-text-center uk-margin-right">
-            <button class="goa-button uk-button-small uk-margin-small-right">
-              <span uk-icon="icon: arrow-down"></span>
-            </button>
-            <span>{{ data.dislikes }}</span>
-          </div>
-          <div class="dislikes uk-text-center uk-margin-right">
-            <button
-              class="goa-button uk-button-small uk-margin-small-right"
-              :uk-toggle="
-                'target: .comments-container' +
-                data.id +
-                '; animation: uk-animation-fade; duration: 200'
-              "
-            >
-              <span uk-icon="icon: comment"></span>
-            </button>
-            <span>{{ data.comments.length }}</span>
+    </div>
+    <div
+      :class="{
+        'thread-body-container': props,
+        show: showThread,
+      }"
+    >
+      <div class="map-container map-top-left">
+        <div class="thread-body uk-padding text-black">
+          <span class="text-black uk-text-bold uk-margin-small-right">
+            {{ data.author }}
+          </span>
+          <span class="text-black"> {{ data.timeDate }}</span>
+          <hr class="divider" />
+          <div
+            class="uk-padding-small uk-margin-top uk-padding-remove-bottom text-black uk-text-bold"
+          >
+            {{ data.message }}
           </div>
         </div>
-        <div class="comment uk-text-center">
-          <button class="goa-button">Reply</button>
+        <div
+          class="thread-footer uk-flex uk-flex-middle uk-flex-between uk-padding-small"
+        >
+          <div class="button-container uk-flex">
+            <div class="likes uk-text-center uk-margin-right">
+              <button class="goa-button uk-button-small uk-margin-small-right">
+                <span uk-icon="icon: arrow-up"></span>
+              </button>
+              <span>{{ data.likes }}</span>
+            </div>
+            <div class="dislikes uk-text-center uk-margin-right">
+              <button class="goa-button uk-button-small uk-margin-small-right">
+                <span uk-icon="icon: arrow-down"></span>
+              </button>
+              <span>{{ data.dislikes }}</span>
+            </div>
+            <div class="dislikes uk-text-center uk-margin-right">
+              <button
+                @click="toggleChildren"
+                class="goa-button uk-button-small uk-margin-small-right"
+              >
+                <span uk-icon="icon: comment"></span>
+              </button>
+              <span>{{ data.comments.length }}</span>
+            </div>
+          </div>
+          <div class="comment uk-text-center">
+            <button class="goa-button">Reply</button>
+          </div>
         </div>
       </div>
     </div>
     <div
-      :class="
-        'comments-container' +
-        data.id +
-        ' uk-padding uk-padding-remove-top uk-flex uk-flex-top'
-      "
-      hidden
+      :class="{
+        'comments-container uk-flex uk-flex-top': props,
+        show: showComments,
+      }"
     >
       <span
         v-if="data.comments.length > 0"
