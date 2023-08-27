@@ -9,14 +9,13 @@ const baseUrl = process.env.APIURL;
 const store = useUserStore();
 
 const doLogin = async () => {
-  // for now just login no matter what.
-  const userStore = useUserStore;
   console.log("baseURL: ", baseUrl);
+  let hashedPassword = await hash(password.value);
   const call = {
     Username: username.value,
-    Password: password.value,
+    Password: hashedPassword,
   };
-  const response = await fetch("http://localhost:5229/Users/authenticate", {
+  const response = await fetch(baseUrl + "/authenticate", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -25,25 +24,36 @@ const doLogin = async () => {
       "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
     },
     body: JSON.stringify(call),
-  })
-    .then((response) => {
-      // console.log("appLogin", response);
-      if (response.ok) {
-        return response;
-      }
-    })
-    .catch((error) => {
-      console.log("Error: ", error);
-      return error;
-    });
-  returnValue = await response;
+  });
 
-  return returnValue;
+  if (response.ok) {
+    let data = await response.json();
+    console.log("data: ", data);
+    store.setUser(data.Data.Username, data.Data.Email, data.Data.UserID);
+    store.setUserAuthenticationStatus(true);
+    console.log("Store user: ", store.user);
+    store.setAuthenticated(true);
+    if (data.Data.guildID) {
+      router.push({ name: "guild-home" });
+    } else {
+      router.push({ name: "guilds" });
+    }
+  } else {
+    console.log("Error fetching data: ", response.statusText);
+  }
+};
 
-  // store.setAuthenticated(true);
-  // console.log("Authenticated: ", store.getAuthenticated());
-  // console.log("User: ", store.getUser());
-  // router.push("/guild/home");
+async function hash(string) {
+  const utf8 = new TextEncoder().encode(string);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
+  return hashHex;
+}
+
+const register = () => {
+  // add after creating registration page
+  router.push({ name: "register" });
 };
 </script>
 
@@ -76,12 +86,17 @@ const doLogin = async () => {
           v-model="password"
         />
       </div>
-      <button
-        class="goa-button uk-width-1-1 uk-light uk-margin-top uk-padding-small"
-        @click="doLogin"
-      >
-        Login
-      </button>
+      <div class="login-button-container uk-flex uk-child-width-1-2 uk-width-1-1">
+        <button
+          class="goa-button uk-light uk-margin-right uk-padding-small"
+          @click="doLogin"
+        >
+          Login
+        </button>
+        <button class="goa-button uk-light uk-padding-small" @click="register">
+          Register
+        </button>
+      </div>
     </div>
   </div>
 </template>

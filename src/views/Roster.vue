@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref, watch, reactive } from "vue";
+import { computed, ref, watch, reactive, onBeforeMount } from "vue";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
-
+import { useUserStore } from "../stores/userStore";
 import Fighter from "../../public/AOC_Icons/fighter_icon.png";
 import Tank from "../../public/AOC_Icons/tank_icon.png";
 import Rogue from "../../public/AOC_Icons/rogue_icon.png";
@@ -11,7 +11,12 @@ import Summoner from "../../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../../public/AOC_Icons/cleric_icon.png";
 import Bard from "../../public/AOC_Icons/bard_icon.png";
 
+const baseUrl = process.env.APIURL;
 const selectedClass = ref();
+const store = useUserStore();
+const user = store.getUser();
+
+onBeforeMount(() => {});
 
 const membersList = [
   {
@@ -130,6 +135,42 @@ const getClassIcon = (className) => {
     return Bard;
   }
 };
+
+const updateUserClass = async () => {
+  // console.log("baseURL: ", baseUrl);
+  // let hashedPassword = await hash(password.value);
+  console.log(selectedClass.value);
+  console.log("Name: ", selectedClass.value.name);
+  user.subclass = selectedClass.value.name;
+  user.primary = selectedClass.value.primary;
+  user.secondary = selectedClass.value.secondary;
+  console.log("User now: ", store.getUser());
+  // const call = {
+  //   UserID: user.UserID,
+  //   User: user,
+  // };
+  // const response = await fetch(baseUrl + "/updateUser/" + user.UserID, {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //     "Access-Control-Allow-Credentials": true,
+  //     "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+  //   },
+  //   body: JSON.stringify(call),
+  // });
+
+  // if (response.ok) {
+  //   let data = await response.json();
+  //   console.log("data: ", data);
+  //   store.setUser(data.Data.Username, data.Data.Email, data.Data.UserID);
+  //   console.log("Store user: ", store.getUser());
+  //   store.setAuthenticated(true);
+  //   router.push({ name: "guild-home" });
+  // } else {
+  //   console.log("Error fetching data: ", response.statusText);
+  // }
+};
 </script>
 
 <style scoped>
@@ -184,7 +225,7 @@ label {
             </div>
             <div class="uk-flex uk-flex-between uk-child-width-1- uk-margin-top">
               <button class="goa-button uk-margin-right">Filter Roster</button>
-              <button class="goa-button">Update My Class</button>
+              <button @click="updateUserClass" class="goa-button">Update My Class</button>
             </div>
           </div>
         </div>

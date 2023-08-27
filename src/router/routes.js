@@ -9,6 +9,7 @@ import Roster from '../views/Roster.vue';
 import Tasks from '../views/Tasks.vue';
 import Forums from '../views/Forums.vue';
 import News from '../views/News.vue';
+import Register from '../views/Register.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,6 +17,7 @@ const router = createRouter({
     { path: '/', name: 'home',  component: Home },
     { path: '/guilds', name: 'guilds',  component: Guilds },
     { path: '/login', name: 'login',  component: Login },
+    { path: '/register', name: 'register',  component: Register },
     { path: '/guild/create', name: 'guild-create',  component: CreateGuild },
     { path: '/guild/home', name: 'guild-home',  component: GuildHome },
     { path: '/guild/news', name: 'guild-news',  component: News },
