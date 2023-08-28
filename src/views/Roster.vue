@@ -141,35 +141,33 @@ const updateUserClass = async () => {
   // let hashedPassword = await hash(password.value);
   console.log(selectedClass.value);
   console.log("Name: ", selectedClass.value.name);
-  user.subclass = selectedClass.value.name;
-  user.primary = selectedClass.value.primary;
-  user.secondary = selectedClass.value.secondary;
-  console.log("User now: ", store.getUser());
+  user.Subclass = selectedClass.value.name;
+  user.Primary = selectedClass.value.primary;
+  user.Secondary = selectedClass.value.secondary;
+  console.log("User now: ", user);
   // const call = {
-  //   UserID: user.UserID,
   //   User: user,
   // };
-  // const response = await fetch(baseUrl + "/updateUser/" + user.UserID, {
-  //   method: "POST",
-  //   headers: {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json",
-  //     "Access-Control-Allow-Credentials": true,
-  //     "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
-  //   },
-  //   body: JSON.stringify(call),
-  // });
+  const response = await fetch(baseUrl + "/updateUser/" + user.UserID, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(user),
+  });
 
-  // if (response.ok) {
-  //   let data = await response.json();
-  //   console.log("data: ", data);
-  //   store.setUser(data.Data.Username, data.Data.Email, data.Data.UserID);
-  //   console.log("Store user: ", store.getUser());
-  //   store.setAuthenticated(true);
-  //   router.push({ name: "guild-home" });
-  // } else {
-  //   console.log("Error fetching data: ", response.statusText);
-  // }
+  if (response.ok) {
+    let data = await response.json();
+    console.log("data: ", data);
+    store.setUserSubclass(data.Data.Subclass);
+    store.setUserPrimary(data.Data.Primary);
+    store.setUserSecondary(data.Data.Secondary);
+  } else {
+    console.log("Error fetching data: ", response.statusText);
+  }
 };
 </script>
 

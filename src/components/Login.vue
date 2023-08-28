@@ -29,9 +29,22 @@ const doLogin = async () => {
   if (response.ok) {
     let data = await response.json();
     console.log("data: ", data);
-    store.setUser(data.Data.Username, data.Data.Email, data.Data.UserID);
-    store.setUserAuthenticationStatus(true);
-    console.log("Store user: ", store.user);
+    store.setUser(
+      data.Data.Username,
+      data.Data.Password,
+      data.Data.Email,
+      data.Data.UserID,
+      data.Data.GuildID,
+      data.Data.GuildName,
+      data.Data.Role,
+      data.Data.Subclass,
+      data.Data.Primary,
+      data.Data.Secondary,
+      data.Data.Profession1,
+      data.Data.Profession2
+    );
+    localStorage.setItem("User", JSON.stringify(data.Data));
+    console.log("Store user: ", store.getUser());
     store.setAuthenticated(true);
     if (data.Data.guildID) {
       router.push({ name: "guild-home" });

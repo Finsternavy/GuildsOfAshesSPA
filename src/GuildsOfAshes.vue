@@ -66,12 +66,9 @@ const currentYear = new Date().getFullYear();
       </div>
     </section>
 
-    <section
-      id="GlobalFooter"
-      class="uk-section goa-container-no-radius uk-margin-large-top uk-section-xsmall uk-padding-remove"
-    >
+    <section id="GlobalFooter" class="footer">
       <!-- <footer-navigation /> -->
-      <p class="uk-text-center">
+      <p class="uk-text-center uk-margin-remove">
         Developed by
         <a href="https://www.linkedin.com/in/christopher-finster/" target="_blank"
           >Christopher Finster</a
