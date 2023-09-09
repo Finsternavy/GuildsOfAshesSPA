@@ -5,7 +5,7 @@ import { useUserStore } from "../stores/userStore";
 
 const username = ref("");
 const password = ref("");
-const baseUrl = process.env.APIURL;
+const baseUrl = process.env.APIURL + "Users";
 const store = useUserStore();
 
 const doLogin = async () => {
@@ -28,20 +28,21 @@ const doLogin = async () => {
 
   if (response.ok) {
     let data = await response.json();
+    let user = data.Data;
     console.log("data: ", data);
     store.setUser(
-      data.Data.Username,
-      data.Data.Password,
-      data.Data.Email,
-      data.Data.UserID,
-      data.Data.GuildID,
-      data.Data.GuildName,
-      data.Data.Role,
-      data.Data.Subclass,
-      data.Data.Primary,
-      data.Data.Secondary,
-      data.Data.Profession1,
-      data.Data.Profession2
+      user.UserID,
+      user.Username,
+      user.Password,
+      user.Email,
+      user.GuildID,
+      user.GuildName,
+      user.Role,
+      user.Subclass,
+      user.Primary,
+      user.Secondary,
+      user.Profession1,
+      user.Profession2
     );
     localStorage.setItem("User", JSON.stringify(data.Data));
     console.log("Store user: ", store.getUser());

@@ -11,6 +11,10 @@ import 'uikit/dist/css/uikit.css'
 
 UIkit.use(Icons)
 
+// get rid of feature flag warning in browser
+globalThis.__VUE_OPTIONS_API__ = false;
+globalThis.__VUE_PROD_DEVTOOLS__ = true;
+
 const app = createApp(App)
 
 app.use(createPinia())

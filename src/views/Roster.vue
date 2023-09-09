@@ -11,7 +11,7 @@ import Summoner from "../../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../../public/AOC_Icons/cleric_icon.png";
 import Bard from "../../public/AOC_Icons/bard_icon.png";
 
-const baseUrl = process.env.APIURL;
+const baseUrl = process.env.APIURL + "Users";
 const selectedClass = ref();
 const store = useUserStore();
 const user = store.getUser();
