@@ -14,7 +14,7 @@ import Bard from "../../public/AOC_Icons/bard_icon.png";
 const baseUrl = process.env.APIURL + "Users";
 const selectedClass = ref();
 const store = useUserStore();
-const user = store.getUser();
+const user = store.getUser;
 
 onBeforeMount(() => {});
 
@@ -163,9 +163,9 @@ const updateUserClass = async () => {
     let data = await response.json();
     console.log("data: ", data);
     localStorage.setItem("User", JSON.stringify(data.Data));
-    store.setUserSubclass(data.Data.Subclass);
-    store.setUserPrimary(data.Data.Primary);
-    store.setUserSecondary(data.Data.Secondary);
+    // store.setUserSubclass(data.Data.Subclass);
+    // store.setUserPrimary(data.Data.Primary);
+    // store.setUserSecondary(data.Data.Secondary);
   } else {
     console.log("Error fetching data: ", response.statusText);
   }

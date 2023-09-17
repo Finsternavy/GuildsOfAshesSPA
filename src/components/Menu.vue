@@ -1,26 +1,30 @@
 <script setup>
-import { onBeforeMount, ref, watch, computed } from "vue";
+import { onBeforeMount, onMounted, ref, watch, computed } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
 
-const store = useUserStore();
-let user;
+let store = useUserStore();
+let user = ref();
 let authenticated = ref(false);
+let username = ref();
 const goHome = () => {
   console.log("Going home");
   router.push("/");
 };
 
-onBeforeMount(() => {
-  user = store.getUser();
-  if (user) {
-    authenticated.value = true;
+onMounted(() => {
+  store = useUserStore();
+  if (store.user) {
+    user.value = store.getUser;
+    username.value = store.getUsername;
+    console.log("Username: ", username.value);
+    console.log("User at menu after login: ", user.value);
   }
 });
 
 const checkUser = () => {
-  user = store.getUser();
+  user = store.getUser;
   console.log(user);
   if (!user) {
     authenticated.value = false;
@@ -35,9 +39,16 @@ const logout = () => {
   console.log("Logging out");
   store.removeUser();
   user = null;
-  authenticated.value = false;
   router.push("/");
-  reload();
+  // location.reload();
+};
+
+const getUsername = () => {
+  let tempName = store.getUsername;
+  if (username.value) {
+    return username.value;
+  }
+  return tempName;
 };
 </script>
 
@@ -86,7 +97,7 @@ const logout = () => {
         </div>
 
         <!-- Need to add to this if. If member is not in a guild most of these should not show -->
-        <div v-if="authenticated" class="uk-flex uk-flex-center">
+        <div v-if="store.getAuthenticated" class="uk-flex uk-flex-center">
           <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
           <RouterLink to="/guild/news"><span class="link">News</span></RouterLink>
           <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
@@ -97,7 +108,7 @@ const logout = () => {
         </div>
       </div>
       <div class="login-profile-container uk-text-right uk-width-1-6">
-        <div v-if="!authenticated" class="not-logged-in">
+        <div v-if="!store.getAuthenticated" class="not-logged-in">
           <RouterLink to="/login" class="uk-link">
             <div class="uk-flex uk-flex-column">
               <span class="text-orange uk-margin-small-right" uk-icon="icon: user"></span>
@@ -105,11 +116,15 @@ const logout = () => {
             </div>
           </RouterLink>
         </div>
-        <div v-else class="logged-in" uk-dropnav="mode: hover; offset: 50">
+        <div
+          v-if="store.getAuthenticated"
+          class="logged-in"
+          uk-dropnav="mode: hover; offset: 50"
+        >
           <ul class="uk-margin-remove">
             <div class="uk-flex uk-flex-column">
               <span uk-icon="icon: user" class="uk-margin-right"></span>
-              <span class="text-orange uk-margin-remove">{{ user.Username }}</span>
+              <span class="text-orange uk-margin-remove">{{ getUsername() }}</span>
             </div>
             <div class="uk-dropdown uk-background-secondary goa-dropnav">
               <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">

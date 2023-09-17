@@ -434,7 +434,7 @@ const subclasses = computed(() => {
   console.log("Keys: ", keys);
   keys.forEach((key) => {
     classes[key].forEach((subclass) => {
-      console.log("Subclass: ", subclass);
+      // console.log("Subclass: ", subclass);
       subclasses.push(subclass);
     });
   });

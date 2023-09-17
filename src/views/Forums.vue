@@ -41,7 +41,7 @@ onBeforeMount(() => {
 });
 
 const getThreads = async () => {
-  const user = store.getUser();
+  const user = store.getUser;
   console.log("Attempting to get threads for guildID: ", user.GuildID);
   const response = await fetch(baseUrl + "/getAllThreads", {
     method: "POST",

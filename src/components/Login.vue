@@ -11,7 +11,7 @@ let store;
 onBeforeMount(() => {
   store = useUserStore();
   console.log("Store user: ", store.user);
-  if (store.getUser()) {
+  if (store.user) {
     router.push({ name: "guilds" });
   }
 });
@@ -52,18 +52,20 @@ const doLogin = async () => {
     //   user.Profession1,
     //   user.Profession2
     // );
-    localStorage.setItem("User", JSON.stringify(data.Data));
+    // localStorage.setItem("User", JSON.stringify(data.Data));
     // store.setUser(user);
+    store.setUser(data.Data);
     store.setAuthenticated(true);
-    console.log("Store authenticated: ", store.getAuthenticated());
-    if (data.Data.guildID) {
-      location.reload();
+    console.log("Store authenticated: ", store.getAuthenticated);
+    console.log("GuildID? : ", data.Data.GuildID);
+    if (data.Data.GuildID) {
+      // location.reload();
       router.push({ name: "guild-home" });
     } else {
-      location.reload();
+      // location.reload();
       router.push({ name: "guilds" });
     }
-    location.reload();
+    // location.reload();
   } else {
     console.log("Error fetching data: ", response.statusText);
   }

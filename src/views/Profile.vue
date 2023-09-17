@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { useUserStore } from "../stores/userStore";
 
 const store = useUserStore();
-const user = store.getUser();
+const user = store.getUser;
 
 const hiddenKeys = ["Password", "GuildID", "UserID"];
 
