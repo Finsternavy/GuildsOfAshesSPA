@@ -162,6 +162,7 @@ const updateUserClass = async () => {
   if (response.ok) {
     let data = await response.json();
     console.log("data: ", data);
+    localStorage.setItem("User", JSON.stringify(data.Data));
     store.setUserSubclass(data.Data.Subclass);
     store.setUserPrimary(data.Data.Primary);
     store.setUserSecondary(data.Data.Secondary);

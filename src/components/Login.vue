@@ -1,12 +1,20 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount, watch } from "vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
 
 const username = ref("");
 const password = ref("");
 const baseUrl = process.env.APIURL + "Users";
-const store = useUserStore();
+let store;
+
+onBeforeMount(() => {
+  store = useUserStore();
+  console.log("Store user: ", store.user);
+  if (store.getUser()) {
+    router.push({ name: "guilds" });
+  }
+});
 
 const doLogin = async () => {
   console.log("baseURL: ", baseUrl);
@@ -29,29 +37,33 @@ const doLogin = async () => {
   if (response.ok) {
     let data = await response.json();
     let user = data.Data;
-    console.log("data: ", data);
-    store.setUser(
-      user.UserID,
-      user.Username,
-      user.Password,
-      user.Email,
-      user.GuildID,
-      user.GuildName,
-      user.Role,
-      user.Subclass,
-      user.Primary,
-      user.Secondary,
-      user.Profession1,
-      user.Profession2
-    );
+    // console.log("data: ", data);
+    // store.setUser(
+    //   user.UserID,
+    //   user.Username,
+    //   user.Password,
+    //   user.Email,
+    //   user.GuildID,
+    //   user.GuildName,
+    //   user.Role,
+    //   user.Subclass,
+    //   user.Primary,
+    //   user.Secondary,
+    //   user.Profession1,
+    //   user.Profession2
+    // );
     localStorage.setItem("User", JSON.stringify(data.Data));
-    console.log("Store user: ", store.getUser());
+    // store.setUser(user);
     store.setAuthenticated(true);
+    console.log("Store authenticated: ", store.getAuthenticated());
     if (data.Data.guildID) {
+      location.reload();
       router.push({ name: "guild-home" });
     } else {
+      location.reload();
       router.push({ name: "guilds" });
     }
+    location.reload();
   } else {
     console.log("Error fetching data: ", response.statusText);
   }

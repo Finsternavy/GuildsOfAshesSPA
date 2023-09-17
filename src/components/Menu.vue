@@ -5,53 +5,39 @@ import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
 
 const store = useUserStore();
-const user = store.getUser();
+let user;
+let authenticated = ref(false);
 const goHome = () => {
   console.log("Going home");
   router.push("/");
 };
 
 onBeforeMount(() => {
-  // very hacky way to set the user from local storage.  Research better ways.
-  store.value = useUserStore();
-  const temp = JSON.parse(localStorage.getItem("User"));
-  if (temp) {
-    // store.setUserFromStorage(temp);
-    console.log("Getting user from local storage..");
-    let keys = Object.keys(temp);
-    let handoff = [];
-    keys.forEach((key) => {
-      handoff.push(temp[key]);
-    });
-    console.log("handoff: ", handoff);
-    store.setUser(
-      temp["UserID"],
-      temp["Username"],
-      temp["Password"],
-      temp["Email"],
-      temp["GuilID"],
-      temp["GuildName"],
-      temp["Role"],
-      temp["Subclass"],
-      temp["Primary"],
-      temp["Secondary"],
-      temp["Profession1"],
-      temp["Profession2"]
-    );
-    console.log("User after handoff: ", store.getUser());
+  user = store.getUser();
+  if (user) {
+    authenticated.value = true;
   }
 });
 
-// watch(user, (newval, oldval) => {
-//   console.log("New Val: ", newval);
-//   console.log("Old Val: ", oldval);
-// });
+const checkUser = () => {
+  user = store.getUser();
+  console.log(user);
+  if (!user) {
+    authenticated.value = false;
+    return false;
+  }
+  authenticated.value = true;
+  return true;
+};
 
 const logout = () => {
   localStorage.removeItem("User");
   console.log("Logging out");
   store.removeUser();
+  user = null;
+  authenticated.value = false;
   router.push("/");
+  reload();
 };
 </script>
 
@@ -93,14 +79,14 @@ const logout = () => {
         </button>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
-        <div v-if="user.Username && !user.GuildID" class="page-links-container uk-link">
+        <div v-if="authenticated && !user.GuildID" class="page-links-container uk-link">
           <RouterLink to="/guilds"
             ><span class="link uk-margin-right">Browse Guilds</span></RouterLink
           >
         </div>
 
         <!-- Need to add to this if. If member is not in a guild most of these should not show -->
-        <div v-if="user.Username" class="uk-flex uk-flex-center">
+        <div v-if="authenticated" class="uk-flex uk-flex-center">
           <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
           <RouterLink to="/guild/news"><span class="link">News</span></RouterLink>
           <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
@@ -111,7 +97,7 @@ const logout = () => {
         </div>
       </div>
       <div class="login-profile-container uk-text-right uk-width-1-6">
-        <div v-if="!user.Username" class="not-logged-in">
+        <div v-if="!authenticated" class="not-logged-in">
           <RouterLink to="/login" class="uk-link">
             <div class="uk-flex uk-flex-column">
               <span class="text-orange uk-margin-small-right" uk-icon="icon: user"></span>
@@ -119,7 +105,7 @@ const logout = () => {
             </div>
           </RouterLink>
         </div>
-        <div v-if="user.Username" class="logged-in" uk-dropnav="mode: hover; offset: 50">
+        <div v-else class="logged-in" uk-dropnav="mode: hover; offset: 50">
           <ul class="uk-margin-remove">
             <div class="uk-flex uk-flex-column">
               <span uk-icon="icon: user" class="uk-margin-right"></span>

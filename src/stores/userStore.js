@@ -3,22 +3,9 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('userStore', () => {
   
-  let user = ref({
-    // Username : '',
-    // Password: '',
-    // Email: '',
-    // UserID: '',
-    // GuildID: '',
-    // GuildName: '',
-    // Role: '',
-    // Subclass: '',
-    // Primary: '',
-    // Secondary: '',
-    // Profession1: '',
-    // Profession2: ''
-  });
+  let user = JSON.parse(localStorage.getItem("User")) ? JSON.parse(localStorage.getItem("User")) : "";
 
-  let authenticated = ref(false);
+  let authenticated = false;
 
   let setUser = (userID, username, password, email, guildID, guildName, role, subclass, primary, secondary, prof1, prof2) => {
     setUserID(userID);
@@ -36,131 +23,120 @@ export const useUserStore = defineStore('userStore', () => {
   };
 
   let setUserFromStorage = (temp) => {
-    user.value = temp;
+    user = temp;
   }
 
   let removeUser = () => {
-    setUsername('');
-    setUserID('');
-    setUserEmail('');
-    setUserPassword('');
-    setUserRole('');
-    setUserGuildID('');
-    setUserGuildName('');
-    setUserSubclass('');
-    setUserPrimary('');
-    setUserSecondary('');
-    setUserProfession1('');
-    setUserProfession2('');
-    setAuthenticated(false);
+    user = null;
   }
 
   let getUser = () => {
-    return user.value;
+    if (localStorage.getItem("User")) user = JSON.parse(localStorage.getItem("User"));
+    return user;
   }
 
   let setUsername = (username) => {
-    user.value.Username = username;
+    user.Username = username;
   }
 
   let getUsername = () => {
-    return user.value.Username;
+    return user.Username;
   }
 
   let getUserEmail = () => {
-    return user.value.Email;
+    return user.Email;
   }
 
   let setUserEmail = (email) => {
-    user.value.Email = email;
+    user.Email = email;
   }
 
   let getUserPassword = () => {
-    return user.value.Password;
+    return user.Password;
   }
 
   let setUserPassword = (password) => {
-    user.value.Password = password
+    user.Password = password
   }
 
   let getUserRole = () => {
-    return user.value.Role;
+    return user.Role;
   }
 
   let setUserRole = (role) => {
-    user.value.Role = role;
+    user.Role = role;
   }
 
   let getUserID = () => {
-    return user.value.UserID;
+    return user.UserID;
   }
 
   let setUserID = (userID) => {
-    user.value.UserID = userID;
+    user.UserID = userID;
   }
   
   let getUserGuildID = () => {
-    return user.value.GuildID;
+    return user.GuildID;
   }
 
   let setUserGuildID = (guildID) => {
-    user.value.GuildID = guildID;
+    user.GuildID = guildID;
   }
 
   let getUserGuildName = () => {
-    return user.value.GuildName;
+    return user.GuildName;
   }
 
   let setUserGuildName = (guildName) => {
-    user.value.GuildName = guildName;
+    user.GuildName = guildName;
   }
 
   let setUserSubclass = (subclass) => {
-    user.value.Subclass = subclass;
+    user.Subclass = subclass;
   }
 
   let getUserSubclass = () => {
-    return user.value.Subclass;
+    return user.Subclass;
   }
 
   let setUserPrimary = (primary) => {
-    user.value.Primary = primary;
+    user.Primary = primary;
   }
 
   let getUserPrimary = () => {
-    return user.value.Primary;
+    return user.Primary;
   }
 
   let setUserSecondary = (secondary) => {
-    user.value.Secondary = secondary;
+    user.Secondary = secondary;
   }
 
   let getUserSecondary = () => {
-    return user.value.Secondary;
+    return user.Secondary;
   }
 
   let setUserProfession1 = (profession_1) => {
-    user.value.Profession1 = profession_1;
+    user.Profession1 = profession_1;
   }
 
   let getUserProfession1 = () => {
-    return user.value.Profession1;
+    return user.Profession1;
   }
 
   let setUserProfession2 = (profession_2) => {
-    user.value.Profession2 = profession_2;
+    user.Profession2 = profession_2;
   }
 
   let getUserProfession2 = () => {
-    return user.value.Profession2;
+    return user.Profession2;
   }
 
   let setAuthenticated = (authenticated) => {
-    authenticated.value = authenticated;
+    authenticated = authenticated;
   }
 
   let getAuthenticated = () => {
-    return authenticated.value;
+    return authenticated;
   }
 
 

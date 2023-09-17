@@ -20,13 +20,13 @@ const comments = ref();
 
 const toggleChildren = () => {
   // console.log(document.querySelector(`.comments-container${props.data.id}`));
-  console.log("Toggling children: ", props.data.id);
+  console.log("Toggling children: ", props.data.ThreadID);
   showComments.value = !showComments.value;
   console.log("showComments: ", showComments.value);
 };
 
 const toggleThread = () => {
-  console.log("Toggling thread: ", props.data.id);
+  console.log("Toggling thread: ", props.data.ThreadID);
   showThread.value = !showThread.value;
   console.log("showThread: ", showThread.value);
   console.log("Checking comments: ", showComments.value);
@@ -69,11 +69,11 @@ const toggleThread = () => {
     <div class="thread-header">
       <div class="uk-width-stretch uk-padding-small" @click="toggleThread()">
         <h4 class="uk-light uk-margin-remove uk-text-left text-orange">
-          {{ data.title }}
+          {{ data.ThreadTitle }}
           <span class="interactions uk-float-right uk-text-primary"
             >Interactions:
             <span class="text-orange">{{
-              data.comments.length + data.likes + data.dislikes
+              data.Comments.length + data.UpVotes + data.DownVotes
             }}</span></span
           >
         </h4>
@@ -88,14 +88,14 @@ const toggleThread = () => {
       <div class="map-container map-top-left">
         <div class="thread-body uk-padding text-black">
           <span class="text-black uk-text-bold uk-margin-small-right">
-            {{ data.author }}
+            {{ data.AuthorUsername }}
           </span>
-          <span class="text-black"> {{ data.timeDate }}</span>
+          <span class="text-black"> {{ data.ThreadDate }}</span>
           <hr class="divider" />
           <div
             class="uk-padding-small uk-margin-top uk-padding-remove-bottom text-black uk-text-bold"
           >
-            {{ data.message }}
+            {{ data.ThreadMessage }}
           </div>
         </div>
         <div
@@ -106,13 +106,13 @@ const toggleThread = () => {
               <button class="goa-button uk-button-small uk-margin-small-right">
                 <span uk-icon="icon: arrow-up"></span>
               </button>
-              <span>{{ data.likes }}</span>
+              <span>{{ data.UpVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
               <button class="goa-button uk-button-small uk-margin-small-right">
                 <span uk-icon="icon: arrow-down"></span>
               </button>
-              <span>{{ data.dislikes }}</span>
+              <span>{{ data.DownVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
               <button
@@ -121,7 +121,7 @@ const toggleThread = () => {
               >
                 <span uk-icon="icon: comment"></span>
               </button>
-              <span>{{ data.comments.length }}</span>
+              <span>{{ data.Comments.length }}</span>
             </div>
           </div>
           <div class="comment uk-text-center">
@@ -137,14 +137,14 @@ const toggleThread = () => {
       }"
     >
       <span
-        v-if="data.comments.length > 0"
+        v-if="data.Comments.length > 0"
         class="reply text-orange uk-margin-left uk-margin-right uk-text-center"
         uk-icon="icon: reply; ratio: 2;"
       ></span>
       <div class="uk-width-stretch">
         <Comment
           class="uk-margin-bottom"
-          v-for="comment in data.comments"
+          v-for="comment in data.Comments"
           :data="comment"
         />
       </div>
