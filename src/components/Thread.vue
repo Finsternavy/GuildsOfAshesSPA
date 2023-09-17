@@ -69,7 +69,11 @@ const toggleThread = () => {
     <div class="thread-header">
       <div class="uk-width-stretch uk-padding-small" @click="toggleThread()">
         <h4 class="uk-light uk-margin-remove uk-text-left text-orange">
-          {{ data.ThreadTitle }}
+          <span>{{ data.ThreadTitle }} - </span>
+          <span class="uk-text-muted uk-text-small"
+            >Author: {{ data.AuthorUsername }}</span
+          >
+
           <span class="interactions uk-float-right uk-text-primary"
             >Interactions:
             <span class="text-orange">{{

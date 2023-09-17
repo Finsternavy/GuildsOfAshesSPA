@@ -43,12 +43,15 @@ const logout = () => {
   // location.reload();
 };
 
-const getUsername = () => {
+const displayUserInfo = () => {
+  let displayText = "";
   let tempName = store.getUsername;
-  if (username.value) {
-    return username.value;
-  }
-  return tempName;
+  // let tempID = store.getGuildID;
+  // if (username.value) {
+  //   return username.value;
+  // }
+  displayText += tempName;
+  return displayText;
 };
 </script>
 
@@ -124,7 +127,7 @@ const getUsername = () => {
           <ul class="uk-margin-remove">
             <div class="uk-flex uk-flex-column">
               <span uk-icon="icon: user" class="uk-margin-right"></span>
-              <span class="text-orange uk-margin-remove">{{ getUsername() }}</span>
+              <span class="text-orange uk-margin-remove">{{ displayUserInfo() }}</span>
             </div>
             <div class="uk-dropdown uk-background-secondary goa-dropnav">
               <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
