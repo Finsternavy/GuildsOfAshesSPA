@@ -64,7 +64,7 @@ const getThreads = async () => {
 };
 
 const postThread = async () => {
-  const user = store.getUser();
+  const user = store.getUser;
   const date = new Date().toISOString();
   // const time = new Date().toTimeString();
   let payload = {
@@ -95,10 +95,42 @@ const postThread = async () => {
   } else {
     console.log("Error posting thread: ", response.statusText);
   }
-  threadTitle = "";
-  threadMessage = "";
+  threadTitle.value = "";
+  threadMessage.value = "";
   showThreadCreationControls.value = false;
   getThreads();
+};
+
+const deleteThread = async (toDelete) => {
+  const user = store.getUser;
+  const threadID = toDelete;
+  const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    AuthorID: user.UserID,
+    ThreadID: threadID,
+  };
+
+  console.log("Deleting thread: ", payload);
+  const response = await fetch(baseUrl + "/deleteThread", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Response from delete thread: ", data);
+    getThreads();
+    // threads.value = data.Data;
+  } else {
+    console.log("Error deleting thread: ", response.statusText);
+  }
 };
 
 const showThreadCreation = () => {
@@ -118,6 +150,30 @@ const showThreadCreation = () => {
 .open {
   height: 240px;
   opacity: 1;
+}
+
+.goa-delete-button {
+  height: fit-content;
+  padding-block: 0;
+  background-color: black;
+  color: orange;
+}
+
+.goa-delete-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.goa-edit-button {
+  height: fit-content;
+  padding-block: 0;
+  background-color: black;
+  color: orange;
+}
+
+.goa-edit-button:hover {
+  background-color: orange;
+  color: white;
 }
 </style>
 
@@ -150,9 +206,25 @@ const showThreadCreation = () => {
       <div
         v-for="thread in threads"
         :key="thread.ThreadID + thread.AuthorUsername"
-        class="uk-margin-bottom"
+        class="uk-margin-bottom uk-flex"
       >
-        <Thread :data="thread" />
+        <Thread class="uk-flex-1" :data="thread" />
+
+        <div class="thread-controls uk-flex uk-flex-column uk-margin-small-left">
+          <button
+            @click="deleteThread(thread.ThreadID)"
+            class="goa-button goa-delete-button uk-button-small"
+          >
+            Delete
+          </button>
+          <!-- This is not implemented yet -->
+          <button
+            @click="editThread(thread.ThreadID)"
+            class="goa-button goa-edit-button uk-button-small"
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   </div>
