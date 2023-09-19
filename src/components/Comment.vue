@@ -11,10 +11,44 @@ const emit = defineEmits(["comment-get-threads"]);
 
 let store = useUserStore();
 const baseUrl = process.env.APIURL + "Forum";
+let showReplyControl = ref(false);
+let replyMessage = ref("");
 
 onMounted(() => {
   console.log("CommentID: ", props.data.CommentID);
 });
+
+const postComment = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  const date = new Date().toISOString();
+  const time = new Date().getMilliseconds();
+  // const time = new Date().toTimeString();
+  let payload = {
+    AuthorID: user.UserID,
+    ThreadID: threadID,
+    CommentID: user.UserID + time,
+    AuthorUsername: user.Username,
+    CommentDate: date,
+    CommentMessage: replyMessage.value,
+  };
+
+  console.log("Posting comment: ", payload);
+  const response = await fetch(baseUrl + "/postComment", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  replyMessage.value = "";
+  showReplyControl.value = false;
+  emit("comment-get-threads");
+};
 
 const upVote = async () => {
   const user = store.getUser;
@@ -71,6 +105,16 @@ const downVote = async () => {
     emit("comment-get-threads");
   }
 };
+
+const showReplyControls = () => {
+  replyMessage.value =
+    "@" +
+    props.data.AuthorUsername +
+    ", in response to: " +
+    props.data.CommentMessage +
+    "\n\n";
+  showReplyControl.value = !showReplyControl.value;
+};
 </script>
 <style scoped>
 .comment-container {
@@ -90,6 +134,21 @@ const downVote = async () => {
 
 .divider {
   border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.reply-creation-controls {
+  height: 0;
+  opacity: 0;
+  width: 90%;
+  margin-left: auto;
+  margin-bottom: 20px;
+  /* overflow: hidden; */
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in;
+}
+
+.open {
+  height: 160px;
+  opacity: 1;
 }
 </style>
 
@@ -133,8 +192,28 @@ const downVote = async () => {
         </div>
       </div>
       <div class="uk-text-center uk-width-auto">
-        <button class="goa-button">Reply</button>
+        <button @click="showReplyControls" class="goa-button">Reply</button>
       </div>
+    </div>
+  </div>
+  <div
+    :class="{
+      'reply-creation-controls uk-margin-top': {},
+      open: showReplyControl,
+    }"
+  >
+    <div class="title-input uk-flex uk-flex-column">
+      <label class="uk-margin-small-left" for="ReplyMessage">Message</label>
+      <textarea
+        id="ReplyMessage"
+        class="goa-input"
+        rows="4"
+        cols="50"
+        v-model="replyMessage"
+      ></textarea>
+    </div>
+    <div class="create-thread-button uk-margin-top">
+      <button @click="postComment" class="goa-button">Post Reply</button>
     </div>
   </div>
 </template>

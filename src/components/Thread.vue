@@ -322,11 +322,7 @@ const downVote = async () => {
       ></span>
       <div class="uk-width-stretch">
         <div v-for="comment in props.data.Comments">
-          <Comment
-            class="uk-margin-bottom"
-            :data="comment"
-            @comment-get-threads="parentFunction"
-          />
+          <Comment :data="comment" @comment-get-threads="parentFunction" />
         </div>
       </div>
     </div>
