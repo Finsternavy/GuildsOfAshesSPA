@@ -220,14 +220,16 @@ const toggleEditCommentControls = () => {
   height: 0;
   opacity: 0;
   width: 90%;
+  padding-top: 0px;
   margin-left: auto;
   margin-bottom: 20px;
   /* overflow: hidden; */
-  transition: height 0.3s ease-in-out, opacity 0.3s ease-in;
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in, padding-top 0.3s ease-in;
 }
 
 .open {
   height: 160px;
+  padding-top: 20px;
   opacity: 1;
 }
 
@@ -353,7 +355,7 @@ const toggleEditCommentControls = () => {
   </div>
   <div
     :class="{
-      'reply-creation-controls uk-margin-top': {},
+      'reply-creation-controls ': {},
       open: showReplyControl,
     }"
   >
