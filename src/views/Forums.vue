@@ -101,38 +101,6 @@ const postThread = async () => {
   getThreads();
 };
 
-const deleteThread = async (toDelete) => {
-  const user = store.getUser;
-  const threadID = toDelete;
-  const date = new Date().toISOString();
-  // const time = new Date().toTimeString();
-  let payload = {
-    AuthorID: user.UserID,
-    ThreadID: threadID,
-  };
-
-  console.log("Deleting thread: ", payload);
-  const response = await fetch(baseUrl + "/deleteThread", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (response.ok) {
-    let data = await response.json();
-    console.log("Response from delete thread: ", data);
-    getThreads();
-    // threads.value = data.Data;
-  } else {
-    console.log("Error deleting thread: ", response.statusText);
-  }
-};
-
 const showThreadCreation = () => {
   // if (showThreadCreationControls)
   showThreadCreationControls.value = !showThreadCreationControls.value;
@@ -218,22 +186,6 @@ const getThreadFromChild = (event) => {
           :data="thread"
           @parent-get-threads="getThreadFromChild"
         />
-
-        <div class="thread-controls uk-flex uk-flex-column uk-margin-small-left">
-          <button
-            @click="deleteThread(thread.ThreadID)"
-            class="goa-button goa-delete-button uk-button-small"
-          >
-            Delete
-          </button>
-          <!-- This is not implemented yet -->
-          <button
-            @click="editThread(thread.ThreadID)"
-            class="goa-button goa-edit-button uk-button-small"
-          >
-            Edit
-          </button>
-        </div>
       </div>
     </div>
   </div>

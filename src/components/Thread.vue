@@ -6,11 +6,15 @@ import { useUserStore } from "../stores/userStore";
 
 const baseUrl = process.env.APIURL + "Forum";
 const store = useUserStore();
+let user = ref();
 const showThread = ref(false);
 const showComments = ref(false);
 let commentCount = ref();
 let commentMessage = ref("");
 let showCreateComment = ref(false);
+let showEditcontrols = ref(false);
+let threadEditMessage = ref();
+let editTitle = ref();
 
 const props = defineProps({
   modelValue: {},
@@ -24,6 +28,9 @@ const emit = defineEmits(["update:modelValue"], ["parent-get-threads"]);
 
 onBeforeMount(() => {
   commentCount.value = props.data.Comments.length;
+  user.value = store.user;
+  threadEditMessage.value = props.data.ThreadMessage;
+  editTitle.value = props.data.ThreadTitle;
 });
 const comments = ref();
 
@@ -46,6 +53,10 @@ const toggleThread = () => {
 
 const showCreateCommentsControls = () => {
   showCreateComment.value = !showCreateComment.value;
+};
+
+const toggleEditcontrols = () => {
+  showEditcontrols.value = !showEditcontrols.value;
 };
 
 const postComment = async () => {
@@ -78,6 +89,76 @@ const postComment = async () => {
   commentMessage.value = "";
   showCreateComment.value = false;
   emit("parent-get-threads");
+};
+
+const deleteThread = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    AuthorID: user.UserID,
+    ThreadID: threadID,
+  };
+
+  console.log("Deleting thread: ", payload);
+  const response = await fetch(baseUrl + "/deleteThread", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Response from delete thread: ", data);
+    parentFunction();
+    // threads.value = data.Data;
+  } else {
+    console.log("Error deleting thread: ", response.statusText);
+  }
+};
+
+const editThread = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    AuthorID: user.UserID,
+    GuildID: user.GuildID,
+    ThreadID: threadID,
+    AuthorUsername: user.Username,
+    ThreadDate: date,
+    ThreadTitle: editTitle.value,
+    ThreadMessage: threadEditMessage.value,
+  };
+
+  console.log("Editing thread: ", payload);
+  const response = await fetch(baseUrl + "/editThread", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Response from edit thread: ", data);
+    parentFunction();
+    // threads.value = data.Data;
+  } else {
+    console.log("Error editing thread: ", response.statusText);
+  }
+  toggleEditcontrols();
 };
 
 const parentFunction = () => {
@@ -171,13 +252,21 @@ const downVote = async () => {
 .comment-creation-controls {
   height: 0;
   opacity: 0;
+  padding-top: 0px;
   /* overflow: hidden; */
-  transition: height 0.3s ease-in-out, opacity 0.3s ease-in;
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in, padding-top 0.3s ease-in;
 }
 
 .open {
   height: 160px;
   opacity: 1;
+  padding-top: 20px;
+}
+
+.open-comment {
+  height: 160px;
+  opacity: 1;
+  padding-top: 20px;
 }
 
 .goa-delete-button {
@@ -208,6 +297,19 @@ const downVote = async () => {
   height: 800px;
   outline: none;
   border: none;
+}
+
+.thread-edit-controls {
+  height: 0;
+  opacity: 0;
+  padding-top: 0;
+  overflow: hidden;
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in, padding-top 0.3s ease-in;
+}
+.open {
+  height: 240px;
+  padding-top: 20px;
+  opacity: 1;
 }
 </style>
 
@@ -279,6 +381,24 @@ const downVote = async () => {
               </button>
               <span>{{ data.Comments.length }}</span>
             </div>
+            <div
+              v-if="data.AuthorID == user.UserID"
+              class="thread-controls uk-flex uk-margin-small-left"
+            >
+              <button
+                @click="deleteThread"
+                class="goa-button goa-delete-button uk-button-small uk-margin-small-right"
+              >
+                Delete
+              </button>
+              <!-- This is not implemented yet -->
+              <button
+                @click="toggleEditcontrols"
+                class="goa-button goa-edit-button uk-button-small uk-margin-small-right"
+              >
+                Edit
+              </button>
+            </div>
           </div>
           <div class="comment uk-text-center">
             <button class="goa-button" @click="showCreateCommentsControls()">
@@ -289,8 +409,32 @@ const downVote = async () => {
       </div>
       <div
         :class="{
-          'comment-creation-controls uk-margin-top': {},
-          open: showCreateComment,
+          'thread-edit-controls': {},
+          open: showEditcontrols,
+        }"
+      >
+        <div class="title-input uk-flex uk-flex-column uk-margin-bottom">
+          <label class="uk-margin-small-left" for="ThreadTitle">Title</label>
+          <input id="ThreadTitle" class="goa-input" type="text" v-model="editTitle" />
+        </div>
+        <div class="title-input uk-flex uk-flex-column">
+          <label class="uk-margin-small-left" for="ThreadEditMessage">Message</label>
+          <textarea
+            id="ThreadEditMessage"
+            class="goa-input"
+            rows="4"
+            cols="50"
+            v-model="threadEditMessage"
+          ></textarea>
+        </div>
+        <div class="create-thread-button uk-margin-top">
+          <button @click="editThread" class="goa-button">Update Thread</button>
+        </div>
+      </div>
+      <div
+        :class="{
+          'comment-creation-controls': {},
+          'open-comment uk-padding-top': showCreateComment,
         }"
       >
         <div class="title-input uk-flex uk-flex-column">

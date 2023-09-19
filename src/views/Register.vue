@@ -7,7 +7,7 @@ const email = ref();
 const password = ref();
 const confirmPassword = ref();
 
-const baseURL = process.env.APIURL;
+const baseUrl = process.env.APIURL + "Users";
 
 const formChecked = ref(false);
 
@@ -24,7 +24,7 @@ const registrationForm = computed(() => {
 });
 
 const register = async () => {
-  console.log("baseURL: ", baseURL);
+  console.log("baseURL: ", baseUrl);
   let hashedPassword = await hash(password.value);
   const call = {
     Username: username.value,
@@ -32,7 +32,7 @@ const register = async () => {
     Password: hashedPassword,
   };
   console.log("call: ", call);
-  const response = await fetch(baseURL + "/register", {
+  const response = await fetch(baseUrl + "/register", {
     method: "POST",
     headers: {
       Accept: "application/json",

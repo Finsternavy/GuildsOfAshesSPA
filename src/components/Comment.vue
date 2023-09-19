@@ -112,7 +112,7 @@ const showReplyControls = () => {
     props.data.AuthorUsername +
     ", in response to: " +
     props.data.CommentMessage +
-    "\n\n";
+    " - ";
   showReplyControl.value = !showReplyControl.value;
 };
 </script>
