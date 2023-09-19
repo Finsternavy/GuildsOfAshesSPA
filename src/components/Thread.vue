@@ -307,7 +307,7 @@ const downVote = async () => {
     <div
       :class="{
         'comments-container uk-flex uk-flex-top uk-height-auto uk-panel': props,
-        show: showComments,
+        showComment: showComments,
       }"
       :data-size="commentCount"
     >
