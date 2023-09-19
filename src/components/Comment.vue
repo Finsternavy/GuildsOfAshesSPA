@@ -108,9 +108,10 @@ const downVote = async () => {
 
 const showReplyControls = () => {
   replyMessage.value =
+    "In response to: " +
     "@" +
     props.data.AuthorUsername +
-    ", in response to: " +
+    "'s message: " +
     props.data.CommentMessage +
     " - ";
   showReplyControl.value = !showReplyControl.value;
