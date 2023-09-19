@@ -52,10 +52,12 @@ const postComment = async () => {
   const user = store.getUser;
   const threadID = props.data.ThreadID;
   const date = new Date().toISOString();
+  const time = new Date().getMilliseconds();
   // const time = new Date().toTimeString();
   let payload = {
     AuthorID: user.UserID,
     ThreadID: threadID,
+    CommentID: user.UserID + time,
     AuthorUsername: user.Username,
     CommentDate: date,
     CommentMessage: commentMessage.value,
@@ -79,7 +81,9 @@ const postComment = async () => {
 };
 
 const parentFunction = () => {
-  () => props.function();
+  console.log("Calling parent function");
+  emit("parent-get-threads");
+  // () => props.function();
 };
 
 const upVote = async () => {
@@ -318,7 +322,11 @@ const downVote = async () => {
       ></span>
       <div class="uk-width-stretch">
         <div v-for="comment in props.data.Comments">
-          <Comment class="uk-margin-bottom" :data="comment" />
+          <Comment
+            class="uk-margin-bottom"
+            :data="comment"
+            @comment-get-threads="parentFunction"
+          />
         </div>
       </div>
     </div>

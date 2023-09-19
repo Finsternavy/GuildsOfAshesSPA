@@ -1,10 +1,76 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useUserStore } from "../stores/userStore";
 
 const props = defineProps({
   modelValue: {},
   data: {},
 });
+
+const emit = defineEmits(["comment-get-threads"]);
+
+let store = useUserStore();
+const baseUrl = process.env.APIURL + "Forum";
+
+onMounted(() => {
+  console.log("CommentID: ", props.data.CommentID);
+});
+
+const upVote = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    ThreadID: threadID,
+    CommentID: props.data.CommentID,
+  };
+
+  console.log("Up voting: ", payload);
+  const response = await fetch(baseUrl + "/upVoteComment", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response) {
+    console.log("Response receieved.");
+    emit("comment-get-threads");
+  }
+};
+
+const downVote = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    ThreadID: threadID,
+    CommentID: props.data.CommentID,
+  };
+
+  console.log("Down voting: ", payload);
+  const response = await fetch(baseUrl + "/downVoteComment", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response) {
+    console.log("Response receieved.");
+    emit("comment-get-threads");
+  }
+};
 </script>
 <style scoped>
 .comment-container {
@@ -48,13 +114,17 @@ const props = defineProps({
     >
       <div class="button-container uk-flex uk-flex-1">
         <div class="likes uk-text-center uk-margin-right">
-          <button class="goa-button uk-button-small uk-margin-small-right">
+          <button
+            @click="upVote"
+            class="goa-button uk-button-small uk-margin-small-right"
+          >
             <span uk-icon="icon: arrow-up"></span>
           </button>
           <span>{{ data.UpVotes }}</span>
         </div>
         <div class="dislikes uk-text-center uk-margin-right">
           <button
+            @click="downVote"
             class="goa-button uk-button-small uk-margin-small-right uk-padding-small-top"
           >
             <span uk-icon="icon: arrow-down"></span>
