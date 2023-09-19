@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 
 const props = defineProps({
@@ -10,12 +10,17 @@ const props = defineProps({
 const emit = defineEmits(["comment-get-threads"]);
 
 let store = useUserStore();
+let user = ref();
 const baseUrl = process.env.APIURL + "Forum";
 let showReplyControl = ref(false);
 let replyMessage = ref("");
+let commentEditMessage = ref();
+let showEditcontrols = ref(false);
 
-onMounted(() => {
+onBeforeMount(() => {
   console.log("CommentID: ", props.data.CommentID);
+  user.value = store.getUser;
+  commentEditMessage.value = props.data.CommentMessage;
 });
 
 const postComment = async () => {
@@ -48,6 +53,76 @@ const postComment = async () => {
   replyMessage.value = "";
   showReplyControl.value = false;
   emit("comment-get-threads");
+};
+
+const deleteComment = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  // const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    AuthorID: user.UserID,
+    CommentID: props.data.CommentID,
+    ThreadID: threadID,
+  };
+
+  console.log("Deleting comment: ", payload);
+  const response = await fetch(baseUrl + "/deleteComment", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Response from delete comment: ", data);
+    emit("comment-get-threads");
+    // threads.value = data.Data;
+  } else {
+    console.log("Error deleting comment: ", response.statusText);
+  }
+};
+
+const editComment = async () => {
+  const user = store.getUser;
+  const threadID = props.data.ThreadID;
+  // const date = new Date().toISOString();
+  // const time = new Date().toTimeString();
+  let payload = {
+    AuthorID: user.UserID,
+    ThreadID: threadID,
+    CommentID: props.data.CommentID,
+    // AuthorUsername: user.Username,
+    // CommentDate: date,
+    CommentMessage: commentEditMessage.value,
+  };
+
+  console.log("Editing thread: ", payload);
+  const response = await fetch(baseUrl + "/editComment", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Response from edit comment: ", data);
+    emit("comment-get-threads");
+    // threads.value = data.Data;
+  } else {
+    console.log("Error editing comment: ", response.statusText);
+  }
+  toggleEditCommentControls();
 };
 
 const upVote = async () => {
@@ -116,6 +191,10 @@ const showReplyControls = () => {
     " - ";
   showReplyControl.value = !showReplyControl.value;
 };
+
+const toggleEditCommentControls = () => {
+  showEditcontrols.value = !showEditcontrols.value;
+};
 </script>
 <style scoped>
 .comment-container {
@@ -149,6 +228,43 @@ const showReplyControls = () => {
 
 .open {
   height: 160px;
+  opacity: 1;
+}
+
+.goa-delete-button {
+  height: fit-content;
+  padding-block: 0;
+  background-color: black;
+  color: orange;
+}
+
+.goa-delete-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.goa-edit-button {
+  height: fit-content;
+  padding-block: 0;
+  background-color: black;
+  color: orange;
+}
+
+.goa-edit-button:hover {
+  background-color: orange;
+  color: white;
+}
+
+.comment-edit-controls {
+  height: 0;
+  opacity: 0;
+  padding-top: 0;
+  overflow: hidden;
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in, padding-top 0.3s ease-in;
+}
+.open {
+  height: 180px;
+  padding-top: 20px;
   opacity: 1;
 }
 </style>
@@ -191,10 +307,48 @@ const showReplyControls = () => {
           </button>
           <span>{{ data.DownVotes }}</span>
         </div>
+        <div
+          v-if="data.AuthorID == user.UserID"
+          class="thread-controls uk-flex uk-margin-small-left"
+        >
+          <button
+            @click="deleteComment"
+            class="goa-button goa-delete-button uk-button-small uk-margin-small-right"
+          >
+            Delete
+          </button>
+          <!-- This is not implemented yet -->
+          <button
+            @click="toggleEditCommentControls"
+            class="goa-button goa-edit-button uk-button-small uk-margin-small-right"
+          >
+            Edit
+          </button>
+        </div>
       </div>
       <div class="uk-text-center uk-width-auto">
         <button @click="showReplyControls" class="goa-button">Reply</button>
       </div>
+    </div>
+  </div>
+  <div
+    :class="{
+      'comment-edit-controls': {},
+      open: showEditcontrols,
+    }"
+  >
+    <div class="title-input uk-flex uk-flex-column">
+      <label class="uk-margin-small-left" for="CommentEditMessage">Message</label>
+      <textarea
+        id="CommentEditMessage"
+        class="goa-input"
+        rows="4"
+        cols="50"
+        v-model="commentEditMessage"
+      ></textarea>
+    </div>
+    <div class="create-thread-button uk-margin-top">
+      <button @click="editComment" class="goa-button">Update comment</button>
     </div>
   </div>
   <div

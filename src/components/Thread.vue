@@ -431,6 +431,7 @@ const downVote = async () => {
           <button @click="editThread" class="goa-button">Update Thread</button>
         </div>
       </div>
+      <!-- This could be a component. I use it in 5 different places.. -->
       <div
         :class="{
           'comment-creation-controls': {},
