@@ -137,6 +137,11 @@ const showThreadCreation = () => {
   // if (showThreadCreationControls)
   showThreadCreationControls.value = !showThreadCreationControls.value;
 };
+
+const getThreadFromChild = (event) => {
+  console.log("Fetching threads at childs request.");
+  getThreads();
+};
 </script>
 
 <style scoped>
@@ -208,7 +213,11 @@ const showThreadCreation = () => {
         :key="thread.ThreadID + thread.AuthorUsername"
         class="uk-margin-bottom uk-flex"
       >
-        <Thread class="uk-flex-1" :data="thread" />
+        <Thread
+          class="uk-flex-1"
+          :data="thread"
+          @parent-get-threads="getThreadFromChild"
+        />
 
         <div class="thread-controls uk-flex uk-flex-column uk-margin-small-left">
           <button

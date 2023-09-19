@@ -28,30 +28,30 @@ const props = defineProps({
 </style>
 
 <template>
-  <div class="comment-container map-container map-bottom-left">
-    <div class="comment uk-padding">
+  <div class="comment-container map-container map-bottom-left" loading="eager">
+    <div class="comment uk-padding-small">
       <div class="author-info">
         <span class="text-black uk-text-bold uk-margin-small-right"
-          >{{ data.author }}
+          >{{ data.AuthorUsername }}
         </span>
-        <span class="text-black"> {{ data.timeDate }}</span>
+        <span class="text-black"> {{ data.CommentDate }}</span>
       </div>
-      <hr class="divider" />
+      <hr class="divider uk-margin-remove-bottom" />
       <div
-        class="uk-padding-small uk-margin-top uk-padding-remove-bottom text-black uk-text-bold"
+        class="uk-padding-small uk-margin-remove uk-padding-remove-bottom text-black uk-text-bold"
       >
-        {{ data.message }}
+        {{ data.CommentMessage }}
       </div>
     </div>
     <div
       class="thread-footer uk-flex uk-child-width-1-3 uk-padding-small uk-flex-middle uk-flex-between"
     >
-      <div class="button-container uk-flex">
+      <div class="button-container uk-flex uk-flex-1">
         <div class="likes uk-text-center uk-margin-right">
           <button class="goa-button uk-button-small uk-margin-small-right">
             <span uk-icon="icon: arrow-up"></span>
           </button>
-          <span>{{ data.likes }}</span>
+          <span>{{ data.UpVotes }}</span>
         </div>
         <div class="dislikes uk-text-center uk-margin-right">
           <button
@@ -59,7 +59,7 @@ const props = defineProps({
           >
             <span uk-icon="icon: arrow-down"></span>
           </button>
-          <span>{{ data.dislikes }}</span>
+          <span>{{ data.DownVotes }}</span>
         </div>
       </div>
       <div class="uk-text-center uk-width-auto">
