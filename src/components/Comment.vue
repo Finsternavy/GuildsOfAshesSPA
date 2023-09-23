@@ -16,6 +16,7 @@ let showReplyControl = ref(false);
 let replyMessage = ref("");
 let commentEditMessage = ref();
 let showEditcontrols = ref(false);
+let replyText = ref();
 
 onBeforeMount(() => {
   console.log("CommentID: ", props.data.CommentID);
@@ -36,6 +37,8 @@ const postComment = async () => {
     AuthorUsername: user.Username,
     CommentDate: date,
     CommentMessage: replyMessage.value,
+    QuoteText: replyText.value,
+    QuoteAuthor: props.data.AuthorUsername,
   };
 
   console.log("Posting comment: ", payload);
@@ -182,13 +185,7 @@ const downVote = async () => {
 };
 
 const showReplyControls = () => {
-  replyMessage.value =
-    "In response to: " +
-    "@" +
-    props.data.AuthorUsername +
-    "'s message: " +
-    props.data.CommentMessage +
-    " - ";
+  replyText.value = props.data.CommentMessage;
   showReplyControl.value = !showReplyControl.value;
 };
 
@@ -205,10 +202,12 @@ const toggleEditCommentControls = () => {
 
 .comment {
   /* background-color: rgba(0, 0, 0, 0.5); */
+  /* color: red; */
 }
 
 .thread-footer {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
+  /* background-color: orange; */
   border-radius: 0 0 20px 20px;
 }
 
@@ -269,20 +268,35 @@ const toggleEditCommentControls = () => {
   padding-top: 20px;
   opacity: 1;
 }
+
+.in-response-container {
+  border-radius: 10px;
+  background-color: rgba(255, 165, 0, 0.1);
+}
 </style>
 
 <template>
-  <div class="comment-container map-container map-bottom-left" loading="eager">
+  <div
+    class="comment-container uk-background-secondary uk-light map-bottom-left"
+    loading="eager"
+  >
     <div class="comment uk-padding-small">
       <div class="author-info">
-        <span class="text-black uk-text-bold uk-margin-small-right"
-          >{{ data.AuthorUsername }}
-        </span>
-        <span class="text-black"> {{ data.CommentDate }}</span>
+        <span class="uk-text-bold uk-margin-small-right">{{ data.AuthorUsername }} </span>
+        <span class=""> {{ data.CommentDate }}</span>
       </div>
       <hr class="divider uk-margin-remove-bottom" />
       <div
-        class="uk-padding-small uk-margin-remove uk-padding-remove-bottom text-black uk-text-bold"
+        v-if="props.data.QuoteText"
+        class="in-response-container uk-padding-small uk-margin-small-top"
+      >
+        <span v-if="props.data.QuoteAuthor" class="text-orange uk-text-bold"
+          >@{{ props.data.QuoteAuthor }}:
+        </span>
+        <span>{{ props.data.QuoteText }}</span>
+      </div>
+      <div
+        class="uk-padding-small uk-margin-remove uk-padding-remove-bottom uk-text-bold"
       >
         {{ data.CommentMessage }}
       </div>

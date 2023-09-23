@@ -93,9 +93,12 @@ const displayUserInfo = () => {
         </button>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
-        <div v-if="authenticated && !user.GuildID" class="page-links-container uk-link">
+        <div
+          v-if="!store.getAuthenticated || !store.getUser.GuildID"
+          class="page-links-container uk-link"
+        >
           <RouterLink to="/guilds"
-            ><span class="link uk-margin-right">Browse Guilds</span></RouterLink
+            ><span class="link uk-margin-remove">Browse Guilds</span></RouterLink
           >
         </div>
 
