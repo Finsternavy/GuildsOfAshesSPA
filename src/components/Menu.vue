@@ -94,7 +94,7 @@ const displayUserInfo = () => {
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
         <div
-          v-if="!store.getAuthenticated || !store.getUser.GuildID"
+          v-if="!store.getAuthenticated || !store.getGuildID"
           class="page-links-container uk-link"
         >
           <RouterLink to="/guilds"

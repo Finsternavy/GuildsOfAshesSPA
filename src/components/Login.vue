@@ -56,6 +56,7 @@ const doLogin = async () => {
     // store.setUser(user);
     store.setUser(data.Data);
     store.setAuthenticated(true);
+    store.setGuildID(data.Data.GuildID);
     console.log("Store authenticated: ", store.getAuthenticated);
     console.log("GuildID? : ", data.Data.GuildID);
     if (data.Data.GuildID) {

@@ -4,7 +4,8 @@ export const useUserStore = defineStore('userStore', {
 
   state: () => ({
     user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")) : null,
-    authenticated: localStorage.getItem("authenticated") ? true : false
+    authenticated: localStorage.getItem("authenticated") ? true : false,
+    guildID: localStorage.getItem("guildID") ? localStorage.getItem("guildID") : null
   }),
 
   getters: {
@@ -26,15 +27,21 @@ export const useUserStore = defineStore('userStore', {
     setUser(user) {
       localStorage.setItem("User", JSON.stringify(user));
       localStorage.setItem("authenticated", true);
+        localStorage.setItem("guildID", user.GuildID);
       this.user = user;
     },
     setAuthenticated(val) {
       this.authenticated = val;
     },
+    setGuildID(val) {
+      localStorage.setItem("guildID", val);
+      this.guildID = val;
+    },
     removeUser() {
       // this.user = '',
       localStorage.removeItem("User");
       localStorage.removeItem("authenticated");
+      localStorage.removeItem("guildID");
       this.user = null,
       this.authenticated = false;
     },

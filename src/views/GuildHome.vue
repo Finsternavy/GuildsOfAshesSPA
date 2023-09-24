@@ -1,12 +1,77 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import Discord from "../components/Discord.vue";
+import router from "../router/routes";
+import { useUserStore } from "../stores/userStore";
 
+const baseUrl = process.env.APIURL + "Guilds";
 const discordServers = ref([
   {
     embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",
   },
 ]);
+let store;
+let user;
+let guild = ref({});
+let guildID = ref();
+
+onBeforeMount(() => {
+  store = useUserStore();
+  user = store.getUser;
+  if (localStorage.getItem("guildID")) {
+    console.log("Got guildID from local storage..");
+    guildID.value = localStorage.getItem("guildID");
+  } else {
+    guildID.value = user.GuildID;
+  }
+  getGuildData();
+  console.log("GuildID: ", guildID.value);
+});
+
+// const memberCount = computed(() => {
+//   let count = 0;
+//   if (guild.MemberList) {
+//     count = guild.value.MemberList.length;
+//   }
+//   console.log("Member count: ", count);
+//   return count;
+// });
+
+const getGuildData = async () => {
+  console.log("Fetching guild data..");
+  const call = {
+    GuildID: guildID.value,
+  };
+  const response = await fetch(baseUrl + "/fetchGuildData", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Guild data: ", data);
+    guild.value = data.Data;
+    console.log("Guild: ", guild.value);
+    // store.setUser(data.Data);
+    // router.push({ name: "guild-home" });
+    // threads.value = data.Data;
+  } else {
+    console.log("Error fetching thread data: ", response.statusText);
+  }
+};
+
+const apply = () => {
+  if (guild.value.Restricted) {
+    return alert("Guild is restricted");
+  }
+  return alert("You can apply!");
+};
 </script>
 
 <style scoped>
@@ -28,20 +93,22 @@ const discordServers = ref([
 <template>
   <div class="guild-home">
     <div class="goa-container uk-padding uk-margin-bottom">
-      <h1 class="uk-light uk-text-center uk-margin-remove">Guild Name</h1>
+      <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
       <button
+        v-if="!user.GuildID"
+        @click="apply"
         class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left"
       >
         Apply
       </button>
-      <p class="uk-text-small uk-text-warning uk-text-center uk-margin-remove-top">
-        ( 43 members)
+      <p
+        v-if="guild.MemberList"
+        class="uk-text-small uk-text-warning uk-text-center uk-margin-remove-top"
+      >
+        ( Members: {{ guild.MemberList.length }} )
       </p>
-      <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus nobis aperiam
-        quibusdam necessitatibus fuga illum adipisci tempore minus, nihil nemo animi at
-        accusantium voluptates suscipit.
-      </p>
+      <p class="text-orange uk-margin-remove-bottom">Who we are:</p>
+      <p class="uk-padding-small uk-margin-remove-top">{{ guild.Description }}</p>
     </div>
     <!-- Only show if guild leader or mod issues alert-->
     <div class="guild-alerts">
@@ -50,7 +117,9 @@ const discordServers = ref([
         <hr />
         <p class="uk-margin-remove-bottom">
           Alert issued by:
-          <span class="uk-text-secondary uk-text-bold">Guild Leader</span>
+          <span v-if="guild.Leader" class="uk-text-secondary uk-text-bold">{{
+            guild.Leader.Username
+          }}</span>
         </p>
         <p class="uk-margin-remove-top">
           Alert will expire at: <span class="uk-text-warning">4:15 PM EST</span>
