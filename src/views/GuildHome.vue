@@ -111,9 +111,7 @@ const apply = () => {
       >
         ( Members: {{ guild.MemberList.length }} )
       </p>
-      <div
-        class="logo-container guild-home-logo upload-logo-container uk-height-auto uk-width-1-1 uk-flex uk-flex-center"
-      >
+      <div class="logo-container upload-logo-container uk-flex uk-flex-center">
         <img class="" v-if="guild.Logo" :src="guild.Logo" />
       </div>
       <p class="text-orange uk-margin-remove-bottom">Who we are:</p>
