@@ -7,13 +7,14 @@ const baseUrl = process.env.APIURL + "Guilds";
 let store;
 let user = ref();
 const guildName = ref();
+let selectedImage = ref();
 const guildLogoBase64 = ref();
 const guildDescription = ref();
 const guildCategory = ref();
 const guildFocus = ref();
 const guildPrimaryRace = ref();
 const guildRegion = ref();
-const guildRestricted = ref();
+const autoApprove = ref();
 
 onBeforeMount(() => {
   store = useUserStore();
@@ -27,7 +28,7 @@ const createGuild = async () => {
   const call = {
     Name: guildName.value,
     Leader: user,
-    Restricted: guildRestricted.value,
+    AutoApprove: autoApprove.value,
     Logo: guildLogoBase64.value,
     Description: guildDescription.value,
     Category: guildCategory.value,
@@ -58,47 +59,24 @@ const createGuild = async () => {
   }
 };
 
-// const createGuild = async () => {
-//   console.log("baseURL: ", baseUrl);
-//   const call = {
-//     Name: guildName.value,
-//     Leader: user,
-//     Logo: guildLogoBase64.value,
-//     Description: guildDescription.value,
-//     Category: guildCategory.value,
-//     Focus: guildFocus.value,
-//     PrimaryRace: guildPrimaryRace.value,
-//     Region: guildRegion.value,
-//   };
-//   console.log("call: ", call);
-//   const response = await fetch(baseUrl + "/createGuild", {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//       "Access-Control-Allow-Credentials": true,
-//       "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
-//     },
-//     body: JSON.stringify(call),
-//   })
-//     .then((response) => {
-//       // console.log("appLogin", response);
-//       if (response.ok) {
-//         // store.setUser(response.data);
-//         let data = await response.json();
-//         router.push({ name: "guild-home" });
-//       }
-//     })
-//     .catch((error) => {
-//       console.log("Error: ", error);
-//       return error;
-//     });
+const handleImage = (event) => {
+  const file = event.target.files[0];
+  console.log("File: ", file);
+  if (file && file.type.startsWith("image/")) {
+    console.log("It is an image file..");
+    const reader = new FileReader();
 
-//   console.log(response);
-//   returnValue = await response;
+    reader.onload = () => {
+      guildLogoBase64.value = reader.result;
+      console.log("Reader result: ", guildLogoBase64.value);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    console.log("Something went wrong handling the image file.");
+  }
 
-//   return returnValue;
-// };
+  console.log("guildLogoBase64: ", guildLogoBase64.value);
+};
 </script>
 
 <style scoped>
@@ -175,7 +153,7 @@ textarea {
       </div>
       <div class="js-upload uk-light uk-width-1-2" uk-form-custom>
         <label for="guild-logo">Guild Logo</label>
-        <input type="file" multiple />
+        <input type="file" multiple v-on:change="handleImage" />
         <button
           class="uk-button uk-button-default uk-width-stretch"
           type="button"
@@ -183,6 +161,12 @@ textarea {
         >
           Upload
         </button>
+      </div>
+      <div
+        v-if="guildLogoBase64"
+        class="upload-logo-container uk-height-auto uk-width-1-1 uk-flex uk-flex-center"
+      >
+        <img class="guild-logo-upload" :src="guildLogoBase64" alt="Uploaded Image" />
       </div>
       <div class="input uk-width-1-1">
         <label for="guild-description">Guild Description</label>
@@ -244,7 +228,7 @@ textarea {
           name="guild-restricted"
           id="guild-restricted"
           class="goa-input uk-input uk-width-1-1"
-          v-model="guildRestricted"
+          v-model="autoApprove"
         >
           <option value=""></option>
           <option :value="true">True</option>

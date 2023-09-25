@@ -14,6 +14,7 @@ let store;
 let user;
 let guild = ref({});
 let guildID = ref();
+let guildLogo = ref();
 
 onBeforeMount(() => {
   store = useUserStore();
@@ -58,6 +59,7 @@ const getGuildData = async () => {
     console.log("Guild data: ", data);
     guild.value = data.Data;
     console.log("Guild: ", guild.value);
+    handleGuildLogo(guild.value.Logo);
     // store.setUser(data.Data);
     // router.push({ name: "guild-home" });
     // threads.value = data.Data;
@@ -66,11 +68,13 @@ const getGuildData = async () => {
   }
 };
 
+const handleGuildLogo = (logo) => {};
+
 const apply = () => {
-  if (guild.value.Restricted) {
-    return alert("Guild is restricted");
+  if (guild.value.AutoApprove) {
+    return alert("You can apply!");
   }
-  return alert("You can apply!");
+  return alert("Guild is restricted");
 };
 </script>
 
@@ -107,17 +111,22 @@ const apply = () => {
       >
         ( Members: {{ guild.MemberList.length }} )
       </p>
+      <div
+        class="logo-container guild-home-logo upload-logo-container uk-height-auto uk-width-1-1 uk-flex uk-flex-center"
+      >
+        <img class="" v-if="guild.Logo" :src="guild.Logo" />
+      </div>
       <p class="text-orange uk-margin-remove-bottom">Who we are:</p>
       <p class="uk-padding-small uk-margin-remove-top">{{ guild.Description }}</p>
     </div>
     <!-- Only show if guild leader or mod issues alert-->
-    <div class="guild-alerts">
-      <div class="goa-alert-container uk-padding uk-margin-bottom">
-        <h3 class="uk-light uk-text-center uk-margin-remove">GUILD ALERT!</h3>
-        <hr />
+    <div v-if="guild.Alerts" class="guild-alerts goa-alert-container uk-padding">
+      <h3 class="uk-light uk-text-center">GUILD ALERT!</h3>
+      <hr />
+      <div class="uk-margin-bottom goa-container uk-padding">
         <p class="uk-margin-remove-bottom">
           Alert issued by:
-          <span v-if="guild.Leader" class="uk-text-secondary uk-text-bold">{{
+          <span v-if="guild.Leader" class="text-orange uk-text-bold">{{
             guild.Leader.Username
           }}</span>
         </p>

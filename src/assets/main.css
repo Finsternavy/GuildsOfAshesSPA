@@ -23,6 +23,18 @@
   /* transform: translateX(13px); */
 }
 
+.guild-logo-upload {
+  height: 300px;
+  width: auto;
+  background-size: cover;
+}
+
+.guild-home-logo {
+  height: 400px;
+  width: auto;
+  background-size: cover;
+}
+
 .goa-container {
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(5px);
