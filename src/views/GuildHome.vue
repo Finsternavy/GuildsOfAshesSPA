@@ -111,8 +111,13 @@ const apply = () => {
       >
         ( Members: {{ guild.MemberList.length }} )
       </p>
-      <div class="logo-container upload-logo-container uk-flex uk-flex-center">
-        <img class="" v-if="guild.Logo" :src="guild.Logo" />
+      <div
+        :class="{
+          'logo-container': guild.LogoBorder == false,
+          'bordered-logo-container': guild.LogoBorder == true,
+        }"
+      >
+        <img class="guild-logo-upload" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
       <p class="text-orange uk-margin-remove-bottom">Who we are:</p>
       <p class="uk-padding-small uk-margin-remove-top">{{ guild.Description }}</p>

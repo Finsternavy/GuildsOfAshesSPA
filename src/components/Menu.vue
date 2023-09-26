@@ -113,7 +113,7 @@ const displayUserInfo = () => {
           <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
         </div>
       </div>
-      <div class="login-profile-container uk-text-right uk-width-1-6">
+      <div class="login-profile-container uk-text-right uk-width-auto">
         <div v-if="!store.getAuthenticated" class="not-logged-in">
           <RouterLink to="/login" class="uk-link">
             <div class="uk-flex uk-flex-column">
@@ -128,8 +128,8 @@ const displayUserInfo = () => {
           uk-dropnav="mode: hover; offset: 50"
         >
           <ul class="uk-margin-remove">
-            <div class="uk-flex uk-flex-column">
-              <span uk-icon="icon: user" class="uk-margin-right"></span>
+            <div class="uk-flex uk-flex-column uk-text-center">
+              <span uk-icon="icon: user" class=""></span>
               <span class="text-orange uk-margin-remove">{{ displayUserInfo() }}</span>
             </div>
             <div class="uk-dropdown uk-background-secondary goa-dropnav">

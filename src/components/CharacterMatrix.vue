@@ -567,11 +567,23 @@ label {
   background: rgba(255, 165, 0, 0.5);
   color: rgba(255, 255, 255, 1);
 }
+
+@media (max-width: 1274px) {
+  .character-matrix-selection {
+    display: none;
+  }
+}
+
+@media (min-width: 1275px) {
+  .character-matrix-dropdown {
+    display: none;
+  }
+}
 </style>
 
 <template>
   <div class="character-matrix">
-    <table v-if="checkWidthForTable()" class="uk-table uk-table-justified uk-light">
+    <table class="character-matrix-selection uk-table uk-table-justified uk-light">
       <thead>
         <tr>
           <td></td>
@@ -642,7 +654,7 @@ label {
       </tfoot>
     </table>
 
-    <div v-if="!checkWidthForTable()">
+    <div class="character-matrix-dropdown">
       <h3 class="uk-light">Select a Class</h3>
       <div class="uk-flex uk-flex-column uk-margin-bottom">
         <label for="class-select">Select a Class</label>

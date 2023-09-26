@@ -15,6 +15,7 @@ const guildFocus = ref();
 const guildPrimaryRace = ref();
 const guildRegion = ref();
 const autoApprove = ref();
+const addBorder = ref();
 
 onBeforeMount(() => {
   store = useUserStore();
@@ -30,12 +31,14 @@ const createGuild = async () => {
     Leader: user,
     AutoApprove: autoApprove.value,
     Logo: guildLogoBase64.value,
+    LogoBorder: addBorder.value,
     Description: guildDescription.value,
     Category: guildCategory.value,
     Focus: guildFocus.value,
     PrimaryRace: guildPrimaryRace.value,
     Region: guildRegion.value,
   };
+  console.log("call: ", call);
   const response = await fetch(baseUrl + "/createGuild", {
     method: "POST",
     headers: {
@@ -133,6 +136,10 @@ textarea {
   background-color: gold;
   color: black;
 }
+
+.add-border {
+  box-shadow: inset 0 0 100px 10px rgba(0, 0, 0, 1), 0 0 10px 5px rgba(0, 0, 0, 1);
+}
 </style>
 
 <template>
@@ -164,9 +171,38 @@ textarea {
       </div>
       <div
         v-if="guildLogoBase64"
-        class="upload-logo-container uk-height-auto uk-width-1-1 uk-flex uk-flex-center"
+        class="hero-preview uk-position-relative uk-width-1-1 uk-text-center"
       >
-        <img class="guild-logo-upload" :src="guildLogoBase64" alt="Uploaded Image" />
+        <h1 class="text-orange">Guild Logo Preview</h1>
+        <div
+          v-if="guildLogoBase64"
+          :class="{ 'logo-container': {}, 'bordered-logo-container': addBorder == true }"
+        >
+          <img
+            class="guild-logo-upload"
+            :src="guildLogoBase64"
+            alt="Uploaded Image"
+            uk-img
+          />
+        </div>
+        <div class="uk-text-left uk-margin-top uk-flex uk-flex-middle">
+          <div class="input-conatiner uk-width-1-4">
+            <label for="AddBorderSelect">Add Border?</label>
+            <select
+              class="goa-input uk-input"
+              name="AddBorderSelect"
+              id="AddBorderSelect"
+              v-model="addBorder"
+            >
+              <option value=""></option>
+              <option :value="true">Yes</option>
+              <option :value="false">No</option>
+            </select>
+          </div>
+          <div class="text-orange uk-text-middle uk-padding-small uk-margin-top">
+            Recommend 'No' for png and 'Yes' for opaque logos.
+          </div>
+        </div>
       </div>
       <div class="input uk-width-1-1">
         <label for="guild-description">Guild Description</label>
