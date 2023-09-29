@@ -53,7 +53,13 @@ const toggleThread = () => {
 
 const showCreateCommentsControls = () => {
   showCreateComment.value = !showCreateComment.value;
+  console.log("Toggled show to: ", showCreateComment.value);
 };
+
+const getShowCreateCommentsValue = () => {
+  return showCreateComment.value;
+};
+
 
 const toggleEditcontrols = () => {
   showEditcontrols.value = !showEditcontrols.value;
@@ -350,52 +356,32 @@ const downVote = async () => {
             {{ data.ThreadMessage }}
           </div>
         </div>
-        <div
-          class="thread-footer uk-flex uk-flex-middle uk-flex-between uk-padding-small"
-        >
+        <div class="thread-footer uk-flex uk-flex-middle uk-flex-between uk-padding-small">
           <div class="button-container uk-flex">
             <div class="likes uk-text-center uk-margin-right">
-              <button
-                @click="upVote"
-                class="goa-button uk-button-small uk-margin-small-right"
-              >
+              <button @click="upVote" class="goa-button uk-button-small uk-margin-small-right">
                 <span uk-icon="icon: arrow-up"></span>
               </button>
               <span>{{ data.UpVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
-              <button
-                @click="downVote"
-                class="goa-button uk-button-small uk-margin-small-right"
-              >
+              <button @click="downVote" class="goa-button uk-button-small uk-margin-small-right">
                 <span uk-icon="icon: arrow-down"></span>
               </button>
               <span>{{ data.DownVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
-              <button
-                @click="toggleChildren"
-                class="goa-button uk-button-small uk-margin-small-right"
-              >
+              <button  @click="toggleChildren" class="goa-button uk-button-small uk-margin-small-right">
                 <span uk-icon="icon: comment"></span>
               </button>
               <span>{{ data.Comments.length }}</span>
             </div>
-            <div
-              v-if="data.AuthorID == user.UserID"
-              class="thread-controls uk-flex uk-margin-small-left"
-            >
-              <button
-                @click="deleteThread"
-                class="goa-button goa-delete-button uk-button-small uk-margin-small-right"
-              >
+            <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-margin-small-left">
+              <button @click="deleteThread" class="goa-button goa-delete-button uk-button-small uk-margin-small-right">
                 Delete
               </button>
               <!-- This is not implemented yet -->
-              <button
-                @click="toggleEditcontrols"
-                class="goa-button goa-edit-button uk-button-small uk-margin-small-right"
-              >
+              <button @click="toggleEditcontrols" class="goa-button goa-edit-button uk-button-small uk-margin-small-right"> 
                 Edit
               </button>
             </div>
@@ -407,12 +393,7 @@ const downVote = async () => {
           </div>
         </div>
       </div>
-      <div
-        :class="{
-          'thread-edit-controls': {},
-          open: showEditcontrols,
-        }"
-      >
+      <div :class="{ 'thread-edit-controls': {}, open: showEditcontrols}">
         <div class="title-input uk-flex uk-flex-column uk-margin-bottom">
           <label class="uk-margin-small-left" for="ThreadTitle">Title</label>
           <input id="ThreadTitle" class="goa-input" type="text" v-model="editTitle" />
@@ -428,7 +409,7 @@ const downVote = async () => {
           ></textarea>
         </div>
         <div class="create-thread-button uk-margin-top">
-          <button @click="editThread" class="goa-button">Update Thread</button>
+          <button @click="editThread" class="goa-button" :disabled="!showEditcontrols">Update Thread</button>
         </div>
       </div>
       <!-- This could be a component. I use it in 5 different places.. -->
@@ -449,7 +430,7 @@ const downVote = async () => {
           ></textarea>
         </div>
         <div class="create-thread-button uk-margin-top">
-          <button @click="postComment" class="goa-button">Post Reply</button>
+          <button @click="postComment" class="goa-button" :disabled="!showCreateComment">Post Reply</button>
         </div>
       </div>
     </div>

@@ -343,6 +343,7 @@ const toggleEditCommentControls = () => {
         </div>
       </div>
       <div class="uk-text-center uk-width-auto">
+        {{  showReplyControl }}
         <button @click="showReplyControls" class="goa-button">Reply</button>
       </div>
     </div>
@@ -364,7 +365,7 @@ const toggleEditCommentControls = () => {
       ></textarea>
     </div>
     <div class="create-thread-button uk-margin-top">
-      <button @click="editComment" class="goa-button">Update comment</button>
+      <button @click="editComment" class="goa-button" :disabled="!showReplyControl">Update comment</button>
     </div>
   </div>
   <div
@@ -384,7 +385,7 @@ const toggleEditCommentControls = () => {
       ></textarea>
     </div>
     <div class="create-thread-button uk-margin-top">
-      <button @click="postComment" class="goa-button">Post Reply</button>
+      <button @click="postComment" class="goa-button" :disabled="!showReplyControl">Post Reply</button>
     </div>
   </div>
 </template>

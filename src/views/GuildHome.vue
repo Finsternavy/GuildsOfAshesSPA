@@ -16,6 +16,7 @@ let guild = ref({});
 let guildID = ref();
 let guildLogo = ref();
 
+
 onBeforeMount(() => {
   store = useUserStore();
   user = store.getUser;
@@ -98,13 +99,12 @@ const apply = () => {
   <div class="guild-home">
     <div class="goa-container uk-padding uk-margin-bottom">
       <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
-      <button
-        v-if="!user.GuildID"
-        @click="apply"
-        class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left"
-      >
-        Apply
-      </button>
+      <div v-if="!store.getAuthenticated">
+        <button
+          @click="apply" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
+          Apply
+        </button>
+      </div>
       <p
         v-if="guild.MemberList"
         class="uk-text-small uk-text-warning uk-text-center uk-margin-remove-top"
@@ -120,7 +120,9 @@ const apply = () => {
         <img class="guild-logo-upload" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
       <p class="text-orange uk-margin-remove-bottom">Who we are:</p>
-      <p class="uk-padding-small uk-margin-remove-top">{{ guild.Description }}</p>
+      <p class="uk-padding-small uk-padding-remove-bottom uk-margin-remove">
+        {{ guild.Description }}
+      </p>
     </div>
     <!-- Only show if guild leader or mod issues alert-->
     <div v-if="guild.Alerts" class="guild-alerts goa-alert-container uk-padding">
