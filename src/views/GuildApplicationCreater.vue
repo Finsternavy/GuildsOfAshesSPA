@@ -53,7 +53,8 @@ const addToApp = () => {
         id: data.value.length + 1,
         question: questionText.value,
         answerType: questionType.value,
-        answers: options.value
+        options: options.value,
+        answer: ''
     }
     console.log('Question: ', question);
     data.value.push(question);

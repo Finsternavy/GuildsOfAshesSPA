@@ -110,8 +110,8 @@ const createApplication = () => {
           Apply
         </button>
       </div>
-      {{ user }}
       <button
+        v-if="user.Role == 'Guild Leader'"
         @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
         Create Application
       </button>
