@@ -3,6 +3,7 @@ import { ref, onBeforeMount, computed } from "vue";
 import Discord from "../components/Discord.vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
+import RichTextEditor from "../components/RichTextEditor.vue";
 
 const baseUrl = process.env.APIURL + "Guilds";
 const discordServers = ref([
@@ -129,10 +130,8 @@ const createApplication = () => {
       >
         <img class="guild-logo-upload" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
-      <p class="text-orange uk-margin-remove-bottom">Who we are:</p>
-      <p class="uk-padding-small uk-padding-remove-bottom uk-margin-remove">
-        {{ guild.Description }}
-      </p>
+      <!-- This is where we display the rich text -->
+      <div v-html="guild.Description" class="uk-margin-large-top"></div>
     </div>
     <!-- Only show if guild leader or mod issues alert-->
     <div v-if="guild.Alerts" class="guild-alerts goa-alert-container uk-padding">

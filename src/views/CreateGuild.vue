@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
+import RichTextEditor from "../components/RichTextEditor.vue";
 
 const baseUrl = process.env.APIURL + "Guilds";
 let store;
@@ -80,6 +81,11 @@ const handleImage = (event) => {
 
   console.log("guildLogoBase64: ", guildLogoBase64.value);
 };
+
+// const handleInput = () => {
+//   guildDescription.value = this.$refs.guildDescription.innerHTML;
+//   console.log("Guild description: ", guildDescription.value);
+// };
 </script>
 
 <style scoped>
@@ -140,6 +146,12 @@ textarea {
 .add-border {
   box-shadow: inset 0 0 100px 10px rgba(0, 0, 0, 1), 0 0 10px 5px rgba(0, 0, 0, 1);
 }
+
+/* .editable-content {
+  border: 1px solid #ccc;
+  min-height: 200px;
+  padding: 8px;
+} */
 </style>
 
 <template>
@@ -206,11 +218,14 @@ textarea {
       </div>
       <div class="input uk-width-1-1">
         <label for="guild-description">Guild Description</label>
-        <textarea
+        <RichTextEditor v-model="guildDescription" />
+        <!-- <div
           id="guild-description"
-          class="goa-input uk-input"
-          v-model="guildDescription"
-        ></textarea>
+          contenteditable="true"
+          @input="handleInput"
+          class="editable-content goa-input"
+          ref="guildDescription"
+        ></div> -->
       </div>
       <div class="input uk-width-1-4">
         <label for="guild-type">Guild Category</label>
