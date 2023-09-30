@@ -75,7 +75,12 @@ const apply = () => {
   if (guild.value.AutoApprove) {
     return alert("You can apply!");
   }
-  return alert("Guild is restricted");
+  // return alert("Guild is restricted");
+  router.push({ name: "guild-application" });
+};
+
+const createApplication = () => {
+  router.push({ name: "create-application" });
 };
 </script>
 
@@ -99,12 +104,17 @@ const apply = () => {
   <div class="guild-home">
     <div class="goa-container uk-padding uk-margin-bottom">
       <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
-      <div v-if="!store.getAuthenticated">
+      <div v-if="!store.getGuildID">
         <button
           @click="apply" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
           Apply
         </button>
       </div>
+      {{ user }}
+      <button
+        @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
+        Create Application
+      </button>
       <p
         v-if="guild.MemberList"
         class="uk-text-small uk-text-warning uk-text-center uk-margin-remove-top"

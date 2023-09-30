@@ -141,7 +141,7 @@ const editThread = async () => {
     AuthorUsername: user.Username,
     ThreadDate: date,
     ThreadTitle: editTitle.value,
-    ThreadMessage: threadEditMessage.value,
+    ThreadMessage: '(Edited)' + threadEditMessage.value,
   };
 
   console.log("Editing thread: ", payload);

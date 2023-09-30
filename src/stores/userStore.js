@@ -13,6 +13,7 @@ export const useUserStore = defineStore('userStore', {
     getAuthenticated: (state) => state.authenticated,
     getUsername: (state) => state.user['Username'],
     getGuildID: (state) => state.user['GuildID'],
+    getGuildRole: (state) => state.user['Role'],
     getUserID: (state) => state.user['UserID'],
     getEmail: (state) => state.user['Email'],
     getGuildName: (state) => state.user['GuildName'],

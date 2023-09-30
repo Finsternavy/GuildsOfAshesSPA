@@ -9,8 +9,10 @@ import Roster from '../views/Roster.vue';
 import Tasks from '../views/Tasks.vue';
 import Forums from '../views/Forums.vue';
 import News from '../views/News.vue';
-import Register from '../views/Register.vue'
-import Profile from '../views/Profile.vue'
+import Register from '../views/Register.vue';
+import Profile from '../views/Profile.vue';
+import GuildApplicatiopn from '../views/GuildApplication.vue';
+import GuildCreateApplication from '../views/GuildApplicationCreater.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -28,6 +30,8 @@ const router = createRouter({
     { path: '/guild/tasks', name: 'guild-tasks',  component: Tasks },
     { path: '/guild/about', name: 'guild-about',  component: MyGuild },
     { path: '/guild/calendar', name: 'guild-calendar',  component: MyGuild },
+    { path: '/guild/application', name: 'guild-application',  component: GuildApplicatiopn },
+    { path: '/guild/create-application', name: 'create-application',  component: GuildCreateApplication },
   ]
 })
 

@@ -102,7 +102,7 @@ const editComment = async () => {
     CommentID: props.data.CommentID,
     // AuthorUsername: user.Username,
     // CommentDate: date,
-    CommentMessage: commentEditMessage.value,
+    CommentMessage: '(Edited) ' + commentEditMessage.value,
   };
 
   console.log("Editing thread: ", payload);
@@ -365,7 +365,7 @@ const toggleEditCommentControls = () => {
       ></textarea>
     </div>
     <div class="create-thread-button uk-margin-top">
-      <button @click="editComment" class="goa-button" :disabled="!showReplyControl">Update comment</button>
+      <button @click="editComment" class="goa-button" :disabled="!showEditcontrols">Update comment</button>
     </div>
   </div>
   <div
