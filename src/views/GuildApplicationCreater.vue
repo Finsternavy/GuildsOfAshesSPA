@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
+import RichTextEditor from "../components/RichTextEditor.vue";
 
 const baseUrl = process.env.APIURL + "Guilds";
 let store = useUserStore();
@@ -15,13 +16,10 @@ let options = ref([]);
 let finalized = ref(false);
 
 // description
-let heading = ref("");
-let paragraph = ref("");
-let section = ref({
-    heading: '',
-    paragraph: 'paragraph.value'
-})
-let description = ref([]);
+// let heading = ref("");
+// let paragraph = ref("");
+let section = ref();
+let description = ref();
 
 // Requirements
 let requirement = ref("");
@@ -29,7 +27,7 @@ let requirements = ref([]);
 
 // the application
 let application = ref({
-    description: [],
+    description: '',
     requirements: [],
     questions: []
 })
@@ -73,12 +71,8 @@ const addRequirement = () => {
 
 const addSection = () => {
     console.log("Adding description", section.value);
-    section.value.heading = heading.value;
-    section.value.paragraph = paragraph.value;
-    description.value.push(section.value);
-    paragraph.value = '';
-    heading.value = '';
-    section.value = {};
+    description.value = section.value;
+    section.value = '';
 }
 
 const addOption = () => {
@@ -179,17 +173,18 @@ const finalizeApplication = async () => {
             <div class="uk-margin-small-bottom">
                 <div id="AddDescription" class="uk-padding uk-flex uk-flex-column" hidden>
                     <h2 class="text-orange uk-text-center">Description Creator</h2>
-                    <p class="uk-text-center uk-text-danger">Note: This form does not maintain format. Please add each section individually.</p>
-                    <div class="uk-margin-bottom uk-flex uk-flex-column">
+                    <p class="uk-text-center uk-text-danger">Note: This form uses a rich text editor. Make sure you description is formatted how you want it to appear on the application.</p>
+                    <!-- <div class="uk-margin-bottom uk-flex uk-flex-column">
                         <label class="text-orange" for="">Heading: <span class="uk-text-muted">( Leave blank if adding a paragraph with no title. )</span></label>
                         <input class="goa-input" type="text" v-model="heading">
-                    </div>
-                    <div class="uk-margin-bottom uk-flex uk-flex-column">
+                    </div> -->
+                    <!-- <div class="uk-margin-bottom uk-flex uk-flex-column">
                         <label class="text-orange" for="">Paragraph: <span class="uk-text-muted">( Leave blank if only adding a heading )</span></label>
                         <textarea class="goa-textarea goa-input uk-width-1-1" name="Description-creator" id="Description-creator" v-model="paragraph"></textarea>
-                    </div>
+                    </div> -->
+                    <RichTextEditor v-model="section" class="uk-margin-bottom"/>
                     <div class="uk-margin-bottom">
-                        <button @click="addSection" class="goa-button">Add Requirement</button>
+                        <button @click="addSection" class="goa-button">Add Description</button>
                     </div>
                 </div>
             </div>
@@ -253,9 +248,10 @@ const finalizeApplication = async () => {
             <h2 class="uk-text-center text-orange">Guild Name</h2>
             <h3 class="guild-logo uk-text-center text-orange">logo</h3>
             <!-- <h4 class="text-orange">Description:</h4> -->
-            <div v-for="section in description">
-                <p class="text-orange uk-text-lead uk-text-bold">{{ section.heading }}</p>
-                <p>{{ section.paragraph }}</p>
+            <div>
+                <div v-html="description">
+
+                </div>
             </div>
             <ul class="uk-list">
                 <p v-if="requirements.length > 0" class="text-orange uk-text-lead uk-text-bold">Requirements:</p>
@@ -270,7 +266,7 @@ const finalizeApplication = async () => {
                 <textarea v-if="question.answerType == 'typed'" class="goa-textarea goa-input uk-width-1-1" :name="'Question' +question.id" :id="'Question' +question.id" cols="30" rows="10"></textarea>
                 <select v-else class="goa-input uk-width-medium" >
                     <option class="dark-background" value=""></option>
-                    <option class="dark-background" v-for="option in question.answers" :value="question.id + option">
+                    <option class="dark-background" v-for="option in question.options" :value="question.id + option">
                         <span>{{ option }}</span>
                     </option>
                 </select>

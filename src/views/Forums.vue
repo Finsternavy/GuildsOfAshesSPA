@@ -125,29 +125,6 @@ const getThreadFromChild = (event) => {
   opacity: 1;
 }
 
-.goa-delete-button {
-  height: fit-content;
-  padding-block: 0;
-  background-color: black;
-  color: orange;
-}
-
-.goa-delete-button:hover {
-  background-color: red;
-  color: white;
-}
-
-.goa-edit-button {
-  height: fit-content;
-  padding-block: 0;
-  background-color: black;
-  color: orange;
-}
-
-.goa-edit-button:hover {
-  background-color: orange;
-  color: white;
-}
 </style>
 
 <template>

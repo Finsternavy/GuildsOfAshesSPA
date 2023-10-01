@@ -1,18 +1,30 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { nextTick } from "process";
+import { ref, onBeforeMount, watch } from "vue";
 // const emit = defineEmits(["input"]);
-const props = defineProps(["content", "modelValue"]);
+const props = defineProps(["modelValue"]);
 const emits = defineEmits(["update:modelValue"]);
-let editableContent = ref();
+let editableContent = ref(props.modelValue);
 onBeforeMount(() => {
-  editableContent.value = props.content;
+//   editableContent.value = props.content;
 });
 
+watch(
+  () => props.modelValue,
+  (value) => {
+    nextTick(() => {
+      editableContent.value = value;
+    });
+    // editableContent.value = value;
+  }
+);
+
 const handleInput = (event) => {
-  editableContent.value = event.target.innerHTML;
-  props.modelValue = editableContent.value;
-  emits("update:modelValue", editableContent.value);
-  console.log("Guild description: ", editableContent.value);
+    editableContent.value = event.target.innerHTML;
+//   props.modelValue = editableContent.value;
+    emits("update:modelValue", editableContent.value);
+    editableContent.value = '';
+//   console.log("Guild description: ", editableContent.value);
 };
 </script>
 

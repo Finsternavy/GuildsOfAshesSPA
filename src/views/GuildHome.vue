@@ -15,7 +15,9 @@ let store;
 let user;
 let guild = ref({});
 let guildID = ref();
+let inbox = ref([]);
 let guildLogo = ref();
+let guildLeaderName = ref();
 
 
 onBeforeMount(() => {
@@ -61,7 +63,16 @@ const getGuildData = async () => {
     console.log("Guild data: ", data);
     guild.value = data.Data;
     console.log("Guild: ", guild.value);
-    handleGuildLogo(guild.value.Logo);
+    localStorage.setItem("guildLogo", guild.value.Logo);
+    localStorage.setItem("guildName", guild.value.Name);
+    inbox.value = guild.value.Applications;
+    guildLeaderName.value = guild.value.Leader.Username;
+    console.log("Inbox: ", inbox.value);
+    if (!inbox.value.length > 0) {
+      // toggle off uk-toggle
+      let element = document.getElementById("Inbox");
+      element.hidden = true;
+    }
     // store.setUser(data.Data);
     // router.push({ name: "guild-home" });
     // threads.value = data.Data;
@@ -70,7 +81,65 @@ const getGuildData = async () => {
   }
 };
 
-const handleGuildLogo = (logo) => {};
+const denyApplication = async (application) => {
+    console.log("Attempting to deny application for: ", application.User.Username);
+    const call = {
+        GuildID: application.GuildID,
+        User: application.User
+    };
+    console.log("call: ", call);
+    const response = await fetch(baseUrl + "/denyGuildApplication", {
+    method: "POST",
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+    });
+
+    if (response.ok) {
+        let data = await response.json();
+        console.log("Response from denyApplication: ", data);
+        await getGuildData();
+        inbox.value = guild.value.Applications;
+        // success.value = true;
+    } else {
+        console.log("Error during deny application: ", response.statusText);
+    }
+}
+
+const approveApplication = async (application) => {
+    console.log("Attempting to deny application for: ", application.User.Username);
+    application.User.Role = "Member";
+    const call = {
+        GuildID: application.GuildID,
+        GuildName: guild.value.Name,
+        User: application.User
+    };
+    console.log("call: ", call);
+    const response = await fetch(baseUrl + "/approveGuildApplication", {
+    method: "POST",
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+    });
+
+    if (response.ok) {
+        let data = await response.json();
+        console.log("Response from denyApplication: ", data);
+        await getGuildData();
+        inbox.value = guild.value.Applications;
+        // success.value = true;
+    } else {
+        console.log("Error during deny application: ", response.statusText);
+    }
+}
 
 const apply = () => {
   if (guild.value.AutoApprove) {
@@ -86,12 +155,12 @@ const createApplication = () => {
 </script>
 
 <style scoped>
-.goa-container {
+/* .goa-container {
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
-}
+} */
 
 .goa-alert-container {
   background-color: rgba(255, 0, 0, 0.7);
@@ -99,10 +168,90 @@ const createApplication = () => {
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
 }
+
+.goa-success-button:hover {
+  background-color: greenyellow;
+  color: black;
+}
+
+.goa-deny-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.goa-edit-button,
+.goa-delete-button {
+  padding: 5px 10px;
+}
+
+.applicant-container {
+  border: 1px solid gray;
+  border-radius: 30px;
+  margin-bottom: 40px;
+  padding: 40px;
+}
 </style>
 
 <template>
   <div class="guild-home">
+    <!-- This will only show for guild leaders (Or delegated rank)-->
+    <div v-if="guildLeaderName == store.getUsername" class="guild-control-container uk-margin-bottom">
+      <button v-if="inbox && inbox.length > 0" uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+        class="goa-button goa-edit-button uk-flex uk-flex-middle">
+        <span  uk-icon="icon: warning" class="uk-text-danger"></span>
+        <span class="uk-text-danger uk-margin-small-left">New Applications!</span>
+      </button> 
+    </div>
+    <div id="Inbox" class="goa-container uk-padding uk-margin-bottom" hidden>
+      <div v-for="application in inbox" class="applicant-container goa-container uk-flex uk-flex-column">
+        <h3 class="text-orange">Applicant Info</h3>
+        <div class="applicant-info uk-width-1-1 uk-flex uk-child-width-1-4 uk-grid-small uk-margin-bottom" uk-grid>
+          <div class="applicant-data-item uk-flex uk-flex-column">
+            <label for="">Username</label>
+            <input class="goa-input" type="text" readonly v-model="application.User.Username">
+          </div>
+          <div class="applicant-data-item uk-flex uk-flex-column">
+            <label for="">Class</label>
+            <input class="goa-input" type="text" readonly v-model="application.User.Subclass">
+          </div>
+          <div class="applicant-data-item uk-flex uk-flex-column">
+            <label for="">Primary</label>
+            <input class="goa-input" type="text" readonly v-model="application.User.Primary">
+          </div>
+          <div class="applicant-data-item uk-flex uk-flex-column">
+            <label for="">Secondary</label>
+            <input class="goa-input" type="text" readonly v-model="application.User.Secondary">
+          </div>
+        </div>
+        <hr class="uk-divider-icon uk-width-1-1 text-orange">
+        <div class="application-responses">
+          <div class="question-info">
+            <h3 class="text-orange">Questions</h3>
+            <div v-for="question in application.Questions" class="uk-margin-bottom">
+              <p class="text-orange">{{ question.question }}</p>
+              <p>{{ question.answer }}</p>
+            </div>
+          </div>
+        </div>
+        <hr class="uk-divider-icon uk-width-1-1 text-orange">
+        <h4 class="text-orange uk-text-center uk-margin-remove-top uk-margin-medium-bottom">Process Application</h4>
+        <div class="application-responses uk-flex uk-flex-around uk-width-1-1">
+          <div class="Approve-container">
+            <button class="goa-button">Send {{ application.User.Username }} a message</button>
+          </div>
+          <div class="Approve-container">
+            <button class="goa-button">Approve as Recruit</button>
+          </div>
+          <div class="Approve-container">
+            <button @click="approveApplication(application)" class="goa-button goa-success-button">Grant Full Membership</button>
+          </div>
+          <div class="Approve-container">
+            <button @click="denyApplication(application)" class="goa-button goa-deny-button uk-width-small">Deny</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
     <div class="goa-container uk-padding uk-margin-bottom">
       <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
       <div v-if="!store.getGuildID">
