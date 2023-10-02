@@ -203,6 +203,7 @@ const createApplication = () => {
   color: white;
   padding: 3px 10px;
   border: 1px solid gray;
+  border-bottom: none;
   border-radius: 15px 15px 0 0;
   width: fit-content;
 }
@@ -212,6 +213,7 @@ const createApplication = () => {
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 0px 15px 15px 15px;
+  background-color: black;
   
 }
 </style>
