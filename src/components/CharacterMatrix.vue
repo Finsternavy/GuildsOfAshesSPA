@@ -462,13 +462,13 @@ watch(selectedClass, (newVal, oldVal) => {
   emit("update:modelValue", newVal);
 });
 
-const checkWidthForTable = () => {
-  let width = window.innerWidth;
-  if (width > 1300) {
-    return true;
-  }
-  return false;
-};
+// const checkWidthForTable = () => {
+//   let width = window.innerWidth;
+//   if (width > 1300) {
+//     return true;
+//   }
+//   return false;
+// };
 
 const getClassIcon = (className) => {
   if (className.toLowerCase() === "fighter") {
@@ -544,29 +544,7 @@ label {
   );
 }
 
-.tool-tip {
-  position: relative;
-}
-.tool-tip::after {
-  content: attr(data);
-  position: absolute;
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px 20px;
-  background: rgba(255, 165, 0, 0);
-  color: rgba(255, 255, 255, 0);
-  font-size: 12px;
-  border-radius: 5px;
-  visibility: hidden;
-  transition: all 0.5s ease-in-out;
-}
 
-.tool-tip:hover .tool-tip::after {
-  visibility: visible;
-  background: rgba(255, 165, 0, 0.5);
-  color: rgba(255, 255, 255, 1);
-}
 
 @media (max-width: 1274px) {
   .character-matrix-selection {

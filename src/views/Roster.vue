@@ -2,6 +2,7 @@
 import { computed, ref, watch, reactive, onBeforeMount } from "vue";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 import { useUserStore } from "../stores/userStore";
+import { useGuildStore } from "../stores/guildStore";
 import Fighter from "../../public/AOC_Icons/fighter_icon.png";
 import Tank from "../../public/AOC_Icons/tank_icon.png";
 import Rogue from "../../public/AOC_Icons/rogue_icon.png";
@@ -14,102 +15,20 @@ import Bard from "../../public/AOC_Icons/bard_icon.png";
 const baseUrl = process.env.APIURL + "Users";
 const selectedClass = ref();
 const store = useUserStore();
+let guildStore;
 const user = store.getUser;
+let membersList = ref();
 
-onBeforeMount(() => {});
+onBeforeMount(() => {
+  guildStore = useGuildStore();
+  membersList.value = guildStore.getGuild.MemberList;
+  console.log("membersList: ", membersList.value);
+});
 
-const membersList = [
-  {
-    ID: 1234,
-    name: "CyFinXP",
-    subclass: "SOULBOW",
-    primary: "RANGER",
-    secondary: "CLERIC",
-    role: "Guild Leader",
-    trade1: "Leatherworker",
-    trade2: "Weaponsmith",
-    favoriteActivity: "Dungeons",
-  },
-  {
-    ID: 1236,
-    name: "Mason",
-    subclass: "DREADNOUGHT",
-    primary: "FIGHTER",
-    secondary: "TANK",
-    role: "Marshall",
-    trade1: "Armorsmith",
-    trade2: "Enchanter",
-    favoriteActivity: "Sieges",
-  },
-  {
-    ID: 1237,
-    name: "Player3",
-    subclass: "ORACLE",
-    primary: "CLERIC",
-    secondary: "MAGE",
-    role: "Soldier",
-    trade1: "Shipbuilder",
-    trade2: "Carpenter",
-    favoriteActivity: "Ship Battles",
-  },
-  {
-    ID: 1238,
-    name: "Player4",
-    subclass: "ENCHANTER",
-    primary: "SUMMONER",
-    secondary: "BARD",
-    role: "Soldier",
-    trade1: "Enchanter",
-    trade2: "Jeweler",
-    favoriteActivity: "Dungeons",
-  },
-  {
-    ID: 1239,
-    name: "Player5",
-    subclass: "GUARDIAN",
-    primary: "TANK",
-    secondary: "TANK",
-    role: "Soldier",
-    trade1: "Armorsmith",
-    trade2: "Alchemist",
-    favoriteActivity: "Caravans",
-  },
-  {
-    ID: 1240,
-    name: "Player6",
-    subclass: "NIGHTSPELL",
-    primary: "ROGUE",
-    secondary: "MAGE",
-    role: "Soldier",
-    trade1: "Leathersmith",
-    trade2: "Alchemist",
-    favoriteActivity: "Sieges",
-  },
-  {
-    ID: 1241,
-    name: "Player7",
-    subclass: "TELLSWORD",
-    primary: "BARD",
-    secondary: "FIGHTER",
-    role: "Soldier",
-    trade1: "Alchemist",
-    trade2: "Enchanter",
-    favoriteActivity: "Dungeons",
-  },
-  {
-    ID: 1242,
-    name: "Player",
-    subclass: "SHADOWBLADE",
-    primary: "FIGHTER",
-    secondary: "ROGUE",
-    role: "Soldier",
-    trade1: "Jeweler",
-    trade2: "Weaponsmith",
-    favoriteActivity: "Sieges",
-  },
-];
+
 
 const getClassIcon = (className) => {
+  console.log("className: ", className);
   if (className.toLowerCase() === "fighter") {
     return Fighter;
   }
@@ -136,40 +55,7 @@ const getClassIcon = (className) => {
   }
 };
 
-const updateUserClass = async () => {
-  // console.log("baseURL: ", baseUrl);
-  // let hashedPassword = await hash(password.value);
-  console.log(selectedClass.value);
-  console.log("Name: ", selectedClass.value.name);
-  user.Subclass = selectedClass.value.name;
-  user.Primary = selectedClass.value.primary;
-  user.Secondary = selectedClass.value.secondary;
-  console.log("User now: ", user);
-  // const call = {
-  //   User: user,
-  // };
-  const response = await fetch(baseUrl + "/updateUser/" + user.UserID, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
-    },
-    body: JSON.stringify(user),
-  });
 
-  if (response.ok) {
-    let data = await response.json();
-    console.log("data: ", data);
-    localStorage.setItem("User", JSON.stringify(data.Data));
-    // store.setUserSubclass(data.Data.Subclass);
-    // store.setUserPrimary(data.Data.Primary);
-    // store.setUserSecondary(data.Data.Secondary);
-  } else {
-    console.log("Error fetching data: ", response.statusText);
-  }
-};
 </script>
 
 <style scoped>
@@ -178,124 +64,179 @@ label {
 }
 .gold {
   border: 1px solid gold;
+  border-right: none;
+  border-top: none;
+  border-radius: 0px 30px 0px 0px;
+  /* overflow: hidden; */
 }
 
 .silver {
   border: 1px solid silver;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0px 0px 30px 0px;
 }
 
 .true-class {
   box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.5);
 }
+
+.member-list-member {
+  border: 1px solid gray;
+  border-radius: 30px;
+}
+
+.member-card-container {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, calc(33% - 10px));
+  gap: 20px;
+}
+.member-card {
+  border: 2px solid gray;
+  border-radius: 30px 30px 0px 30px;
+  /* padding: 10px; */
+}
+
+.member-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 67px;
+  border-bottom: 2px solid gray;
+}
+
+.xp-container {
+  border: 2px solid gray;
+  margin-left: auto;
+  border-top: none;
+  min-width: 150px;
+  width: fit-content;
+  border-radius: 0px 0px 20px 20px;
+  overflow: hidden;
+}
+
+.xp-label {
+  background-color: orange;
+  color: black;
+}
+
 </style>
 
 <template>
   <div class="roster">
-    <div class="goa-container">
-      <!-- <h3 class="uk-light uk-text-center">{ Guild name } Roster</h3> -->
-      <h3
-        class="uk-light uk-text-center uk-padding uk-padding-remove-bottom uk-text-bold"
-      >
-        Character Matrix
-      </h3>
-      <div class="uk-padding uk-padding-remove-top">
-        <CharacterMatrix v-model="selectedClass" />
-        <div class="uk-flex uk-flex-center">
-          <div v-if="selectedClass" class="uk-flex-column uk-width-1-2@l">
-            <div class="uk-flex uk-flex-between uk-margin-bottom">
-              <label for="selected-primary text-orange">Primary Archetype</label>
-              <input
-                class="goa-input uk-text-center"
-                type="text"
-                id="selected-primary"
-                disabled
-                v-model="selectedClass.primary"
-              />
-            </div>
-            <div class="uk-flex uk-flex-between">
-              <label for="selected-secondary text-orange">Secondary Archetype</label>
-              <input
-                class="goa-input uk-text-center"
-                type="text"
-                id="selected-secondary"
-                disabled
-                v-model="selectedClass.secondary"
-              />
-            </div>
-            <div class="uk-flex uk-flex-between uk-child-width-1- uk-margin-top">
-              <button class="goa-button uk-margin-right">Filter Roster</button>
-              <button @click="updateUserClass" class="goa-button">Update My Class</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
     <div class="guild-roster">
       <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">
         <h3 class="uk-light uk-text-center uk-text-bold">Guild Roster</h3>
-        <div class="uk-flex uk-child-width-1-4 uk-text-center">
-          <span class="uk-text-warning uk-text-large">Member</span>
-          <span class="uk-text-warning uk-text-large">Class</span>
-          <span class="uk-text-warning uk-text-large">Professions</span>
-          <span class="uk-text-warning uk-text-large">Favorite Activity</span>
-        </div>
-      </div>
-      <ul class="guild-members-list uk-list uk-margin-top">
-        <li
-          v-for="member in membersList"
-          :class="{
-            'goa-container padding-small': member,
-            'true-class': member.primary == member.secondary,
-          }"
-        >
-          <div :key="member.ID" class="uk-flex uk-child-width-1-4">
-            <div class="member-name uk-text-center">
-              <label class="uk-margin-remove"
-                >{{ member.name }} ( {{ member.role }} )</label
-              >
-              <p class="uk-margin-remove">XP: 345</p>
-            </div>
-            <div class="class-info uk-flex uk-flex-column">
-              <div class="uk-text-center">
-                <label class="uk-margin-remove">{{ member.subclass }}</label>
-              </div>
-              <div class="member-class-info uk-flex uk-flex-center">
-                <div
-                  v-if="member.primary != member.secondary"
-                  class="uk-background-cover gold"
-                  style="width: 40px; height: 40px"
-                  :data-src="getClassIcon(member.primary)"
-                  uk-img
-                ></div>
-                <div v-else>
-                  <span class="uk-text-lead uk-margin-small-right text-orange"
-                    >TRUE
-                  </span>
+        <div class="member-card-container uk-flex uk-width-1-1">
+          <div v-for="member in membersList">
+            <div class="member-card uk-flex">
+              <div class="member-info-container uk-width-expand uk-flex uk-flex-column uk-flex-around">
+                <div class="member-name-container uk-text-center">
+                  <span class="member-name text-orange uk-margin-small-right uk-text-large">{{ member.Username }} </span><span class="member-role"> ( {{ member.Role }} )</span>
                 </div>
-                <div
-                  class="uk-background-cover silver"
-                  style="width: 40px; height: 40px"
-                  :data-src="getClassIcon(member.secondary)"
-                  uk-img
-                ></div>
+                <div class="member-professions uk-flex uk-flex-column">
+                  <div class="prof-1">
+                    <span class="uk-margin-left">Profession 1:</span><span>{{ member.Profession1  }}</span>
+                  </div>
+                  <div class="prof-2">
+                    <span class="uk-margin-left">Profession 2:</span><span>{{ member.Profession2  }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="member-architypes uk-flex uk-flex-column">
+                <div class="primary tool-tip">
+                  <div
+                    v-if="member.Primary != member.Secondary"
+                    class="uk-background-cover gold tool-tip"
+                    style="width: 75px; height: 75px"
+                    :data-src="getClassIcon(member.Primary)"
+                    :data="member.Primary"
+                    uk-img
+                  ></div>
+                  <div v-else>
+                    <span class="uk-text-lead uk-margin-small-right text-orange"
+                      >TRUE
+                    </span>
+                  </div>
+                </div>
+                <div class="secondary tool-tip-2">
+                  <div
+                    class="uk-background-cover silver tool-tip-2"
+                    style="width: 75px; height: 75px"
+                    :data-src="getClassIcon(member.Secondary)"
+                    :data="member.Secondary"
+                    uk-img
+                  ></div>
+                </div>
               </div>
             </div>
-            <div class="trades-info uk-flex uk-flex-column uk-text-center">
-              <div class="trade-label uk-text-center">
-                <label>Professions</label>
+            <div class="xp-container uk-flex">
+              <div class="xp-label uk-text-center uk-width-auto uk-text-center uk-padding-small uk-padding-remove-vertical">
+                <label class="xp-label-text text-black uk-text-default">XP</label>
               </div>
-              <div>
-                <p class="uk-margin-remove">Trade 1: {{ member.trade1 }}</p>
-                <p class="uk-margin-remove">Trade 2: {{ member.trade2 }}</p>
+              <div class="xp-value uk-text-center uk-width-expand">
+                <span class="text-orange">345</span>
               </div>
-            </div>
-            <div class="activities-info uk-text-center">
-              <label class="uk-margin-remove">Favorite Activity</label>
-              <p class="uk-margin-remove">{{ member.favoriteActivity }}</p>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+        <!-- <ul v-if="membersList" class="guild-members-list uk-list uk-margin-top">
+          <li
+            v-for="member in membersList"
+            :class="{
+              'member-list-member padding-small uk-padding-remove-horizontal': member,
+              'true-class': member.Primary == member.Secondary,
+            }"
+          >
+            <div :key="member.ID" class="uk-flex uk-child-width-1-3">
+              <div class="member-name uk-text-center">
+                <label class="uk-margin-remove"
+                  >{{ member.Username }} ( {{ member.Role }} )</label
+                >
+                <p class="uk-margin-remove">XP: 345</p>
+              </div>
+              <div class="class-info uk-flex uk-flex-column uk-flex-middle">
+                <div class="uk-text-center">
+                  <label class="uk-margin-remove">{{ member.Subclass }}</label>
+                </div>
+                <div class="tool-tip tool-tip-2 member-class-info uk-flex uk-flex-center">
+                  <div
+                    v-if="member.Primary != member.Secondary"
+                    class="uk-background-cover gold tool-tip"
+                    style="width: 40px; height: 40px"
+                    :data-src="getClassIcon(member.Primary)"
+                    :data="member.Primary"
+                    uk-img
+                  ></div>
+                  <div v-else>
+                    <span class="uk-text-lead uk-margin-small-right text-orange"
+                      >TRUE
+                    </span>
+                  </div>
+                  <div
+                    class="uk-background-cover silver tool-tip-2"
+                    style="width: 40px; height: 40px"
+                    :data-src="getClassIcon(member.Secondary)"
+                    :data="member.Secondary"
+                    uk-img
+                  ></div>
+                </div>
+              </div>
+              <div class="trades-info uk-flex uk-flex-column uk-text-center">
+                <div class="trade-label uk-text-center">
+                  <label>Professions</label>
+                </div>
+                <div>
+                  <p class="uk-margin-remove">Trade 1: {{ member.Profession1 }}</p>
+                  <p class="uk-margin-remove">Trade 2: {{ member.Profession2 }}</p>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul> -->
+      </div>
     </div>
   </div>
 </template>

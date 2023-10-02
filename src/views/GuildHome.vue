@@ -3,7 +3,9 @@ import { ref, onBeforeMount, computed } from "vue";
 import Discord from "../components/Discord.vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
+import { useGuildStore } from "../stores/guildStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
+import Loading from "../components/Loading.vue";
 
 const baseUrl = process.env.APIURL + "Guilds";
 const discordServers = ref([
@@ -11,7 +13,8 @@ const discordServers = ref([
     embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",
   },
 ]);
-let store;
+let userStore;
+let guildStore;
 let user;
 let guild = ref({});
 let guildID = ref();
@@ -19,10 +22,12 @@ let inbox = ref([]);
 let guildLogo = ref();
 let guildLeaderName = ref();
 
+let showContent = ref(false);
 
 onBeforeMount(() => {
-  store = useUserStore();
-  user = store.getUser;
+  userStore = useUserStore();
+  guildStore = useGuildStore();
+  user = userStore.getUser;
   if (localStorage.getItem("guildID")) {
     console.log("Got guildID from local storage..");
     guildID.value = localStorage.getItem("guildID");
@@ -68,12 +73,23 @@ const getGuildData = async () => {
     inbox.value = guild.value.Applications;
     guildLeaderName.value = guild.value.Leader.Username;
     console.log("Inbox: ", inbox.value);
+
+    // test guildStore 
+
+    guildStore.setGuild(guild.value);
+    console.log("GuildStore: ", guildStore.getGuild);
+    console.log("Memberlist: ", guildStore.getGuild.MemberList);
+
+
+
+    showContent.value = true;
     if (!inbox.value.length > 0) {
       // toggle off uk-toggle
       let element = document.getElementById("Inbox");
+      if (element)
       element.hidden = true;
     }
-    // store.setUser(data.Data);
+    // userStore.setUser(data.Data);
     // router.push({ name: "guild-home" });
     // threads.value = data.Data;
   } else {
@@ -219,9 +235,10 @@ const createApplication = () => {
 </style>
 
 <template>
-  <div class="guild-home">
+  <Loading v-model="showContent" :message="'Loading Guild ...'" />
+  <div v-if="showContent" class="guild-home">
     <!-- This will only show for guild leaders (Or delegated rank)-->
-    <div v-if="guildLeaderName == store.getUsername" class="guild-control-container uk-margin-bottom">
+    <div v-if="guildLeaderName == userStore.getUsername" class="guild-control-container uk-margin-bottom">
       <button v-if="inbox && inbox.length > 0" uk-toggle="target: #Inbox; animation: uk-animation-fade" 
         class="goa-button goa-edit-button uk-flex uk-flex-middle">
         <span  uk-icon="icon: warning" class="uk-text-danger"></span>
@@ -284,7 +301,7 @@ const createApplication = () => {
 
     <div class="goa-container uk-padding uk-margin-bottom">
       <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
-      <div v-if="!store.getGuildID">
+      <div v-if="!userStore.getGuildID">
         <button
           @click="apply" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
           Apply
@@ -303,7 +320,7 @@ const createApplication = () => {
       </p>
       <div class="uk-flex uk-flex-around uk-width-1-1 uk-child-width-1-4 uk-margin-large-bottom uk-text-uppercase">
         <div class="guild-type-info-container ">
-          <div class="guild-type-info-label" for="">Category</div>
+          <div class="guild-type-info-label" for="">Type</div>
           <div class="guild-type-info uk-text-center">{{ guild.Category }}</div>
         </div>
         <div class="guild-type-info-container ">

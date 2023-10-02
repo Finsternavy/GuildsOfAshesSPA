@@ -323,6 +323,61 @@ progress::-webkit-progress-value {
   opacity: 100%;
 }
 
+.tool-tip {
+  position: relative;
+  width: fit-content;
+}
+.tool-tip::after {
+  content: attr(data);
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 20px;
+  /* background: rgba(255, 165, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5); */
+  font-size: 12px;
+  border-radius: 5px;
+  opacity: 0%;
+  transition: all 0.5s ease-in-out;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.tool-tip:hover .tool-tip::after {
+  opacity: 100%;
+  background: rgba(255, 165, 0, 1);
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+}
+
+.tool-tip-2 {
+  position: relative;
+}
+.tool-tip-2::after {
+  content: attr(data);
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 20px;
+  /* background: rgba(255, 165, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5); */
+  font-size: 12px;
+  border-radius: 5px;
+  opacity: 0%;
+  transition: all 0.5s ease-in-out;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.tool-tip-2:hover .tool-tip-2::after {
+  opacity: 100%;
+  background: rgba(255, 165, 0, 1);
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+}
+
 @media (max-height: 800px) {
   .show {
     max-height: fit-content;
