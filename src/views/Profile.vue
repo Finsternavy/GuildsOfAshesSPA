@@ -1,14 +1,23 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
+import { useGuildStore } from "../stores/guildStore";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 
 const store = useUserStore();
+let guildStore;
+let guild = ref({});
+let guildID = ref();
 const user = store.getUser;
 const selectedClass = ref();
-const baseUrl = process.env.APIURL + "Users";
+const baseUrl = process.env.APIURL;
 
 const hiddenKeys = ["Password", "GuildID", "UserID"];
+
+onBeforeMount(()=> {
+  guildStore = useGuildStore();
+  guildID.value = guildStore.getGuild.GuildID;
+})
 
 const keys = computed(() => {
   let returnKeys = [];
@@ -49,7 +58,7 @@ const updateUserClass = async () => {
   // const call = {
   //   User: user,
   // };
-  const response = await fetch(baseUrl + "/updateUser/" + user.UserID, {
+  const response = await fetch(baseUrl + "Users/updateUser/" + user.UserID, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -64,16 +73,46 @@ const updateUserClass = async () => {
     let data = await response.json();
     console.log("data: ", data);
     localStorage.setItem("User", JSON.stringify(data.Data));
-    // store.setUserSubclass(data.Data.Subclass);
-    // store.setUserPrimary(data.Data.Primary);
-    // store.setUserSecondary(data.Data.Secondary);
+    getGuildData();
   } else {
     console.log("Error fetching data: ", response.statusText);
   }
 };
+
+const getGuildData = async () => {
+  console.log("Fetching guild data..");
+  guildID.value = localStorage.getItem("guildID");
+  const call = {
+    GuildID: guildID.value,
+  };
+  const response = await fetch(baseUrl + "Guilds/fetchGuildData", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Guild data: ", data);
+
+    // test guildStore 
+    guild.value = data.Data;
+    guildStore.setGuild(guild.value);
+    console.log("GuildStore: ", guildStore.getGuild);
+  } else {
+    console.log("Error fetching thread data: ", response.statusText);
+  }
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
 
 <template>
   <div class="profile">

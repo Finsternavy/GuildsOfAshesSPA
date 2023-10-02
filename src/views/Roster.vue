@@ -11,6 +11,7 @@ import Mage from "../../public/AOC_Icons/mage_icon.png";
 import Summoner from "../../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../../public/AOC_Icons/cleric_icon.png";
 import Bard from "../../public/AOC_Icons/bard_icon.png";
+import MemberCard from "../components/MemberCard.vue";
 
 const baseUrl = process.env.APIURL + "Users";
 const selectedClass = ref();
@@ -63,18 +64,21 @@ label {
   color: orange;
 }
 .gold {
-  border: 1px solid gold;
+  border: 2px solid gray;
   border-right: none;
   border-top: none;
   border-radius: 0px 30px 0px 0px;
+  height: 75px;
+  width: 75px;
+  background-color: rgba(0, 0, 0, .5);
   /* overflow: hidden; */
 }
 
 .silver {
-  border: 1px solid silver;
-  border-right: none;
-  border-bottom: none;
-  border-radius: 0px 0px 30px 0px;
+  border-left: 2px solid gray;
+  height: 75px;
+  width: 75px;
+  /* border-radius: 0px 0px 30px 0px; */
 }
 
 .true-class {
@@ -86,12 +90,12 @@ label {
   border-radius: 30px;
 }
 
-.member-card-container {
+/* .member-card-container {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3, calc(33% - 10px));
   gap: 20px;
-}
+} */
 .member-card {
   border: 2px solid gray;
   border-radius: 30px 30px 0px 30px;
@@ -121,6 +125,12 @@ label {
   color: black;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, calc(50% - 20px));
+  gap: 40px;
+}
+
 </style>
 
 <template>
@@ -128,114 +138,22 @@ label {
     
     <div class="guild-roster">
       <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">
-        <h3 class="uk-light uk-text-center uk-text-bold">Guild Roster</h3>
-        <div class="member-card-container uk-flex uk-width-1-1">
-          <div v-for="member in membersList">
-            <div class="member-card uk-flex">
-              <div class="member-info-container uk-width-expand uk-flex uk-flex-column uk-flex-around">
-                <div class="member-name-container uk-text-center">
-                  <span class="member-name text-orange uk-margin-small-right uk-text-large">{{ member.Username }} </span><span class="member-role"> ( {{ member.Role }} )</span>
-                </div>
-                <div class="member-professions uk-flex uk-flex-column">
-                  <div class="prof-1">
-                    <span class="uk-margin-left">Profession 1:</span><span>{{ member.Profession1  }}</span>
-                  </div>
-                  <div class="prof-2">
-                    <span class="uk-margin-left">Profession 2:</span><span>{{ member.Profession2  }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="member-architypes uk-flex uk-flex-column">
-                <div class="primary tool-tip">
-                  <div
-                    v-if="member.Primary != member.Secondary"
-                    class="uk-background-cover gold tool-tip"
-                    style="width: 75px; height: 75px"
-                    :data-src="getClassIcon(member.Primary)"
-                    :data="member.Primary"
-                    uk-img
-                  ></div>
-                  <div v-else>
-                    <span class="uk-text-lead uk-margin-small-right text-orange"
-                      >TRUE
-                    </span>
-                  </div>
-                </div>
-                <div class="secondary tool-tip-2">
-                  <div
-                    class="uk-background-cover silver tool-tip-2"
-                    style="width: 75px; height: 75px"
-                    :data-src="getClassIcon(member.Secondary)"
-                    :data="member.Secondary"
-                    uk-img
-                  ></div>
-                </div>
-              </div>
+        <h2 class="uk-light uk-text-center uk-text-bold">Chain of Command</h2>
+        <hr class="uk-margin-large-bottom">
+        <div class="member-card-container uk-flex uk-flex-column">
+          <h3 class="text-orange uk-text-center uk-margin-remove-bottom">Guild Leader</h3>
+          <div class="uk-margin-bottom uk-width-1-1 uk-child-width-1-2">
+            <div v-for="member in membersList" class="uk-align-center uk-margin-remove-top">
+              <MemberCard v-if="member.Role == 'Guild Leader'" :member="member" />
             </div>
-            <div class="xp-container uk-flex">
-              <div class="xp-label uk-text-center uk-width-auto uk-text-center uk-padding-small uk-padding-remove-vertical">
-                <label class="xp-label-text text-black uk-text-default">XP</label>
-              </div>
-              <div class="xp-value uk-text-center uk-width-expand">
-                <span class="text-orange">345</span>
-              </div>
+          </div>
+          <h3 class="text-orange">Guild Members</h3>
+          <div class="uk-width-1-1 grid" >
+            <div v-for="member in membersList">
+              <MemberCard v-if="member.Role == 'Member'" :member="member" />
             </div>
           </div>
         </div>
-        <!-- <ul v-if="membersList" class="guild-members-list uk-list uk-margin-top">
-          <li
-            v-for="member in membersList"
-            :class="{
-              'member-list-member padding-small uk-padding-remove-horizontal': member,
-              'true-class': member.Primary == member.Secondary,
-            }"
-          >
-            <div :key="member.ID" class="uk-flex uk-child-width-1-3">
-              <div class="member-name uk-text-center">
-                <label class="uk-margin-remove"
-                  >{{ member.Username }} ( {{ member.Role }} )</label
-                >
-                <p class="uk-margin-remove">XP: 345</p>
-              </div>
-              <div class="class-info uk-flex uk-flex-column uk-flex-middle">
-                <div class="uk-text-center">
-                  <label class="uk-margin-remove">{{ member.Subclass }}</label>
-                </div>
-                <div class="tool-tip tool-tip-2 member-class-info uk-flex uk-flex-center">
-                  <div
-                    v-if="member.Primary != member.Secondary"
-                    class="uk-background-cover gold tool-tip"
-                    style="width: 40px; height: 40px"
-                    :data-src="getClassIcon(member.Primary)"
-                    :data="member.Primary"
-                    uk-img
-                  ></div>
-                  <div v-else>
-                    <span class="uk-text-lead uk-margin-small-right text-orange"
-                      >TRUE
-                    </span>
-                  </div>
-                  <div
-                    class="uk-background-cover silver tool-tip-2"
-                    style="width: 40px; height: 40px"
-                    :data-src="getClassIcon(member.Secondary)"
-                    :data="member.Secondary"
-                    uk-img
-                  ></div>
-                </div>
-              </div>
-              <div class="trades-info uk-flex uk-flex-column uk-text-center">
-                <div class="trade-label uk-text-center">
-                  <label>Professions</label>
-                </div>
-                <div>
-                  <p class="uk-margin-remove">Trade 1: {{ member.Profession1 }}</p>
-                  <p class="uk-margin-remove">Trade 2: {{ member.Profession2 }}</p>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul> -->
       </div>
     </div>
   </div>
