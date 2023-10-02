@@ -135,7 +135,7 @@ const approveApplication = async (application) => {
         console.log("Response from denyApplication: ", data);
         await getGuildData();
         inbox.value = guild.value.Applications;
-        // success.value = true;
+        getGuildData();
     } else {
         console.log("Error during deny application: ", response.statusText);
     }
@@ -190,6 +190,30 @@ const createApplication = () => {
   margin-bottom: 40px;
   padding: 40px;
 }
+
+/* .guild-type-info-container {
+  border: 1px solid gray;
+  border-radius: 10px;
+  margin-bottom: 40px;
+  overflow: hidden;
+} */
+
+.guild-type-info-label {
+  background-color: rgb(117, 0, 0);
+  color: white;
+  padding: 3px 10px;
+  border: 1px solid gray;
+  border-radius: 15px 15px 0 0;
+  width: fit-content;
+}
+
+.guild-type-info {
+  border: 1px solid gray;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 0px 15px 15px 15px;
+  
+}
 </style>
 
 <template>
@@ -202,6 +226,8 @@ const createApplication = () => {
         <span class="uk-text-danger uk-margin-small-left">New Applications!</span>
       </button> 
     </div>
+
+    <!-- Guild Application Review-->
     <div id="Inbox" class="goa-container uk-padding uk-margin-bottom" hidden>
       <div v-for="application in inbox" class="applicant-container goa-container uk-flex uk-flex-column">
         <h3 class="text-orange">Applicant Info</h3>
@@ -240,7 +266,7 @@ const createApplication = () => {
             <button class="goa-button">Send {{ application.User.Username }} a message</button>
           </div>
           <div class="Approve-container">
-            <button class="goa-button">Approve as Recruit</button>
+            <button class="goa-button">Approve Trial Period</button>
           </div>
           <div class="Approve-container">
             <button @click="approveApplication(application)" class="goa-button goa-success-button">Grant Full Membership</button>
@@ -251,6 +277,8 @@ const createApplication = () => {
         </div>
       </div>
   </div>
+
+    <!-- Guild Info Section -->
 
     <div class="goa-container uk-padding uk-margin-bottom">
       <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
@@ -271,14 +299,32 @@ const createApplication = () => {
       >
         ( Members: {{ guild.MemberList.length }} )
       </p>
-      <div
-        :class="{
+      <div class="uk-flex uk-flex-around uk-width-1-1 uk-child-width-1-4 uk-margin-large-bottom uk-text-uppercase">
+        <div class="guild-type-info-container ">
+          <div class="guild-type-info-label" for="">Category</div>
+          <div class="guild-type-info uk-text-center">{{ guild.Category }}</div>
+        </div>
+        <div class="guild-type-info-container ">
+          <div class="guild-type-info-label" for="">Focus</div>
+          <div class="guild-type-info uk-text-center">{{ guild.Focus }}</div>
+        </div>
+        <div v-if="guild.PrimaryRace" class="guild-type-info-container ">
+          <div class="guild-type-info-label" for="">Race</div>
+          <div class="guild-type-info uk-text-center">{{ guild.PrimaryRace }}</div>
+        </div>
+        <div class="guild-type-info-container ">
+          <div class="guild-type-info-label" for="">Region</div>
+          <div class="guild-type-info uk-text-center">{{ guild.Region }}</div>
+        </div>
+      </div>
+      <div :class="{
           'logo-container': guild.LogoBorder == false,
           'bordered-logo-container': guild.LogoBorder == true,
         }"
       >
         <img class="guild-logo-upload" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
+        
       <!-- This is where we display the rich text -->
       <div v-html="guild.Description" class="uk-margin-large-top"></div>
     </div>
@@ -330,7 +376,7 @@ const createApplication = () => {
           </ul>
         </div>
         <div class="discord uk-margin-top">
-          <Discord class="goa-container" v-model="discordServers" />
+          <!-- <Discord class="goa-container" v-model="discordServers" /> -->
         </div>
       </div>
     </div>
