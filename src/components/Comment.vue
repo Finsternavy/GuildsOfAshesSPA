@@ -213,6 +213,7 @@ const toggleEditCommentControls = () => {
 
 .divider {
   border: 1px solid rgba(0, 0, 0, 0.3);
+  margin-top: 10px;
 }
 
 .reply-creation-controls {
@@ -343,7 +344,6 @@ const toggleEditCommentControls = () => {
         </div>
       </div>
       <div class="uk-text-center uk-width-auto">
-        {{  showReplyControl }}
         <button @click="showReplyControls" class="goa-button">Reply</button>
       </div>
     </div>
