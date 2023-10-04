@@ -103,7 +103,7 @@ const checkForm = () => {
 <template>
   <div class="register uk-flex uk-flex-center">
     <div class="uk-form goa-container uk-padding uk-width-large uk-child-width-1-1">
-      <h3 class="uk-text-center text-orange">REGISTRATION</h3>
+      <h3 class="uk-text-center text-goa-red">REGISTRATION</h3>
       <div
         class="input-container uk-flex uk-flex-column uk-flex-center uk-child-width-auto uk-margin-bottom"
       >

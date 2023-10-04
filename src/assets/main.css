@@ -1,4 +1,31 @@
 @import './base.css';
+:root {
+  /* theme*/
+  --goa-red: rgb(255, 65, 65);
+  --goa-red-transparent: rgba(255, 65, 65, 0.2);
+  --goa-gray: rgb(179, 179, 179);
+
+  /* font */
+
+
+  /* background */
+
+
+  /* border */
+
+
+  /* shadow */
+
+
+  /* text */
+  --goa-text-red: rgb(255, 115, 115);
+  --goa-text-gray: rgb(179, 179, 179);
+  --goa-text-black: rgb(48, 48, 48);
+  --goa-text-success: rgb(103, 255, 103);
+  --goa-text-warning: rgb(255, 255, 103);
+  --goa-text-danger: rgb(93, 29, 29);
+
+}
 
 .footer {
   position: sticky;
@@ -114,6 +141,10 @@
   background-repeat: no-repeat;
 }
 
+.text-orange {
+  color: orange!important;
+}
+
 .map-top-left{
   background-position: top left;
 }
@@ -160,16 +191,16 @@
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.2);
   padding: 5px 10px;
-  color: orange;
+  color: white;
 }
 
 .goa-input::placeholder {
-  color: orange;
+  color: var(--goa-red);
 }
 
 .goa-button {
   border-radius: 20px;
-  background-color: rgba(255, 165, 0, 0.5);
+  background-color: var(--goa-red);
   color: white;
   padding: 5px 30px;
   word-wrap: nowrap;
@@ -179,15 +210,15 @@
 
 
 .goa-button:hover {
-  background-color: rgba(255, 165, 0, 1);
-  color: black;
+  background-color: var(--goa-red-transparent);
+  /* color: black; */
 }
 
 .goa-delete-button {
   height: fit-content;
   padding-block: 0;
-  background-color: black;
-  color: orange;
+  background-color: var(--goa-gray);
+  color: black;
 }
 
 .goa-delete-button:hover {
@@ -199,16 +230,16 @@
   height: fit-content;
   padding-block: 0;
   background-color: black;
-  color: orange;
+  color: var(--goa-gray);
 }
 
 .goa-edit-button:hover {
-  background-color: orange;
+  background-color: var(--goa-gray);
   color: white;
 }
 
-.text-orange {
-  color: orange!important;
+.text-goa-red {
+  color: rgb(255, 65, 65)!important;
 }
 
 .text-black {
@@ -229,8 +260,8 @@
   cursor: pointer;
 }
 .cell:hover {
-  background-color: rgba(255, 165, 0, .7)!important;
-  color: black;
+  background-color: var(--goa-red)!important;
+  color: var(--goa-gray);
 }
 
 progress {
@@ -326,12 +357,15 @@ progress::-webkit-progress-value {
 .tool-tip {
   position: relative;
   width: fit-content;
+  font-weight: bolder;
 }
 .tool-tip::after {
   content: attr(data);
   position: absolute;
   top: -35px;
   left: 50%;
+  font-weight: 700;
+  font-size: 20px;
   transform: translateX(-50%);
   padding: 5px 20px;
   /* background: rgba(255, 165, 0, 0.5);
@@ -346,8 +380,10 @@ progress::-webkit-progress-value {
 
 .tool-tip:hover .tool-tip::after {
   opacity: 100%;
-  background: rgba(255, 165, 0, 1);
-  color: rgba(0, 0, 0, 1);
+  background: var(--goa-red);
+  /* color: rgba(0, 0, 0, 0.1); */
+  font-size: 16px;
+  color: white;
   font-weight: 700;
 }
 

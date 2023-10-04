@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
+import { useGuildStore } from "../stores/guildStore";
 import Fighter from "../../public/AOC_Icons/fighter_icon.png";
 import Tank from "../../public/AOC_Icons/tank_icon.png";
 import Rogue from "../../public/AOC_Icons/rogue_icon.png";
@@ -13,8 +14,30 @@ const props = defineProps({
     member: {
         type: Object,
         required: true
+    },
+    viewer: {
+        type: String,
+    },
+    function: {
+        type: Function
     }
 });
+
+const emits = ['getGuildData'];
+
+const baseUrl = process.env.APIURL;
+
+const showRole = ref(false);
+let guildStore;
+const guild = ref({});
+
+onBeforeMount(() => {
+    guildStore = useGuildStore();
+    guild.value = guildStore.getGuild;
+    if (props.member.Role == "Guild Leader") {
+        showRole.value = true;
+    }
+})
 
 const getClassIcon = (className) => {
   console.log("className: ", className);
@@ -43,11 +66,41 @@ const getClassIcon = (className) => {
     return Bard;
   }
 };
+
+const removeFromGuild = async () => {
+  console.log("Leaving guild..");
+  let guildID = localStorage.getItem("guildID");
+  const call = {
+    User: props.member,
+    GuildID: guildID,
+  };
+  const response = await fetch(baseUrl + "Guilds/leaveGuild", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Removed member: ", data);
+    props.function();
+
+  } else {
+    console.log("Error fetching thread data: ", response.statusText);
+  }
+};
 </script>
 
 <style scoped>
+/* @import '../assets/main.css'; */
+
 label {
-  color: orange;
+  color: rgb(255, 65, 65);
 }
 .gold {
   border: 2px solid gray;
@@ -98,7 +151,21 @@ label {
   align-items: center;
   justify-content: center;
   border-bottom: 2px solid gray;
-  background-color: rgba(255, 165, 0, .1);
+  /* gold */
+  /* background-color: rgba(255, 165, 0, .1);  */
+  /* Silver */
+  /* background-color: rgba(192, 192, 192, .2); */
+  /* Green */
+}
+
+.leader {
+    background-color: rgba(255, 165, 0, .1);
+    color: rgb(255, 190, 68);
+}
+
+.member {
+  background-color: rgba(255, 65, 65, .1);
+  color: lightgray;
 }
 
 .member-professions {
@@ -116,46 +183,124 @@ label {
   border-top: none;
   width: fit-content;
   border-radius: 0px 0px 20px 20px;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
 .xp-label {
-  background-color: orange;
-  color: black;
+    width: 75px;
+    padding: 3px 20px;
+    background-color: rgb(255, 65, 65);
+    /* color: white; */
+}
+
+.xp-label-text {
+  color: white;
 }
 
 .xp-value {
-    width: 75px;
+    padding-inline: 20px;
+    /* padding: 3px 20px; */
+    /* width: 200px; */
+    min-width: 75px;
+    width: fit-content;
 }
 
 .class-container {
     width: fit-content;
-    background-color: orange;
-    color: black;
+    background-color: rgb(255, 65, 65);
+    color: white;
     border: 2px solid gray;
     border-bottom: none;
     padding: 3px 10px;
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 20px 0px 0px 0px;
+}
+
+.rank-container {
+    border: 2px solid gray;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 10px 0 0;
+    padding: 3px 20px;
+    padding-top: 1px;
+    color: orange;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.card-guild {
+    border: 2px solid gray;
+    border-left: none;
+    border-bottom: none;
+    padding: 3px 20px;
+    padding-top: 1px;
+    color: orange;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.card-logo {
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+}
+
+.uk-icon-button {
+  background-color: transparent;
+}
+
+.uk-icon-button:hover {
+  background-color: rgba(255, 255, 255, .1);
+  font-weight: bolder;
+
+  /* color: red; */
 }
 </style>
 
 <template>
-    <div class="class-container uk-flex">
-        <div class="class-label uk-text-center uk-width-auto uk-text-center uk-padding-small uk-padding-remove-vertical">
-            <span class="uk-text-bold">{{ member.Subclass }}</span>
+    <div class="uk-flex">
+        <div class="class-container class-label">
+            <span v-if="member.Subclass" class="uk-text-bold">{{ member.Subclass }}</span>
+            <span v-else class="uk-text-bold">None</span>
         </div>
+        <div v-if="member.Role == 'Guild Leader'" class="rank-container">
+            <span uk-icon="icon: star"></span>
+            <span uk-icon="icon: star"></span>
+            <span uk-icon="icon: star"></span>
+            <span uk-icon="icon: star"></span>
+            <span uk-icon="icon: star"></span>
+        </div>
+        <div v-if="member.Role == 'Member'" class="rank-container">
+            <span uk-icon="icon: star"></span>
+        </div>
+        <div v-if="member.Role == ''" class="rank-container">
+            <span>No Guild Rank</span>
+        </div>
+        <span v-if="props.viewer == 'Guild Leader'" class="uk-icon-button uk-position-right uk-margin-small-left" uk-icon="icon: cog; ratio: 1.3" :uk-toggle="'target: #' +  member.Username + 'options; position: top'"></span>
     </div>
     <div class="member-card uk-flex uk-width-auto">
-        <div class="member-info-container uk-width-expand uk-flex uk-flex-column">
             
-            <div class="member-name-container uk-text-center uk-flex uk-flex-column">
-                <div>
-                    <span class="member-name text-orange uk-margin-small-left uk-text-large">{{ member.Username }} </span>
+
+        <div class="member-info-container uk-width-expand uk-flex uk-flex-column">
+            <div :class="{'member-name-container uk-text-center uk-flex uk-overflow-hidden': member,
+                'leader' : member.Role == 'Guild Leader',
+                'member' : member.Role == 'Member'}">
+                <!-- <div>
+                    <div class="card-logo " :data-src="guild.Logo" alt="Uploaded Image" uk-img></div>
+                </div> -->
+                <div class="uk-width-expand">
+                    <span class="member-name uk-margin-small-left uk-text-large">{{ member.Username }} </span>
                 </div>
-                <div>
-                    <span class="member-role"> ( {{ member.Role }} )</span>
+              </div>
+              <div>
+                <div :id="member.Username + 'options'" class="goa-container uk-padding uk-position-top uk-width-medium" hidden>
+                  <div class="uk-position-relative">
+                    <button class="uk-button uk-button-small goa-edit-button text-goa-red uk-position-top-right" :uk-toggle="'target: #' +  member.Username + 'options;'">X</button>
+                    <p class="text-goa-red uk-margin-remove">Member Options</p>
+                    <button @click="removeFromGuild" class="goa-button uk-margin-top">Remove From Guild</button>
+                  </div>
                 </div>
-            </div>
+              </div>
             <div class="member-professions uk-flex uk-flex-column">
                 <div class="prof-1">
                     <span class="uk-margin-left">Profession 1:</span><span>{{ member.Profession1  }}</span>
@@ -174,15 +319,20 @@ label {
                     :data="member.Primary"
                     uk-img>
                 </div>
-                <div v-else>
-                <div class="gold uk-flex uk-flex-center uk-flex-middle">
-                    <span class="uk-text-lead text-orange">TRUE</span>
+                <div v-if="member.Primary == ''">
+                  <div class="gold uk-flex uk-flex-center uk-flex-middle">
+                      <span class=" text-orange">No Class</span>
+                  </div>
                 </div>
+                <div v-if="member.Primary == member.Secondary && member.Primary != ''">
+                  <div class="gold true-class uk-flex uk-flex-center uk-flex-middle">
+                      <span class=" text-orange">TRUE</span>
+                  </div>
                 </div>
             </div>
-            <div class="secondary tool-tip-2">
+            <div class="secondary tool-tip">
                 <div
-                    :class="{'uk-background-cover silver tool-tip-2' : member, 'true-class': member.Primary == member.Secondary}"
+                    :class="{'uk-background-cover silver tool-tip' : member, 'true-class': member.Primary == member.Secondary && member.Primary != ''}"
                     :data-src="getClassIcon(member.Secondary)"
                     :data="member.Secondary"
                     uk-img>
@@ -191,11 +341,11 @@ label {
         </div>
     </div>
     <div class="xp-container uk-flex">
-        <div class="xp-label uk-text-center uk-text-center uk-padding-small uk-padding-remove-vertical">
-            <label class="xp-label-text text-black uk-text-default">XP</label>
-        </div>
         <div class="xp-value uk-text-center">
-            <span class="text-orange">345</span>
+            <span class="text-goa-red uk-width-auto">555</span>
+        </div>
+        <div class="xp-label uk-text-center uk-text-center uk-padding-small uk-padding-remove-vertical">
+            <label class="xp-label-text uk-text-default uk-text-bold">XP</label>
         </div>
     </div>
 </template>

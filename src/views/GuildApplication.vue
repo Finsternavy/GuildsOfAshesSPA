@@ -140,7 +140,7 @@ const goHome = () => {
 
 <template>
     <div class="application-preview goa-container uk-margin-top uk-margin-bottom-large uk-padding">
-            <h2 class="uk-text-center text-orange">{{ guild.Name }}</h2>
+            <h2 class="uk-text-center text-goa-red">{{ guild.Name }}</h2>
             <div
                 :class="{
                 'logo-container': guild.LogoBorder == false,
@@ -149,10 +149,10 @@ const goHome = () => {
             >
                 <img class="guild-logo-upload" :src="guild.Logo" alt="Uploaded Image" uk-img />
             </div>
-            <!-- <h4 class="text-orange">Description:</h4> -->
+            <!-- <h4 class="text-goa-red">Description:</h4> -->
             <div v-if="success" class="uk-margin-large-top">
                 <h3 class="text-success uk-text-center">Application submitted successfully!</h3>
-                <p class="uk-light uk-text-center">Thank you for applying to <span class="text-orange">{{ guild.Name }}</span>!</p>
+                <p class="uk-light uk-text-center">Thank you for applying to <span class="text-goa-red">{{ guild.Name }}</span>!</p>
                 <p class="uk-light uk-text-center">You will receive notification when your application has been reviewed.</p>
                 <div class="uk-flex uk-flex-center">
                     <button @click="goHome" class="goa-button">Home</button>
@@ -162,15 +162,15 @@ const goHome = () => {
                 <div v-html="description" class="uk-margin-large-top">
                 </div>
                 <ul class="uk-list">
-                    <p v-if="requirements && requirements.length > 0" class="text-orange uk-text-lead uk-text-bold">Requirements:</p>
+                    <p v-if="requirements && requirements.length > 0" class="text-goa-red uk-text-lead uk-text-bold">Requirements:</p>
                     <li v-for="requirement in requirements" class="">
                         <input type="checkbox" class="goa-input uk-margin-right">
                         <span class="requirement">{{ requirement }}</span>
                     </li>
                 </ul>
-                <h3 class="text-orange uk-text-center">Please answer all questions.</h3>
+                <h3 class="text-goa-red uk-text-center">Please answer all questions.</h3>
                 <div v-for="question in questions" class="app-question uk-margin-bottom">
-                    <p class="text-orange">{{question.question}}</p>
+                    <p class="text-goa-red">{{question.question}}</p>
                     <textarea v-if="question.answerType == 'typed'" 
                         class="goa-input uk-width-1-1" 
                         :name="'Question' +question.id" 

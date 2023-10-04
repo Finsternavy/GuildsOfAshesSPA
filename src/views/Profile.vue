@@ -3,25 +3,28 @@ import { ref, computed, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 import { useGuildStore } from "../stores/guildStore";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
+import MemberCard from "../components/MemberCard.vue";
+import router from "../router/routes";
 
 const store = useUserStore();
 let guildStore;
 let guild = ref({});
 let guildID = ref();
-const user = store.getUser;
+const user = ref();
 const selectedClass = ref();
 const baseUrl = process.env.APIURL;
 
 const hiddenKeys = ["Password", "GuildID", "UserID"];
 
 onBeforeMount(()=> {
+  user.value = store.getUser;
   guildStore = useGuildStore();
   guildID.value = guildStore.getGuild.GuildID;
 })
 
 const keys = computed(() => {
   let returnKeys = [];
-  let keys = Object.keys(user);
+  let keys = Object.keys(user.value);
 
   keys.forEach((key) => {
     if (checkHide(key)) {
@@ -51,14 +54,14 @@ const updateUserClass = async () => {
   // let hashedPassword = await hash(password.value);
   console.log(selectedClass.value);
   console.log("Name: ", selectedClass.value.name);
-  user.Subclass = selectedClass.value.name;
-  user.Primary = selectedClass.value.primary;
-  user.Secondary = selectedClass.value.secondary;
-  console.log("User now: ", user);
+  user.value.Subclass = selectedClass.value.name;
+  user.value.Primary = selectedClass.value.primary;
+  user.value.Secondary = selectedClass.value.secondary;
+  console.log("User now: ", user.value);
   // const call = {
   //   User: user,
   // };
-  const response = await fetch(baseUrl + "Users/updateUser/" + user.UserID, {
+  const response = await fetch(baseUrl + "Users/updateUser/" + user.value.UserID, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -66,7 +69,7 @@ const updateUserClass = async () => {
       "Access-Control-Allow-Credentials": true,
       "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify(user.value),
   });
 
   if (response.ok) {
@@ -108,14 +111,53 @@ const getGuildData = async () => {
     console.log("Error fetching thread data: ", response.statusText);
   }
 };
+
+const leaveGuild = async () => {
+  console.log("Leaving guild..");
+  guildID.value = localStorage.getItem("guildID");
+  const call = {
+    User: user.value,
+    GuildID: guildID.value,
+  };
+  const response = await fetch(baseUrl + "Guilds/leaveGuild", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    console.log("Guild data: ", data);
+    // store.setUser(data.Data);
+    localStorage.setItem("User", JSON.stringify(data.Data));
+    localStorage.removeItem("guildName");
+    localStorage.removeItem("guildLogo");
+    store.setGuildID(null);
+    localStorage.removeItem("guildID");
+    user.value = data.Data;
+    console.log("User after leaving guild: ", user.value);
+    location.reload();
+
+  } else {
+    console.log("Error fetching thread data: ", response.statusText);
+  }
+};
 </script>
 
 <style scoped>
-
+label {
+  color: rgb(255, 65, 65);
+}
 </style>
 
 <template>
   <div class="profile">
+    
     <div class="goa-container uk-margin-bottom">
       <!-- <h3 class="uk-light uk-text-center">{ Guild name } Roster</h3> -->
       <h3
@@ -128,7 +170,7 @@ const getGuildData = async () => {
         <div class="uk-flex uk-flex-center">
           <div v-if="selectedClass" class="uk-flex-column uk-width-1-2@l">
             <div class="uk-flex uk-flex-between uk-margin-bottom">
-              <label for="selected-primary text-orange">Primary Archetype</label>
+              <label for="selected-primary text-goa-red">Primary Archetype</label>
               <input
                 class="goa-input uk-text-center"
                 type="text"
@@ -138,7 +180,7 @@ const getGuildData = async () => {
               />
             </div>
             <div class="uk-flex uk-flex-between">
-              <label for="selected-secondary text-orange">Secondary Archetype</label>
+              <label for="selected-secondary text-goa-red">Secondary Archetype</label>
               <input
                 class="goa-input uk-text-center"
                 type="text"
@@ -155,12 +197,13 @@ const getGuildData = async () => {
       </div>
     </div>
     <div class="goa-container uk-padding user-info uk-flex uk-flex-column">
-      <h4 class="text-orange">User Details</h4>
-      <div class="user-details uk-flex uk-margin-bottom uk-child-width-1-4">
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
-          <label for="">Username</label>
-          <input class="goa-input" type="text" v-model="user.Username">
+      <h4 class="text-goa-red">User Details</h4>
+      <div class="uk-margin-bottom uk-width-1-1 uk-child-width-1-2 uk-flex uk-flex-center">
+        <div>
+          <MemberCard  :member="user" />
         </div>
+      </div>
+      <div v-if="user" class="user-details uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-4">
         <div class="input-container uk-padding-small uk-flex uk-flex-column">
           <label for="">Email</label>
           <input class="goa-input" type="text" v-model="user.Email">
@@ -174,31 +217,9 @@ const getGuildData = async () => {
           <input class="goa-input" type="text" v-model="user.Role">
         </div>
       </div>
-      <h4 class="text-orange">User Character Details</h4>
-      <div class="class-details uk-flex uk-margin-bottom uk-child-width-1-4">
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
-          <label for="">Class</label>
-          <input class="goa-input" type="text" v-model="user.Subclass">
-        </div>
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
-          <label for="">Primary Architype</label>
-          <input class="goa-input" type="text" v-model="user.Primary">
-        </div>
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
-          <label for="">Secondary Architype</label>
-          <input class="goa-input" type="text" v-model="user.Secondary">
-        </div>
-      </div>
-      <h4 class="text-orange">Profession Details</h4>
-      <div class="user-professions uk-flex uk-child-width-1-4">
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
-          <label for="">Profession 1</label>
-          <input class="goa-input" type="text" v-model="user.Profession1">
-        </div>
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
-          <label for="">Profession 2</label>
-          <input class="goa-input" type="text" v-model="user.Profession2">
-        </div>
+      <div class="leave-guild-controls">
+        <h4 class="text-goa-red">Guild Options</h4>
+        <button @click="leaveGuild" class="goa-button" type="submit">Leave Guild</button>
       </div>
     </div>
   </div>

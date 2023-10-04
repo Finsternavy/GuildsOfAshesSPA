@@ -76,6 +76,10 @@ const displayUserInfo = () => {
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.7);
 }
+
+.logo {
+  height: 40px;
+}
 </style>
 
 <template>
@@ -88,9 +92,9 @@ const displayUserInfo = () => {
       class="uk-navbar-container sub-menu uk-flex uk-flex-between uk-flex-middle"
     >
       <div class="left-nav uk-width-1-6">
-        <button class="logo-container" @click="goHome">
-          <img src="" alt="LOGO" />
-        </button>
+        <div class="remove-background" @click="goHome">
+          <img class="logo" src="../../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
+        </div>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
         <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link">
@@ -116,8 +120,8 @@ const displayUserInfo = () => {
           <div v-if="!store.getAuthenticated" class="not-logged-in">
             <RouterLink to="/login" class="uk-link">
               <div class="uk-flex uk-flex-column">
-                <span class="text-orange uk-margin-small-right" uk-icon="icon: user"></span>
-                <span class="text-orange">Login</span>
+                <span class="text-goa-red uk-margin-small-right" uk-icon="icon: user"></span>
+                <span class="text-goa-red">Login</span>
               </div>
             </RouterLink>
           </div>
@@ -128,7 +132,7 @@ const displayUserInfo = () => {
             <ul class="uk-margin-remove">
               <div class="uk-flex uk-flex-column uk-text-center">
                 <span uk-icon="icon: user" class=""></span>
-                <span class="text-orange uk-margin-remove">{{ displayUserInfo() }}</span>
+                <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
               </div>
               <div class="uk-dropdown uk-background-secondary goa-dropnav">
                 <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">

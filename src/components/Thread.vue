@@ -323,14 +323,14 @@ const downVote = async () => {
   <div class="thread">
     <div class="thread-header">
       <div class="uk-width-stretch uk-padding-small" @click="toggleThread()">
-        <h4 class="uk-light uk-margin-remove uk-text-left text-orange">
+        <h4 class="uk-light uk-margin-remove uk-text-left text-goa-red">
           <span>{{ data.ThreadTitle }} - </span>
           <span class="uk-text-muted uk-text-small"
             >Author: {{ data.AuthorUsername }}</span
           >
           <span class="interactions uk-float-right uk-text-primary"
             >Interactions:
-            <span class="text-orange">{{
+            <span class="text-goa-red">{{
               data.Comments.length + data.UpVotes + data.DownVotes
             }}</span></span
           >
@@ -443,7 +443,7 @@ const downVote = async () => {
     >
       <span
         v-if="data.Comments.length > 0"
-        class="reply text-orange uk-margin-left uk-margin-right uk-text-center"
+        class="reply text-goa-red uk-margin-left uk-margin-right uk-text-center"
         uk-icon="icon: reply; ratio: 2;"
       ></span>
       <div class="uk-width-stretch">

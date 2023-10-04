@@ -291,7 +291,7 @@ const toggleEditCommentControls = () => {
         v-if="props.data.QuoteText"
         class="in-response-container uk-padding-small uk-margin-small-top"
       >
-        <span v-if="props.data.QuoteAuthor" class="text-orange uk-text-bold"
+        <span v-if="props.data.QuoteAuthor" class="text-goa-red uk-text-bold"
           >@{{ props.data.QuoteAuthor }}:
         </span>
         <span>{{ props.data.QuoteText }}</span>

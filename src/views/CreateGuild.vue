@@ -185,7 +185,7 @@ textarea {
         v-if="guildLogoBase64"
         class="hero-preview uk-position-relative uk-width-1-1 uk-text-center"
       >
-        <h1 class="text-orange">Guild Logo Preview</h1>
+        <h1 class="text-goa-red">Guild Logo Preview</h1>
         <div
           v-if="guildLogoBase64"
           :class="{ 'logo-container': {}, 'bordered-logo-container': addBorder == true }"
@@ -211,7 +211,7 @@ textarea {
               <option :value="false">No</option>
             </select>
           </div>
-          <div class="text-orange uk-text-middle uk-padding-small uk-margin-top">
+          <div class="text-goa-red uk-text-middle uk-padding-small uk-margin-top">
             Recommend 'No' for png and 'Yes' for opaque logos.
           </div>
         </div>

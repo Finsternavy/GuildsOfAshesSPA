@@ -500,7 +500,7 @@ const getClassIcon = (className) => {
 
 <style scoped>
 .title {
-  color: orange;
+  color: rgb(255, 65, 65);
 }
 
 .small-text {
@@ -508,17 +508,17 @@ const getClassIcon = (className) => {
 }
 
 .true-class {
-  background-color: rgba(255, 165, 0, 0.2);
+  background-color: var(--goa-red-transparent);
 }
 
 .selected-types {
   /* background-color: rgba(255, 165, 0, .3); */
-  outline: 1px solid orange !important;
+  outline: 1px solid rgb(255, 65, 65) !important;
   /* color: black; */
 }
 
 .selected {
-  background-color: orange;
+  background-color: rgb(255, 100, 100);
   color: white;
 }
 
@@ -527,11 +527,11 @@ const getClassIcon = (className) => {
 }
 
 .orange {
-  outline: 1px solid orange !important;
+  outline: 1px solid rgb(255, 65, 65) !important;
 }
 
 label {
-  color: orange;
+  color: rgb(255, 65, 65);
 }
 
 .gradient-black {

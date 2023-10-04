@@ -36,7 +36,7 @@ const randomBackground = () => {
       <h3 class="uk-light">Task Board</h3>
       <div class="task-filters uk-flex uk-child-width-1-4">
         <div v-for="nums in 4" class="uk-flex uk-flex-column">
-          <label class="text-orange uk-margin-small-left" :for="'task-type-filter' + nums"
+          <label class="text-goa-red uk-margin-small-left" :for="'task-type-filter' + nums"
             >Filter {{ nums }}</label
           >
           <select

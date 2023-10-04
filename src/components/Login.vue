@@ -36,37 +36,41 @@ const doLogin = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    let user = data.Data;
-    // console.log("data: ", data);
-    // store.setUser(
-    //   user.UserID,
-    //   user.Username,
-    //   user.Password,
-    //   user.Email,
-    //   user.GuildID,
-    //   user.GuildName,
-    //   user.Role,
-    //   user.Subclass,
-    //   user.Primary,
-    //   user.Secondary,
-    //   user.Profession1,
-    //   user.Profession2
-    // );
-    // localStorage.setItem("User", JSON.stringify(data.Data));
-    // store.setUser(user);
-    store.setUser(data.Data);
-    store.setAuthenticated(true);
-    store.setGuildID(data.Data.GuildID);
-    console.log("Store authenticated: ", store.getAuthenticated);
-    console.log("GuildID? : ", data.Data.GuildID);
-    if (data.Data.GuildID) {
+    if (data.Message == 'User found'){
+      let user = data.Data;
+      // console.log("data: ", data);
+      // store.setUser(
+      //   user.UserID,
+      //   user.Username,
+      //   user.Password,
+      //   user.Email,
+      //   user.GuildID,
+      //   user.GuildName,
+      //   user.Role,
+      //   user.Subclass,
+      //   user.Primary,
+      //   user.Secondary,
+      //   user.Profession1,
+      //   user.Profession2
+      // );
+      // localStorage.setItem("User", JSON.stringify(data.Data));
+      // store.setUser(user);
+      store.setUser(data.Data);
+      store.setAuthenticated(true);
+      store.setGuildID(data.Data.GuildID);
+      console.log("Store authenticated: ", store.getAuthenticated);
+      console.log("GuildID? : ", data.Data.GuildID);
+      if (data.Data.GuildID) {
+        // location.reload();
+        router.push({ name: "guild-home" });
+      } else {
+        // location.reload();
+        router.push({ name: "guilds" });
+      }
       // location.reload();
-      router.push({ name: "guild-home" });
     } else {
-      // location.reload();
-      router.push({ name: "guilds" });
+      alert("User not found");
     }
-    // location.reload();
   } else {
     console.log("Error fetching data: ", response.statusText);
   }

@@ -129,7 +129,7 @@ const getThreadFromChild = (event) => {
 
 <template>
   <div class="forums goa-container uk-padding uk-margin-xlarge-bottom">
-    <h2 class="uk-light text-orange uk-text-center">GoA FORUMS</h2>
+    <h2 class="uk-light text-goa-red uk-text-center">GoA FORUMS</h2>
     <button class="goa-button uk-margin-bottom" @click="showThreadCreation()">
       Create Thread
     </button>

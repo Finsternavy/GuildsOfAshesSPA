@@ -21,6 +21,7 @@ let guildID = ref();
 let inbox = ref([]);
 let guildLogo = ref();
 let guildLeaderName = ref();
+let username = ref();
 
 let showContent = ref(false);
 
@@ -28,6 +29,11 @@ onBeforeMount(() => {
   userStore = useUserStore();
   guildStore = useGuildStore();
   user = userStore.getUser;
+  if (user){
+    username.value = user.Username;
+  } else {
+    username.value = '';
+  }
   if (localStorage.getItem("guildID")) {
     console.log("Got guildID from local storage..");
     guildID.value = localStorage.getItem("guildID");
@@ -171,6 +177,7 @@ const createApplication = () => {
 </script>
 
 <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
 /* .goa-container {
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
@@ -213,22 +220,27 @@ const createApplication = () => {
   margin-bottom: 40px;
   overflow: hidden;
 } */
-
+.guild-type-container {
+  border: 1px solid gray;
+  border-radius: 30px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
 .guild-type-info-label {
   background-color: rgb(117, 0, 0);
   color: white;
   padding: 3px 10px;
   border: 1px solid gray;
   border-bottom: none;
-  border-radius: 15px 15px 0 0;
-  width: fit-content;
+  /* border-radius: 30px 30px 0 0; */
+  /* width: fit-content; */
 }
 
 .guild-type-info {
   border: 1px solid gray;
   font-weight: 700;
   padding: 3px 10px;
-  border-radius: 0px 15px 15px 15px;
+  /* border-radius: 0px 0px 30px 30px; */
   background-color: black;
   
 }
@@ -238,7 +250,7 @@ const createApplication = () => {
   <Loading v-model="showContent" :message="'Loading Guild ...'" />
   <div v-if="showContent" class="guild-home">
     <!-- This will only show for guild leaders (Or delegated rank)-->
-    <div v-if="guildLeaderName == userStore.getUsername" class="guild-control-container uk-margin-bottom">
+    <div v-if="guildLeaderName == username" class="guild-control-container uk-margin-bottom">
       <button v-if="inbox && inbox.length > 0" uk-toggle="target: #Inbox; animation: uk-animation-fade" 
         class="goa-button goa-edit-button uk-flex uk-flex-middle">
         <span  uk-icon="icon: warning" class="uk-text-danger"></span>
@@ -249,7 +261,7 @@ const createApplication = () => {
     <!-- Guild Application Review-->
     <div id="Inbox" class="goa-container uk-padding uk-margin-bottom" hidden>
       <div v-for="application in inbox" class="applicant-container goa-container uk-flex uk-flex-column">
-        <h3 class="text-orange">Applicant Info</h3>
+        <h3 class="text-goa-red">Applicant Info</h3>
         <div class="applicant-info uk-width-1-1 uk-flex uk-child-width-1-4 uk-grid-small uk-margin-bottom" uk-grid>
           <div class="applicant-data-item uk-flex uk-flex-column">
             <label for="">Username</label>
@@ -268,18 +280,18 @@ const createApplication = () => {
             <input class="goa-input" type="text" readonly v-model="application.User.Secondary">
           </div>
         </div>
-        <hr class="uk-divider-icon uk-width-1-1 text-orange">
+        <hr class="uk-divider-icon uk-width-1-1 text-goa-red">
         <div class="application-responses">
           <div class="question-info">
-            <h3 class="text-orange">Questions</h3>
+            <h3 class="text-goa-red">Questions</h3>
             <div v-for="question in application.Questions" class="uk-margin-bottom">
-              <p class="text-orange">{{ question.question }}</p>
+              <p class="text-goa-red">{{ question.question }}</p>
               <p>{{ question.answer }}</p>
             </div>
           </div>
         </div>
-        <hr class="uk-divider-icon uk-width-1-1 text-orange">
-        <h4 class="text-orange uk-text-center uk-margin-remove-top uk-margin-medium-bottom">Process Application</h4>
+        <hr class="uk-divider-icon uk-width-1-1 text-goa-red">
+        <h4 class="text-goa-red uk-text-center uk-margin-remove-top uk-margin-medium-bottom">Process Application</h4>
         <div class="application-responses uk-flex uk-flex-around uk-width-1-1">
           <div class="Approve-container">
             <button class="goa-button">Send {{ application.User.Username }} a message</button>
@@ -301,14 +313,15 @@ const createApplication = () => {
 
     <div class="goa-container uk-padding uk-margin-bottom">
       <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
-      <div v-if="!userStore.getGuildID">
+      <div v-if=" user && !user.GuildID">
         <button
+          v-if="user"
           @click="apply" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
           Apply
         </button>
       </div>
       <button
-        v-if="user.Role == 'Guild Leader'"
+        v-if="user && user.Role == 'Guild Leader'"
         @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
         Create Application
       </button>
@@ -318,21 +331,21 @@ const createApplication = () => {
       >
         ( Members: {{ guild.MemberList.length }} )
       </p>
-      <div class="uk-flex uk-flex-around uk-width-1-1 uk-child-width-1-4 uk-margin-large-bottom uk-text-uppercase">
-        <div class="guild-type-info-container ">
-          <div class="guild-type-info-label" for="">Type</div>
+      <div class="guild-type-container uk-flex uk-width-1-1 uk-margin-large-bottom uk-text-uppercase">
+        <div class="guild-type-info-container uk-width-expand">
+          <div class="guild-type-info-label uk-text-center" for="">Type</div>
           <div class="guild-type-info uk-text-center">{{ guild.Category }}</div>
         </div>
-        <div class="guild-type-info-container ">
-          <div class="guild-type-info-label" for="">Focus</div>
+        <div class="guild-type-info-container uk-width-expand">
+          <div class="guild-type-info-label uk-text-center" for="">Focus</div>
           <div class="guild-type-info uk-text-center">{{ guild.Focus }}</div>
         </div>
-        <div v-if="guild.PrimaryRace" class="guild-type-info-container ">
-          <div class="guild-type-info-label" for="">Race</div>
+        <div v-if="guild.PrimaryRace" class="guild-type-info-container uk-width-expand">
+          <div class="guild-type-info-label uk-text-center" for="">Race</div>
           <div class="guild-type-info uk-text-center">{{ guild.PrimaryRace }}</div>
         </div>
-        <div class="guild-type-info-container ">
-          <div class="guild-type-info-label" for="">Region</div>
+        <div class="guild-type-info-container uk-width-expand">
+          <div class="guild-type-info-label uk-text-center" for="">Region</div>
           <div class="guild-type-info uk-text-center">{{ guild.Region }}</div>
         </div>
       </div>
@@ -354,7 +367,7 @@ const createApplication = () => {
       <div class="uk-margin-bottom goa-container uk-padding">
         <p class="uk-margin-remove-bottom">
           Alert issued by:
-          <span v-if="guild.Leader" class="text-orange uk-text-bold">{{
+          <span v-if="guild.Leader" class="text-goa-red uk-text-bold">{{
             guild.Leader.Username
           }}</span>
         </p>
