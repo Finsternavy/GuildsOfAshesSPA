@@ -221,7 +221,7 @@ label {
     border: 2px solid gray;
     border-left: none;
     border-bottom: none;
-    border-radius: 0 10px 0 0;
+    border-radius: 0 20px 0 0;
     padding: 3px 20px;
     padding-top: 1px;
     color: orange;
