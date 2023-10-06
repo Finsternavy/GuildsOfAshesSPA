@@ -3,10 +3,10 @@ import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 
-const baseUrl = process.env.APIURL + "Guilds";
+let baseUrl = process.env.APIURL + "Guilds";
 let store = useUserStore();
-const guildID = ref();
-const data = ref([
+let guildID = ref();
+let data = ref([
 ])
 
 let questionText = ref("");
@@ -45,7 +45,7 @@ watch(questionType, (newVal, oldVal) => {
         options.value.push('No');
     }
 })
-const addToApp = () => {
+let addToApp = () => {
     console.log("Adding to app");
     let question = {
         id: data.value.length + 1,
@@ -63,26 +63,26 @@ const addToApp = () => {
     console.log(data.value);
 }
 
-const addRequirement = () => {
+let addRequirement = () => {
     console.log("Adding requirement");
     requirements.value.push(requirement.value);
     requirement.value = '';
 }
 
-const addSection = () => {
+let addSection = () => {
     console.log("Adding description", section.value);
     description.value = section.value;
     section.value = '';
 }
 
-const addOption = () => {
+let addOption = () => {
     console.log("Adding option");
     options.value.push(option.value);
     option.value = '';
 
 }
 
-const checkQuestionType = () => {
+let checkQuestionType = () => {
     if (questionType.value == "multi") {
         console.log("Adding true false from checkQuestionType");
         options.value.push(true);
@@ -92,7 +92,7 @@ const checkQuestionType = () => {
     return false;
 }
 
-const finalizeApplication = async () => {
+let finalizeApplication = async () => {
     console.log("Finalizing application");
     console.log(data.value);
     application.value.description = description.value;
@@ -100,16 +100,16 @@ const finalizeApplication = async () => {
     application.value.questions = data.value;
     console.log("Application: ", application.value);
 
-    const user = store.getUser;
+    let user = store.getUser;
     console.log("Attempting to create guild..");
-    const call = {
+    let call = {
         GuildID: guildID.value,
         Description: description.value,
         Requirements: requirements.value,
         Questions: data.value
     };
     console.log("call: ", call);
-    const response = await fetch(baseUrl + "/addGuildApplication", {
+    let response = await fetch(baseUrl + "/addGuildApplication", {
     method: "POST",
     headers: {
         Accept: "application/json",

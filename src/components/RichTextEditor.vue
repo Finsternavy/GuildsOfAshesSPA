@@ -1,9 +1,9 @@
 <script setup>
 import { nextTick } from "process";
 import { ref, onBeforeMount, watch } from "vue";
-// const emit = defineEmits(["input"]);
-const props = defineProps(["modelValue"]);
-const emits = defineEmits(["update:modelValue"]);
+// let emit = defineEmits(["input"]);
+let props = defineProps(["modelValue"]);
+let emits = defineEmits(["update:modelValue"]);
 let editableContent = ref(props.modelValue);
 onBeforeMount(() => {
 //   editableContent.value = props.content;
@@ -19,7 +19,7 @@ watch(
   }
 );
 
-const handleInput = (event) => {
+let handleInput = (event) => {
     editableContent.value = event.target.innerHTML;
 //   props.modelValue = editableContent.value;
     emits("update:modelValue", editableContent.value);

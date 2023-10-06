@@ -10,7 +10,7 @@ import Summoner from "../../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../../public/AOC_Icons/cleric_icon.png";
 import Bard from "../../public/AOC_Icons/bard_icon.png";
 
-const props = defineProps({
+let props = defineProps({
     member: {
         type: Object,
         required: true
@@ -23,13 +23,13 @@ const props = defineProps({
     }
 });
 
-const emits = ['getGuildData'];
+let emits = ['getGuildData'];
 
-const baseUrl = process.env.APIURL;
+let baseUrl = process.env.APIURL;
 
-const showRole = ref(false);
+let showRole = ref(false);
 let guildStore;
-const guild = ref({});
+let guild = ref({});
 
 onBeforeMount(() => {
     guildStore = useGuildStore();
@@ -39,7 +39,7 @@ onBeforeMount(() => {
     }
 })
 
-const getClassIcon = (className) => {
+let getClassIcon = (className) => {
   console.log("className: ", className);
   if (className.toLowerCase() === "fighter") {
     return Fighter;
@@ -67,14 +67,14 @@ const getClassIcon = (className) => {
   }
 };
 
-const removeFromGuild = async () => {
+let removeFromGuild = async () => {
   console.log("Leaving guild..");
   let guildID = localStorage.getItem("guildID");
-  const call = {
+  let call = {
     User: props.member,
     GuildID: guildID,
   };
-  const response = await fetch(baseUrl + "Guilds/leaveGuild", {
+  let response = await fetch(baseUrl + "Guilds/leaveGuild", {
     method: "POST",
     headers: {
       Accept: "application/json",

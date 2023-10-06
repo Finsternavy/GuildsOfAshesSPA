@@ -5,13 +5,13 @@ let props = defineProps({
   sites : Array
 });
 
-const webLinks = ref(props.sites)
+let webLinks = ref(props.sites)
 
 let sname = ref('')
 let surl = ref('')
 let simage = ref('')
 
-const addWebLink = async () => {
+let addWebLink = async () => {
   console.log('name: ', sname)
   console.log('url: ', surl)
   console.log('image: ', simage)

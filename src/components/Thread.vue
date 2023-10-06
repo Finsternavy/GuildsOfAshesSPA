@@ -4,11 +4,11 @@ import Comment from "../components/Comment.vue";
 import uikit from "uikit";
 import { useUserStore } from "../stores/userStore";
 
-const baseUrl = process.env.APIURL + "Forum";
-const store = useUserStore();
+let baseUrl = process.env.APIURL + "Forum";
+let store = useUserStore();
 let user = ref();
-const showThread = ref(false);
-const showComments = ref(false);
+let showThread = ref(false);
+let showComments = ref(false);
 let commentCount = ref();
 let commentMessage = ref("");
 let showCreateComment = ref(false);
@@ -16,7 +16,7 @@ let showEditcontrols = ref(false);
 let threadEditMessage = ref();
 let editTitle = ref();
 
-const props = defineProps({
+let props = defineProps({
   modelValue: {},
   data: {},
   function: {
@@ -24,7 +24,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"], ["parent-get-threads"]);
+let emit = defineEmits(["update:modelValue"], ["parent-get-threads"]);
 
 onBeforeMount(() => {
   commentCount.value = props.data.Comments.length;
@@ -32,16 +32,16 @@ onBeforeMount(() => {
   threadEditMessage.value = props.data.ThreadMessage;
   editTitle.value = props.data.ThreadTitle;
 });
-const comments = ref();
+let comments = ref();
 
-const toggleChildren = () => {
+let toggleChildren = () => {
   // console.log(document.querySelector(`.comments-container${props.data.id}`));
   console.log("Toggling children: ", props.data.ThreadID);
   showComments.value = !showComments.value;
   console.log("showComments: ", showComments.value);
 };
 
-const toggleThread = () => {
+let toggleThread = () => {
   console.log("Toggling thread: ", props.data.ThreadID);
   showThread.value = !showThread.value;
   console.log("showThread: ", showThread.value);
@@ -51,26 +51,26 @@ const toggleThread = () => {
   }
 };
 
-const showCreateCommentsControls = () => {
+let showCreateCommentsControls = () => {
   showCreateComment.value = !showCreateComment.value;
   console.log("Toggled show to: ", showCreateComment.value);
 };
 
-const getShowCreateCommentsValue = () => {
+let getShowCreateCommentsValue = () => {
   return showCreateComment.value;
 };
 
 
-const toggleEditcontrols = () => {
+let toggleEditcontrols = () => {
   showEditcontrols.value = !showEditcontrols.value;
 };
 
-const postComment = async () => {
-  const user = store.getUser;
-  const threadID = props.data.ThreadID;
-  const date = new Date().toISOString();
-  const time = new Date().getMilliseconds();
-  // const time = new Date().toTimeString();
+let postComment = async () => {
+  let user = store.getUser;
+  let threadID = props.data.ThreadID;
+  let date = new Date().toISOString();
+  let time = new Date().getMilliseconds();
+  // let time = new Date().toTimeString();
   let payload = {
     AuthorID: user.UserID,
     ThreadID: threadID,
@@ -81,7 +81,7 @@ const postComment = async () => {
   };
 
   console.log("Posting comment: ", payload);
-  const response = await fetch(baseUrl + "/postComment", {
+  let response = await fetch(baseUrl + "/postComment", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -97,18 +97,18 @@ const postComment = async () => {
   emit("parent-get-threads");
 };
 
-const deleteThread = async () => {
-  const user = store.getUser;
-  const threadID = props.data.ThreadID;
-  const date = new Date().toISOString();
-  // const time = new Date().toTimeString();
+let deleteThread = async () => {
+  let user = store.getUser;
+  let threadID = props.data.ThreadID;
+  let date = new Date().toISOString();
+  // let time = new Date().toTimeString();
   let payload = {
     AuthorID: user.UserID,
     ThreadID: threadID,
   };
 
   console.log("Deleting thread: ", payload);
-  const response = await fetch(baseUrl + "/deleteThread", {
+  let response = await fetch(baseUrl + "/deleteThread", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -129,11 +129,11 @@ const deleteThread = async () => {
   }
 };
 
-const editThread = async () => {
-  const user = store.getUser;
-  const threadID = props.data.ThreadID;
-  const date = new Date().toISOString();
-  // const time = new Date().toTimeString();
+let editThread = async () => {
+  let user = store.getUser;
+  let threadID = props.data.ThreadID;
+  let date = new Date().toISOString();
+  // let time = new Date().toTimeString();
   let payload = {
     AuthorID: user.UserID,
     GuildID: user.GuildID,
@@ -145,7 +145,7 @@ const editThread = async () => {
   };
 
   console.log("Editing thread: ", payload);
-  const response = await fetch(baseUrl + "/editThread", {
+  let response = await fetch(baseUrl + "/editThread", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -167,23 +167,23 @@ const editThread = async () => {
   toggleEditcontrols();
 };
 
-const parentFunction = () => {
+let parentFunction = () => {
   console.log("Calling parent function");
   emit("parent-get-threads");
   // () => props.function();
 };
 
-const upVote = async () => {
-  const user = store.getUser;
-  const threadID = props.data.ThreadID;
-  const date = new Date().toISOString();
-  // const time = new Date().toTimeString();
+let upVote = async () => {
+  let user = store.getUser;
+  let threadID = props.data.ThreadID;
+  let date = new Date().toISOString();
+  // let time = new Date().toTimeString();
   let payload = {
     ThreadID: threadID,
   };
 
   console.log("Up voting: ", payload);
-  const response = await fetch(baseUrl + "/upVoteThread", {
+  let response = await fetch(baseUrl + "/upVoteThread", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -200,17 +200,17 @@ const upVote = async () => {
   }
 };
 
-const downVote = async () => {
-  const user = store.getUser;
-  const threadID = props.data.ThreadID;
-  const date = new Date().toISOString();
-  // const time = new Date().toTimeString();
+let downVote = async () => {
+  let user = store.getUser;
+  let threadID = props.data.ThreadID;
+  let date = new Date().toISOString();
+  // let time = new Date().toTimeString();
   let payload = {
     ThreadID: threadID,
   };
 
   console.log("Up voting: ", payload);
-  const response = await fetch(baseUrl + "/downVoteThread", {
+  let response = await fetch(baseUrl + "/downVoteThread", {
     method: "POST",
     headers: {
       Accept: "application/json",

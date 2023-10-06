@@ -2,19 +2,19 @@
 import { ref, onBeforeMount } from "vue";
 import router from "../router/routes";
 
-const baseUrl = process.env.APIURL + "Guilds";
-const guildsList = ref();
+let baseUrl = process.env.APIURL + "Guilds";
+let guildsList = ref();
 
 onBeforeMount(() => {
   getAllGuilds();
 });
 
-const getAllGuilds = async () => {
+let getAllGuilds = async () => {
   console.log("Fetching guild data..");
-  //   const call = {
+  //   let call = {
   //     GuildID: guildID.value,
   //   };
-  const response = await fetch(baseUrl + "/getAllGuilds", {
+  let response = await fetch(baseUrl + "/getAllGuilds", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -38,13 +38,13 @@ const getAllGuilds = async () => {
   }
 };
 
-const visit = (id) => {
+let visit = (id) => {
   console.log("visit");
   localStorage.setItem("guildID", id);
   router.push({ name: "guild-home" });
 };
 
-const goToCreate = () => {
+let goToCreate = () => {
   console.log("goToCreate");
   router.push({ name: "guild-create" });
 };

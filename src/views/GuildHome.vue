@@ -7,8 +7,8 @@ import { useGuildStore } from "../stores/guildStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 import Loading from "../components/Loading.vue";
 
-const baseUrl = process.env.APIURL + "Guilds";
-const discordServers = ref([
+let baseUrl = process.env.APIURL + "Guilds";
+let discordServers = ref([
   {
     embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",
   },
@@ -44,7 +44,7 @@ onBeforeMount(() => {
   console.log("GuildID: ", guildID.value);
 });
 
-// const memberCount = computed(() => {
+// let memberCount = computed(() => {
 //   let count = 0;
 //   if (guild.MemberList) {
 //     count = guild.value.MemberList.length;
@@ -53,12 +53,12 @@ onBeforeMount(() => {
 //   return count;
 // });
 
-const getGuildData = async () => {
+let getGuildData = async () => {
   console.log("Fetching guild data..");
-  const call = {
+  let call = {
     GuildID: guildID.value,
   };
-  const response = await fetch(baseUrl + "/fetchGuildData", {
+  let response = await fetch(baseUrl + "/fetchGuildData", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -103,14 +103,14 @@ const getGuildData = async () => {
   }
 };
 
-const denyApplication = async (application) => {
+let denyApplication = async (application) => {
     console.log("Attempting to deny application for: ", application.User.Username);
-    const call = {
+    let call = {
         GuildID: application.GuildID,
         User: application.User
     };
     console.log("call: ", call);
-    const response = await fetch(baseUrl + "/denyGuildApplication", {
+    let response = await fetch(baseUrl + "/denyGuildApplication", {
     method: "POST",
     headers: {
         Accept: "application/json",
@@ -132,16 +132,16 @@ const denyApplication = async (application) => {
     }
 }
 
-const approveApplication = async (application) => {
+let approveApplication = async (application) => {
     console.log("Attempting to deny application for: ", application.User.Username);
     application.User.Role = "Member";
-    const call = {
+    let call = {
         GuildID: application.GuildID,
         GuildName: guild.value.Name,
         User: application.User
     };
     console.log("call: ", call);
-    const response = await fetch(baseUrl + "/approveGuildApplication", {
+    let response = await fetch(baseUrl + "/approveGuildApplication", {
     method: "POST",
     headers: {
         Accept: "application/json",
@@ -163,7 +163,7 @@ const approveApplication = async (application) => {
     }
 }
 
-const apply = () => {
+let apply = () => {
   if (guild.value.AutoApprove) {
     return alert("You can apply!");
   }
@@ -171,7 +171,7 @@ const apply = () => {
   router.push({ name: "guild-application" });
 };
 
-const createApplication = () => {
+let createApplication = () => {
   router.push({ name: "create-application" });
 };
 </script>

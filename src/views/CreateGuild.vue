@@ -4,19 +4,19 @@ import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
 import RichTextEditor from "../components/RichTextEditor.vue";
 
-const baseUrl = process.env.APIURL + "Guilds";
+let baseUrl = process.env.APIURL + "Guilds";
 let store;
 let user = ref();
-const guildName = ref();
+let guildName = ref();
 let selectedImage = ref();
-const guildLogoBase64 = ref();
-const guildDescription = ref();
-const guildCategory = ref();
-const guildFocus = ref();
-const guildPrimaryRace = ref();
-const guildRegion = ref();
-const autoApprove = ref();
-const addBorder = ref();
+let guildLogoBase64 = ref();
+let guildDescription = ref();
+let guildCategory = ref();
+let guildFocus = ref();
+let guildPrimaryRace = ref();
+let guildRegion = ref();
+let autoApprove = ref();
+let addBorder = ref();
 
 onBeforeMount(() => {
   store = useUserStore();
@@ -24,10 +24,10 @@ onBeforeMount(() => {
   console.log("User on before mount: ", user);
 });
 
-const createGuild = async () => {
-  const user = store.getUser;
+let createGuild = async () => {
+  let user = store.getUser;
   console.log("Attempting to create guild..");
-  const call = {
+  let call = {
     Name: guildName.value,
     Leader: user,
     AutoApprove: autoApprove.value,
@@ -40,7 +40,7 @@ const createGuild = async () => {
     Region: guildRegion.value,
   };
   console.log("call: ", call);
-  const response = await fetch(baseUrl + "/createGuild", {
+  let response = await fetch(baseUrl + "/createGuild", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -63,12 +63,12 @@ const createGuild = async () => {
   }
 };
 
-const handleImage = (event) => {
-  const file = event.target.files[0];
+let handleImage = (event) => {
+  let file = event.target.files[0];
   console.log("File: ", file);
   if (file && file.type.startsWith("image/")) {
     console.log("It is an image file..");
-    const reader = new FileReader();
+    let reader = new FileReader();
 
     reader.onload = () => {
       guildLogoBase64.value = reader.result;
@@ -82,7 +82,7 @@ const handleImage = (event) => {
   console.log("guildLogoBase64: ", guildLogoBase64.value);
 };
 
-// const handleInput = () => {
+// let handleInput = () => {
 //   guildDescription.value = this.$refs.guildDescription.innerHTML;
 //   console.log("Guild description: ", guildDescription.value);
 // };

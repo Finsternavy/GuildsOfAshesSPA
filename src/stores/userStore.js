@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useUserStore = defineStore('userStore', {
+export let useUserStore = defineStore('userStore', {
 
   state: () => ({
     user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")) : null,

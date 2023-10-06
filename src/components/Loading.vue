@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-const props = defineProps({
+let props = defineProps({
     modelValue: {
     },
     message: {

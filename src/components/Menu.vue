@@ -8,7 +8,7 @@ let store = useUserStore();
 let user = ref();
 let authenticated = ref(false);
 let username = ref();
-const goHome = () => {
+let goHome = () => {
   console.log("Going home");
   router.push("/");
 };
@@ -23,7 +23,7 @@ onMounted(() => {
   }
 });
 
-const checkUser = () => {
+let checkUser = () => {
   user = store.getUser;
   console.log(user);
   if (!user) {
@@ -34,7 +34,7 @@ const checkUser = () => {
   return true;
 };
 
-const logout = () => {
+let logout = () => {
   localStorage.removeItem("User");
   console.log("Logging out");
   store.removeUser();
@@ -43,7 +43,7 @@ const logout = () => {
   // location.reload();
 };
 
-const displayUserInfo = () => {
+let displayUserInfo = () => {
   let displayText = "";
   let tempName = store.getUsername;
   // let tempID = store.getGuildID;

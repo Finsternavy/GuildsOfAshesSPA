@@ -3,7 +3,7 @@ import { ref } from "vue";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 import GoaLogo from "../../public/Images/GoALogoFinalwithwordsandShadow.png";
 
-const selectedClass = ref();
+let selectedClass = ref();
 </script>
 
 <style scoped>

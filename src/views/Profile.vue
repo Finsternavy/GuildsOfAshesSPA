@@ -6,15 +6,15 @@ import CharacterMatrix from "../components/CharacterMatrix.vue";
 import MemberCard from "../components/MemberCard.vue";
 import router from "../router/routes";
 
-const store = useUserStore();
+let store = useUserStore();
 let guildStore;
 let guild = ref({});
 let guildID = ref();
-const user = ref();
-const selectedClass = ref();
-const baseUrl = process.env.APIURL;
+let user = ref();
+let selectedClass = ref();
+let baseUrl = process.env.APIURL;
 
-const hiddenKeys = ["Password", "GuildID", "UserID"];
+let hiddenKeys = ["Password", "GuildID", "UserID"];
 
 onBeforeMount(()=> {
   user.value = store.getUser;
@@ -22,7 +22,7 @@ onBeforeMount(()=> {
   guildID.value = guildStore.getGuild.GuildID;
 })
 
-const keys = computed(() => {
+let keys = computed(() => {
   let returnKeys = [];
   let keys = Object.keys(user.value);
 
@@ -34,7 +34,7 @@ const keys = computed(() => {
   return returnKeys;
 });
 
-const checkHide = (key) => {
+let checkHide = (key) => {
   let found = false;
   hiddenKeys.forEach((item) => {
     // console.log("Key: ", key, " check key: ", item);
@@ -49,7 +49,7 @@ const checkHide = (key) => {
   return true;
 };
 
-const updateUserClass = async () => {
+let updateUserClass = async () => {
   // console.log("baseURL: ", baseUrl);
   // let hashedPassword = await hash(password.value);
   console.log(selectedClass.value);
@@ -58,10 +58,10 @@ const updateUserClass = async () => {
   user.value.Primary = selectedClass.value.primary;
   user.value.Secondary = selectedClass.value.secondary;
   console.log("User now: ", user.value);
-  // const call = {
+  // let call = {
   //   User: user,
   // };
-  const response = await fetch(baseUrl + "Users/updateUser/" + user.value.UserID, {
+  let response = await fetch(baseUrl + "Users/updateUser/" + user.value.UserID, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -82,13 +82,13 @@ const updateUserClass = async () => {
   }
 };
 
-const getGuildData = async () => {
+let getGuildData = async () => {
   console.log("Fetching guild data..");
   guildID.value = localStorage.getItem("guildID");
-  const call = {
+  let call = {
     GuildID: guildID.value,
   };
-  const response = await fetch(baseUrl + "Guilds/fetchGuildData", {
+  let response = await fetch(baseUrl + "Guilds/fetchGuildData", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -112,14 +112,14 @@ const getGuildData = async () => {
   }
 };
 
-const leaveGuild = async () => {
+let leaveGuild = async () => {
   console.log("Leaving guild..");
   guildID.value = localStorage.getItem("guildID");
-  const call = {
+  let call = {
     User: user.value,
     GuildID: guildID.value,
   };
-  const response = await fetch(baseUrl + "Guilds/leaveGuild", {
+  let response = await fetch(baseUrl + "Guilds/leaveGuild", {
     method: "POST",
     headers: {
       Accept: "application/json",

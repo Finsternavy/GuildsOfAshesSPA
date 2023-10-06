@@ -4,13 +4,13 @@ import Parser from "rss-parser";
 
 let parser = new Parser();
 let feedItems = [];
-// const feed = await parser.parseURL('https://forums.ashesofcreation.com//feed.rss');
+// let feed = await parser.parseURL('https://forums.ashesofcreation.com//feed.rss');
 
 onBeforeMount(() => {
   console.log("Fetching Rss Feed");
   getFeed();
 });
-const getFeed = async () => {
+let getFeed = async () => {
   let feed = await parser
     .parseURL("https://nitter.net/AshesofCreation", {
       // mode: "no-cors",https://nitter.net/AshesofCreation/rss

@@ -13,16 +13,16 @@ import Cleric from "../../public/AOC_Icons/cleric_icon.png";
 import Bard from "../../public/AOC_Icons/bard_icon.png";
 import MemberCard from "../components/MemberCard.vue";
 
-const baseUrl = process.env.APIURL;
-const selectedClass = ref();
-const store = useUserStore();
+let baseUrl = process.env.APIURL;
+let selectedClass = ref();
+let store = useUserStore();
 let guildStore;
-const user = store.getUser;
+let user = store.getUser;
 let guild = ref({});
 let membersList = ref();
 let guildLeader = ref({});
 let guildMembers = ref([]);
-const architypes = ref(['FIGHTER', 'TANK', 'ROGUE', 'RANGER', 'MAGE', 'SUMMONER', 'CLERIC', 'BARD'])
+let architypes = ref(['FIGHTER', 'TANK', 'ROGUE', 'RANGER', 'MAGE', 'SUMMONER', 'CLERIC', 'BARD'])
 
 onBeforeMount(() => {
   guildStore = useGuildStore();
@@ -31,13 +31,13 @@ onBeforeMount(() => {
   console.log("membersList: ", membersList.value);
 });
 
-const getGuildData = async () => {
+let getGuildData = async () => {
   console.log("Fetching guild data..");
   let guildID = store.getGuildID;
-  const call = {
+  let call = {
     GuildID: guildID,
   };
-  const response = await fetch(baseUrl + "Guilds/fetchGuildData", {
+  let response = await fetch(baseUrl + "Guilds/fetchGuildData", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -59,7 +59,7 @@ const getGuildData = async () => {
   }
 };
 
-const sortMembers = () => {
+let sortMembers = () => {
   console.log("membersList: ", membersList.value);
   let leader = membersList.value.find((member) => {
     return member.Role == "Guild Leader";
@@ -73,7 +73,7 @@ const sortMembers = () => {
   console.log("guildMembers: ", guildMembers.value);
 }
 
-const getClassIcon = (className) => {
+let getClassIcon = (className) => {
   console.log("className: ", className);
   if (className.toLowerCase() === "fighter") {
     return Fighter;

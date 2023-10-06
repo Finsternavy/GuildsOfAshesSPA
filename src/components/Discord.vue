@@ -4,11 +4,11 @@ import DiscordServer from "../components/DiscordServer.vue";
 
 let props = defineProps(["modelValue"]);
 
-const discord_ID = ref();
+let discord_ID = ref();
 
-const discordServers = ref(props.modelValue);
+let discordServers = ref(props.modelValue);
 
-const createDiscordWidget = async () => {
+let createDiscordWidget = async () => {
   let Id = this.discord_ID.value;
   console.log(Id);
   fetch(`https://discord.com/api/guilds/${Id}/widget.json`).then((response) => {

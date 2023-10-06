@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useGuildStore = defineStore('guildStore', {
+export let useGuildStore = defineStore('guildStore', {
 
   state: () => ({
     Guild: {

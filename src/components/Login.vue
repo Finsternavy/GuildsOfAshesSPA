@@ -3,9 +3,9 @@ import { ref, onBeforeMount, watch } from "vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
 
-const username = ref("");
-const password = ref("");
-const baseUrl = process.env.APIURL + "Users";
+let username = ref("");
+let password = ref("");
+let baseUrl = process.env.APIURL + "Users";
 let store;
 
 onBeforeMount(() => {
@@ -16,14 +16,14 @@ onBeforeMount(() => {
   }
 });
 
-const doLogin = async () => {
+let doLogin = async () => {
   console.log("baseURL: ", baseUrl);
   let hashedPassword = await hash(password.value);
-  const call = {
+  let call = {
     Username: username.value,
     Password: hashedPassword,
   };
-  const response = await fetch(baseUrl + "/authenticate", {
+  let response = await fetch(baseUrl + "/authenticate", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -77,14 +77,14 @@ const doLogin = async () => {
 };
 
 async function hash(string) {
-  const utf8 = new TextEncoder().encode(string);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
+  let utf8 = new TextEncoder().encode(string);
+  let hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+  let hashArray = Array.from(new Uint8Array(hashBuffer));
+  let hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
   return hashHex;
 }
 
-const register = () => {
+let register = () => {
   // add after creating registration page
   router.push({ name: "register" });
 };

@@ -5,10 +5,10 @@ import { ref, onBeforeMount, computed } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes.js";
 
-const baseUrl = process.env.APIURL + "Guilds";
-const store = useUserStore();
-const guildID = ref();
-const guild = ref({});
+let baseUrl = process.env.APIURL + "Guilds";
+let store = useUserStore();
+let guildID = ref();
+let guild = ref({});
 let description = ref();
 let questions = ref([]);
 let requirements = ref([]);
@@ -23,12 +23,12 @@ onBeforeMount(() => {
     fetchGuildApplication();
 });
 
-const fetchGuildApplication = async () => {
-    const guildID = localStorage.getItem("guildID");
-    const call = {
+let fetchGuildApplication = async () => {
+    let guildID = localStorage.getItem("guildID");
+    let call = {
         GuildID: guildID,
     };
-    const response = await fetch(baseUrl + "/getGuildApplication", {
+    let response = await fetch(baseUrl + "/getGuildApplication", {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -50,23 +50,23 @@ const fetchGuildApplication = async () => {
     }
 };
 
-const updateAnswer = (question) => {
+let updateAnswer = (question) => {
     console.log("Question: ", question.question);
     console.log("Question answer: ", question.answer);
 }
 
-const submitApplication = async () => {
-    const user = store.getUser;
+let submitApplication = async () => {
+    let user = store.getUser;
     console.log("Submitting application..");
-    const guildID = localStorage.getItem("guildID");
+    let guildID = localStorage.getItem("guildID");
     console.log("Attempting to create guild..");
-    const call = {
+    let call = {
         GuildID: guildID,
         User: user,
         Questions: questions.value
     };
     console.log("call: ", call);
-    const response = await fetch(baseUrl + "/submitGuildApplication", {
+    let response = await fetch(baseUrl + "/submitGuildApplication", {
     method: "POST",
     headers: {
         Accept: "application/json",
@@ -86,12 +86,12 @@ const submitApplication = async () => {
     }
 }
 
-const getGuildData = async () => {
+let getGuildData = async () => {
   console.log("Fetching guild data..");
-  const call = {
+  let call = {
     GuildID: guildID.value,
   };
-  const response = await fetch(baseUrl + "/fetchGuildData", {
+  let response = await fetch(baseUrl + "/fetchGuildData", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -114,7 +114,7 @@ const getGuildData = async () => {
   }
 };
 
-const goHome = () => {
+let goHome = () => {
     router.push({ name: "guild-home" });
 }
 

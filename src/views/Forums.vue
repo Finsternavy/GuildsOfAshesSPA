@@ -3,13 +3,13 @@ import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 import Thread from "../components/Thread.vue";
 
-const baseUrl = process.env.APIURL + "Forum";
+let baseUrl = process.env.APIURL + "Forum";
 let store = null;
 let showThreadCreationControls = ref(false);
 let threadTitle = ref();
 let threadMessage = ref();
 
-const threads = ref([
+let threads = ref([
   // {
   //   id: 12345,
   //   title: "Cleric Build",
@@ -40,10 +40,10 @@ onBeforeMount(() => {
   getThreads();
 });
 
-const getThreads = async () => {
-  const user = store.getUser;
+let getThreads = async () => {
+  let user = store.getUser;
   console.log("Attempting to get threads for guildID: ", user.GuildID);
-  const response = await fetch(baseUrl + "/getAllThreads", {
+  let response = await fetch(baseUrl + "/getAllThreads", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -63,10 +63,10 @@ const getThreads = async () => {
   }
 };
 
-const postThread = async () => {
-  const user = store.getUser;
-  const date = new Date().toISOString();
-  // const time = new Date().toTimeString();
+let postThread = async () => {
+  let user = store.getUser;
+  let date = new Date().toISOString();
+  // let time = new Date().toTimeString();
   let payload = {
     AuthorID: user.UserID,
     GuildID: user.GuildID,
@@ -77,7 +77,7 @@ const postThread = async () => {
   };
 
   console.log("Posting thread: ", payload);
-  const response = await fetch(baseUrl + "/postThread", {
+  let response = await fetch(baseUrl + "/postThread", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -101,12 +101,12 @@ const postThread = async () => {
   getThreads();
 };
 
-const showThreadCreation = () => {
+let showThreadCreation = () => {
   // if (showThreadCreationControls)
   showThreadCreationControls.value = !showThreadCreationControls.value;
 };
 
-const getThreadFromChild = (event) => {
+let getThreadFromChild = (event) => {
   console.log("Fetching threads at childs request.");
   getThreads();
 };

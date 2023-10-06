@@ -2,18 +2,18 @@
 import { ref, computed } from "vue";
 import router from "../router/routes";
 
-const username = ref();
-const email = ref();
-const password = ref();
-const confirmPassword = ref();
+let username = ref();
+let email = ref();
+let password = ref();
+let confirmPassword = ref();
 
-const baseUrl = process.env.APIURL + "Users";
+let baseUrl = process.env.APIURL + "Users";
 
-const formChecked = ref(false);
+let formChecked = ref(false);
 
 let errorMessage = ref([]);
 
-const registrationForm = computed(() => {
+let registrationForm = computed(() => {
   let formObject = {};
   formObject.Username = username;
   formObject.Email = email;
@@ -23,16 +23,16 @@ const registrationForm = computed(() => {
   return formObject;
 });
 
-const register = async () => {
+let register = async () => {
   console.log("baseURL: ", baseUrl);
   let hashedPassword = await hash(password.value);
-  const call = {
+  let call = {
     Username: username.value,
     Email: email.value,
     Password: hashedPassword,
   };
   console.log("call: ", call);
-  const response = await fetch(baseUrl + "/register", {
+  let response = await fetch(baseUrl + "/register", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -58,18 +58,18 @@ const register = async () => {
 };
 
 async function hash(string) {
-  const utf8 = new TextEncoder().encode(string);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
+  let utf8 = new TextEncoder().encode(string);
+  let hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+  let hashArray = Array.from(new Uint8Array(hashBuffer));
+  let hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
   return hashHex;
 }
 
-const checkForm = () => {
+let checkForm = () => {
   formChecked.value = true;
   errorMessage.value = [];
   console.log("Checking form...");
-  const keys = Object.keys(registrationForm.value);
+  let keys = Object.keys(registrationForm.value);
   console.log(keys);
   let found = true;
   keys.forEach((key) => {

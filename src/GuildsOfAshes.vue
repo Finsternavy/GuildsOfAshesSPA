@@ -4,13 +4,13 @@ import { onBeforeMount, ref } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import Menu from "./components/Menu.vue";
 
-const imagePrefix = "../../public/AOCimages/";
+let imagePrefix = "../../public/AOCimages/";
 
 // Need to go over these images and change the resolution.
 // Some of them do not load in time and will just show
 // a black background.
 
-const backgroundImages = [
+let backgroundImages = [
   "AOC_castle.png",
   "AOC2023March.jpg",
   "AOCGoblinVillage.jpg",
@@ -27,8 +27,8 @@ const backgroundImages = [
   "AOCWaterfall.png",
 ];
 
-const getRandomImage = () => {
-  const index = Math.floor(Math.random() * backgroundImages.length);
+let getRandomImage = () => {
+  let index = Math.floor(Math.random() * backgroundImages.length);
   return backgroundImages[index];
 };
 
@@ -36,8 +36,8 @@ onBeforeMount(() => {
   console.log("PrimaryLayout mounted");
   randomImage.value = getRandomImage;
 });
-const randomImage = ref();
-const currentYear = new Date().getFullYear();
+let randomImage = ref();
+let currentYear = new Date().getFullYear();
 </script>
 
 <style></style>

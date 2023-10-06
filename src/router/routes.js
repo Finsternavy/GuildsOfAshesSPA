@@ -14,7 +14,7 @@ import Profile from '../views/Profile.vue';
 import GuildApplicatiopn from '../views/GuildApplication.vue';
 import GuildCreateApplication from '../views/GuildApplicationCreater.vue';
 
-const router = createRouter({
+let router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', name: 'home',  component: Home },

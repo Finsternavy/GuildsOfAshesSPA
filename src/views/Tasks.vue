@@ -1,7 +1,7 @@
 <script setup>
-const randomBackground = () => {
+let randomBackground = () => {
   let random = Math.floor(Math.random() * 6);
-  const root = "map-";
+  let root = "map-";
   let locations = [
     "top-left",
     "top-right",

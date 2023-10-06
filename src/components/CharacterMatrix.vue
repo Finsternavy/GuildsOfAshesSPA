@@ -9,7 +9,7 @@ import Summoner from "../../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../../public/AOC_Icons/cleric_icon.png";
 import Bard from "../../public/AOC_Icons/bard_icon.png";
 
-const props = defineProps({
+let props = defineProps({
   modelValue: {},
   // selectedClass: {
   //     type: Object,
@@ -17,15 +17,15 @@ const props = defineProps({
   // }
 });
 
-const emit = defineEmits(["update:modelValue"]);
+let emit = defineEmits(["update:modelValue"]);
 
 onBeforeMount(() => {
   console.log("Selected Class: ", props.modelValue);
 });
 
-const selectedClass = ref(props.modelValue);
+let selectedClass = ref(props.modelValue);
 
-const classes = {
+let classes = {
   FIGHTER: [
     {
       name: "WEAPON MASTER",
@@ -428,9 +428,9 @@ const classes = {
   ],
 };
 
-const subclasses = computed(() => {
+let subclasses = computed(() => {
   let subclasses = [];
-  const keys = Object.keys(classes);
+  let keys = Object.keys(classes);
   console.log("Keys: ", keys);
   keys.forEach((key) => {
     classes[key].forEach((subclass) => {
@@ -446,11 +446,11 @@ const subclasses = computed(() => {
   });
 });
 
-const headers = computed(() => {
+let headers = computed(() => {
   return Object.keys(classes);
 });
 
-const selectClass = (subclass) => {
+let selectClass = (subclass) => {
   console.log(subclass);
   selectedClass.value = subclass;
   // emit('update:modelValue', subclass);
@@ -462,7 +462,7 @@ watch(selectedClass, (newVal, oldVal) => {
   emit("update:modelValue", newVal);
 });
 
-// const checkWidthForTable = () => {
+// let checkWidthForTable = () => {
 //   let width = window.innerWidth;
 //   if (width > 1300) {
 //     return true;
@@ -470,7 +470,7 @@ watch(selectedClass, (newVal, oldVal) => {
 //   return false;
 // };
 
-const getClassIcon = (className) => {
+let getClassIcon = (className) => {
   if (className.toLowerCase() === "fighter") {
     return Fighter;
   }
