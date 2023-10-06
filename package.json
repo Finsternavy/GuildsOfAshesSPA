@@ -16,6 +16,7 @@
     "mkDist": "mkdir dist",
     "cpPublicLocal": "@powershell Copy-Item -Path public -Destination \"dist\" -Recurse",
     "runParcel": "parcel index.html --open",
+    "deployGOA": "parcel build index.html",
     "startGOA": "npm run runParcel"
   },
   "dependencies": {
