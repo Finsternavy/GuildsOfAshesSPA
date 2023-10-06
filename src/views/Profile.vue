@@ -12,7 +12,7 @@ let guild = ref({});
 let guildID = ref();
 let user = ref();
 let selectedClass = ref();
-let baseUrl = process.env.APIURL;
+let baseUrl = "http://localhost:5229/";
 
 let hiddenKeys = ["Password", "GuildID", "UserID"];
 

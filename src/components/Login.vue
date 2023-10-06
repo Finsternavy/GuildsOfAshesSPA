@@ -5,7 +5,7 @@ import { useUserStore } from "../stores/userStore";
 
 let username = ref("");
 let password = ref("");
-let baseUrl = process.env.APIURL + "Users";
+let baseUrl = "http://localhost:5229/Users";
 let store;
 
 onBeforeMount(() => {

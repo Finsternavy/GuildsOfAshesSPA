@@ -2,7 +2,7 @@
 import { ref, onBeforeMount } from "vue";
 import router from "../router/routes";
 
-let baseUrl = process.env.APIURL + "Guilds";
+let baseUrl = "http://localhost:5229/Guilds";
 let guildsList = ref();
 
 onBeforeMount(() => {

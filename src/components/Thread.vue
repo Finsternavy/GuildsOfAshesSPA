@@ -4,7 +4,7 @@ import Comment from "../components/Comment.vue";
 import uikit from "uikit";
 import { useUserStore } from "../stores/userStore";
 
-let baseUrl = process.env.APIURL + "Forum";
+let baseUrl = "http://localhost:5229/Forum";
 let store = useUserStore();
 let user = ref();
 let showThread = ref(false);

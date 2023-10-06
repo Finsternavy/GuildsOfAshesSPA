@@ -4,7 +4,7 @@ import { onBeforeMount, ref } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import Menu from "./components/Menu.vue";
 
-let imagePrefix = "../../public/AOCimages/";
+let imagePrefix = "/src/public/AOCimages/";
 
 // Need to go over these images and change the resolution.
 // Some of them do not load in time and will just show

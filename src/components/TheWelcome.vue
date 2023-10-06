@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
-import GoaLogo from "../../public/Images/GoALogoFinalwithwordsandShadow.png";
+import GoaLogo from "../public/Images/GoALogoFinalwithwordsandShadow.png";
 
 let selectedClass = ref();
 </script>

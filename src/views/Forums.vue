@@ -3,7 +3,7 @@ import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 import Thread from "../components/Thread.vue";
 
-let baseUrl = process.env.APIURL + "Forum";
+let baseUrl = "http://localhost:5229/Forum";
 let store = null;
 let showThreadCreationControls = ref(false);
 let threadTitle = ref();

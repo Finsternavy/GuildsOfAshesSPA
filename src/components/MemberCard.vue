@@ -1,14 +1,14 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import { useGuildStore } from "../stores/guildStore";
-import Fighter from "../../public/AOC_Icons/fighter_icon.png";
-import Tank from "../../public/AOC_Icons/tank_icon.png";
-import Rogue from "../../public/AOC_Icons/rogue_icon.png";
-import Ranger from "../../public/AOC_Icons/ranger_icon.png";
-import Mage from "../../public/AOC_Icons/mage_icon.png";
-import Summoner from "../../public/AOC_Icons/summoner_icon.png";
-import Cleric from "../../public/AOC_Icons/cleric_icon.png";
-import Bard from "../../public/AOC_Icons/bard_icon.png";
+import Fighter from "../public/AOC_Icons/fighter_icon.png";
+import Tank from "../public/AOC_Icons/tank_icon.png";
+import Rogue from "../public/AOC_Icons/rogue_icon.png";
+import Ranger from "../public/AOC_Icons/ranger_icon.png";
+import Mage from "../public/AOC_Icons/mage_icon.png";
+import Summoner from "../public/AOC_Icons/summoner_icon.png";
+import Cleric from "../public/AOC_Icons/cleric_icon.png";
+import Bard from "../public/AOC_Icons/bard_icon.png";
 
 let props = defineProps({
     member: {
@@ -25,7 +25,7 @@ let props = defineProps({
 
 let emits = ['getGuildData'];
 
-let baseUrl = process.env.APIURL;
+let baseUrl = "http://localhost:5229/";
 
 let showRole = ref(false);
 let guildStore;

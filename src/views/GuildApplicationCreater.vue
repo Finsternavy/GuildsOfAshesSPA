@@ -3,7 +3,7 @@ import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 
-let baseUrl = process.env.APIURL + "Guilds";
+let baseUrl = "http://localhost:5229/Guilds";
 let store = useUserStore();
 let guildID = ref();
 let data = ref([

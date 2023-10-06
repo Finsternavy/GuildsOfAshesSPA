@@ -7,7 +7,7 @@ let email = ref();
 let password = ref();
 let confirmPassword = ref();
 
-let baseUrl = process.env.APIURL + "Users";
+let baseUrl = "http://localhost:5229/Users";
 
 let formChecked = ref(false);
 

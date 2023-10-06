@@ -93,7 +93,7 @@ let displayUserInfo = () => {
     >
       <div class="left-nav uk-width-1-6">
         <div class="remove-background" @click="goHome">
-          <img class="logo" src="../../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
+          <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
         </div>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">

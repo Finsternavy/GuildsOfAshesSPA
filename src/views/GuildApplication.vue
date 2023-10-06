@@ -1,11 +1,9 @@
 <script setup>
-
-import { on } from "events";
 import { ref, onBeforeMount, computed } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes.js";
 
-let baseUrl = process.env.APIURL + "Guilds";
+let baseUrl = "http://localhost:5229/Guilds";
 let store = useUserStore();
 let guildID = ref();
 let guild = ref({});

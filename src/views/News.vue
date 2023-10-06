@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import RssFeed from "../components/RssFeed.vue";
 </script>
 
 <style scoped></style>

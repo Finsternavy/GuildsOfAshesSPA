@@ -4,7 +4,7 @@ import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
 import RichTextEditor from "../components/RichTextEditor.vue";
 
-let baseUrl = process.env.APIURL + "Guilds";
+let baseUrl = "http://localhost:5229/Guilds";
 let store;
 let user = ref();
 let guildName = ref();

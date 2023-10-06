@@ -15,7 +15,7 @@ UIkit.use(Icons)
 globalThis.__VUE_OPTIONS_API__ = false;
 globalThis.__VUE_PROD_DEVTOOLS__ = true;
 
-let app = createApp(App)
+const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
