@@ -8,7 +8,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "env": "^0.0.2",
     "pinia": "^2.1.6",
     "uikit": "^3.17.1",
     "vue": "^3.3.4",
@@ -17,6 +16,5 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
     "vite": "^4.4.9",
-    "process": "^0.11.10"
   }
 }
