@@ -180,6 +180,7 @@ let upVote = async () => {
   let date = new Date().toISOString();
   // let time = new Date().toTimeString();
   let payload = {
+    UserID: user.UserID,
     ThreadID: threadID,
   };
 
@@ -207,6 +208,7 @@ let downVote = async () => {
   let date = new Date().toISOString();
   // let time = new Date().toTimeString();
   let payload = {
+    UserID: user.UserID,
     ThreadID: threadID,
   };
 
