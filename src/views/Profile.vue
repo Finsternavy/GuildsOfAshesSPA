@@ -217,7 +217,7 @@ label {
         </div>
         <div class="input-container uk-padding-small uk-flex uk-flex-column">
           <label for="">Guild Role</label>
-          <input class="goa-input" type="text" v-model="user.Role">
+          <input class="goa-input" type="text" v-model="user.Rank.RankName">
         </div>
       </div>
       <div class="leave-guild-controls">

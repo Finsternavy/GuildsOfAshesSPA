@@ -136,7 +136,7 @@ let denyApplication = async (application) => {
 
 let approveApplication = async (application) => {
     // console.log("Attempting to deny application for: ", application.User.Username);
-    application.User.Role = "Member";
+    // application.User.Rank.RankName = "Member";
     let call = {
         GuildID: application.GuildID,
         GuildName: guild.value.Name,
@@ -296,17 +296,20 @@ let createApplication = () => {
         <h4 class="text-goa-red uk-text-center uk-margin-remove-top uk-margin-medium-bottom">Process Application</h4>
         <div class="application-responses uk-flex uk-flex-around uk-width-1-1">
           <div class="Approve-container">
-            <button class="goa-button">Send {{ application.User.Username }} a message</button>
+            <button class="goa-button goa-success-button" uk-toggle="target: #ApprovalRank">Grant Full Membership</button>
           </div>
           <div class="Approve-container">
-            <button class="goa-button">Approve Trial Period</button>
+            <button class="goa-button goa-deny-button uk-width-small">Deny</button>
           </div>
-          <div class="Approve-container">
-            <button @click="approveApplication(application)" class="goa-button goa-success-button">Grant Full Membership</button>
+        </div>
+        <div id="ApprovalRank" class="approval-rank-container" hidden>
+          <div class="uk-flex uk-flex-column uk-margin-bottom">
+            <label for="">Rank</label>
+            <select class="goa-input" v-model="application.User.Rank">
+              <option class="text-goa-red uk-background-secondary" v-for="rank in guild.Ranks" :value="rank">{{rank.RankName}}</option>
+            </select>
           </div>
-          <div class="Approve-container">
-            <button @click="denyApplication(application)" class="goa-button goa-deny-button uk-width-small">Deny</button>
-          </div>
+          <button @click="approveApplication(application)" class="goa-button">Approve as {{ application.User.Rank.RankName }}</button>
         </div>
       </div>
   </div>
@@ -323,7 +326,7 @@ let createApplication = () => {
         </button>
       </div>
       <button
-        v-if="user && user.Role == 'Guild Leader'"
+        v-if="user && user.Rank.RankName == 'Guild Leader'"
         @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
         Create Application
       </button>

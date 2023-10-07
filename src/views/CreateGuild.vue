@@ -19,6 +19,11 @@ let guildPrimaryRace = ref();
 let guildRegion = ref();
 let autoApprove = ref();
 let addBorder = ref();
+let ranks = ref([
+    {RankName: 'Guild Leader', RankLevel: 0}, 
+    {RankName: 'Member', RankLevel: 1}, 
+    {RankName: 'Recruit', RankLevel: 2}
+    ])
 
 onBeforeMount(() => {
   store = useUserStore();
@@ -27,41 +32,46 @@ onBeforeMount(() => {
 });
 
 let createGuild = async () => {
-  let user = store.getUser;
-  // console.log("Attempting to create guild..");
-  let call = {
-    Name: guildName.value,
-    Leader: user,
-    AutoApprove: autoApprove.value,
-    Logo: guildLogoBase64.value,
-    LogoBorder: addBorder.value,
-    Description: guildDescription.value,
-    Category: guildCategory.value,
-    Focus: guildFocus.value,
-    PrimaryRace: guildPrimaryRace.value,
-    Region: guildRegion.value,
-  };
-  // console.log("call: ", call);
-  let response = await fetch(baseUrl + "/createGuild", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
-    },
-    body: JSON.stringify(call),
-  });
-
-  if (response.ok) {
-    let data = await response.json();
-    // console.log("Create Guild response data: ", data);
-    store.setUser(data.Data);
-    store.setGuildID(data.Data.GuildID);
-    router.push({ name: "guild-home" });
-    // threads.value = data.Data;
+  if (checkRanks()){
+    let user = store.getUser;
+    // console.log("Attempting to create guild..");
+    let call = {
+      Name: guildName.value,
+      Leader: user,
+      AutoApprove: autoApprove.value,
+      Logo: guildLogoBase64.value,
+      LogoBorder: addBorder.value,
+      Description: guildDescription.value,
+      Category: guildCategory.value,
+      Focus: guildFocus.value,
+      PrimaryRace: guildPrimaryRace.value,
+      Region: guildRegion.value,
+      Ranks: ranks.value
+    };
+    // console.log("call: ", call);
+    let response = await fetch(baseUrl + "/createGuild", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+      },
+      body: JSON.stringify(call),
+    });
+  
+    if (response.ok) {
+      let data = await response.json();
+      // console.log("Create Guild response data: ", data);
+      store.setUser(data.Data);
+      store.setGuildID(data.Data.GuildID);
+      router.push({ name: "guild-home" });
+      // threads.value = data.Data;
+    } else {
+      // console.log("Error fetching thread data: ", response.statusText);
+    }
   } else {
-    // console.log("Error fetching thread data: ", response.statusText);
+    alert('Rank names and levels must be unique!')
   }
 };
 
@@ -83,6 +93,40 @@ let handleImage = (event) => {
 
   // console.log("guildLogoBase64: ", guildLogoBase64.value);
 };
+
+const addRank = () => {
+  if (ranks.value.length >= 6) return alert('Rank limit reached!')
+  ranks.value.push({RankName: 'Type Rank Name here', RankLevel: ranks.value.length})
+}
+
+const checkRanks = () => {
+  console.log('Saving ranks..');
+  console.log('Ranks: ', ranks.value);
+  // check each rank in ranks for duplicate names and levels
+  for (let i = 0; i < ranks.value.length; i++){
+    for (let j = 0; j < ranks.value.length; j++){
+      if (i != j){
+        if (ranks.value[i].RankName == ranks.value[j].RankName){
+          return false;
+        }
+        if (ranks.value[i].RankLevel == ranks.value[j].RankLevel){
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+const shiftRankUp = (index) => {
+  console.log('Shifting rank up..');
+  console.log('Index: ', index);
+  console.log('Ranks: ', ranks.value);
+  let temp = ranks.value[index];
+  ranks.value[index] = ranks.value[index - 1];
+  ranks.value[index - 1] = temp;
+  console.log('Ranks: ', ranks.value);
+}
 
 // let handleInput = () => {
 //   guildDescription.value = this.$refs.guildDescription.innerHTML;
@@ -274,6 +318,25 @@ textarea {
           <option value="europe">Europe</option>
           <option value="asia">Asia</option>
         </select>
+      </div>
+      <div class="rank-structure-container uk-width-1-1">
+        <h3 class="text-goa-red uk-margin-remove">RANK STRUCTURE</h3>
+        <div v-for="(rank, index) in ranks" class="uk-flex uk-margin-small-bottom">
+          <div class="uk-flex uk-flex-column uk-margin-right">
+            <label :for="'RankName' + index">Rank Name</label>
+            <input class="goa-input" :id="'RankName' + index" type="text" v-model="rank.RankName" :readonly="rank.RankName == 'Guild Leader'">
+          </div>
+          <div class="uk-flex uk-flex-column uk-margin-right uk-width-auto">
+            <label :for="'RankLevel' + index">Rank Level</label>
+            <input class="goa-input" :id="'RankLevel' + index" type="text" v-model="rank.RankLevel" readonly>
+          </div>
+          <span v-if="rank.RankName == 'Guild Leader'" class="text-goa-red uk-align-bottom uk-margin-remove-bottom">( This rank cannot be modified )</span>
+          <div v-if="index > 1" class="uk-flex uk-flex-column">
+            <label :for="'UpButton' + index">Move up</label>
+            <button @click="shiftRankUp(index)" :id="'UpButton' + index" class="goa-button"><span uk-icon="icon: chevron-up"></span></button>
+          </div>
+        </div>
+        <button @click="addRank" class="goa-button uk-margin-right">Add Rank</button>
       </div>
       <div class="input uk-width-medium">
         <label for="guild-restricted">Auto approve join request?</label>

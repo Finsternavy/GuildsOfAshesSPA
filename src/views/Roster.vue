@@ -28,6 +28,7 @@ let architypes = ref(['FIGHTER', 'TANK', 'ROGUE', 'RANGER', 'MAGE', 'SUMMONER', 
 
 onBeforeMount(() => {
   guildStore = useGuildStore();
+  guild.value = guildStore.getGuild;
   membersList.value = guildStore.getGuild.MemberList;
   sortMembers();
   // console.log("membersList: ", membersList.value);
@@ -62,17 +63,22 @@ let getGuildData = async () => {
 };
 
 let sortMembers = () => {
-  // console.log("membersList: ", membersList.value);
-  let leader = membersList.value.find((member) => {
-    return member.Role == "Guild Leader";
+  let returnValue = [];
+  console.log("membersList: ", membersList.value);
+  console.log("guild: ", guild.value);
+  guild.value.Ranks.forEach((rank) => {
+    let rankLevel = [];
+    guild.value.MemberList.forEach((member) => {
+      if (member.Rank.RankLevel === rank.RankLevel) {
+        rankLevel.push(member);
+      }
+    });
+    if (rankLevel.length > 0) {
+      returnValue.push(rankLevel);
+    }
   });
-  guildLeader.value = leader;
-  // console.log("guildLeader: ", guildLeader.value);
-  let members = membersList.value.filter((member) => {
-    return member.Role == "Member";
-  });
-  guildMembers.value = members;
-  // console.log("guildMembers: ", guildMembers.value);
+
+  return returnValue;
 }
 
 let getClassIcon = (className) => {
@@ -227,19 +233,12 @@ label {
       <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">
         <h2 class="uk-light uk-text-center uk-text-bold">Chain of Command</h2>
         <hr class="uk-margin-large-bottom">
-        <div class="member-card-container uk-flex uk-flex-column">
-          <h3 class="text-goa-red uk-margin-remove-bottom">Guild Leader</h3>
-          <div class="uk-margin-bottom uk-width-1-1 uk-child-width-1-2">
-            <div class="uk-align-center uk-margin-remove-top">
-              <MemberCard  :member="guildLeader" />
-            </div>
+        <div v-for="rank, index in sortMembers()">
+          <h3 class="text-goa-red">{{rank[0].Rank.RankName}}</h3>
+          <div v-for="member in rank">
+            <MemberCard :viewer="user.Rank.RankName" :member="member" :function="getGuildData" />
           </div>
-          <h3 class="text-goa-red">Members</h3>
-          <div class="uk-width-1-1 grid" >
-            <div v-for="member in guildMembers" class="uk-position-relative">
-              <MemberCard v-if="member.Role == 'Member'" :viewer="user.Role" :member="member" :function="getGuildData" />
-            </div>
-          </div>
+            <!-- {{ member.Username }} -->
         </div>
       </div>
     </div>

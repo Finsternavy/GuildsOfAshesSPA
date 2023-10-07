@@ -31,11 +31,14 @@ let baseUrl = api.getAPI;
 let showRole = ref(false);
 let guildStore;
 let guild = ref({});
+let stars = ref(0);
+const maxRanks = 6;
 
 onBeforeMount(() => {
     guildStore = useGuildStore();
     guild.value = guildStore.getGuild;
-    if (props.member.Role == "Guild Leader") {
+    stars.value = maxRanks - props.member.Rank.RankLevel;
+    if (props.member.Rank.RankName == "Guild Leader") {
         showRole.value = true;
     }
 })
@@ -259,33 +262,25 @@ label {
 </style>
 
 <template>
+  <div class="uk-position-relative">
     <div class="uk-flex">
         <div class="class-container class-label">
             <span v-if="member.Subclass" class="uk-text-bold">{{ member.Subclass }}</span>
             <span v-else class="uk-text-bold">None</span>
         </div>
-        <div v-if="member.Role == 'Guild Leader'" class="rank-container">
-            <span uk-icon="icon: star"></span>
-            <span uk-icon="icon: star"></span>
-            <span uk-icon="icon: star"></span>
-            <span uk-icon="icon: star"></span>
-            <span uk-icon="icon: star"></span>
+        <div v-if="member.Rank.RankName" class="rank-container">
+            <span v-for="num in stars" uk-icon="icon: star"></span>
         </div>
-        <div v-if="member.Role == 'Member'" class="rank-container">
-            <span uk-icon="icon: star"></span>
-        </div>
-        <div v-if="member.Role == ''" class="rank-container">
+        <div v-if="member.Rank.RankName == ''" class="rank-container">
             <span>No Guild Rank</span>
         </div>
-        <span v-if="props.viewer == 'Guild Leader'" class="uk-icon-button uk-position-right uk-margin-small-left" uk-icon="icon: cog; ratio: 1.3" :uk-toggle="'target: #' +  member.Username + 'options; position: top'"></span>
+        <span v-if="props.viewer == 'Guild Leader' && member.Rank.RankName != props.viewer" class="uk-icon-button uk-position-right uk-margin-small-left" uk-icon="icon: cog; ratio: 1.3" :uk-toggle="'target: #' +  member.Username + 'options; position: top'"></span>
     </div>
     <div class="member-card uk-flex uk-width-auto">
-            
-
         <div class="member-info-container uk-width-expand uk-flex uk-flex-column">
             <div :class="{'member-name-container uk-text-center uk-flex uk-overflow-hidden': member,
-                'leader' : member.Role == 'Guild Leader',
-                'member' : member.Role == 'Member'}">
+                'leader' : member.Rank.RankName == 'Guild Leader',
+                'member' : member.Rank.RankName == 'Member'}">
                 <!-- <div>
                     <div class="card-logo " :data-src="guild.Logo" alt="Uploaded Image" uk-img></div>
                 </div> -->
@@ -349,4 +344,5 @@ label {
             <label class="xp-label-text uk-text-default uk-text-bold">XP</label>
         </div>
     </div>
+  </div>
 </template>
