@@ -54,9 +54,9 @@ let register = async () => {
       // console.log("Error: ", error);
       return error;
     });
-  returnValue = await response;
+  // returnValue = await response;
 
-  return returnValue;
+  // return returnValue;
 };
 
 async function hash(string) {

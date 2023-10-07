@@ -352,7 +352,7 @@ let createApplication = () => {
         </div>
       </div>
       <div :class="{
-          'logo-container': guild.LogoBorder == false,
+          'logo-container': {},
           'bordered-logo-container': guild.LogoBorder == true,
         }"
       >
