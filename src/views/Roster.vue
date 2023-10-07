@@ -21,7 +21,6 @@ let store = useUserStore();
 let guildStore;
 let user = store.getUser;
 let guild = ref({});
-let membersList = ref();
 let guildLeader = ref({});
 let guildMembers = ref([]);
 let architypes = ref(['FIGHTER', 'TANK', 'ROGUE', 'RANGER', 'MAGE', 'SUMMONER', 'CLERIC', 'BARD'])
@@ -29,14 +28,17 @@ let architypes = ref(['FIGHTER', 'TANK', 'ROGUE', 'RANGER', 'MAGE', 'SUMMONER', 
 onBeforeMount(() => {
   guildStore = useGuildStore();
   guild.value = guildStore.getGuild;
-  membersList.value = guildStore.getGuild.MemberList;
-  sortMembers();
+  if (!guild.value.GuildID){
+    console.log("No guild found, fetching guild data..");
+    getGuildData();
+  }
+  // sortMembers();
   // console.log("membersList: ", membersList.value);
 });
 
 let getGuildData = async () => {
   // console.log("Fetching guild data..");
-  let guildID = store.getGuildID;
+  let guildID = localStorage.getItem("guildID");
   let call = {
     GuildID: guildID,
   };
@@ -53,9 +55,9 @@ let getGuildData = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    // console.log("Guild data: ", data);
-    membersList.value = data.Data.MemberList;
-    sortMembers();
+    console.log("Guild data: ", data);
+    guild.value = data.Data;
+    // sortMembers();
 
   } else {
     // console.log("Error fetching thread data: ", response.statusText);
@@ -64,8 +66,8 @@ let getGuildData = async () => {
 
 let sortMembers = () => {
   let returnValue = [];
-  console.log("membersList: ", membersList.value);
   console.log("guild: ", guild.value);
+  if (!guild.value.Ranks) return returnValue;
   guild.value.Ranks.forEach((rank) => {
     let rankLevel = [];
     guild.value.MemberList.forEach((member) => {
