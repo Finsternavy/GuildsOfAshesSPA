@@ -44,7 +44,7 @@ let selectedClass = ref();
     <div class="hero goa-container uk-padding uk-margin-bottom">
       <div class="goa-logo" :data-src="GoaLogo" uk-img></div>
       <div class="hero-message">
-        <p><span class="text-goa-red uk-text-lead">Welcome!</span> to Guilds of Ashes. This site was build as a portfolio project to demonstrate my skills as a web developer while also serving as a potential hub for the guild I am a member of. The site is still under development and it and all features may or may not be fully functional.</p>
+        <p><span class="text-goa-red uk-text-lead">Welcome!</span> to Guilds of Ashes. This site was built as a portfolio project to demonstrate my skills as a web developer while also serving as a potential hub for the guild I am a member of. The site is still under development and it and all features may or may not be fully functional.</p>
 
         <span class="uk-text-lead text-goa-red">The Goals</span>
         <p>The functional goals of this site are: </p>
