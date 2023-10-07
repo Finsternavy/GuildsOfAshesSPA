@@ -144,10 +144,10 @@ let selectedClass = ref();
       <h1 class="text-goa-red">NOTICE:</h1>
       <p class="text-goa-gray uk-text-large">
         This site is in early development and all features may or may not be
-        fully functional.  If you encounter  errors where the browser stops responded, click the GOA logo in the upper left-hand corner then press <span class="text-goa-red">shift + F5</span> to refresh the page.
+        fully functional.  If you encounter errors where the browser stops responding, click the GOA logo in the upper left-hand corner then press <span class="text-goa-red">shift + F5</span> to refresh the page.
       </p>
       <p class="text-goa-gray uk-text-large">
-        Please report any bugs or issues to the CyFinXP in discord.
+        Please report any bugs or issues to CyFinXP in discord.
       </p>
       <button class="goa-button" uk-toggle="target: #Notice;">Acknowledge and close</button>
     </div>
