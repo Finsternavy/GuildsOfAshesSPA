@@ -9,6 +9,7 @@ import Mage from "../public/AOC_Icons/mage_icon.png";
 import Summoner from "../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../public/AOC_Icons/cleric_icon.png";
 import Bard from "../public/AOC_Icons/bard_icon.png";
+import { useAPI } from '../stores/apiStore'
 
 let props = defineProps({
     member: {
@@ -24,8 +25,8 @@ let props = defineProps({
 });
 
 let emits = ['getGuildData'];
-
-let baseUrl = "https://goabackend.azurewebsites.net/";
+let api = useAPI();
+let baseUrl = api.getAPI;
 
 let showRole = ref(false);
 let guildStore;

@@ -2,13 +2,17 @@
 import { ref, onBeforeMount, watch } from "vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
+import { useAPI } from '../stores/apiStore'
 
 let username = ref("");
 let password = ref("");
-let baseUrl = "https://goabackend.azurewebsites.net/Users";
+let api = useAPI();
+let baseUrl = api.getAPI + "Users";
 let store;
 
 onBeforeMount(() => {
+  // api = useAPI();
+  // baseUrl = api.getAPI + "Users";
   store = useUserStore();
   // console.log("Store user: ", store.user);
   if (store.user) {

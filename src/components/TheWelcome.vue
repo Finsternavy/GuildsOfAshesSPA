@@ -23,6 +23,20 @@ let selectedClass = ref();
   background-size: contain;
   background-repeat: no-repeat;
 }
+
+.notice {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.notice-contents {
+  width: 800px;
+  max-width: 85%;
+}
 </style>
 
 <template>
@@ -123,6 +137,19 @@ let selectedClass = ref();
         </tbody>
         <tfoot></tfoot>
       </table>
+    </div>
+  </div>
+  <div id="Notice" class="notice goa-container-no-radius uk-padding">
+    <div class="notice-contents goa-container uk-position-top-center uk-margin-xlarge-top uk-padding-large">
+      <h1 class="text-goa-red">NOTICE:</h1>
+      <p class="text-goa-gray uk-text-large">
+        This site is in early development and all features may or may not be
+        fully functional.  If you encounter  errors where the browser stops responded, click the GOA logo in the upper left-hand corner then press <span class="text-goa-red">shift + F5</span> to refresh the page.
+      </p>
+      <p class="text-goa-gray uk-text-large">
+        Please report any bugs or issues to the CyFinXP in discord.
+      </p>
+      <button class="goa-button" uk-toggle="target: #Notice;">Acknowledge and close</button>
     </div>
   </div>
 </template>

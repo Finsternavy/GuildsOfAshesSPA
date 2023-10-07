@@ -1,17 +1,20 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
+import { useAPI } from '../stores/apiStore'
 
 let props = defineProps({
   modelValue: {},
   data: {},
 });
 
+let api = useAPI();
+let baseUrl = api.getAPI + "Forum";
+
 let emit = defineEmits(["comment-get-threads"]);
 
 let store = useUserStore();
 let user = ref();
-let baseUrl = "https://goabackend.azurewebsites.net/Forum";
 let showReplyControl = ref(false);
 let replyMessage = ref("");
 let commentEditMessage = ref();

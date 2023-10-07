@@ -1,13 +1,15 @@
 <script setup>
 import { ref, computed } from "vue";
 import router from "../router/routes";
+import { useAPI } from '../stores/apiStore'
 
 let username = ref();
 let email = ref();
 let password = ref();
 let confirmPassword = ref();
 
-let baseUrl = "https://goabackend.azurewebsites.net/Users";
+let api = useAPI();
+let baseUrl = api.getAPI + "Users";
 
 let formChecked = ref(false);
 

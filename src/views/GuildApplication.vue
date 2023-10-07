@@ -2,8 +2,10 @@
 import { ref, onBeforeMount, computed } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes.js";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
+let api = useAPI();
+let baseUrl = api.getAPI + "Guilds";
 let store = useUserStore();
 let guildID = ref();
 let guild = ref({});

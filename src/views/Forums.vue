@@ -2,8 +2,10 @@
 import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 import Thread from "../components/Thread.vue";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/Forum";
+let api = useAPI();
+let baseUrl = api.getAPI + "Forum";
 let store = null;
 let showThreadCreationControls = ref(false);
 let threadTitle = ref();

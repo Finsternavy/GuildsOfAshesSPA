@@ -5,6 +5,7 @@ import { useGuildStore } from "../stores/guildStore";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 import MemberCard from "../components/MemberCard.vue";
 import router from "../router/routes";
+import { useAPI } from '../stores/apiStore'
 
 let store = useUserStore();
 let guildStore;
@@ -12,7 +13,9 @@ let guild = ref({});
 let guildID = ref();
 let user = ref();
 let selectedClass = ref();
-let baseUrl = "https://goabackend.azurewebsites.net/";
+
+let api = useAPI();
+let baseUrl = api.getAPI;
 
 let hiddenKeys = ["Password", "GuildID", "UserID"];
 

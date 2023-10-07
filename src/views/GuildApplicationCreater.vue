@@ -2,8 +2,10 @@
 import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
+let api = useAPI();
+let baseUrl = api.getAPI + "Guilds";
 let store = useUserStore();
 let guildID = ref();
 let data = ref([

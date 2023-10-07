@@ -12,8 +12,10 @@ import Summoner from "../public/AOC_Icons/summoner_icon.png";
 import Cleric from "../public/AOC_Icons/cleric_icon.png";
 import Bard from "../public/AOC_Icons/bard_icon.png";
 import MemberCard from "../components/MemberCard.vue";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/";
+let api = useAPI();
+let baseUrl = api.getAPI;
 let selectedClass = ref();
 let store = useUserStore();
 let guildStore;

@@ -6,8 +6,10 @@ import { useUserStore } from "../stores/userStore";
 import { useGuildStore } from "../stores/guildStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 import Loading from "../components/Loading.vue";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
+let api = useAPI();
+let baseUrl = api.getAPI + "Guilds";
 let discordServers = ref([
   // {
   //   embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",

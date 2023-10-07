@@ -8,15 +8,15 @@ onBeforeMount(() => {
 //   editableContent.value = props.content;
 });
 
-watch(
-  () => props.modelValue,
-  (value) => {
-    nextTick(() => {
-      editableContent.value = value;
-    });
-    // editableContent.value = value;
-  }
-);
+// watch(
+//   () => props.modelValue,
+//   (value) => {
+//     nextTick(() => {
+//       editableContent.value = value;
+//     });
+//     // editableContent.value = value;
+//   }
+// );
 
 let handleInput = (event) => {
     editableContent.value = event.target.innerHTML;

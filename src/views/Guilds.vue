@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import router from "../router/routes";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
+let api = useAPI();
+let baseUrl = api.getAPI + "Guilds";
 let guildsList = ref();
 
 onBeforeMount(() => {

@@ -1,10 +1,11 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import Comment from "../components/Comment.vue";
-import uikit from "uikit";
 import { useUserStore } from "../stores/userStore";
+import { useAPI } from '../stores/apiStore'
 
-let baseUrl = "https://goabackend.azurewebsites.net/Forum";
+let api = useAPI();
+let baseUrl = api.getAPI + "Forum";
 let store = useUserStore();
 let user = ref();
 let showThread = ref(false);
