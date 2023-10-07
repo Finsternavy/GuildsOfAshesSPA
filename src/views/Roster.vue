@@ -13,7 +13,7 @@ import Cleric from "../public/AOC_Icons/cleric_icon.png";
 import Bard from "../public/AOC_Icons/bard_icon.png";
 import MemberCard from "../components/MemberCard.vue";
 
-let baseUrl = "http://localhost:5229/";
+let baseUrl = "https://goabackend.azurewebsites.net/";
 let selectedClass = ref();
 let store = useUserStore();
 let guildStore;

@@ -5,7 +5,7 @@ import { useUserStore } from "../stores/userStore";
 
 let username = ref("");
 let password = ref("");
-let baseUrl = "http://localhost:5229/Users";
+let baseUrl = "https://goabackend.azurewebsites.net/Users";
 let store;
 
 onBeforeMount(() => {

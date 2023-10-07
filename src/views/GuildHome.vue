@@ -7,7 +7,7 @@ import { useGuildStore } from "../stores/guildStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 import Loading from "../components/Loading.vue";
 
-let baseUrl = "http://localhost:5229/Guilds";
+let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
 let discordServers = ref([
   {
     embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",

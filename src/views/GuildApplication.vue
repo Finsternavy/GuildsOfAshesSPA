@@ -3,7 +3,7 @@ import { ref, onBeforeMount, computed } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes.js";
 
-let baseUrl = "http://localhost:5229/Guilds";
+let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
 let store = useUserStore();
 let guildID = ref();
 let guild = ref({});

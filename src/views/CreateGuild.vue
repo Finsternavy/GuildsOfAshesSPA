@@ -4,7 +4,7 @@ import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
 import RichTextEditor from "../components/RichTextEditor.vue";
 
-let baseUrl = "http://localhost:5229/Guilds";
+let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
 let store;
 let user = ref();
 let guildName = ref();

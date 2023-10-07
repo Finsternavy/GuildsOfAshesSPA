@@ -25,7 +25,7 @@ let props = defineProps({
 
 let emits = ['getGuildData'];
 
-let baseUrl = "http://localhost:5229/";
+let baseUrl = "https://goabackend.azurewebsites.net/";
 
 let showRole = ref(false);
 let guildStore;

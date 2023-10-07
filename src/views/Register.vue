@@ -7,7 +7,7 @@ let email = ref();
 let password = ref();
 let confirmPassword = ref();
 
-let baseUrl = "http://localhost:5229/Users";
+let baseUrl = "https://goabackend.azurewebsites.net/Users";
 
 let formChecked = ref(false);
 

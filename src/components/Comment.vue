@@ -11,7 +11,7 @@ let emit = defineEmits(["comment-get-threads"]);
 
 let store = useUserStore();
 let user = ref();
-let baseUrl = "http://localhost:5229/Forum";
+let baseUrl = "https://goabackend.azurewebsites.net/Forum";
 let showReplyControl = ref(false);
 let replyMessage = ref("");
 let commentEditMessage = ref();

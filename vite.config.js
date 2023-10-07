@@ -13,5 +13,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  target: 'http://localhost:5229'
+  target: 'https://goabackend.azurewebsites.net/'
 })

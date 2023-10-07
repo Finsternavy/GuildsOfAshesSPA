@@ -12,7 +12,7 @@ let guild = ref({});
 let guildID = ref();
 let user = ref();
 let selectedClass = ref();
-let baseUrl = "http://localhost:5229/";
+let baseUrl = "https://goabackend.azurewebsites.net/";
 
 let hiddenKeys = ["Password", "GuildID", "UserID"];
 

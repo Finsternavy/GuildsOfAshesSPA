@@ -3,7 +3,7 @@ import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 
-let baseUrl = "http://localhost:5229/Guilds";
+let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
 let store = useUserStore();
 let guildID = ref();
 let data = ref([

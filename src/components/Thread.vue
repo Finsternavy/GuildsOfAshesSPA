@@ -4,7 +4,7 @@ import Comment from "../components/Comment.vue";
 import uikit from "uikit";
 import { useUserStore } from "../stores/userStore";
 
-let baseUrl = "http://localhost:5229/Forum";
+let baseUrl = "https://goabackend.azurewebsites.net/Forum";
 let store = useUserStore();
 let user = ref();
 let showThread = ref(false);

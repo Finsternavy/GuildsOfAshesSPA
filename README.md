@@ -27,3 +27,11 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Removal of parcel
+Parcel was causing too many issues with deployment so i removed it. 
+
+Also not currently using yarn but might add that back in.
+
+##
+Utilize package.json for command line interactions.
