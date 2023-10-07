@@ -28,11 +28,11 @@ onBeforeMount(() => {
   guildStore = useGuildStore();
   membersList.value = guildStore.getGuild.MemberList;
   sortMembers();
-  console.log("membersList: ", membersList.value);
+  // console.log("membersList: ", membersList.value);
 });
 
 let getGuildData = async () => {
-  console.log("Fetching guild data..");
+  // console.log("Fetching guild data..");
   let guildID = store.getGuildID;
   let call = {
     GuildID: guildID,
@@ -50,31 +50,31 @@ let getGuildData = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
     membersList.value = data.Data.MemberList;
     sortMembers();
 
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 
 let sortMembers = () => {
-  console.log("membersList: ", membersList.value);
+  // console.log("membersList: ", membersList.value);
   let leader = membersList.value.find((member) => {
     return member.Role == "Guild Leader";
   });
   guildLeader.value = leader;
-  console.log("guildLeader: ", guildLeader.value);
+  // console.log("guildLeader: ", guildLeader.value);
   let members = membersList.value.filter((member) => {
     return member.Role == "Member";
   });
   guildMembers.value = members;
-  console.log("guildMembers: ", guildMembers.value);
+  // console.log("guildMembers: ", guildMembers.value);
 }
 
 let getClassIcon = (className) => {
-  console.log("className: ", className);
+  // console.log("className: ", className);
   if (className.toLowerCase() === "fighter") {
     return Fighter;
   }

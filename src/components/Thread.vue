@@ -36,16 +36,16 @@ let comments = ref();
 
 let toggleChildren = () => {
   // console.log(document.querySelector(`.comments-container${props.data.id}`));
-  console.log("Toggling children: ", props.data.ThreadID);
+  // console.log("Toggling children: ", props.data.ThreadID);
   showComments.value = !showComments.value;
-  console.log("showComments: ", showComments.value);
+  // console.log("showComments: ", showComments.value);
 };
 
 let toggleThread = () => {
-  console.log("Toggling thread: ", props.data.ThreadID);
+  // console.log("Toggling thread: ", props.data.ThreadID);
   showThread.value = !showThread.value;
-  console.log("showThread: ", showThread.value);
-  console.log("Checking comments: ", showComments.value);
+  // console.log("showThread: ", showThread.value);
+  // console.log("Checking comments: ", showComments.value);
   if (showComments.value == true) {
     toggleChildren();
   }
@@ -53,7 +53,7 @@ let toggleThread = () => {
 
 let showCreateCommentsControls = () => {
   showCreateComment.value = !showCreateComment.value;
-  console.log("Toggled show to: ", showCreateComment.value);
+  // console.log("Toggled show to: ", showCreateComment.value);
 };
 
 let getShowCreateCommentsValue = () => {
@@ -80,7 +80,7 @@ let postComment = async () => {
     CommentMessage: commentMessage.value,
   };
 
-  console.log("Posting comment: ", payload);
+  // console.log("Posting comment: ", payload);
   let response = await fetch(baseUrl + "/postComment", {
     method: "POST",
     headers: {
@@ -107,7 +107,7 @@ let deleteThread = async () => {
     ThreadID: threadID,
   };
 
-  console.log("Deleting thread: ", payload);
+  // console.log("Deleting thread: ", payload);
   let response = await fetch(baseUrl + "/deleteThread", {
     method: "POST",
     headers: {
@@ -121,11 +121,11 @@ let deleteThread = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Response from delete thread: ", data);
+    // console.log("Response from delete thread: ", data);
     parentFunction();
     // threads.value = data.Data;
   } else {
-    console.log("Error deleting thread: ", response.statusText);
+    // console.log("Error deleting thread: ", response.statusText);
   }
 };
 
@@ -144,7 +144,7 @@ let editThread = async () => {
     ThreadMessage: '(Edited)' + threadEditMessage.value,
   };
 
-  console.log("Editing thread: ", payload);
+  // console.log("Editing thread: ", payload);
   let response = await fetch(baseUrl + "/editThread", {
     method: "POST",
     headers: {
@@ -158,17 +158,17 @@ let editThread = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Response from edit thread: ", data);
+    // console.log("Response from edit thread: ", data);
     parentFunction();
     // threads.value = data.Data;
   } else {
-    console.log("Error editing thread: ", response.statusText);
+    // console.log("Error editing thread: ", response.statusText);
   }
   toggleEditcontrols();
 };
 
 let parentFunction = () => {
-  console.log("Calling parent function");
+  // console.log("Calling parent function");
   emit("parent-get-threads");
   // () => props.function();
 };
@@ -182,7 +182,7 @@ let upVote = async () => {
     ThreadID: threadID,
   };
 
-  console.log("Up voting: ", payload);
+  // console.log("Up voting: ", payload);
   let response = await fetch(baseUrl + "/upVoteThread", {
     method: "POST",
     headers: {
@@ -195,7 +195,7 @@ let upVote = async () => {
   });
 
   if (response) {
-    console.log("Response receieved.");
+    // console.log("Response receieved.");
     emit("parent-get-threads");
   }
 };
@@ -209,7 +209,7 @@ let downVote = async () => {
     ThreadID: threadID,
   };
 
-  console.log("Up voting: ", payload);
+  // console.log("Up voting: ", payload);
   let response = await fetch(baseUrl + "/downVoteThread", {
     method: "POST",
     headers: {
@@ -222,7 +222,7 @@ let downVote = async () => {
   });
 
   if (response) {
-    console.log("Response receieved.");
+    // console.log("Response receieved.");
     emit("parent-get-threads");
   }
 };

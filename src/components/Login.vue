@@ -10,14 +10,14 @@ let store;
 
 onBeforeMount(() => {
   store = useUserStore();
-  console.log("Store user: ", store.user);
+  // console.log("Store user: ", store.user);
   if (store.user) {
     router.push({ name: "guilds" });
   }
 });
 
 let doLogin = async () => {
-  console.log("baseURL: ", baseUrl);
+  // console.log("baseURL: ", baseUrl);
   let hashedPassword = await hash(password.value);
   let call = {
     Username: username.value,
@@ -58,8 +58,8 @@ let doLogin = async () => {
       store.setUser(data.Data);
       store.setAuthenticated(true);
       store.setGuildID(data.Data.GuildID);
-      console.log("Store authenticated: ", store.getAuthenticated);
-      console.log("GuildID? : ", data.Data.GuildID);
+      // console.log("Store authenticated: ", store.getAuthenticated);
+      // console.log("GuildID? : ", data.Data.GuildID);
       if (data.Data.GuildID) {
         // location.reload();
         router.push({ name: "guild-home" });
@@ -72,7 +72,7 @@ let doLogin = async () => {
       alert("User not found");
     }
   } else {
-    console.log("Error fetching data: ", response.statusText);
+    // console.log("Error fetching data: ", response.statusText);
   }
 };
 

@@ -12,9 +12,9 @@ let surl = ref('')
 let simage = ref('')
 
 let addWebLink = async () => {
-  console.log('name: ', sname)
-  console.log('url: ', surl)
-  console.log('image: ', simage)
+  // console.log('name: ', sname)
+  // console.log('url: ', surl)
+  // console.log('image: ', simage)
   webLinks.value.push({
      siteName: sname.value, 
      siteUrl: surl.value, 

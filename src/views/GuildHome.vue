@@ -9,9 +9,9 @@ import Loading from "../components/Loading.vue";
 
 let baseUrl = "https://goabackend.azurewebsites.net/Guilds";
 let discordServers = ref([
-  {
-    embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",
-  },
+  // {
+  //   embedSrc: "https://discord.com/widget?id=340337686059548672&theme=dark",
+  // },
 ]);
 let userStore;
 let guildStore;
@@ -35,13 +35,13 @@ onBeforeMount(() => {
     username.value = '';
   }
   if (localStorage.getItem("guildID")) {
-    console.log("Got guildID from local storage..");
+    // console.log("Got guildID from local storage..");
     guildID.value = localStorage.getItem("guildID");
   } else {
     guildID.value = user.GuildID;
   }
   getGuildData();
-  console.log("GuildID: ", guildID.value);
+  // console.log("GuildID: ", guildID.value);
 });
 
 // let memberCount = computed(() => {
@@ -54,7 +54,7 @@ onBeforeMount(() => {
 // });
 
 let getGuildData = async () => {
-  console.log("Fetching guild data..");
+  // console.log("Fetching guild data..");
   let call = {
     GuildID: guildID.value,
   };
@@ -71,20 +71,20 @@ let getGuildData = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
     guild.value = data.Data;
-    console.log("Guild: ", guild.value);
+    // console.log("Guild: ", guild.value);
     localStorage.setItem("guildLogo", guild.value.Logo);
     localStorage.setItem("guildName", guild.value.Name);
     inbox.value = guild.value.Applications;
     guildLeaderName.value = guild.value.Leader.Username;
-    console.log("Inbox: ", inbox.value);
+    // console.log("Inbox: ", inbox.value);
 
     // test guildStore 
 
     guildStore.setGuild(guild.value);
-    console.log("GuildStore: ", guildStore.getGuild);
-    console.log("Memberlist: ", guildStore.getGuild.MemberList);
+    // console.log("GuildStore: ", guildStore.getGuild);
+    // console.log("Memberlist: ", guildStore.getGuild.MemberList);
 
 
 
@@ -99,17 +99,17 @@ let getGuildData = async () => {
     // router.push({ name: "guild-home" });
     // threads.value = data.Data;
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 
 let denyApplication = async (application) => {
-    console.log("Attempting to deny application for: ", application.User.Username);
+    // console.log("Attempting to deny application for: ", application.User.Username);
     let call = {
         GuildID: application.GuildID,
         User: application.User
     };
-    console.log("call: ", call);
+    // console.log("call: ", call);
     let response = await fetch(baseUrl + "/denyGuildApplication", {
     method: "POST",
     headers: {
@@ -123,24 +123,24 @@ let denyApplication = async (application) => {
 
     if (response.ok) {
         let data = await response.json();
-        console.log("Response from denyApplication: ", data);
+        // console.log("Response from denyApplication: ", data);
         await getGuildData();
         inbox.value = guild.value.Applications;
         // success.value = true;
     } else {
-        console.log("Error during deny application: ", response.statusText);
+        // console.log("Error during deny application: ", response.statusText);
     }
 }
 
 let approveApplication = async (application) => {
-    console.log("Attempting to deny application for: ", application.User.Username);
+    // console.log("Attempting to deny application for: ", application.User.Username);
     application.User.Role = "Member";
     let call = {
         GuildID: application.GuildID,
         GuildName: guild.value.Name,
         User: application.User
     };
-    console.log("call: ", call);
+    // console.log("call: ", call);
     let response = await fetch(baseUrl + "/approveGuildApplication", {
     method: "POST",
     headers: {
@@ -154,12 +154,12 @@ let approveApplication = async (application) => {
 
     if (response.ok) {
         let data = await response.json();
-        console.log("Response from denyApplication: ", data);
+        // console.log("Response from denyApplication: ", data);
         await getGuildData();
         inbox.value = guild.value.Applications;
         getGuildData();
     } else {
-        console.log("Error during deny application: ", response.statusText);
+        // console.log("Error during deny application: ", response.statusText);
     }
 }
 

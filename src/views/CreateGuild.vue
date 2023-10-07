@@ -21,12 +21,12 @@ let addBorder = ref();
 onBeforeMount(() => {
   store = useUserStore();
   user = store.getUser;
-  console.log("User on before mount: ", user);
+  // console.log("User on before mount: ", user);
 });
 
 let createGuild = async () => {
   let user = store.getUser;
-  console.log("Attempting to create guild..");
+  // console.log("Attempting to create guild..");
   let call = {
     Name: guildName.value,
     Leader: user,
@@ -39,7 +39,7 @@ let createGuild = async () => {
     PrimaryRace: guildPrimaryRace.value,
     Region: guildRegion.value,
   };
-  console.log("call: ", call);
+  // console.log("call: ", call);
   let response = await fetch(baseUrl + "/createGuild", {
     method: "POST",
     headers: {
@@ -53,33 +53,33 @@ let createGuild = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Create Guild response data: ", data);
+    // console.log("Create Guild response data: ", data);
     store.setUser(data.Data);
     store.setGuildID(data.Data.GuildID);
     router.push({ name: "guild-home" });
     // threads.value = data.Data;
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 
 let handleImage = (event) => {
   let file = event.target.files[0];
-  console.log("File: ", file);
+  // console.log("File: ", file);
   if (file && file.type.startsWith("image/")) {
-    console.log("It is an image file..");
+    // console.log("It is an image file..");
     let reader = new FileReader();
 
     reader.onload = () => {
       guildLogoBase64.value = reader.result;
-      console.log("Reader result: ", guildLogoBase64.value);
+      // console.log("Reader result: ", guildLogoBase64.value);
     };
     reader.readAsDataURL(file);
   } else {
-    console.log("Something went wrong handling the image file.");
+    // console.log("Something went wrong handling the image file.");
   }
 
-  console.log("guildLogoBase64: ", guildLogoBase64.value);
+  // console.log("guildLogoBase64: ", guildLogoBase64.value);
 };
 
 // let handleInput = () => {

@@ -20,7 +20,7 @@ let props = defineProps({
 let emit = defineEmits(["update:modelValue"]);
 
 onBeforeMount(() => {
-  console.log("Selected Class: ", props.modelValue);
+  // console.log("Selected Class: ", props.modelValue);
 });
 
 let selectedClass = ref(props.modelValue);
@@ -431,7 +431,7 @@ let classes = {
 let subclasses = computed(() => {
   let subclasses = [];
   let keys = Object.keys(classes);
-  console.log("Keys: ", keys);
+  // console.log("Keys: ", keys);
   keys.forEach((key) => {
     classes[key].forEach((subclass) => {
       // console.log("Subclass: ", subclass);
@@ -451,13 +451,13 @@ let headers = computed(() => {
 });
 
 let selectClass = (subclass) => {
-  console.log(subclass);
+  // console.log(subclass);
   selectedClass.value = subclass;
   // emit('update:modelValue', subclass);
 };
 
 watch(selectedClass, (newVal, oldVal) => {
-  console.log("Selected Class: ", newVal);
+  // console.log("Selected Class: ", newVal);
 
   emit("update:modelValue", newVal);
 });

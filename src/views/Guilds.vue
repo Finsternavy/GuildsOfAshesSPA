@@ -10,7 +10,7 @@ onBeforeMount(() => {
 });
 
 let getAllGuilds = async () => {
-  console.log("Fetching guild data..");
+  // console.log("Fetching guild data..");
   //   let call = {
   //     GuildID: guildID.value,
   //   };
@@ -27,25 +27,25 @@ let getAllGuilds = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guilds list data: ", data);
+    // console.log("Guilds list data: ", data);
     guildsList.value = data.Data;
-    console.log("Guild list: ", guildsList.value);
+    // console.log("Guild list: ", guildsList.value);
     // store.setUser(data.Data);
     // router.push({ name: "guild-home" });
     // threads.value = data.Data;
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 
 let visit = (id) => {
-  console.log("visit");
+  // console.log("visit");
   localStorage.setItem("guildID", id);
   router.push({ name: "guild-home" });
 };
 
 let goToCreate = () => {
-  console.log("goToCreate");
+  // console.log("goToCreate");
   router.push({ name: "guild-create" });
 };
 </script>

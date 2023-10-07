@@ -74,16 +74,16 @@ let updateUserClass = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("data: ", data);
+    // console.log("data: ", data);
     localStorage.setItem("User", JSON.stringify(data.Data));
     getGuildData();
   } else {
-    console.log("Error fetching data: ", response.statusText);
+    // console.log("Error fetching data: ", response.statusText);
   }
 };
 
 let getGuildData = async () => {
-  console.log("Fetching guild data..");
+  // console.log("Fetching guild data..");
   guildID.value = localStorage.getItem("guildID");
   let call = {
     GuildID: guildID.value,
@@ -101,19 +101,19 @@ let getGuildData = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
 
     // test guildStore 
     guild.value = data.Data;
     guildStore.setGuild(guild.value);
-    console.log("GuildStore: ", guildStore.getGuild);
+    // console.log("GuildStore: ", guildStore.getGuild);
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 
 let leaveGuild = async () => {
-  console.log("Leaving guild..");
+  // console.log("Leaving guild..");
   guildID.value = localStorage.getItem("guildID");
   let call = {
     User: user.value,
@@ -132,7 +132,7 @@ let leaveGuild = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
     // store.setUser(data.Data);
     localStorage.setItem("User", JSON.stringify(data.Data));
     localStorage.removeItem("guildName");
@@ -140,11 +140,11 @@ let leaveGuild = async () => {
     store.setGuildID(null);
     localStorage.removeItem("guildID");
     user.value = data.Data;
-    console.log("User after leaving guild: ", user.value);
+    // console.log("User after leaving guild: ", user.value);
     location.reload();
 
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 </script>

@@ -38,7 +38,7 @@ onBeforeMount(() => {
 })
 
 watch(questionType, (newVal, oldVal) => {
-    console.log("Question type changed");
+    // console.log("Question type changed");
     if (newVal == "bool") {
         console.log("Adding true false from watcher");
         options.value.push('Yes');
@@ -46,7 +46,7 @@ watch(questionType, (newVal, oldVal) => {
     }
 })
 let addToApp = () => {
-    console.log("Adding to app");
+    // console.log("Adding to app");
     let question = {
         id: data.value.length + 1,
         question: questionText.value,
@@ -54,29 +54,29 @@ let addToApp = () => {
         options: options.value,
         answer: ''
     }
-    console.log('Question: ', question);
+    // console.log('Question: ', question);
     data.value.push(question);
     questionText.value = '';
     questionType.value = '';
     options.value = [];
     question = {};
-    console.log(data.value);
+    // console.log(data.value);
 }
 
 let addRequirement = () => {
-    console.log("Adding requirement");
+    // console.log("Adding requirement");
     requirements.value.push(requirement.value);
     requirement.value = '';
 }
 
 let addSection = () => {
-    console.log("Adding description", section.value);
+    // console.log("Adding description", section.value);
     description.value = section.value;
     section.value = '';
 }
 
 let addOption = () => {
-    console.log("Adding option");
+    // console.log("Adding option");
     options.value.push(option.value);
     option.value = '';
 
@@ -84,7 +84,7 @@ let addOption = () => {
 
 let checkQuestionType = () => {
     if (questionType.value == "multi") {
-        console.log("Adding true false from checkQuestionType");
+        // console.log("Adding true false from checkQuestionType");
         options.value.push(true);
         options.value.push(false);
         return true;
@@ -93,22 +93,22 @@ let checkQuestionType = () => {
 }
 
 let finalizeApplication = async () => {
-    console.log("Finalizing application");
+    // console.log("Finalizing application");
     console.log(data.value);
     application.value.description = description.value;
     application.value.requirements = requirements.value;
     application.value.questions = data.value;
-    console.log("Application: ", application.value);
+    // console.log("Application: ", application.value);
 
     let user = store.getUser;
-    console.log("Attempting to create guild..");
+    // console.log("Attempting to create guild..");
     let call = {
         GuildID: guildID.value,
         Description: description.value,
         Requirements: requirements.value,
         Questions: data.value
     };
-    console.log("call: ", call);
+    // console.log("call: ", call);
     let response = await fetch(baseUrl + "/addGuildApplication", {
     method: "POST",
     headers: {
@@ -122,10 +122,10 @@ let finalizeApplication = async () => {
 
     if (response.ok) {
         let data = await response.json();
-        console.log("Data from save guild application: ", data);
+        // console.log("Data from save guild application: ", data);
         finalized.value = true;
     } else {
-        console.log("Error saving guild application: ", response.statusText);
+        // console.log("Error saving guild application: ", response.statusText);
     }
 }
 </script>

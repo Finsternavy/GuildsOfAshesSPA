@@ -62,7 +62,7 @@ let getRandomImage = () => {
 };
 
 onBeforeMount(() => {
-  console.log("PrimaryLayout mounted");
+  // console.log("PrimaryLayout mounted");
   randomImage.value = getRandomImage;
 });
 let randomImage = ref();

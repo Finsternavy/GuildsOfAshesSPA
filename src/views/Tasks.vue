@@ -10,7 +10,7 @@ let randomBackground = () => {
     "center-left",
     "center-right",
   ];
-  console.log("Setting random location: ", root + locations[random]);
+  // console.log("Setting random location: ", root + locations[random]);
   return root + locations[random];
 };
 </script>

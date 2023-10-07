@@ -9,7 +9,7 @@ let user = ref();
 let authenticated = ref(false);
 let username = ref();
 let goHome = () => {
-  console.log("Going home");
+  // console.log("Going home");
   router.push("/");
 };
 
@@ -18,14 +18,14 @@ onMounted(() => {
   if (store.user) {
     user.value = store.getUser;
     username.value = store.getUsername;
-    console.log("Username: ", username.value);
-    console.log("User at menu after login: ", user.value);
+    // console.log("Username: ", username.value);
+    // console.log("User at menu after login: ", user.value);
   }
 });
 
 let checkUser = () => {
   user = store.getUser;
-  console.log(user);
+  // console.log(user);
   if (!user) {
     authenticated.value = false;
     return false;
@@ -36,7 +36,7 @@ let checkUser = () => {
 
 let logout = () => {
   localStorage.removeItem("User");
-  console.log("Logging out");
+  // console.log("Logging out");
   store.removeUser();
   user = null;
   router.push("/");

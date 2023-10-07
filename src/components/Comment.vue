@@ -19,7 +19,7 @@ let showEditcontrols = ref(false);
 let replyText = ref();
 
 onBeforeMount(() => {
-  console.log("CommentID: ", props.data.CommentID);
+  // console.log("CommentID: ", props.data.CommentID);
   user.value = store.getUser;
   commentEditMessage.value = props.data.CommentMessage;
 });
@@ -41,7 +41,7 @@ let postComment = async () => {
     QuoteAuthor: props.data.AuthorUsername,
   };
 
-  console.log("Posting comment: ", payload);
+  // console.log("Posting comment: ", payload);
   let response = await fetch(baseUrl + "/postComment", {
     method: "POST",
     headers: {
@@ -69,7 +69,7 @@ let deleteComment = async () => {
     ThreadID: threadID,
   };
 
-  console.log("Deleting comment: ", payload);
+  // console.log("Deleting comment: ", payload);
   let response = await fetch(baseUrl + "/deleteComment", {
     method: "POST",
     headers: {
@@ -83,11 +83,11 @@ let deleteComment = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Response from delete comment: ", data);
+    // console.log("Response from delete comment: ", data);
     emit("comment-get-threads");
     // threads.value = data.Data;
   } else {
-    console.log("Error deleting comment: ", response.statusText);
+    // console.log("Error deleting comment: ", response.statusText);
   }
 };
 
@@ -105,7 +105,7 @@ let editComment = async () => {
     CommentMessage: '(Edited) ' + commentEditMessage.value,
   };
 
-  console.log("Editing thread: ", payload);
+  // console.log("Editing thread: ", payload);
   let response = await fetch(baseUrl + "/editComment", {
     method: "POST",
     headers: {
@@ -119,11 +119,11 @@ let editComment = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Response from edit comment: ", data);
+    // console.log("Response from edit comment: ", data);
     emit("comment-get-threads");
     // threads.value = data.Data;
   } else {
-    console.log("Error editing comment: ", response.statusText);
+    // console.log("Error editing comment: ", response.statusText);
   }
   toggleEditCommentControls();
 };
@@ -138,7 +138,7 @@ let upVote = async () => {
     CommentID: props.data.CommentID,
   };
 
-  console.log("Up voting: ", payload);
+  // console.log("Up voting: ", payload);
   let response = await fetch(baseUrl + "/upVoteComment", {
     method: "POST",
     headers: {
@@ -151,7 +151,7 @@ let upVote = async () => {
   });
 
   if (response) {
-    console.log("Response receieved.");
+    // console.log("Response receieved.");
     emit("comment-get-threads");
   }
 };
@@ -166,7 +166,7 @@ let downVote = async () => {
     CommentID: props.data.CommentID,
   };
 
-  console.log("Down voting: ", payload);
+  // console.log("Down voting: ", payload);
   let response = await fetch(baseUrl + "/downVoteComment", {
     method: "POST",
     headers: {
@@ -179,7 +179,7 @@ let downVote = async () => {
   });
 
   if (response) {
-    console.log("Response receieved.");
+    // console.log("Response receieved.");
     emit("comment-get-threads");
   }
 };

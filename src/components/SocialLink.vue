@@ -52,4 +52,3 @@ defineProps({
     </div>
   </div>
 </template>
-https://discord.com/api/guilds/790063760861429771/widget.json

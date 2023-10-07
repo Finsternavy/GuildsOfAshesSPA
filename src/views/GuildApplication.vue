@@ -15,7 +15,7 @@ let logo = ref();
 let guildName = ref();
 
 onBeforeMount(() => {
-    console.log("Guild application mounted");
+    // console.log("Guild application mounted");
     guildID.value = localStorage.getItem("guildID");
     getGuildData();
     fetchGuildApplication();
@@ -39,7 +39,7 @@ let fetchGuildApplication = async () => {
 
     if (response.ok) {
         let data = await response.json();
-        console.log("Guild application data: ", data);
+        // console.log("Guild application data: ", data);
         description.value = data.Data.Description;
         requirements.value = data.Data.Requirements;
         questions.value = data.Data.Questions;
@@ -49,21 +49,21 @@ let fetchGuildApplication = async () => {
 };
 
 let updateAnswer = (question) => {
-    console.log("Question: ", question.question);
-    console.log("Question answer: ", question.answer);
+    // console.log("Question: ", question.question);
+    // console.log("Question answer: ", question.answer);
 }
 
 let submitApplication = async () => {
     let user = store.getUser;
-    console.log("Submitting application..");
+    // console.log("Submitting application..");
     let guildID = localStorage.getItem("guildID");
-    console.log("Attempting to create guild..");
+    // console.log("Attempting to create guild..");
     let call = {
         GuildID: guildID,
         User: user,
         Questions: questions.value
     };
-    console.log("call: ", call);
+    // console.log("call: ", call);
     let response = await fetch(baseUrl + "/submitGuildApplication", {
     method: "POST",
     headers: {
@@ -77,15 +77,15 @@ let submitApplication = async () => {
 
     if (response.ok) {
         let data = await response.json();
-        console.log("Response from submitApplication: ", data);
+        // console.log("Response from submitApplication: ", data);
         success.value = true;
     } else {
-        console.log("Error during submit application: ", response.statusText);
+        // console.log("Error during submit application: ", response.statusText);
     }
 }
 
 let getGuildData = async () => {
-  console.log("Fetching guild data..");
+//   console.log("Fetching guild data..");
   let call = {
     GuildID: guildID.value,
   };
@@ -102,13 +102,13 @@ let getGuildData = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
     guild.value = data.Data;
-    console.log("Guild: ", guild.value);
+    // console.log("Guild: ", guild.value);
     localStorage.setItem("guildLogo", guild.value.Logo);
     localStorage.setItem("guildName", guild.value.Name);
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 

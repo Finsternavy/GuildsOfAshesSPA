@@ -8,13 +8,13 @@ import { ref, onBeforeMount } from "vue";
   <div class="news expand">
     <!-- <RssFeed /> -->
     <!-- <rssapp-wall id="nNhVs0srO3nwqegD"></rssapp-wall> -->
-    <iframe
+    <!-- <iframe
       class="goa-container expand"
       width="100%"
       height="1740"
       src="https://forums.ashesofcreation.com/"
       frameborder="0"
-    ></iframe>
+    ></iframe> -->
     <!-- <iframe
       class="goa-container"
       SameSite="Lax"

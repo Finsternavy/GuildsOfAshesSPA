@@ -40,7 +40,7 @@ onBeforeMount(() => {
 })
 
 let getClassIcon = (className) => {
-  console.log("className: ", className);
+  // console.log("className: ", className);
   if (className.toLowerCase() === "fighter") {
     return Fighter;
   }
@@ -68,7 +68,7 @@ let getClassIcon = (className) => {
 };
 
 let removeFromGuild = async () => {
-  console.log("Leaving guild..");
+  // console.log("Leaving guild..");
   let guildID = localStorage.getItem("guildID");
   let call = {
     User: props.member,
@@ -87,11 +87,11 @@ let removeFromGuild = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Removed member: ", data);
+    // console.log("Removed member: ", data);
     props.function();
 
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 </script>

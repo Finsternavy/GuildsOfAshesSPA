@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import DiscordServer from "../components/DiscordServer.vue";
+import DiscordServer from "../components/Discordserver.vue";
 
 let props = defineProps(["modelValue"]);
 
@@ -10,15 +10,15 @@ let discordServers = ref(props.modelValue);
 
 let createDiscordWidget = async () => {
   let Id = this.discord_ID.value;
-  console.log(Id);
+  // console.log(Id);
   fetch(`https://discord.com/api/guilds/${Id}/widget.json`).then((response) => {
     response;
-    console.log(response);
+    // console.log(response);
     if (response.status === 200) {
-      console.log(
-        "Pushing to discordServers: ",
-        `https://discord.com/widget?id=${Id}&theme=dark`
-      );
+      // console.log(
+      //   "Pushing to discordServers: ",
+      //   `https://discord.com/widget?id=${Id}&theme=dark`
+      // );
       discordServers.value.push({
         embedSrc: `https://discord.com/widget?id=${Id}&theme=dark`,
       });

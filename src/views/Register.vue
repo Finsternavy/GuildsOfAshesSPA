@@ -24,14 +24,14 @@ let registrationForm = computed(() => {
 });
 
 let register = async () => {
-  console.log("baseURL: ", baseUrl);
+  // console.log("baseURL: ", baseUrl);
   let hashedPassword = await hash(password.value);
   let call = {
     Username: username.value,
     Email: email.value,
     Password: hashedPassword,
   };
-  console.log("call: ", call);
+  // console.log("call: ", call);
   let response = await fetch(baseUrl + "/register", {
     method: "POST",
     headers: {
@@ -49,7 +49,7 @@ let register = async () => {
       }
     })
     .catch((error) => {
-      console.log("Error: ", error);
+      // console.log("Error: ", error);
       return error;
     });
   returnValue = await response;
@@ -68,9 +68,9 @@ async function hash(string) {
 let checkForm = () => {
   formChecked.value = true;
   errorMessage.value = [];
-  console.log("Checking form...");
+  // console.log("Checking form...");
   let keys = Object.keys(registrationForm.value);
-  console.log(keys);
+  // console.log(keys);
   let found = true;
   keys.forEach((key) => {
     if (!registrationForm.value[key].value) {
@@ -79,7 +79,7 @@ let checkForm = () => {
     }
   });
   if (!found) {
-    console.log("Missing value");
+    // console.log("Missing value");
     return false;
   }
   if (
@@ -89,7 +89,7 @@ let checkForm = () => {
     errorMessage.value.push("Password do not match!");
     return false;
   }
-  console.log("Registration Form is good!: ", registrationForm.value);
+  // console.log("Registration Form is good!: ", registrationForm.value);
   register();
   return true;
 };

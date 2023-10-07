@@ -33,7 +33,7 @@ let threads = ref([
 ]);
 
 onBeforeMount(() => {
-  console.log("before mount - threads");
+  // console.log("before mount - threads");
   store = useUserStore();
   // This is working!  Need to add create forum button.
   // Before that, need to add create and join guild so I can have a guildID to test forum.
@@ -42,7 +42,7 @@ onBeforeMount(() => {
 
 let getThreads = async () => {
   let user = store.getUser;
-  console.log("Attempting to get threads for guildID: ", user.GuildID);
+  // console.log("Attempting to get threads for guildID: ", user.GuildID);
   let response = await fetch(baseUrl + "/getAllThreads", {
     method: "POST",
     headers: {
@@ -56,10 +56,10 @@ let getThreads = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Get all threads response data: ", data);
+    // console.log("Get all threads response data: ", data);
     threads.value = data.Data;
   } else {
-    console.log("Error fetching thread data: ", response.statusText);
+    // console.log("Error fetching thread data: ", response.statusText);
   }
 };
 
@@ -76,7 +76,7 @@ let postThread = async () => {
     ThreadMessage: threadMessage.value,
   };
 
-  console.log("Posting thread: ", payload);
+  // console.log("Posting thread: ", payload);
   let response = await fetch(baseUrl + "/postThread", {
     method: "POST",
     headers: {
@@ -90,10 +90,10 @@ let postThread = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Post new thread test data: ", data);
+    // console.log("Post new thread test data: ", data);
     // threads.value = data.Data;
   } else {
-    console.log("Error posting thread: ", response.statusText);
+    // console.log("Error posting thread: ", response.statusText);
   }
   threadTitle.value = "";
   threadMessage.value = "";
@@ -107,7 +107,7 @@ let showThreadCreation = () => {
 };
 
 let getThreadFromChild = (event) => {
-  console.log("Fetching threads at childs request.");
+  // console.log("Fetching threads at childs request.");
   getThreads();
 };
 </script>
