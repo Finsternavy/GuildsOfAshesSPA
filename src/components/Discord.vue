@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import DiscordServer from "../components/Discordserver.vue";
+import DiscordServer from "../components/DiscordServer.vue";
 
 let props = defineProps(["modelValue"]);
 
