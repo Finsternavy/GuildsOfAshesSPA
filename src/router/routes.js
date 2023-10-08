@@ -13,6 +13,7 @@ import Register from '../views/Register.vue';
 import Profile from '../views/Profile.vue';
 import GuildApplicatiopn from '../views/GuildApplication.vue';
 import GuildCreateApplication from '../views/GuildApplicationCreater.vue';
+import Feedback from '../views/Feedback.vue';
 
 let router = createRouter({
   history: createWebHistory(),
@@ -32,6 +33,7 @@ let router = createRouter({
     { path: '/guild/calendar', name: 'guild-calendar',  component: MyGuild },
     { path: '/guild/application', name: 'guild-application',  component: GuildApplicatiopn },
     { path: '/guild/create-application', name: 'create-application',  component: GuildCreateApplication },
+    { path: '/feedback', name: 'feedback',  component: Feedback },
   ]
 })
 

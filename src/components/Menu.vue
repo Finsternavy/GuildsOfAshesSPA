@@ -91,9 +91,12 @@ let displayUserInfo = () => {
       id="Menu"
       class="uk-navbar-container sub-menu uk-flex uk-flex-between uk-flex-middle"
     >
-      <div class="left-nav uk-width-1-6">
-        <div class="remove-background" @click="goHome">
+      <div class="left-nav uk-width-auto uk-flex uk-flex-middle">
+        <div class="remove-background uk-margin-right" @click="goHome">
           <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
+        </div>
+        <div class="dev-links">
+          <RouterLink to="/feedback" ><span class="goa-button">Feedback</span></RouterLink>
         </div>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
