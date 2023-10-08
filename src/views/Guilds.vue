@@ -129,7 +129,7 @@ let goToCreate = () => {
           {{ guild.Region }}
         </p>
       </div>
-      <div>
+      <div v-if="guild.MemberList">
         <label class="label" :for="'Guild-Size' + guild.ID">Members</label>
         <p class="uk-margin-remove uk-light" :id="'Guild-Size' + guild.ID">
           {{ guild.MemberList.length }}
