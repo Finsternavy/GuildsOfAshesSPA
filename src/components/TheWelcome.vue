@@ -1,9 +1,21 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 import GoaLogo from "../public/Images/GoALogoFinalwithwordsandShadow.png";
 
 let selectedClass = ref();
+const noticeAcknowledged = ref(false);
+
+onBeforeMount(() => {
+  if (localStorage.getItem("noticeAcknowledged")) {
+    noticeAcknowledged.value = true;
+  }
+});
+
+const acknowledgeNotice = () => {
+  localStorage.setItem("noticeAcknowledged", true);
+  noticeAcknowledged.value = true;
+};
 </script>
 
 <style scoped>
@@ -168,7 +180,7 @@ let selectedClass = ref();
       </table> -->
     </div>
   </div>
-  <div id="Notice" class="notice goa-container-no-radius uk-padding">
+  <div v-if="!noticeAcknowledged" id="Notice" class="notice goa-container-no-radius uk-padding">
     <div class="notice-contents goa-container uk-position-top-center uk-margin-xlarge-top uk-padding-large">
       <h1 class="text-goa-red">NOTICE:</h1>
       <p class="text-goa-gray uk-text-large">
@@ -178,7 +190,7 @@ let selectedClass = ref();
       <p class="text-goa-gray uk-text-large">
         Please report any bugs or issues to CyFinXP in discord.
       </p>
-      <button class="goa-button" uk-toggle="target: #Notice;">Acknowledge and close</button>
+      <button class="goa-button" @click="acknowledgeNotice">Acknowledge and close</button>
     </div>
   </div>
 </template>

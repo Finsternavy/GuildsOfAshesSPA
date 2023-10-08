@@ -16,10 +16,27 @@ let showCreateComment = ref(false);
 let showEditcontrols = ref(false);
 let threadEditMessage = ref();
 let editTitle = ref();
+let unreadThreads = ref([]);
+let unreadComments = ref([]);
+let readThreadIDs = [];
+let readCommentIDs = ref([]);
+let parentUnread = ref(false);
 
 let props = defineProps({
   modelValue: {},
   data: {},
+  unreadThreadIDs: {
+    type: Array,
+  },
+  unreadCommentIDs: {
+    type: Array,
+  },
+  addThreadToRead: {
+    type: Function,
+  },
+  addCommentToRead: {
+    type: Function,
+  },
   function: {
     type: Function,
   },
@@ -32,6 +49,11 @@ onBeforeMount(() => {
   user.value = store.user;
   threadEditMessage.value = props.data.ThreadMessage;
   editTitle.value = props.data.ThreadTitle;
+  unreadThreads.value = [...props.unreadThreadIDs];
+  unreadComments.value = [...props.unreadCommentIDs];
+  console.log("Unread threads: ", unreadThreads.value);
+  console.log("Unread comments: ", unreadComments.value);
+  ifUnread();
 });
 let comments = ref();
 
@@ -43,6 +65,13 @@ let toggleChildren = () => {
 };
 
 let toggleThread = () => {
+  if (user.value.UserID != props.data.AuthorID) {
+    if (props.unreadThreadIDs.includes(props.data.ThreadID)){
+      props.addThreadToRead(props.data.ThreadID);
+      parentUnread.value = false;
+      unreadThreads.value.pop(props.data.ThreadID);
+    }
+  }
   // console.log("Toggling thread: ", props.data.ThreadID);
   showThread.value = !showThread.value;
   // console.log("showThread: ", showThread.value);
@@ -174,6 +203,20 @@ let parentFunction = () => {
   // () => props.function();
 };
 
+let parentAddCommentToRead = (comment) => {
+  console.log("Checking comment: ", comment);
+  if (comment.AuthorID != user.value.UserID){
+    unreadComments.value.pop(comment.CommentID);
+    parentUnread.value = false;
+    // console.log("Calling parent function");
+    emit("comment-add-to-read", comment.CommentID);
+    // () => props.function();
+  } else {
+    console.log("Comment is from user, not adding to read.");
+  }
+
+};
+
 let upVote = async () => {
   let user = store.getUser;
   let threadID = props.data.ThreadID;
@@ -228,7 +271,34 @@ let downVote = async () => {
     // console.log("Response receieved.");
     emit("parent-get-threads");
   }
+
 };
+
+
+
+const ifUnread = () => {
+  let unread = false;
+  if (props.unreadThreadIDs.includes(props.data.ThreadID) && !readThreadIDs.includes(props.data.ThreadID) && props.data.AuthorID != user.value.UserID) {
+    parentUnread.value = true;
+    return;
+  }
+  // isUnread
+  parentUnread.value = false;
+};
+
+const isUnread = (comment) => {
+  let unread = false;
+  if (unreadComments.value.includes(comment.CommentID)) {
+    parentUnread.value = true;
+    console.log("Comment is unread: ", comment.CommentID);
+    unread = true;
+  }
+  if (props.unreadThreadIDs.includes(props.data.ThreadID) && !readThreadIDs.includes(props.data.ThreadID)){
+    parentUnread.value = true;
+  }
+  return unread;
+};
+
 </script>
 <style scoped>
 .thread-body-container {
@@ -320,10 +390,11 @@ let downVote = async () => {
   padding-top: 20px;
   opacity: 1;
 }
+
 </style>
 
 <template>
-  <div class="thread">
+  <div :class="{'thread' : {}, 'unread' : parentUnread}">
     <div class="thread-header">
       <div class="uk-width-stretch uk-padding-small" @click="toggleThread()">
         <h4 class="uk-light uk-margin-remove uk-text-left text-goa-red">
@@ -449,9 +520,9 @@ let downVote = async () => {
         class="reply text-goa-red uk-margin-left uk-margin-right uk-text-center"
         uk-icon="icon: reply; ratio: 2;"
       ></span>
-      <div class="uk-width-stretch">
-        <div v-for="comment in props.data.Comments">
-          <Comment :data="comment" @comment-get-threads="parentFunction" />
+      <div class="uk-width-stretch" >
+        <div v-for="comment in props.data.Comments" @click="parentAddCommentToRead(comment)">
+          <Comment :data="comment" :unread="isUnread(comment)" @comment-get-threads="parentFunction" />
         </div>
       </div>
     </div>

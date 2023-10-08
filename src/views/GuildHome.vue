@@ -359,7 +359,7 @@ let createApplication = () => {
           'bordered-logo-container': guild.LogoBorder == true,
         }"
       >
-        <img class="guild-logo-upload" :src="guild.Logo" alt="Uploaded Image" uk-img />
+        <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
         
       <!-- This is where we display the rich text -->
