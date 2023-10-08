@@ -24,6 +24,9 @@ let guild = ref({});
 let guildLeader = ref({});
 let guildMembers = ref([]);
 let architypes = ref(['FIGHTER', 'TANK', 'ROGUE', 'RANGER', 'MAGE', 'SUMMONER', 'CLERIC', 'BARD'])
+let secondaryFilter = ref();
+let primaryFilter = ref();
+
 
 onBeforeMount(() => {
   guildStore = useGuildStore();
@@ -72,7 +75,27 @@ let sortMembers = () => {
     let rankLevel = [];
     guild.value.MemberList.forEach((member) => {
       if (member.Rank.RankLevel === rank.RankLevel) {
-        rankLevel.push(member);
+        if (primaryFilter.value) {
+          if (primaryFilter.value === member.Primary) {
+            console.log("primaryFilter: ", primaryFilter.value);
+            console.log("member.Primary: ", member.Primary);
+            rankLevel.push(member);
+            return;
+          }
+          return;
+        } 
+        if (secondaryFilter.value) {
+          if (secondaryFilter.value === member.Secondary) {
+            console.log("secondaryFilter: ", secondaryFilter.value);
+            console.log("member.Secondary: ", member.Secondary);
+            rankLevel.push(member);
+            return;
+          }
+          return;
+        } else {
+
+          rankLevel.push(member);
+        }
       }
     });
     if (rankLevel.length > 0) {
@@ -111,7 +134,44 @@ let getClassIcon = (className) => {
   }
 };
 
+const getPrimaryArchiteypeCount = (architype) => {
+  let count = 0;
+  if (!guild.value.MemberList) return count;
+  guild.value.MemberList.forEach((member) => {
+    if (member.Primary === architype) {
+      count++;
+    }
+  });
+  return count;
+};
 
+const getSecondaryArchiteypeCount = (architype) => {
+  let count = 0;
+  if (!guild.value.MemberList) return count;
+  guild.value.MemberList.forEach((member) => {
+    if (member.Secondary === architype) {
+      count++;
+    }
+  });
+  return count;
+};
+
+const setPrimaryFilter = (architype) => {
+  secondaryFilter.value = null;
+  primaryFilter.value = architype;
+  console.log("setPrimaryFilter: ", primaryFilter.value);
+};
+
+const setSecondaryFilter = (architype) => {
+  primaryFilter.value = null;
+  secondaryFilter.value = architype;
+  console.log("setSecondaryFilter: ", secondaryFilter.value);
+};
+
+const clearFilter = () => {
+  primaryFilter.value = null;
+  secondaryFilter.value = null;
+};
 </script>
 
 <style scoped>
@@ -197,39 +257,62 @@ label {
 .background-black {
   background-color: rgba(0, 0, 0, 1);
 }
+
+.uk-button {
+  background-color: rgba(248, 47, 47, 0.5);
+  color: white;
+  padding: 5px 10px;
+}
+
+.uk-button:hover {
+  background-color: rgb(117, 3, 3);
+}
 </style>
 
 <template>
   <div class="roster">
     <div class="guild-stats goa-container uk-padding uk-flex uk-flex-column uk-width-1-1">
       <h3 class="text-goa-red uk-text-center">Guild Character Data</h3>
-      <div class="uk-flex uk-flex-around goa-container-no-radius">
-        <div class="">Architypes</div>
-        <div
-          v-for="architype in architypes"
-          style="height: 50px"
-          :class="{
-            'tool-tip uk-text-center uk-padding-remove gradient-black': architype,
-          }">
-          <div
-            style="height: 50px; width: 50px"
+      <span class="text-goa-gray uk-text-center uk-margin-bottom">Click a cell to filter the guild list</span>
+      <table class="uk-table">
+        <thead>
+          <tr class="uk-text-center"> <!-- Add something here to change the background behind the images -->
+            <th @click="clearFilter" class="uk-button uk-button-small uk-border-pill uk-text-bolder">Clear Filter</th>
+            <th v-for="architype in architypes" style="height: 50px"
             :class="{
-              'tool-tip uk-background-contain uk-align-center shadow uk-margin-remove-bottom': architype,
+              'tool-tip background-black uk-text-center uk-padding-remove gradient-black': architype,
             }"
-            :data-src="getClassIcon(architype.toLocaleLowerCase())"
-            :data="architype"
-            uk-img
-          ></div>
-        </div>
-      </div>
-      <div class="uk-flex uk-width-1-1 uk-flex-around">
-        <div class="uk-width-small uk-text-center background-black">Primary</div>
-        <div v-for="num in architypes.length" class="cell  uk-width-expand uk-padding-small text-goa-red">{{ num }}</div>
-      </div>
-      <div class="uk-flex uk-width-1-1 uk-flex-around">
-        <div class="uk-width-small uk-text-center background-black">Secondary</div>
-        <div v-for="num in architypes.length" class="cell  uk-width-expand uk-padding-small text-goa-red">{{ num }}</div>
-      </div>
+            >
+            <div
+              style="height: 50px; width: 50px"
+              :class="{
+                'tool-tip uk-background-contain uk-align-center shadow uk-margin-remove-bottom': architype,
+              }"
+              :data-src="getClassIcon(architype.toLocaleLowerCase())"
+              :data="architype"
+              uk-img
+            ></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="uk-text-center">
+            <td class="text-goa-red">Primary</td>
+            <td v-for="architype in architypes" @click="setPrimaryFilter(architype)" class="cell">
+              {{ getPrimaryArchiteypeCount(architype) }}
+            </td>
+          </tr>
+          <tr class="uk-text-center">
+            <td class="text-goa-red">Secondary</td>
+            <td v-for="architype in architypes" @click="setSecondaryFilter(architype)" class="cell">
+              {{ getSecondaryArchiteypeCount(architype) }}
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+      </table>
     </div>
     <div class="guild-roster">
       <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">

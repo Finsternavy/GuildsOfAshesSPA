@@ -11,28 +11,7 @@ let showThreadCreationControls = ref(false);
 let threadTitle = ref();
 let threadMessage = ref();
 
-let threads = ref([
-  // {
-  //   id: 12345,
-  //   title: "Cleric Build",
-  //   author: "CyFinXP",
-  //   timeDate: "1/1/2021 12:00:00",
-  //   message: "Anyone have a good cleric build?.",
-  //   likes: 12,
-  //   dislikes: 2,
-  //   comments: [
-  //     {
-  //       id: 12345 - 1, // comment Id's should be linked to their parent thread Id.
-  //       threadId: 12345,
-  //       author: "CyFinXP",
-  //       timeDate: "1/1/2021 12:00:00",
-  //       message: "I've been looking for a good one too :(.",
-  //       likes: 12,
-  //       dislikes: 2,
-  //     },
-  //   ],
-  // },
-]);
+let threads = ref([]);
 
 onBeforeMount(() => {
   // console.log("before mount - threads");
