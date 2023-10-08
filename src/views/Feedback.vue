@@ -153,6 +153,14 @@ const updateFeedback = async (item) => {
         // console.log("Error fetching thread data: ", response.statusText);
     }  
 }
+
+const formatType = (type) => {
+    if (type == "Feedback") {
+        return "Bug Reports";
+    } else {
+        return "Feature Requests";
+    }
+}
 </script>
 <style scoped>
 .background-black {
@@ -207,7 +215,7 @@ const updateFeedback = async (item) => {
                 <title>Bug Reports</title>
                 <thead>
                     <tr>
-                        <th v-if="data[0]" class="text-goa-red">{{ data[0].MessageType }}</th>
+                        <th v-if="data[0]" class="text-goa-red">{{ formatType(data[0].MessageType) }}</th>
                         <th class="text-goa-red">Progress</th>
                         <th class="text-goa-red">Status</th>
                     </tr>
@@ -229,7 +237,7 @@ const updateFeedback = async (item) => {
                             {{ item.Status }}
                         </td>
                         <td>
-                            <button v-if="devUser" @click="updateFeedback(item)" class="goa-button" :disabled="!devUser">
+                            <button v-if="devUser && item.Status == 'Open'" @click="updateFeedback(item)" class="goa-button" :disabled="!devUser">
                                 Update
                             </button>
                         </td>

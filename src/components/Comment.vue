@@ -6,12 +6,13 @@ import { useAPI } from '../stores/apiStore'
 let props = defineProps({
   modelValue: {},
   data: {},
+  unread: {},
 });
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Forum";
 
-let emit = defineEmits(["comment-get-threads"]);
+let emit = defineEmits(["comment-get-threads"], ["comment-add-to-read"]);
 
 let store = useUserStore();
 let user = ref();
@@ -20,11 +21,13 @@ let replyMessage = ref("");
 let commentEditMessage = ref();
 let showEditcontrols = ref(false);
 let replyText = ref();
+// let unread = ref(false);
 
 onBeforeMount(() => {
   // console.log("CommentID: ", props.data.CommentID);
   user.value = store.getUser;
   commentEditMessage.value = props.data.CommentMessage;
+  // unread.value = props.unread;
 });
 
 let postComment = async () => {
@@ -197,6 +200,15 @@ let showReplyControls = () => {
 let toggleEditCommentControls = () => {
   showEditcontrols.value = !showEditcontrols.value;
 };
+
+const checkUnread = () => {
+  if (unread == true) {
+    console.log("CommentID ", props.data.CommentID, " telling parent I am unread: ", unread.value);
+    emit("child-unread", unread.value, props.data.CommentID);
+    return true;
+  }
+  return false;
+}
 </script>
 <style scoped>
 .comment-container {
@@ -279,11 +291,12 @@ let toggleEditCommentControls = () => {
   border-radius: 10px;
   background-color: rgba(255, 165, 0, 0.1);
 }
+
 </style>
 
 <template>
   <div
-    class="comment-container uk-background-secondary uk-light map-bottom-left"
+    :class="{'comment-container uk-background-secondary uk-light map-bottom-left' : {}, 'unread': props.unread}"
     loading="eager"
   >
     <div class="comment uk-padding-small">

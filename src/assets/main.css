@@ -55,6 +55,7 @@
   max-height: 500px;
   width: auto;
   background-size: contain;
+  pointer-events: none;
 }
 
 /* Maybe add a frame option on image upload? Then add another
@@ -68,6 +69,7 @@
   border-radius: 50px;
   overflow: hidden;
   background-position: center;
+  pointer-events: none;
   /* box-shadow: 0 0 20px 5px black; */
 }
 
@@ -82,6 +84,7 @@
   outline-offset: -1px;
   overflow: hidden;
   box-shadow: 0 0 20px 5px black;
+  pointer-events: none;
 }
 
 .bordered-logo-container::after {
@@ -413,6 +416,10 @@ progress::-webkit-progress-value {
   background: rgba(255, 165, 0, 1);
   color: rgba(0, 0, 0, 1);
   font-weight: 700;
+}
+
+.unread {
+  border: 3px solid gold!important;
 }
 
 @media (max-height: 800px) {
