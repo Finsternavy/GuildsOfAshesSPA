@@ -40,7 +40,7 @@ let selectedClass = ref();
 </style>
 
 <template>
-  <div class="">
+  <div class=" uk-margin-large-bottom">
     <div class="hero goa-container uk-padding uk-margin-bottom">
       <div class="goa-logo" :data-src="GoaLogo" uk-img></div>
       <div class="hero-message">
@@ -69,6 +69,35 @@ let selectedClass = ref();
           <li>Selecting your character on the profile page ( Hover over your user name in the upper right hand corner )</li>
           <li>Joining or creating a guild</li>
         </ul>
+        <hr class="uk-margin-large">
+        <h3 class="uk-text-lead text-goa-red">Development Status</h3>
+        <div class="uk-flex uk-flex-around">
+          <div class="left">
+            <h4 class="text-goa-red">In Active Development</h4>
+            <ul>
+              <li>Guild Leader Controls Panel</li>
+              <li>Guild Application Editing</li>
+              <li>Guild Details Editing</li>
+              <li>Guild Roster Management Features</li>
+              <li>Guild Data Metrix</li>
+              <li>Ongoing Bug Fixes</li>
+              <li>Ongoing Feature Improvements</li>
+            </ul>
+          </div>
+          <div class="right">
+            <h4 class="text-goa-red">Planned Features</h4>
+            <ul>
+              <li>Member Direct Messaging</li>
+              <li>Guild News</li>
+              <li>Guild Event Calendar</li>
+              <li>Guild Event RSVP</li>
+              <li>Guild Event Reminders</li>
+              <li>Guild Alert</li>
+              <li>Guild XP System</li>
+              <li>Guild Promotion System</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div class="character-matrix goa-container uk-padding">
@@ -80,7 +109,7 @@ let selectedClass = ref();
       v-if="selectedClass"
       class="goa-container selected-class uk-padding uk-margin-top"
     >
-      <h2><span class="text-goa-red">Community Statistics</span></h2>
+      <!-- <h2><span class="text-goa-red">Community Statistics</span></h2> -->
       <div class="uk-padding">
         <h3 class="uk-text-center">
           <span class="text-goa-red">Your Class Details</span>
@@ -97,7 +126,7 @@ let selectedClass = ref();
           </p>
         </div>
       </div>
-      <table class="uk-table uk-text-center">
+      <!-- <table class="uk-table uk-text-center">
         <thead>
           <tr>
             <td></td>
@@ -136,7 +165,7 @@ let selectedClass = ref();
           </tr>
         </tbody>
         <tfoot></tfoot>
-      </table>
+      </table> -->
     </div>
   </div>
   <div id="Notice" class="notice goa-container-no-radius uk-padding">

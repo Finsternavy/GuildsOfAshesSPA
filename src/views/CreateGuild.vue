@@ -100,8 +100,8 @@ const addRank = () => {
 }
 
 const checkRanks = () => {
-  console.log('Saving ranks..');
-  console.log('Ranks: ', ranks.value);
+  // console.log('Saving ranks..');
+  // console.log('Ranks: ', ranks.value);
   // check each rank in ranks for duplicate names and levels
   for (let i = 0; i < ranks.value.length; i++){
     for (let j = 0; j < ranks.value.length; j++){
@@ -119,13 +119,13 @@ const checkRanks = () => {
 }
 
 const shiftRankUp = (index) => {
-  console.log('Shifting rank up..');
-  console.log('Index: ', index);
-  console.log('Ranks: ', ranks.value);
+  // console.log('Shifting rank up..');
+  // console.log('Index: ', index);
+  // console.log('Ranks: ', ranks.value);
   let temp = ranks.value[index];
   ranks.value[index] = ranks.value[index - 1];
   ranks.value[index - 1] = temp;
-  console.log('Ranks: ', ranks.value);
+  // console.log('Ranks: ', ranks.value);
 }
 
 // let handleInput = () => {

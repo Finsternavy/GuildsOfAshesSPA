@@ -32,7 +32,7 @@ onBeforeMount(() => {
   guildStore = useGuildStore();
   guild.value = guildStore.getGuild;
   if (!guild.value.GuildID){
-    console.log("No guild found, fetching guild data..");
+    // console.log("No guild found, fetching guild data..");
     getGuildData();
   }
   // sortMembers();
@@ -58,7 +58,7 @@ let getGuildData = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
     guild.value = data.Data;
     // sortMembers();
 
@@ -69,7 +69,7 @@ let getGuildData = async () => {
 
 let sortMembers = () => {
   let returnValue = [];
-  console.log("guild: ", guild.value);
+  // console.log("guild: ", guild.value);
   if (!guild.value.Ranks) return returnValue;
   guild.value.Ranks.forEach((rank) => {
     let rankLevel = [];
@@ -77,8 +77,8 @@ let sortMembers = () => {
       if (member.Rank.RankLevel === rank.RankLevel) {
         if (primaryFilter.value) {
           if (primaryFilter.value === member.Primary) {
-            console.log("primaryFilter: ", primaryFilter.value);
-            console.log("member.Primary: ", member.Primary);
+            // console.log("primaryFilter: ", primaryFilter.value);
+            // console.log("member.Primary: ", member.Primary);
             rankLevel.push(member);
             return;
           }
@@ -86,8 +86,8 @@ let sortMembers = () => {
         } 
         if (secondaryFilter.value) {
           if (secondaryFilter.value === member.Secondary) {
-            console.log("secondaryFilter: ", secondaryFilter.value);
-            console.log("member.Secondary: ", member.Secondary);
+            // console.log("secondaryFilter: ", secondaryFilter.value);
+            // console.log("member.Secondary: ", member.Secondary);
             rankLevel.push(member);
             return;
           }
@@ -159,13 +159,13 @@ const getSecondaryArchiteypeCount = (architype) => {
 const setPrimaryFilter = (architype) => {
   secondaryFilter.value = null;
   primaryFilter.value = architype;
-  console.log("setPrimaryFilter: ", primaryFilter.value);
+  // console.log("setPrimaryFilter: ", primaryFilter.value);
 };
 
 const setSecondaryFilter = (architype) => {
   primaryFilter.value = null;
   secondaryFilter.value = architype;
-  console.log("setSecondaryFilter: ", secondaryFilter.value);
+  // console.log("setSecondaryFilter: ", secondaryFilter.value);
 };
 
 const clearFilter = () => {
