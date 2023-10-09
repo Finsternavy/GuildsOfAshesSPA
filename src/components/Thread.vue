@@ -445,7 +445,8 @@ const isUnread = (comment) => {
               <span>{{ data.DownVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
-              <button  @click="toggleChildren" class="goa-button uk-button-small uk-margin-small-right">
+              <button  @click="toggleChildren" :class="{'goa-button uk-button-small uk-margin-small-right' : {},
+                      unread: parentUnread,}">
                 <span uk-icon="icon: comment"></span>
               </button>
               <span>{{ data.Comments.length }}</span>
