@@ -67,7 +67,7 @@ const updateReadTrackers = async () => {
   
     if (response.ok) {
       let data = await response.json();
-      console.log("Update read trackers response data: ", data);
+      // console.log("Update read trackers response data: ", data);
       readThreadIDs.value = [];
       readCommentIDs.value = [];
 

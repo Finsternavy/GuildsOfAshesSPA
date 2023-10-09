@@ -204,7 +204,7 @@ let parentFunction = () => {
 };
 
 let parentAddCommentToRead = (comment) => {
-  console.log("Checking comment: ", comment.CommentID);
+  // console.log("Checking comment: ", comment.CommentID);
   if (comment.AuthorID != user.value.UserID){
     removeFromUnreadComments(comment);
     parentUnread.value = false;
