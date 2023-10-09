@@ -391,6 +391,10 @@ const isUnread = (comment) => {
   opacity: 1;
 }
 
+.closed {
+  pointer-events: none;
+}
+
 </style>
 
 <template>
@@ -468,7 +472,7 @@ const isUnread = (comment) => {
           </div>
         </div>
       </div>
-      <div :class="{ 'thread-edit-controls': {}, open: showEditcontrols}">
+      <div :class="{ 'thread-edit-controls': {}, open: showEditcontrols, closed: !showEditcontrols}">
         <div class="title-input uk-flex uk-flex-column uk-margin-bottom">
           <label class="uk-margin-small-left" for="ThreadTitle">Title</label>
           <input id="ThreadTitle" class="goa-input" type="text" v-model="editTitle" />
@@ -492,6 +496,7 @@ const isUnread = (comment) => {
         :class="{
           'comment-creation-controls': {},
           'open-comment uk-padding-top': showCreateComment,
+          closed : !showCreateComment
         }"
       >
         <div class="title-input uk-flex uk-flex-column">

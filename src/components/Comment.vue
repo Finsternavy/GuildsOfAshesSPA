@@ -287,6 +287,10 @@ const checkUnread = () => {
   opacity: 1;
 }
 
+.closed {
+  pointer-events: none;
+}
+
 .in-response-container {
   border-radius: 10px;
   background-color: rgba(255, 165, 0, 0.1);
@@ -370,6 +374,7 @@ const checkUnread = () => {
     :class="{
       'comment-edit-controls': {},
       open: showEditcontrols,
+      closed: !showEditcontrols
     }"
   >
     <div class="title-input uk-flex uk-flex-column">
@@ -390,6 +395,7 @@ const checkUnread = () => {
     :class="{
       'reply-creation-controls ': {},
       open: showReplyControl,
+      closed: !showReplyControl
     }"
   >
     <div class="title-input uk-flex uk-flex-column">
