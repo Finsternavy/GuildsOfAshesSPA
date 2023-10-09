@@ -204,9 +204,9 @@ let parentFunction = () => {
 };
 
 let parentAddCommentToRead = (comment) => {
-  console.log("Checking comment: ", comment);
+  console.log("Checking comment: ", comment.CommentID);
   if (comment.AuthorID != user.value.UserID){
-    unreadComments.value.pop(comment.CommentID);
+    removeFromUnreadComments(comment);
     parentUnread.value = false;
     // console.log("Calling parent function");
     emit("comment-add-to-read", comment.CommentID);
@@ -216,6 +216,14 @@ let parentAddCommentToRead = (comment) => {
   }
 
 };
+
+const removeFromUnreadComments = (comment) => {
+  unreadComments.value.forEach((item, index) => {
+    if (item == comment.CommentID) {
+      unreadComments.value.splice(index, 1);
+    }
+  });
+}
 
 let upVote = async () => {
   let user = store.getUser;

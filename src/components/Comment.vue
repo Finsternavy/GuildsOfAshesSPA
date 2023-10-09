@@ -307,6 +307,7 @@ const checkUnread = () => {
       <div class="author-info">
         <span class="uk-text-bold uk-margin-small-right">{{ data.AuthorUsername }} </span>
         <span class=""> {{ data.CommentDate }}</span>
+        <!-- <span class="text-goa-red">{{ data.CommentID }}</span> -->
       </div>
       <hr class="divider uk-margin-remove-bottom" />
       <div
