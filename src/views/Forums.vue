@@ -42,10 +42,10 @@ onUnmounted(() => {
 });
 
 const updateReadTrackers = async () => {
-  console.log("Checking for read updates.")
+  // console.log("Checking for read updates.")
 
   if (readThreadIDs.value.length > 0 || readCommentIDs.value.length > 0) {
-    console.log("Unpublished changes detected. Updating read trackers.");
+    // console.log("Unpublished changes detected. Updating read trackers.");
     alreadyUpdatedIDs.value.push(...readThreadIDs.value);
     alreadyUpdatedIDs.value.push(...readCommentIDs.value);
     let user = store.getUser;
@@ -72,10 +72,10 @@ const updateReadTrackers = async () => {
       readCommentIDs.value = [];
 
     } else {
-      console.log("Error updating read trackers: ", response.statusText);
+      // console.log("Error updating read trackers: ", response.statusText);
     }
   } else {
-    console.log("No unpublished changes detected.");
+    // console.log("No unpublished changes detected.");
   }
 }
 
@@ -95,7 +95,7 @@ let getThreads = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Get all threads response data: ", data);
+    // console.log("Get all threads response data: ", data);
     if (data.Data) {
       threads.value = data.Data.threads;
       // unreadIDs.value = data.Data.unreadIDs;
@@ -107,10 +107,10 @@ let getThreads = async () => {
       }
       // unreadThreadIDs.value = data.Data.unreadIDs[0];
       // unreadCommentIDs.value = data.Data.unreadIDs[1];
-      console.log("Unread thread IDs: ", unreadThreadIDs.value);
-      console.log("Unread comment IDs: ", unreadCommentIDs.value);
+      // console.log("Unread thread IDs: ", unreadThreadIDs.value);
+      // console.log("Unread comment IDs: ", unreadCommentIDs.value);
     } else {
-      console.log("No Threads");
+      // console.log("No Threads");
     }
   } else {
     // console.log("Error fetching thread data: ", response.statusText);
@@ -168,7 +168,7 @@ let getThreadFromChild = (event) => {
 
 const addThreadToRead = (threadID) => {
   if (unreadThreadIDs.value.includes(threadID)){
-    console.log("Adding thread to read: ", threadID)
+    // console.log("Adding thread to read: ", threadID)
     readThreadIDs.value.push(threadID);
     unreadThreadIDs.value = unreadThreadIDs.value.filter(id => id !== threadID);
   }
@@ -194,14 +194,14 @@ const addThreadToRead = (threadID) => {
 }
 
 const addCommentToRead = (commentID) => {
-  console.log("UnreadCommentIDs: ", unreadCommentIDs.value);
-  console.log("CommentID: ", commentID);
+  // console.log("UnreadCommentIDs: ", unreadCommentIDs.value);
+  // console.log("CommentID: ", commentID);
   if (unreadCommentIDs.value.includes(commentID)){
-    console.log("Adding comment to read: ", commentID)
+    // console.log("Adding comment to read: ", commentID)
     readCommentIDs.value.push(commentID);
     unreadCommentIDs.value = unreadCommentIDs.value.filter(id => id !== commentID);
   } else {
-    console.log("That comment is not unread");
+    // console.log("That comment is not unread");
   }
   // console.log("Adding comment to read: ", commentID);
   // if (unreadIDs.value[1].includes(commentID)) {

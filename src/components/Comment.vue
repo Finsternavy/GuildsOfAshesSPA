@@ -203,7 +203,7 @@ let toggleEditCommentControls = () => {
 
 const checkUnread = () => {
   if (unread == true) {
-    console.log("CommentID ", props.data.CommentID, " telling parent I am unread: ", unread.value);
+    // console.log("CommentID ", props.data.CommentID, " telling parent I am unread: ", unread.value);
     emit("child-unread", unread.value, props.data.CommentID);
     return true;
   }

@@ -51,8 +51,8 @@ onBeforeMount(() => {
   editTitle.value = props.data.ThreadTitle;
   unreadThreads.value = [...props.unreadThreadIDs];
   unreadComments.value = [...props.unreadCommentIDs];
-  console.log("Unread threads: ", unreadThreads.value);
-  console.log("Unread comments: ", unreadComments.value);
+  // console.log("Unread threads: ", unreadThreads.value);
+  // console.log("Unread comments: ", unreadComments.value);
   ifUnread();
 });
 let comments = ref();
@@ -212,7 +212,7 @@ let parentAddCommentToRead = (comment) => {
     emit("comment-add-to-read", comment.CommentID);
     // () => props.function();
   } else {
-    console.log("Comment is from user, not adding to read.");
+    // console.log("Comment is from user, not adding to read.");
   }
 
 };
@@ -290,7 +290,7 @@ const isUnread = (comment) => {
   let unread = false;
   if (unreadComments.value.includes(comment.CommentID)) {
     parentUnread.value = true;
-    console.log("Comment is unread: ", comment.CommentID);
+    // console.log("Comment is unread: ", comment.CommentID);
     unread = true;
   }
   if (props.unreadThreadIDs.includes(props.data.ThreadID) && !readThreadIDs.includes(props.data.ThreadID)){
