@@ -170,34 +170,68 @@ input, textarea {
     /* padding: 5px; */
     aspect-ratio: 1;
     transition: border-radius 0.3s ease-in-out;
+    /* border: 1px solid gray; */
 }
+
+/* .event-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+} */
 
 .guild-play{
     border: 1px solid white;
     color: white;
-    background-color: rgba(255, 115, 0, 0.5);  
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(255, 115, 0, 1);  
+}
+
+.guild-play:hover {
+    background-color: rgba(255, 146, 57, 1);
+    border-radius: 50%;
 }
 
 .meeting {
-    border: 1px solid black;
+    border: 1px solid white;
     color: black;
-    background-color: rgba(255, 238, 0, 0.5);
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(255, 238, 0, 1);
+}
+
+.meeting:hover {
+    background-color: rgba(255, 246, 126, 1);
+    border-radius: 50%;
 }
 
 .deadline {
     border: 1px solid red;
     color: red;
-    background-color: rgba(0, 0, 0, 0.5);
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.deadline:hover {
+    background-color: rgb(59, 59, 59);
+    border-radius: 50%;
 }
 
 .startDate {
-    border: 1px solid rgb(1, 24, 0);
-    color: rgb(1, 24, 0);
-    background-color: rgba(98, 146, 31, 0.491);
+    border: 1px solid white;
+    color: white;
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(98, 146, 31, 1);
 }
 
-.icon-container:hover > * {
-    background-color: rgba(255, 255, 255, 0.3);
+.startDate:hover {
+    background-color: rgba(149, 255, 0, 0.5);
+    border-radius: 50%;
+}
+
+.icon-container {
+    transition: border-radius 0.3s ease;
+}
+
+.icon-container:hover > *  {
+    background-color: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
     border-radius: 50%;
 }
 
@@ -227,6 +261,26 @@ input, textarea {
 .day-container {
     max-height: fit-content;
 }
+
+/* .guild-play-bg {
+    background-color: rgba(255, 115, 0, 1);
+    transition: border-radius 0.3s ease;
+}
+
+.meeting-bg {
+    background-color: rgba(255, 238, 0, 1);
+    transition: border-radius 0.3s ease;
+}
+
+.deadline-bg {
+    background-color: rgba(0, 0, 0, 1);
+    transition: border-radius 0.3s ease;
+}
+
+.start-date-bg {
+    background-color: rgba(98, 146, 31, 1);
+    transition: border-radius 0.3s ease;
+} */
 </style>
 
 <template>
@@ -242,11 +296,19 @@ input, textarea {
         </div>
         <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span> <!-- This is overlay for passed days-->
         <div class="event-icon-container uk-flex uk-height-auto grid">
-            <div v-for="event in props.Data" @click="showEventDetails(event)" class="icon-container uk-text-center">
-                <span v-if="event.eventType == 'guildPlay'" class="guild-play event-icon" uk-icon="icon: play; ratio: 1"></span>
-                <span v-if="event.eventType == 'meeting'" class="meeting event-icon" uk-icon="icon: users; ratio: 1"></span>
-                <span v-if="event.eventType == 'deadline'" class="deadline event-icon" uk-icon="icon: clock; ratio: 1"></span>
-                <span v-if="event.eventType == 'startDate'" class="startDate event-icon" uk-icon="icon: clock; ratio: 1"></span>
+            <div v-for="event in props.Data" @click="showEventDetails(event)" class="uk-text-center">
+                <div class="guild-play-bg">
+                    <span v-if="event.eventType == 'guildPlay'" class="guild-play event-icon" uk-icon="icon: play; ratio: 1"></span>
+                </div>
+                <div class="meeting-bg">
+                    <span v-if="event.eventType == 'meeting'" class="meeting event-icon" uk-icon="icon: users; ratio: 1"></span>
+                </div>
+                <div class="deadline-bg">
+                    <span v-if="event.eventType == 'deadline'" class="deadline event-icon" uk-icon="icon: clock; ratio: 1"></span>
+                </div>
+                <div class="start-date-bg">
+                    <span v-if="event.eventType == 'startDate'" class="startDate event-icon" uk-icon="icon: clock; ratio: 1"></span>
+                </div>
             </div>
         </div>
         
