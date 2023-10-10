@@ -244,12 +244,13 @@ input, textarea {
     border: 1px solid red;
     border-top: none;
     border-right: none;
-    border-radius: 0 0 0 50%;
-    padding: 5px 5px 7px 7px;
+    /* border-radius: 0 0 0 50%; */
+    padding: 7px 7px 7px 7px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: red;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .add-event-button:hover {
