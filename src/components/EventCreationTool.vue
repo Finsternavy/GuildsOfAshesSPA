@@ -44,6 +44,7 @@ let dataOut = computed(() => {
         eventStartTime: eventStartTime.value,
         eventEndDate: eventEndDate.value,
         eventEndTime: eventEndTime.value,
+        attending: [],
     }
 })
 
