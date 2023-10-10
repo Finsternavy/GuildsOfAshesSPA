@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, watch } from "vue";
 import Comment from "../components/Comment.vue";
 import { useUserStore } from "../stores/userStore";
 import { useAPI } from '../stores/apiStore'
@@ -45,17 +45,31 @@ let props = defineProps({
 let emit = defineEmits(["update:modelValue"], ["parent-get-threads"]);
 
 onBeforeMount(() => {
+  console.log("unreadIDs at thread: ", props.modelValue);
   commentCount.value = props.data.Comments.length;
   user.value = store.user;
   threadEditMessage.value = props.data.ThreadMessage;
   editTitle.value = props.data.ThreadTitle;
-  unreadThreads.value = [...props.unreadThreadIDs];
-  unreadComments.value = [...props.unreadCommentIDs];
+  unreadThreads.value = props.modelValue[0];
+  unreadComments.value = props.modelValue[1];
   console.log("Unread threads: ", unreadThreads.value);
   console.log("Unread comments: ", unreadComments.value);
   ifUnread();
 });
 let comments = ref();
+
+// watch(
+//   () => props.modelValue,
+//   (newValue, oldValue) => {
+//     unreadThreads.value = newValue[0];
+//     unreadComments.value = newValue[1];
+//     if (unreadThreads.value.includes(props.data.ThreadID)) {
+//       parentUnread.value = true;
+//     } else {
+//       parentUnread.value = false;
+//     }
+//   }
+// );
 
 let toggleChildren = () => {
   // console.log(document.querySelector(`.comments-container${props.data.id}`));

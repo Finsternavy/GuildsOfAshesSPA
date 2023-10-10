@@ -113,8 +113,8 @@ let displayUserInfo = () => {
           <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
           <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
           <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
-          <RouterLink to="/guild/about"><span class="link">About</span></RouterLink>
-          <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink> -->
+          <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
+          <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
         </div>
       </div>
       <div class="login-profile-container uk-text-right uk-width-1-6">

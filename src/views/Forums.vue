@@ -12,6 +12,7 @@ let threadTitle = ref();
 let threadMessage = ref();
 
 let threads = ref([]);
+let unreadIDs = ref([]);
 let unreadThreadIDs = ref([]);
 let unreadCommentIDs = ref([]);
 
@@ -42,7 +43,7 @@ onUnmounted(() => {
 });
 
 const updateReadTrackers = async () => {
-  console.log("Checking for read updates.")
+  // console.log("Checking for read updates.")
 
   if (readThreadIDs.value.length > 0 || readCommentIDs.value.length > 0) {
     console.log("Unpublished changes detected. Updating read trackers.");
@@ -75,7 +76,8 @@ const updateReadTrackers = async () => {
       console.log("Error updating read trackers: ", response.statusText);
     }
   } else {
-    console.log("No unpublished changes detected.");
+    // console.log("No unpublished changes detected.");
+    // getThreads();
   }
 }
 
@@ -95,9 +97,10 @@ let getThreads = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Get all threads response data: ", data);
+    // console.log("Get all threads response data: ", data);
     if (data.Data) {
       threads.value = data.Data.threads;
+      unreadIDs.value = data.Data.unreadIDs;
       // unreadIDs.value = data.Data.unreadIDs;
       if (data.Data.unreadIDs[0].length > 0) {
         unreadThreadIDs.value = data.Data.unreadIDs[0];
@@ -107,8 +110,8 @@ let getThreads = async () => {
       }
       // unreadThreadIDs.value = data.Data.unreadIDs[0];
       // unreadCommentIDs.value = data.Data.unreadIDs[1];
-      console.log("Unread thread IDs: ", unreadThreadIDs.value);
-      console.log("Unread comment IDs: ", unreadCommentIDs.value);
+      // console.log("Unread thread IDs: ", unreadThreadIDs.value);
+      // console.log("Unread comment IDs: ", unreadCommentIDs.value);
     } else {
       console.log("No Threads");
     }
@@ -277,6 +280,7 @@ const addCommentToRead = (commentID) => {
       >
         <Thread
           class="uk-flex-1"
+          v-model="unreadIDs"
           :data="thread"
           :unreadThreadIDs="unreadThreadIDs"
           :unreadCommentIDs="unreadCommentIDs"
