@@ -231,7 +231,7 @@ input, textarea {
         <div :class="{'uk-flex' : day, hidden : !day}">
             <span class="day-number">{{ day }}</span>
         </div>
-        <div v-if="day" class="add-event-button uk-position-top-right" @click="createEvent">
+        <div v-if="day && !past" class="add-event-button uk-position-top-right" @click="createEvent">
             <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
         </div>
         <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span>
