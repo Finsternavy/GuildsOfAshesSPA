@@ -1,5 +1,9 @@
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, onBeforeMount, ref, watch, computed } from "vue";
+import { useUserStore } from "../stores/userStore";
+
+let store = useUserStore();
+let user = ref();
 
 const props = defineProps({
     data: {
@@ -20,6 +24,14 @@ let eventStartDate = ref(null);
 let eventStartTime = ref(null);
 let eventEndDate = ref(null);
 let eventEndTime = ref(null);
+
+onBeforeMount(() => {
+  user.value = store.getUser;
+  console.log("User: ", user.value);
+  eventOrganizer.value = user.value.Username;
+  eventStartDate.value = props.data.activeDate.year + '-' + props.data.activeDate.month + '-' + props.data.activeDate.day;
+  eventEndDate.value = props.data.activeDate.year + '-' + props.data.activeDate.month + '-' + props.data.activeDate.day;
+})
 
 
 let dataOut = computed(() => {
