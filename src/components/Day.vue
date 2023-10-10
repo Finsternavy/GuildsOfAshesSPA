@@ -84,8 +84,9 @@ const createEvent = () => {
     border-radius: 5px;
     margin: 5px;
     display: flex;
-    height: calc((100vw / 7) - 60px);
-    max-height: 160px;
+    min-height: 160px;
+    height: auto;
+    /* max-height: 160px; */
     flex-direction: column;
     background-color: rgba(0, 0, 0, 0.7);
     cursor: pointer;
@@ -99,9 +100,8 @@ const createEvent = () => {
     border: 2px solid gray;
     border-left: none;
     border-top: none;
-    /* padding: 0px 7px; */
-    min-height: 40px;
-    min-width: 40px;
+    aspect-ratio: 1;
+    padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,15 +155,15 @@ input, textarea {
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
+    /* grid-template-rows: 1fr; */
     grid-gap: 5px;
-    margin-bottom: 10px;
+    padding: 5px;
 }
 
 .event-icon {
     position: relative;
-    height: 40px;
-    width: 40px;
+    height: auto;
+    width: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -173,9 +173,9 @@ input, textarea {
 }
 
 .guild-play{
-    border: 1px solid black;
-    color: black;
-    background-color: rgba(255, 0, 0, 0.5);  
+    border: 1px solid white;
+    color: white;
+    background-color: rgba(255, 115, 0, 0.5);  
 }
 
 .meeting {
@@ -223,19 +223,25 @@ input, textarea {
     color: white;
    
 }
+
+.day-container {
+    max-height: fit-content;
+}
 </style>
 
 <template>
-    <div :class="{'day-container uk-position-relative' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool">
-        <label v-if="index < 7 " class="day-label">{{ dayText }}</label>
-        <div :class="{'uk-flex' : day, hidden : !day}">
-            <span class="day-number">{{ day }}</span>
+    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool">
+        <label v-if="index < 7 " class="day-label">{{ dayText }}</label> <!-- This is the day of the week label-->
+        <div class="uk-flex">
+            <div :class="{'uk-flex' : day, hidden : !day}">
+                <span class="day-number">{{ day }}</span>
+            </div>
+            <div v-if="day && !past" class="add-event-button uk-position-top-right" @click="createEvent">
+                <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
+            </div>
         </div>
-        <div v-if="day && !past" class="add-event-button uk-position-top-right" @click="createEvent">
-            <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
-        </div>
-        <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span>
-        <div class="event-icon-container uk-position-center uk-flex uk-margin-small-top grid">
+        <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span> <!-- This is overlay for passed days-->
+        <div class="event-icon-container uk-flex uk-height-auto grid">
             <div v-for="event in props.Data" @click="showEventDetails(event)" class="icon-container uk-text-center">
                 <span v-if="event.eventType == 'guildPlay'" class="guild-play event-icon" uk-icon="icon: play; ratio: 1"></span>
                 <span v-if="event.eventType == 'meeting'" class="meeting event-icon" uk-icon="icon: users; ratio: 1"></span>

@@ -222,6 +222,10 @@ const openEventDetails = () => {
 }
 
 const addUserToAttending = () => {
+  if (activeEventDetails.value.attending.includes(user.value.Username)){
+    alert("You are already attending this event");
+    return;
+  }
   activeEventDetails.value.attending.push(user.value.Username);
 }
 </script>
@@ -237,8 +241,8 @@ const addUserToAttending = () => {
 }
 
 .event-details-modal {
-    position: fixed;
-    top: 20%;
+    position: absolute;
+    top: 50%;
     left: 50%;
     transform:translate(-50%, -50%);
     width: 50%;
@@ -253,26 +257,29 @@ const addUserToAttending = () => {
     /* opacity: 0; */
     /* transition: all 0.3s ease-in-out; */
 }
+.calendar-title {
+  border-radius: 20px 20px 0 0;
+}
 </style>
 
 <template>
-    <div>
-      <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
-        <div class="calendar-container uk-margin-large-bottom">
+    <div class="goa-container uk-padding-small uk-margin-large-bottom">
+      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
+        <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
             <Day v-for="date, index in generateCalendar(2023, 10)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
         </div>
     </div>
-    <div>
-      <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1) }}</h1>
-        <div class="calendar-container uk-margin-large-bottom">
+    <div class="goa-container uk-padding-small uk-margin-large-bottom">
+      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1) }}</h1>
+        <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
             <Day v-for="date, index in generateCalendar(2023, 11)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
         </div>
     </div>
-    <div>
-      <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
-        <div class="calendar-container uk-margin-large-bottom">
+    <div class="goa-container uk-padding-small uk-margin-large-bottom">
+      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
+        <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
             <Day v-for="date, index in generateCalendar(2023, 12)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
         </div>
@@ -281,9 +288,15 @@ const addUserToAttending = () => {
     <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1" :hidden="!showEventDetails">
         <button @click="showEventDetails = false" class="goa-button uk-width-auto uk-position-top-right uk-margin-top uk-margin-right">Close</button>
         <h1 class="text-goa-red uk-text-center">{{ activeEventDetails.eventTitle }}</h1>
-        <div class="uk-flex uk-flex-column">
-            <label class="text-goa-red" for="EventOrganizer">Organizer</label>
-            <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="activeEventDetails.eventOrganizer">
+        <div class="uk-flex uk-child-width-1-2">
+          <div class="uk-flex uk-flex-column uk-margin-small-right">
+              <label class="text-goa-red" for="EventTypeDisplay">Event Type</label>
+              <input class="goa-input" type="text" name="EventTypeDisplay" id="EventTypeDisplay" v-model="activeEventDetails.eventType">
+          </div>
+          <div class="uk-flex uk-flex-column">
+              <label class="text-goa-red" for="EventOrganizer">Organizer</label>
+              <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="activeEventDetails.eventOrganizer">
+          </div>
         </div>
         <div class="uk-flex uk-flex-column">
             <label class="text-goa-red" for="EventContent">Event Message</label>
@@ -299,7 +312,7 @@ const addUserToAttending = () => {
                 <input class="goa-input" type="time" name="EventStartTime" id="EventStartTime" v-model="activeEventDetails.eventStartTime">
             </div>
         </div>
-        <div class="uk-margin-top">
+        <div class="uk-margin-top uk-margin-bottom">
           <button @click="addUserToAttending" class="goa-button">Interested</button>
         </div>
         <div class="attending-list">
