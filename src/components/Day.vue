@@ -64,7 +64,7 @@ const past = computed(() => {
 })
 
 onMounted(() => {
-    console.log("Props: ", props.Date);
+    // console.log("Props: ", props.Date);
 })
 
 const showEventDetails = (event) => {

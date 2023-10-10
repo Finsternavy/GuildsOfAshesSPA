@@ -14,6 +14,7 @@ let user = ref();
 let showEventCreationModal = ref(false);
 let activeMonth = ref(null);
 let activeDay = ref(null);
+let activeDate = ref(null);
 
 let showEventDetails = ref(false);
 let activeEventDetails = ref(null);
@@ -74,6 +75,7 @@ let dataIn = computed(() => {
     return {
         activeMonth: activeMonth.value,
         activeDay: activeDay.value,
+        activeDate: activeDate.value,
     }
 })
 
@@ -160,12 +162,10 @@ const currentDate = computed(() => {
 });
 
 const createEvent = (date) => {
-    console.log("Creating event for date: ", date);
-    console.log("Day: ", date.day);
-    console.log("Month: ", date.month);
     let monthText = months[date.month - 1];
     activeMonth.value = monthText;
     activeDay.value = date.day;
+    activeDate.value = date;
     showEventCreationModal.value = true;
 }
 
@@ -174,49 +174,50 @@ const close = () => {
 }
 
 const addEvent = (data) => {
-    console.log("Data at parent: ", data);
+    // console.log("Data at parent: ", data);
     events.value.push(data);
-    console.log("Events: ", events);
+    // console.log("Events: ", events);
+    showEventCreationModal.value = false;
 }
 
 const getDayData = (day) => {
   if (day != null){
     let date = day.year + "-" + day.month + "-" + day.day;
-      console.log("Day: ", date);
+      // console.log("Day: ", date);
       let data = [];
       events.value.forEach(event => {
         if (event.eventStartDate == date){
-          console.log("Event: ", event);
+          // console.log("Event: ", event);
           data.push(event);
         }
       });
-      console.log("Data: ", data);
+      // console.log("Data: ", data);
       return data;
   }
   return null;
 }
 
 const getEvent = (date) => {
-    console.log("Date: ", date);
+    // console.log("Date: ", date);
     let data = [];
     events.value.forEach(event => {
         if (event.eventStartDate == date){
-            console.log("Event: ", event);
+            // console.log("Event: ", event);
             data.push(event);
         }
     });
-    console.log("Data: ", data);
+    // console.log("Data: ", data);
     return data;
 }
 
 const setEventDetails = (event) => {
-    console.log("Event: ", event);
+    // console.log("Event: ", event);
     activeEventDetails.value = event;
     showEventDetails.value = true;
 }
 
 const openEventDetails = () => {
-    console.log("Opening event details");
+    // console.log("Opening event details");
     showEventDetails.value = true;
 }
 
