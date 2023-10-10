@@ -257,20 +257,25 @@ const addUserToAttending = () => {
 
 <template>
     <div>
-        <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
-
-        <div class="calendar-container">
+      <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
+        <div class="calendar-container uk-margin-large-bottom">
           <!-- @click="openMenu(date, 10)" -->
             <Day v-for="date, index in generateCalendar(2023, 10)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
         </div>
-        <!-- <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1)  }}</h1>
-        <div class="calendar-container">
-            <Day @click="openMenu(num, 11)" v-for="num, index in generateCalendar(2023, 11)" :Index="index" :Day="num" :DayText="days[index]"/>
+    </div>
+    <div>
+      <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1) }}</h1>
+        <div class="calendar-container uk-margin-large-bottom">
+          <!-- @click="openMenu(date, 10)" -->
+            <Day v-for="date, index in generateCalendar(2023, 11)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
         </div>
-        <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
-        <div class="calendar-container">
-            <Day @click="openMenu(num, 12)" v-for="num, index in generateCalendar(2023, 12)" :Index="index" :Day="num" :DayText="days[index]"/>
-        </div> -->
+    </div>
+    <div>
+      <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
+        <div class="calendar-container uk-margin-large-bottom">
+          <!-- @click="openMenu(date, 10)" -->
+            <Day v-for="date, index in generateCalendar(2023, 12)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
+        </div>
     </div>
     <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent"/>
     <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1" :hidden="!showEventDetails">
