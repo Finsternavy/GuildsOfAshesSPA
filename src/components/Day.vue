@@ -207,7 +207,7 @@ input, textarea {
 
 .add-event-button {
     /* background-color: white; */
-    border: 1px solid black;
+    border: 1px solid red;
     border-top: none;
     border-right: none;
     border-radius: 0 0 0 50%;
@@ -215,7 +215,7 @@ input, textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
+    color: red;
 }
 
 .add-event-button:hover {
