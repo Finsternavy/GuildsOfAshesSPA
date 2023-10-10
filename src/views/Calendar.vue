@@ -1,10 +1,81 @@
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, onBeforeMount, ref, watch, computed } from "vue";
+import { useUserStore } from "../stores/userStore";
+import { useGuildStore } from "../stores/guildStore";
+import { useAPI } from '../stores/apiStore';
+import router from "../router/routes";
 import Day from "../components/Day.vue";
+import EventCreationTool from "../components/EventCreationTool.vue";
+
+let store = useUserStore();
+let guildStore;
+let user = ref();
 
 let showEventCreationModal = ref(false);
 let activeMonth = ref(null);
 let activeDay = ref(null);
+
+let showEventDetails = ref(false);
+let activeEventDetails = ref(null);
+
+onBeforeMount(()=> {
+  user.value = store.getUser;
+  guildStore = useGuildStore();
+})
+
+let events = ref([
+  {
+    eventContent : "test",
+    eventEndDate : "2023-10-11", 
+    eventEndTime : "14:00",
+    eventOrganizer : "test",
+    eventStartDate : "2023-10-12",
+    eventStartTime : "13:00",
+    eventTitle : "test",
+    eventType : "guildPlay",
+    attending : []
+  },
+  {
+    eventContent : "test",
+    eventEndDate : "2023-10-11", 
+    eventEndTime : "14:00",
+    eventOrganizer : "test",
+    eventStartDate : "2023-10-12",
+    eventStartTime : "13:00",
+    eventTitle : "test",
+    eventType : "meeting",
+    attending : []
+  },
+  {
+    eventContent : "test",
+    eventEndDate : "2023-10-11", 
+    eventEndTime : "14:00",
+    eventOrganizer : "test",
+    eventStartDate : "2023-10-15",
+    eventStartTime : "13:00",
+    eventTitle : "test",
+    eventType : "deadline",
+    attending : []
+  },
+  {
+    eventContent : "test",
+    eventEndDate : "2023-10-11", 
+    eventEndTime : "14:00",
+    eventOrganizer : "test",
+    eventStartDate : "2023-10-26",
+    eventStartTime : "13:00",
+    eventTitle : "test",
+    eventType : "startDate",
+    attending : []
+  }
+]);
+
+let dataIn = computed(() => {
+    return {
+        activeMonth: activeMonth.value,
+        activeDay: activeDay.value,
+    }
+})
 
 const months = [
     "January", "February", "March", "April",
@@ -24,16 +95,14 @@ const month = computed(() => {
     return date;
 })
 
-
-const monthDays = computed(() => {
-    let date = new Date();
-    let month = date.getMonth();
-    let year = date.getFullYear();
-    let days = new Date(year, month, 0).getDate();
-    return days;
+const today = computed(() => {
+    let date = new Date().getDate();
+    // let month = data.getMonth();
+    console.log(date);
+    return date;
 })
 
-function getCurrentMonthAsString(offset) {
+const getCurrentMonthAsString = (offset) => {
 console.log("Offset: ", offset);
   const today = new Date();
   const currentMonthIndex = today.getMonth();
@@ -42,27 +111,8 @@ console.log("Offset: ", offset);
   return currentMonth;
 }
 
-// get data to build a calender for November 2023. Return the days as an array inserting blank entries to start month on the correct day of the week.
 
-
-
-// const days = computed(() => {
-//     let date = new Date();
-//     let month = date.getMonth();
-//     let year = date.getFullYear();
-//     let days = new Date(year, month, 0).getDate();
-//     let dayOfWeek = new Date(year, month, 1).getDay();
-//     let daysArray = [];
-//     for (let i = 0; i < dayOfWeek; i++) {
-//         daysArray.push("");
-//     }
-//     for (let i = 1; i <= days; i++) {
-//         daysArray.push(i);
-//     }
-//     return daysArray;
-// })
-
-function generateCalendar(year, month) {
+const generateCalendar = (year, month) => {
   const calendarArray = [];
 
   // Create a Date object for the 1st day of the specified month and year
@@ -85,7 +135,7 @@ function generateCalendar(year, month) {
 
   // Populate the calendarArray with the days of the month
   for (let day = 1; day <= daysInMonth; day++) {
-    calendarArray.push(day);
+    calendarArray.push({ day: day, month: month, year: year });
   }
 
   // Calculate the number of empty entries to insert at the end to ensure it ends on Saturday
@@ -109,12 +159,13 @@ const currentDate = computed(() => {
   };
 });
 
-const openMenu = (day, month) => {
-    console.log("Day: ", day);
-    console.log("Month: ", month);
-    let monthText = months[month - 1];
+const createEvent = (date) => {
+    console.log("Creating event for date: ", date);
+    console.log("Day: ", date.day);
+    console.log("Month: ", date.month);
+    let monthText = months[date.month - 1];
     activeMonth.value = monthText;
-    activeDay.value = day;
+    activeDay.value = date.day;
     showEventCreationModal.value = true;
 }
 
@@ -122,12 +173,84 @@ const close = () => {
     showEventCreationModal.value = false;
 }
 
+const addEvent = (data) => {
+    console.log("Data at parent: ", data);
+    events.value.push(data);
+    console.log("Events: ", events);
+}
+
+const getDayData = (day) => {
+  if (day != null){
+    let date = day.year + "-" + day.month + "-" + day.day;
+      console.log("Day: ", date);
+      let data = [];
+      events.value.forEach(event => {
+        if (event.eventStartDate == date){
+          console.log("Event: ", event);
+          data.push(event);
+        }
+      });
+      console.log("Data: ", data);
+      return data;
+  }
+  return null;
+}
+
+const getEvent = (date) => {
+    console.log("Date: ", date);
+    let data = [];
+    events.value.forEach(event => {
+        if (event.eventStartDate == date){
+            console.log("Event: ", event);
+            data.push(event);
+        }
+    });
+    console.log("Data: ", data);
+    return data;
+}
+
+const setEventDetails = (event) => {
+    console.log("Event: ", event);
+    activeEventDetails.value = event;
+    showEventDetails.value = true;
+}
+
+const openEventDetails = () => {
+    console.log("Opening event details");
+    showEventDetails.value = true;
+}
+
+const addUserToAttending = () => {
+  activeEventDetails.value.attending.push(user.value.Username);
+}
 </script>
 
 <style scoped>
 .calendar-container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.event-details-modal {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform:translate(-50%, -50%);
+    width: 50%;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* display: none; */
+    /* visibility: hidden; */
+    /* opacity: 0; */
+    /* transition: all 0.3s ease-in-out; */
 }
 </style>
 
@@ -136,22 +259,50 @@ const close = () => {
         <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
 
         <div class="calendar-container">
-            <Day @click="openMenu(num, 10)" v-for="num, index in generateCalendar(2023, 10)" :Index="index" :Day="num" :DayText="days[index]"/>
+          <!-- @click="openMenu(date, 10)" -->
+            <Day v-for="date, index in generateCalendar(2023, 10)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
         </div>
-        <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1)  }}</h1>
+        <!-- <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1)  }}</h1>
         <div class="calendar-container">
             <Day @click="openMenu(num, 11)" v-for="num, index in generateCalendar(2023, 11)" :Index="index" :Day="num" :DayText="days[index]"/>
         </div>
         <h1 class="goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
         <div class="calendar-container">
             <Day @click="openMenu(num, 12)" v-for="num, index in generateCalendar(2023, 12)" :Index="index" :Day="num" :DayText="days[index]"/>
-        </div>
+        </div> -->
     </div>
-    <div v-if="showEventCreationModal" class="uk-position-center uk-position-fixed">
-        <div class="goa-container uk-padding">
-            <button @click="close" class="goa-button">Close</button>
-            <h3 class="text-goa-red">This will be the event creator</h3>
-            <p>Creating event for {{ activeMonth + ', ' + activeDay }}</p>
+    <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent"/>
+    <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1" :hidden="!showEventDetails">
+        <button @click="showEventDetails = false" class="goa-button uk-width-auto uk-position-top-right uk-margin-top uk-margin-right">Close</button>
+        <h1 class="text-goa-red uk-text-center">{{ activeEventDetails.eventTitle }}</h1>
+        <div class="uk-flex uk-flex-column">
+            <label class="text-goa-red" for="EventOrganizer">Organizer</label>
+            <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="activeEventDetails.eventOrganizer">
+        </div>
+        <div class="uk-flex uk-flex-column">
+            <label class="text-goa-red" for="EventContent">Event Message</label>
+            <textarea class="goa-input" name="EventContent" id="EventContent" cols="30" rows="10" v-model="activeEventDetails.eventContent"></textarea>
+        </div>
+        <div class="uk-flex uk-child-width-1-2">
+            <div class="uk-flex uk-flex-column uk-margin-small-right">
+                <label class="text-goa-red" for="EventStartDate">Start Date</label>
+                <input class="goa-input" type="date" name="EventStartDate" id="EventStartDate" v-model="activeEventDetails.eventStartDate">
+            </div>
+            <div class="uk-flex uk-flex-column">
+                <label class="text-goa-red" for="EventStartTime">Start Time</label>
+                <input class="goa-input" type="time" name="EventStartTime" id="EventStartTime" v-model="activeEventDetails.eventStartTime">
+            </div>
+        </div>
+        <div class="uk-margin-top">
+          <button @click="addUserToAttending" class="goa-button">Interested</button>
+        </div>
+        <div class="attending-list">
+          <h3 class="text-goa-red">Attending</h3>
+          <div class="uk-flex uk-flex-column">
+            <div v-for="person in activeEventDetails.attending" class="uk-flex uk-flex-row">
+              <span class="text-goa-red">{{ person }}</span>
+            </div>
+          </div>
         </div>
     </div>
 </template>
