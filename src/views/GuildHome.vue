@@ -55,6 +55,27 @@ onBeforeMount(() => {
 //   return count;
 // });
 
+const upcomingEvents = computed(() => {
+  let events = [];
+  if (guild.value.Events) {
+    guild.value.Events.forEach((event) => {
+      if (event.StartDate) {
+        let eventDate = new Date(event.StartDate);
+        let today = new Date();
+        if (eventDate > today && eventDate - today < (604800000 * 2)) { // 604800000 = 1 week in milliseconds
+          events.push(event);
+        }
+      }
+    });
+  }
+  events.sort((a, b) => {
+    let dateA = new Date(a.StartDate);
+    let dateB = new Date(b.StartDate);
+    return dateA - dateB;
+  });
+  return events;
+});
+
 let getGuildData = async () => {
   // console.log("Fetching guild data..");
   let call = {
@@ -246,6 +267,19 @@ let createApplication = () => {
   background-color: black;
   
 }
+
+.event-card {
+  border: 1px solid red;
+  border-radius: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* grid-template-rows: 1fr; */
+  grid-gap: 20px;
+  padding: 5px;
+}
 </style>
 
 <template>
@@ -366,7 +400,7 @@ let createApplication = () => {
       <div v-html="guild.Description" class="uk-margin-large-top"></div>
     </div>
     <!-- Only show if guild leader or mod issues alert-->
-    <div v-if="guild.Alerts" class="guild-alerts goa-alert-container uk-padding">
+    <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">
       <h3 class="uk-light uk-text-center">GUILD ALERT!</h3>
       <hr />
       <div class="uk-margin-bottom goa-container uk-padding">
@@ -386,7 +420,30 @@ let createApplication = () => {
         </p>
       </div>
     </div>
-    <div class="guild-main-content uk-flex">
+    <div class="right-side uk-width-1-1">
+      <div class="goa-container upcoming-events uk-padding uk-light">
+        <h3>Upcoming Events</h3>
+        <div class="event-list uk-flex uk-width-1-1 grid">
+          <div v-for="events in upcomingEvents" class="event-card uk-flex uk-flex-column uk-text-center uk-padding-small uk-width-1-1">
+              <div>
+                <h4 class="uk-text-bold text-goa-red">{{ events.Title }}</h4>
+              </div>
+              <div class="uk-flex uk-flex-column uk-flex-center">
+                <!-- <p>{{ events.Content }}</p> -->
+                <p class="uk-text-bold">Organizer: {{ events.Organizer }}</p>
+                <div class="uk-flex uk-child-width-1-2">
+                  <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
+                  <span class="uk-text-bold uk-text-left"><span class="text-goa-red">@</span> {{ events.StartTime }}</span>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="discord uk-margin-top">
+        <!-- <Discord class="goa-container" v-model="discordServers" /> -->
+      </div>
+    </div>
+    <!-- <div class="guild-main-content uk-flex">
       <div class="left-side uk-width-2-3">
         <div class="goa-container newest-mod-message uk-margin-right uk-padding uk-light">
           <h3>Get to work!</h3>
@@ -403,19 +460,6 @@ let createApplication = () => {
           <a href="#">Character Build Guides</a>
         </div>
       </div>
-      <div class="right-side uk-width-1-3">
-        <div class="goa-container upcoming-events uk-padding uk-light">
-          <h3>Upcoming Events</h3>
-          <ul>
-            <li>Leadership Planning - 01/01/1901 @ 2:00 PM EST</li>
-            <li>Team Meeting - 01/01/1901 @ 4:00 PM EST</li>
-            <li>Group Play - 01/01/1901 @ All day</li>
-          </ul>
-        </div>
-        <div class="discord uk-margin-top">
-          <!-- <Discord class="goa-container" v-model="discordServers" /> -->
-        </div>
-      </div>
-    </div>
+    </div> -->
   </div>
 </template>
