@@ -85,6 +85,18 @@ const acknowledgeNotice = () => {
         <h3 class="uk-text-lead text-goa-red">Development Status</h3>
         <div class="uk-flex uk-flex-around">
           <div class="left">
+            <h4 class="text-orange"><span uk-icon="icon: star"></span> Recently Added <span uk-icon="icon: star"></span></h4>
+            <ul>
+              <li>Guild Calendar</li>
+              <li>Event scheduling on the calendar</li>
+              <li>Recurring events on the calendar</li>
+              <li>Event canceling on the calendar</li>
+              <li>Guild Event RSVP</li>
+              <li>Upcoming events on the guild home page</li>
+              <li>Feedback - Bug report and feature request tools</li>
+            </ul>
+          </div>
+          <div class="center">
             <h4 class="text-goa-red">In Active Development</h4>
             <ul>
               <li>Guild Leader Controls Panel</li>
@@ -94,6 +106,7 @@ const acknowledgeNotice = () => {
               <li>Guild Data Metrix</li>
               <li>Ongoing Bug Fixes</li>
               <li>Ongoing Feature Improvements</li>
+              <li>Mobile Friendly Layout</li>
             </ul>
           </div>
           <div class="right">
@@ -101,9 +114,8 @@ const acknowledgeNotice = () => {
             <ul>
               <li>Member Direct Messaging</li>
               <li>Guild News</li>
-              <li>Guild Event Calendar</li>
-              <li>Guild Event RSVP</li>
               <li>Guild Event Reminders</li>
+              <li>Guild Tasks</li>
               <li>Guild Alert</li>
               <li>Guild XP System</li>
               <li>Guild Promotion System</li>
@@ -138,46 +150,6 @@ const acknowledgeNotice = () => {
           </p>
         </div>
       </div>
-      <!-- <table class="uk-table uk-text-center">
-        <thead>
-          <tr>
-            <td></td>
-            <td class="text-goa-red">Fighter</td>
-            <td class="text-goa-red">Tank</td>
-            <td class="text-goa-red">Rogue</td>
-            <td class="text-goa-red">Ranger</td>
-            <td class="text-goa-red">Mage</td>
-            <td class="text-goa-red">Sorcerer</td>
-            <td class="text-goa-red">Cleric</td>
-            <td class="text-goa-red">Bard</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-goa-red">Primary</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-          </tr>
-          <tr>
-            <td class="text-goa-red">Secondary</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-            <td class="cell">14</td>
-          </tr>
-        </tbody>
-        <tfoot></tfoot>
-      </table> -->
     </div>
   </div>
   <div v-if="!noticeAcknowledged" id="Notice" class="notice goa-container-no-radius uk-padding">
