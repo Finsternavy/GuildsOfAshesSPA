@@ -196,6 +196,78 @@ const addEvent = async (data) => {
   }
 }
 
+const addRecurringEvents = async (data) => {
+    // events.value.push(data);
+    showEventCreationModal.value = false;
+    console.log("Adding event: ", data);
+
+    // console.log("Fetching guild data..");
+  let guildID = localStorage.getItem("guildID");
+  console.log("Guild ID: ", guildID);
+  let call = {
+    GuildID: guildID,
+    GuildEvents: data
+  }
+  let response = await fetch(baseURL + "/addRecurringEvent", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify( call),
+  });
+
+  if (response.ok) {
+    let data = await response.json();
+    // console.log("Guild data: ", data);
+    getEvents();
+    // sortMembers();
+
+  } else {
+    // console.log("Error fetching thread data: ", response.statusText);
+  }
+}
+
+const addRecurringEvent = (data) => {
+  console.log("Data from recurring event: ", data);
+  let startDate = new Date(data.StartDate);
+  startDate.setDate(startDate.getDate() + 1);
+  let endDate = new Date(data.RecurringEndDate);
+  endDate.setDate(endDate.getDate() + 2);
+  console.log("Start date: ", startDate);
+  console.log("End date: ", endDate);
+  let frequency = 0;
+  if (data.RecurringFrequency == 'daily'){
+    frequency = 1;
+  } else if (data.RecurringFrequency == 'weekly'){
+    frequency = 7;
+  } else if (data.RecurringFrequency == 'biweekly'){
+    frequency = 14;
+  } 
+  let eventsToAdd = [];
+  // based on the frequency, add events to the array until the end date is reached
+  while (startDate <= endDate){
+    let event = {
+      EventType: data.EventType,
+      Organizer: data.Organizer,
+      Title: data.Title,
+      Content: data.Content,
+      StartDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate(),
+      StartTime: data.StartTime,
+      EndDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate(),
+      EndTime: data.EndTime,
+      Attending: [],
+      Canceled: false,
+    }
+    eventsToAdd.push(event);
+    startDate.setDate(startDate.getDate() + frequency);
+  }
+  console.log("Events to add: ", eventsToAdd);
+  addRecurringEvents(eventsToAdd);
+}
+
 const getDayData = (day) => {
   if (day != null){
     let date = day.year + "-" + day.month + "-" + day.day;
@@ -284,7 +356,7 @@ const cancelEvent = () => {
 }
 
 .event-details-modal {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform:translate(-50%, -50%);
@@ -327,7 +399,7 @@ const cancelEvent = () => {
             <Day v-for="date, index in generateCalendar(2023, 12)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
         </div>
     </div>
-    <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent"/>
+    <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent" :recurring="addRecurringEvent"/>
     <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1" :hidden="!showEventDetails">
         <button @click="showEventDetails = false" class="goa-button uk-width-auto uk-position-top-right uk-margin-top uk-margin-right">Close</button>
         <h1 class="text-goa-red uk-text-center uk-margin-remove-bottom">{{ activeEventDetails.Title }} </h1>
