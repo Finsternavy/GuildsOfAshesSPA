@@ -286,12 +286,25 @@ input, textarea {
 .canceled {
     position: absolute;
     font-weight: 900;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: red;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 50%;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.canceled-icon {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.canceled:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    /* color: white; */
 }
 </style>
 
@@ -310,20 +323,20 @@ input, textarea {
         <div class="event-icon-container uk-flex uk-height-auto grid">
             <div v-for="event in props.Data" @click="showEventDetails(event)" class="uk-text-center">
                 <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
-                    <span class="guild-play event-icon" uk-icon="icon: play; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
+                    <span :class="{'event-icon': {}, 'guild-play' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: play; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
                 </div>
                 <div v-if="event.EventType == 'meeting'" class="meeting-bg uk-position-relative">
-                    <span class="meeting event-icon" uk-icon="icon: users; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
+                    <span :class="{'event-icon': {}, 'meeting' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: users; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
                 </div>
                 <div v-if="event.EventType == 'deadline'" class="deadline-bg uk-position-relative">
-                    <span  class="deadline event-icon" uk-icon="icon: clock; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
+                    <span  :class="{' event-icon' : {}, 'deadline': !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
                 </div>
                 <div v-if="event.EventType == 'startDate'"  class="start-date-bg uk-position-relative">
-                    <span class="startDate event-icon" uk-icon="icon: clock; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
+                    <span :class="{' event-icon': {}, 'startDate' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
                 </div>
             </div>
         </div>

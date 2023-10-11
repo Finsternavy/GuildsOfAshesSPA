@@ -14,6 +14,9 @@ const props = defineProps({
     parentFunction: {
         type: Function
     },
+    recurring: {
+        type: Function
+    }
 })
 
 let eventType = ref(null);
@@ -24,6 +27,10 @@ let eventStartDate = ref(null);
 let eventStartTime = ref(null);
 let eventEndDate = ref(null);
 let eventEndTime = ref(null);
+
+let recurringChecked = ref(false);
+let RecurringFrequency = ref('daily');
+let RecurringEndDate = ref(null);
 
 onBeforeMount(() => {
   user.value = store.getUser;
@@ -45,6 +52,9 @@ let dataOut = computed(() => {
         EndDate: eventEndDate.value,
         EndTime: eventEndTime.value,
         attending: [],
+        Recurring: recurringChecked.value,
+        RecurringFrequency: RecurringFrequency.value,
+        RecurringEndDate: RecurringEndDate.value,
     }
 })
 
@@ -63,6 +73,14 @@ const createEvent = () => {
     // console.log("DataOut: ", dataOut.value);
     if (props.parentFunction) {
         props.parentFunction(dataOut.value);
+        clearEventTool();
+    }
+}
+
+const createRecurringEvent = () => {
+    // console.log("DataOut: ", dataOut.value);
+    if (props.parentFunction) {
+        props.recurring(dataOut.value);
         clearEventTool();
     }
 }
@@ -128,8 +146,27 @@ const close = () => {
                 <input class="goa-input" type="time" name="EventEndTime" id="EventEndTime" v-model="eventEndTime">
               </div>
             </div>
+            <div class="uk-flex uk-margin-small-top">
+              <label for="IsRecurring" class="text-goa-red uk-margin-right">Is Recurring?</label>
+              <input type="checkbox" name="IsRecurring" id="IsRecurring" :value="true" v-model="recurringChecked">
+            </div>
+            <div v-if="recurringChecked" class="uk-flex uk-margin-top uk-child-width-1-2">
+              <div class=" uk-flex uk-flex-column uk-margin-small-right">
+                <label class="text-goa-red" for="Frequency">Frequency</label>
+                <select class="goa-input" name="Frequency" id="Frequency" v-model="RecurringFrequency">
+                  <option class="bg-black" value="daily">Daily</option>
+                  <option class="bg-black" value="weekly">Weekly</option>
+                  <option class="bg-black" value="biweekly">Bi-Weekly</option>
+                </select>
+              </div>
+              <div class="uk-flex uk-flex-column">
+                <label class="text-goa-red" for="RecurringEndDate">End Date</label>
+                <input class="goa-input" type="date" name="RecurringEndDate" id="RecurringEndDate" v-model="RecurringEndDate">
+            </div>
+            </div>
             <div class="uk-margin-top">
-              <button @click="createEvent" class="goa-button uk-width-1-1">Create Event</button>
+              <button v-if="recurringChecked" @click="createRecurringEvent" class="goa-button uk-width-1-1">Create Recurring Event</button>
+              <button v-else @click="createEvent" class="goa-button uk-width-1-1">Create Event</button>
             </div>
         </div>
     </div>
