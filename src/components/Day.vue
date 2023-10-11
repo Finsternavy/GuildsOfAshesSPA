@@ -282,6 +282,17 @@ input, textarea {
     background-color: rgba(98, 146, 31, 1);
     transition: border-radius 0.3s ease;
 } */
+
+.canceled {
+    position: absolute;
+    font-weight: 900;
+    top: 0;
+    left: 0;
+    color: red;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 </style>
 
 <template>
@@ -298,17 +309,21 @@ input, textarea {
         <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span> <!-- This is overlay for passed days-->
         <div class="event-icon-container uk-flex uk-height-auto grid">
             <div v-for="event in props.Data" @click="showEventDetails(event)" class="uk-text-center">
-                <div class="guild-play-bg">
-                    <span v-if="event.eventType == 'guildPlay'" class="guild-play event-icon" uk-icon="icon: play; ratio: 1"></span>
+                <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
+                    <span class="guild-play event-icon" uk-icon="icon: play; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
                 </div>
-                <div class="meeting-bg">
-                    <span v-if="event.eventType == 'meeting'" class="meeting event-icon" uk-icon="icon: users; ratio: 1"></span>
+                <div v-if="event.EventType == 'meeting'" class="meeting-bg uk-position-relative">
+                    <span class="meeting event-icon" uk-icon="icon: users; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
                 </div>
-                <div class="deadline-bg">
-                    <span v-if="event.eventType == 'deadline'" class="deadline event-icon" uk-icon="icon: clock; ratio: 1"></span>
+                <div v-if="event.EventType == 'deadline'" class="deadline-bg uk-position-relative">
+                    <span  class="deadline event-icon" uk-icon="icon: clock; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
                 </div>
-                <div class="start-date-bg">
-                    <span v-if="event.eventType == 'startDate'" class="startDate event-icon" uk-icon="icon: clock; ratio: 1"></span>
+                <div v-if="event.EventType == 'startDate'"  class="start-date-bg uk-position-relative">
+                    <span class="startDate event-icon" uk-icon="icon: clock; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 1.2"></span>
                 </div>
             </div>
         </div>

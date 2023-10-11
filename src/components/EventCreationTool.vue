@@ -36,14 +36,14 @@ onBeforeMount(() => {
 
 let dataOut = computed(() => {
     return {
-        eventType: eventType.value,
-        eventOrganizer: eventOrganizer.value,
-        eventTitle: eventTitle.value,
-        eventContent: eventContent.value,
-        eventStartDate: eventStartDate.value,
-        eventStartTime: eventStartTime.value,
-        eventEndDate: eventEndDate.value,
-        eventEndTime: eventEndTime.value,
+        EventType: eventType.value,
+        Organizer: eventOrganizer.value,
+        Title: eventTitle.value,
+        Content: eventContent.value,
+        StartDate: eventStartDate.value,
+        StartTime: eventStartTime.value,
+        EndDate: eventEndDate.value,
+        EndTime: eventEndTime.value,
         attending: [],
     }
 })
