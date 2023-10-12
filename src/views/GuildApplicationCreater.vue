@@ -134,7 +134,7 @@ let finalizeApplication = async () => {
 </script>
 
 <style scoped>
-.goa-container {
+.goa-container-local {
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
   border-radius: 30px;
@@ -163,7 +163,7 @@ let finalizeApplication = async () => {
         <div v-if="finalized" class="goa-container uk-padding">
             <h1 class="uk-text-center text-goa-red">Application Finalized</h1>
         </div>
-        <div v-if="!finalized" class="application-controls goa-container uk-padding">
+        <div v-if="!finalized" class="application-controls goa-container-local uk-padding">
             <h2 class="uk-light uk-text-center">Application Creation Controls</h2>
             <div class="control-button-container">
                 <div class="uk-flex uk-flex-center">

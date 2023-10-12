@@ -86,14 +86,32 @@ const toggleHighlight = () => {
 const toggleTextColor = () => {
     // open a color picker and set highlightColor to the selected color
     let doc = document.getElementById('textColorInput').click();
-    editor.value.getAttributes('textStyle').color = textColor.value;
-    // if the color is already active, set highlightColor to transparent
-
+    editor.value.chain().focus().getAttributes('textStyle').color = textColor.value;
+    
+    // change focus to the bold button
+    document.getElementById('textColorInput').dispatchEvent(pressEnter);
 };
+
+const closeTextColorPicker = () => {
+    // change focus to the editor
+
+}
 
 watch(() => highlightColor.value, (value) => {
     console.log("Highlight color changed");
     // editor.value.chain().focus().setHighl({color: value}).run();
+});
+
+const updateFontChoice = () => {
+    editor.value.chain().focus().setFontFamily(fontChoice.value).run();
+    fontChoice.value = null;
+}
+
+const pressEnter = new KeyboardEvent('keydown', {
+  key: 'Enter',
+  code: 'Enter',
+  which: 13,
+  keyCode: 13,
 });
 </script>
 
@@ -226,7 +244,7 @@ watch(() => highlightColor.value, (value) => {
                     Font Family
                 </div>
                 <div class="font-family-options">
-                    <select name="FontSelect" id="FontSelect" @change="editor.chain().focus().setFontFamily(fontChoice).run()"
+                    <select name="FontSelect" id="FontSelect" @change="updateFontChoice"
                     class="editor-button"
                     :class="{ 'is-active': editor.isActive('textStyle', { fontFamily: fontChoice }) }"
                     v-model="fontChoice">
@@ -261,7 +279,8 @@ watch(() => highlightColor.value, (value) => {
                         id="textColorInput"
                         type="color"
                         class="hide"
-                        @input="editor.chain().focus().setColor($event.target.value).run()"
+                        @input="editor.chain().focus().setColor($event.target.value).run().then(() => closeTextColorPicker())"
+                        @changed="closeTextColorPicker"
                         v-model="textColor">
                     <button  @click="toggleTextColor" class="editor-button"><span class="text-color-button">T</span></button>
                 </div>
@@ -284,13 +303,13 @@ watch(() => highlightColor.value, (value) => {
                 </div>
         </BubbleMenu>
         <FloatingMenu  :editor="editor" >
-            <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
+            <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
                 H1
             </button>
-            <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+            <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
                 H2
             </button>
-            <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+            <button class="editor-button" @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
                 Bullet List
             </button>
         </FloatingMenu>
