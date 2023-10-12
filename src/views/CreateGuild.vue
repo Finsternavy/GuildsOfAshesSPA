@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
 import RichTextEditor from "../components/RichTextEditor.vue";
@@ -12,6 +12,7 @@ let baseUrl = api.getAPI + "Guilds";
 let store;
 let user = ref();
 let guildName = ref();
+let guildBanner = ref();
 let selectedImage = ref();
 let guildLogoBase64 = ref();
 let guildDescription = ref();
@@ -27,6 +28,29 @@ let ranks = ref([
     {RankName: 'Recruit', RankLevel: 2}
     ])
 
+const guildNameToPass = computed(() => {
+  return guildName.value;
+});
+
+let guild = ref({
+  Name: "",
+  Leader: "",
+  Banner: "",
+  Logo: "",
+  LogoBorder: "",
+  Description: "",
+  Category: "",
+  Focus: "",
+  PrimaryRace: "",
+  Region: "",
+  Ranks: [
+    {RankName: 'Guild Leader', RankLevel: 0}, 
+    {RankName: 'Member', RankLevel: 1}, 
+    {RankName: 'Recruit', RankLevel: 2}
+    ],
+  AutoApprove: "",
+})
+
 onBeforeMount(() => {
   store = useUserStore();
   user = store.getUser;
@@ -36,21 +60,11 @@ onBeforeMount(() => {
 let createGuild = async () => {
   if (checkRanks()){
     let user = store.getUser;
+    guild.value.Ranks = ranks.value;
+    guild.value.Leader = user;
     // console.log("Attempting to create guild..");
-    let call = {
-      Name: guildName.value,
-      Leader: user,
-      AutoApprove: autoApprove.value,
-      Logo: guildLogoBase64.value,
-      LogoBorder: addBorder.value,
-      Description: guildDescription.value,
-      Category: guildCategory.value,
-      Focus: guildFocus.value,
-      PrimaryRace: guildPrimaryRace.value,
-      Region: guildRegion.value,
-      Ranks: ranks.value
-    };
-    // console.log("call: ", call);
+    let call = guild.value;
+    console.log("call: ", call);
     let response = await fetch(baseUrl + "/createGuild", {
       method: "POST",
       headers: {
@@ -74,7 +88,7 @@ let createGuild = async () => {
     }
   } else {
     alert('Rank names and levels must be unique!')
-  }
+   }
 };
 
 let handleImage = (event) => {
@@ -86,6 +100,7 @@ let handleImage = (event) => {
 
     reader.onload = () => {
       guildLogoBase64.value = reader.result;
+      guild.value.Logo = guildLogoBase64.value;
       // console.log("Reader result: ", guildLogoBase64.value);
     };
     reader.readAsDataURL(file);
@@ -138,7 +153,7 @@ const shiftRankUp = (index) => {
 
 <style scoped>
 .goa-container {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(5px);
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
@@ -179,7 +194,7 @@ textarea {
 
 .goa-button {
   border-radius: 20px;
-  background-color: transparent;
+  /* background-color: transparent; */
   color: white;
   padding: 5px 30px;
   /* height: 40px; */
@@ -205,29 +220,35 @@ textarea {
 <template>
   <div class="create-guild goa-container">
     <div class="goa-header uk-padding uk-padding-remove-bottom">
-      <h3 class="uk-light uk-text-center uk-margin-remove">GUILD CREATION</h3>
+      <h1 class="text-goa-red uk-text-center uk-margin-remove">GUILD CREATION</h1>
       <hr class="uk-margin-remove-bottom" />
     </div>
     <div class="uk-form uk-padding uk-grid-small" uk-grid>
-      <div class="input uk-width-1-2">
+      <div class="input uk-width-1-1">
         <label for="guild-name">Guild Name</label>
         <input
           type="text"
           id="guild-name"
           class="goa-input uk-input"
-          v-model="guildName"
+          v-model="guild.Name"
         />
       </div>
-      <div class="js-upload uk-light uk-width-1-2" uk-form-custom>
-        <label for="guild-logo">Guild Logo</label>
-        <input type="file" multiple v-on:change="handleImage" />
-        <button
-          class="uk-button uk-button-default uk-width-stretch"
-          type="button"
-          tabindex="-1"
-        >
-          Upload
-        </button>
+      <div class="uk-width-1-1 uk-flex uk-flex-column">
+        <label> Guild Banner <span class="text-goa-red">( How guild name will appear at the top of your home page. )</span></label>
+        <Editor v-model="guild.Banner" :limited="true"/>
+      </div>
+      <div class="js-upload uk-light uk-width-1-2 uk-flex uk-flex-column" uk-form-custom>
+        <label for="guild-logo-label uk-width-1-1">Guild Logo</label>
+        <div>
+          <input type="file" multiple v-on:change="handleImage" />
+          <button
+            class="goa-button uk-text-lead"
+            type="button"
+            tabindex="-1"
+          >
+            Upload Guild Logo
+          </button>
+        </div>
       </div>
       <div
         v-if="guildLogoBase64"
@@ -252,7 +273,7 @@ textarea {
               class="goa-input uk-input"
               name="AddBorderSelect"
               id="AddBorderSelect"
-              v-model="addBorder"
+              v-model="guild.LogoBorder"
             >
               <option value=""></option>
               <option :value="true">Yes</option>
@@ -274,7 +295,7 @@ textarea {
           <li>Returning to the next line will display quick formatting options for the line.</li>
           <li>Use the top bar to control formatting and colors.</li>
         </ul>
-        <Editor v-model="guildDescription"/>
+        <Editor v-model="guild.Description"/>
       </div>
       <div class="input uk-width-1-1">
         <label for="guild-description">Guild Description</label>
@@ -290,7 +311,7 @@ textarea {
       </div>
       <div class="input uk-width-1-4">
         <label for="guild-type">Guild Category</label>
-        <select id="guild-type" class="goa-input uk-input" v-model="guildCategory">
+        <select id="guild-type" class="goa-input uk-input" v-model="guild.Category">
           <option value=""></option>
           <option value="rp">RP</option>
           <option value="casual">Casual</option>
@@ -300,7 +321,7 @@ textarea {
       </div>
       <div class="input uk-width-1-4">
         <label for="guild-focus">Focus</label>
-        <select id="guild-focus" class="goa-input uk-input" v-model="guildFocus">
+        <select id="guild-focus" class="goa-input uk-input" v-model="guild.Focus">
           <option value=""></option>
           <option value="pvp">PvP</option>
           <option value="pve">PvE</option>
@@ -313,7 +334,7 @@ textarea {
       </div>
       <div class="input uk-width-1-4">
         <label for="guild-race">Primary Race</label>
-        <select id="guild-race" class="goa-input uk-input" v-model="guildPrimaryRace">
+        <select id="guild-race" class="goa-input uk-input" v-model="guild.PrimaryRace">
           <option value=""></option>
           <option value="aelune">Aelune</option>
           <option value="kaelar">Kaelar</option>
@@ -324,7 +345,7 @@ textarea {
       </div>
       <div class="input uk-width-1-4">
         <label for="guild-region">Region</label>
-        <select id="guild-region" class="goa-input uk-input" v-model="guildRegion">
+        <select id="guild-region" class="goa-input uk-input" v-model="guild.Region">
           <option value=""></option>
           <option value="na-east">NA-East</option>
           <option value="na-west">NA-West</option>
@@ -359,7 +380,7 @@ textarea {
           name="guild-restricted"
           id="guild-restricted"
           class="goa-input uk-input uk-width-1-1"
-          v-model="autoApprove"
+          v-model="guild.AutoApprove"
         >
           <option value=""></option>
           <option :value="true">True</option>

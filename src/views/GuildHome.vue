@@ -1,12 +1,13 @@
 <script setup>
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, onMounted, computed } from "vue";
 import Discord from "../components/Discord.vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
 import { useGuildStore } from "../stores/guildStore";
 import RichTextEditor from "../components/RichTextEditor.vue";
 import Loading from "../components/Loading.vue";
-import { useAPI } from '../stores/apiStore'
+import { useAPI } from '../stores/apiStore';
+import Editor from "../components/Editor.vue";
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Guilds";
@@ -44,6 +45,11 @@ onBeforeMount(() => {
   }
   getGuildData();
   // console.log("GuildID: ", guildID.value);
+});
+
+onMounted(() => {
+  // getBanner();
+  
 });
 
 // let memberCount = computed(() => {
@@ -197,6 +203,12 @@ let apply = () => {
 let createApplication = () => {
   router.push({ name: "create-application" });
 };
+
+const getBanner = () => {
+  let doc = document.getElementById("GuildBanner");
+  console.log("Banner inner html: ", doc);
+  // return `guild.value.Banner`;
+}
 </script>
 
 <style scoped>
@@ -280,6 +292,11 @@ let createApplication = () => {
   grid-gap: 20px;
   padding: 5px;
 }
+
+.guild-title > * {
+  height: 200px;
+  font-size: 100px!important;
+}
 </style>
 
 <template>
@@ -295,7 +312,7 @@ let createApplication = () => {
     </div>
 
     <!-- Guild Application Review-->
-    <div id="Inbox" class="goa-container uk-padding uk-margin-bottom" hidden>
+    <div id="Inbox" class="goa-container uk-padding uk-margin-large-bottom" hidden>
       <div v-for="application in inbox" class="applicant-container goa-container uk-flex uk-flex-column">
         <h3 class="text-goa-red">Applicant Info</h3>
         <div class="applicant-info uk-width-1-1 uk-flex uk-child-width-1-4 uk-grid-small uk-margin-bottom" uk-grid>
@@ -350,8 +367,8 @@ let createApplication = () => {
 
     <!-- Guild Info Section -->
 
-    <div class="goa-container uk-padding uk-margin-bottom">
-      <h1 class="uk-light uk-text-center uk-margin-remove">{{ guild.Name }}</h1>
+    <div class="goa-container uk-padding uk-margin-bottom uk-margin-large-top" >
+      <Editor class="uk-margin-top" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
       <div v-if=" user && !user.GuildID">
         <button
           v-if="user"
