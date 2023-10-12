@@ -20,9 +20,9 @@ globalThis.__VUE_PROD_DEVTOOLS__ = true;
 
 const app = createApp(App)
 
-app.component('BubbleMenu', BubbleMenu,
-              'FloatingMenu', FloatingMenu,
-              'Color', Color);
+// app.component('BubbleMenu', BubbleMenu,
+//               'FloatingMenu', FloatingMenu,
+//               'Color', Color);
 
 app.use(createPinia())
 app.use(router)

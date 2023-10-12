@@ -5,9 +5,6 @@ import { Editor, EditorContent  } from '@tiptap/vue-3';
 import { BubbleMenu } from '@tiptap/vue-3';
 import { FloatingMenu } from '@tiptap/vue-3';
 import { Color } from '@tiptap/extension-color';
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
 import TextStyle from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import TextAlign from '@tiptap/extension-text-align'
@@ -27,7 +24,7 @@ let highlightColor = ref('#ff0000');
 let textColor = ref('#ffffff');
 let fontChoice = ref();
 
-let editor = ref(null);
+let editor = new ref(null);
 
 watch(() => props.modelValue, (value) => {
     const isSame = editor.value.getHTML() === value;
@@ -188,7 +185,7 @@ watch(() => highlightColor.value, (value) => {
             <input type="checkbox" v-model="isEditable">
             Editable
         </div> -->
-        <div class="controls uk-flex uk-margin-bottom">
+        <div class="controls uk-flex uk-flex-between uk-margin-bottom">
             <div class="text-controls uk-flex-column uk-margin-right">
                 <div class="uk-text-center control-header">
                     Text Style
