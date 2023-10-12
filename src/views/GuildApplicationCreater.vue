@@ -135,7 +135,7 @@ let finalizeApplication = async () => {
 
 <style scoped>
 .goa-container-local {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(5px);
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
@@ -185,7 +185,7 @@ let finalizeApplication = async () => {
                     <p class="uk-text-center uk-text-danger">Note: This form uses a rich text editor. Make sure you description is formatted how you want it to appear on the application.</p>
                     <Editor v-model="section"/>
                     <!-- <RichTextEditor v-model="section" class="uk-margin-bottom"/> -->
-                    <div class="uk-margin-bottom">
+                    <div class="uk-margin-bottom uk-margin-top">
                         <button @click="addSection" class="goa-button">Add Description</button>
                     </div>
                 </div>

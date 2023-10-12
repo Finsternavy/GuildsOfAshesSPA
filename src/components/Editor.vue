@@ -10,12 +10,21 @@ import Highlight from '@tiptap/extension-highlight'
 import TextAlign from '@tiptap/extension-text-align'
 import FontFamily from '@tiptap/extension-font-family'
 import Link from '@tiptap/extension-link'
+import CharacterCount from '@tiptap/extension-character-count'
 
 const props = defineProps({
-modelValue: {
-    type: String,
-    default: '',
-},
+    modelValue: {
+        type: String,
+        default: '',
+    },
+    limited: {
+        type: Boolean,
+        default: false,
+    },
+    viewOnly: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -26,16 +35,20 @@ let textColor = ref('#ffffff');
 let fontChoice = ref();
 
 let editor = new ref(null);
+let nameEditor = new ref(null);
 
-watch(() => props.modelValue, (value) => {
-    const isSame = editor.value.getHTML() === value;
+const limit = ref(20);
+const fullLimit = ref(2000);
 
-    if (isSame) {
-        return;
-    }
+// watch(() => props.modelValue, (value) => {
+//     const isSame = editor.value.getHTML() === value;
 
-    editor.value.commands.setContent(value, false);
-});
+//     if (isSame) {
+//         return;
+//     }
+
+//     editor.value.commands.setContent(value, false);
+// });
 
 watch(() => isEditable.value, (value) => {
     editor.value.setOptions({
@@ -44,7 +57,42 @@ watch(() => isEditable.value, (value) => {
 });
 
 onBeforeMount(() => {
-    editor.value = new Editor({
+
+    if (props.limited){
+        console.log("Creating a limited editor");
+        editor.value = new Editor({
+        extensions: [
+            StarterKit,
+            FloatingMenu,
+            BubbleMenu,
+            TextStyle,
+            Color.configure({
+                types: ['textStyle', 'highlight'],
+            }),
+            Highlight.configure({
+                multicolor: true,
+            }),
+            TextAlign.configure({
+                types: ['heading', 'paragraph'],
+            }),
+            FontFamily,
+            Link,
+            CharacterCount.configure({
+                limit: limit.value,
+            }),
+
+            ],
+            content: "<p>Guild Name</p>",
+
+            onUpdate: () => {
+                let restrictedContent = editor.value.getHTML();
+                restrictedContent = 
+                emit('update:modelValue', editor.value.getHTML());
+            },
+        })
+    } 
+    else {
+        editor.value = new Editor({
         extensions: [
             StarterKit,
             FloatingMenu,
@@ -58,15 +106,33 @@ onBeforeMount(() => {
                 types: ['heading', 'paragraph'],
             }),
             FontFamily,
-            Link
+            Link,
+            CharacterCount.configure({
+                limit: fullLimit.value,
+            }),
 
-        ],
-        content: "<p>Hello World</p>",
-        onUpdate: () => {
-            emit('update:modelValue', editor.value.getHTML());
-        },
-    });
+            ],
+            content: props.modelValue ? props.modelValue : "<p>Enter your text here... </p>",
+            onUpdate: () => {
+                emit('update:modelValue', editor.value.getHTML());
+            },
+        });
+    }
 });
+
+onMounted(() => {
+    if (props.limited){
+        document.getElementById('H1').click();
+        document.getElementById('AlignCenter').click();
+    }
+    editor.value.commands.setColor("#ffffff")
+    if (props.viewOnly){
+        editor.value.setOptions({
+            editable: false,
+        });
+    }
+    // editor.value.getAttributes('textStyle').color = textColor.value;
+;});
 
 
 onBeforeUnmount(() => {
@@ -88,10 +154,7 @@ const toggleHighlight = () => {
 const toggleTextColor = () => {
     // open a color picker and set highlightColor to the selected color
     let doc = document.getElementById('textColorInput').click();
-    editor.value.chain().focus().getAttributes('textStyle').color = textColor.value;
-    
-    // change focus to the bold button
-    document.getElementById('textColorInput').dispatchEvent(pressEnter);
+    // editor.value.chain().focus().getAttributes('textStyle').color = textColor.value;
 };
 
 const closeTextColorPicker = () => {
@@ -124,16 +187,21 @@ const setLink = () => {
 </script>
 
 <style scoped>
+
+.guild-name {
+    font-size: 45px;
+}
 .editor {
     border-radius: 30px;
     /* background-color: rgba(255, 255, 255, 0.2); */
-    border: 3px solid black;
+    /* border: 3px solid rgb(81, 0, 0); */
 }
 
 .controls {
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 30px 30px 0 0;
     padding: 5px 10px;
+    border-bottom: 3px solid rgb(81, 0, 0);
 }
 
 
@@ -160,7 +228,7 @@ const setLink = () => {
     border: 1px solid rgba(255, 255, 255, 0.2)!important;
     border-radius: 10px;
     /* background-color: rgba(255, 255, 255, 0.2); */
-    padding: 5px 15px!important;
+    padding: 5px 10px!important;
     border-color: black;
     color: white;
     background-color: black;
@@ -203,31 +271,45 @@ const setLink = () => {
     color: white;
 }
 
+.hideBorder {
+    border: none!important;
+}
+
+.border {
+    border: 3px solid rgb(81, 0, 0);
+}
 </style>
 
 <template>
-    <div class="editor uk-position-relative">
+    <div class="editor uk-position-relative" :class="{'border' : !props.viewOnly}">
         <!-- <div>
             <input type="checkbox" v-model="isEditable">
             Editable
         </div> -->
-        <div class="controls uk-flex uk-flex-between uk-margin-bottom">
+        <div v-if="!props.viewOnly" class="controls uk-flex uk-flex-around uk-margin-bottom">
             <div class="text-controls uk-flex-column uk-margin-right">
                 <div class="uk-text-center control-header">
                     Text Style
                 </div>
                 <div>
-                    <button class="editor-button" @click="editor.chain().focus().toggleBold().run()">B</button>
-                    <button class="editor-button" @click="editor.chain().focus().toggleItalic().run()"><span class="italic">I</span></button>
-                    <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
+                    <button class="editor-button" @click="editor.chain().focus().toggleBold().run()">
+                        <span uk-icon="icon: bold"></span>
+                    </button>
+                    <button class="editor-button" @click="editor.chain().focus().toggleItalic().run()">
+                        <span uk-icon="icon: italic"></span>
+                    </button>
+                    <button v-show="!props.limited" id="H1" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
+                        Giant
+                    </button>
+                    <button v-show="!props.limited" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
                         H1
                     </button>
-                    <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+                    <button v-show="!props.limited" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
                         H2
                     </button>
                 </div>
             </div>
-            <div class="uk-flex uk-flex-column uk-margin-right">
+            <div v-show="!props.limited" class="uk-flex uk-flex-column uk-margin-right">
                 <div class="uk-width-1-1 uk-text-center control-header">
                     Text Alignment
                 </div>
@@ -235,7 +317,7 @@ const setLink = () => {
                     <button class="editor-button" @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }">
                         <span uk-icon="icon: chevron-left; ratio: 1"></span>
                     </button>
-                    <button class="editor-button" @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }">
+                    <button id="AlignCenter" class="editor-button" @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }">
                         <span uk-icon="icon: chevron-right; ratio: 1"></span><span uk-icon="icon: chevron-left; ratio: 1"></span>
                     </button>
                     <button class="editor-button" @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }">
@@ -266,7 +348,7 @@ const setLink = () => {
                     </select>
                 </div>
             </div>
-            <div class="media control-header">
+            <div v-show="!props.limited" class="media control-header">
                 <div>
                     Media
                 </div>
@@ -278,9 +360,17 @@ const setLink = () => {
             </div>
         </div>
         <div class="uk-padding-small">
-            <editor-content id="Editor" :editor="editor" />
+            <editor-content id="Editor" :editor="editor" :class="{'hideBorder' : props.viewOnly}" />
         </div>
-        <BubbleMenu
+        <div v-if="!props.viewOnly">
+            <div class="character-count uk-text-center" v-if="editor && props.limited">
+                {{ editor.storage.characterCount.characters() }}/{{ limit }} characters
+            </div>
+            <div class="character-count uk-text-center" v-else>
+                {{ editor.storage.characterCount.characters() }}/{{ fullLimit }} characters
+            </div>
+        </div>
+        <BubbleMenu v-if="!props.viewOnly"
             :editor="editor">
                 <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active editor-button': editor.isActive('bold') }">
                     bold
@@ -320,12 +410,12 @@ const setLink = () => {
                     </button>
                 </div>
         </BubbleMenu>
-        <FloatingMenu  :editor="editor" >
-            <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
-                H1
-            </button>
+        <FloatingMenu v-if="!props.viewOnly"  :editor="editor" >
             <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
                 H2
+            </button>
+            <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
+                H3
             </button>
             <button class="editor-button" @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
                 Bullet List
