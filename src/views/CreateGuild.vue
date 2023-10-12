@@ -278,7 +278,7 @@ textarea {
       </div>
       <div class="input uk-width-1-1">
         <label for="guild-description">Guild Description</label>
-        <pre><code>{{ guildDescription }}</code></pre>
+        <!-- <pre><code>{{ guildDescription }}</code></pre> -->
         <!-- <RichTextEditor v-model="guildDescription" /> -->
         <!-- <div
           id="guild-description"
