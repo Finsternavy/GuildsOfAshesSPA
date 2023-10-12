@@ -9,6 +9,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import TextAlign from '@tiptap/extension-text-align'
 import FontFamily from '@tiptap/extension-font-family'
+import Link from '@tiptap/extension-link'
 
 const props = defineProps({
 modelValue: {
@@ -57,6 +58,7 @@ onBeforeMount(() => {
                 types: ['heading', 'paragraph'],
             }),
             FontFamily,
+            Link
 
         ],
         content: "<p>Hello World</p>",
@@ -113,6 +115,12 @@ const pressEnter = new KeyboardEvent('keydown', {
   which: 13,
   keyCode: 13,
 });
+
+const setLink = () => {
+    const url = window.prompt('URL');
+
+    editor.value.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+}
 </script>
 
 <style scoped>
@@ -258,6 +266,16 @@ const pressEnter = new KeyboardEvent('keydown', {
                     </select>
                 </div>
             </div>
+            <div class="media control-header">
+                <div>
+                    Media
+                </div>
+                <div class="uk-flex">
+                    <button class="editor-button" @click="setLink" :class="{ 'is-active': editor.isActive('link') }">
+                        <span uk-icon="icon: link"></span>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="uk-padding-small">
             <editor-content id="Editor" :editor="editor" />
@@ -279,7 +297,7 @@ const pressEnter = new KeyboardEvent('keydown', {
                         id="textColorInput"
                         type="color"
                         class="hide"
-                        @input="editor.chain().focus().setColor($event.target.value).run().then(() => closeTextColorPicker())"
+                        @input="editor.chain().focus().setColor($event.target.value).run()"
                         @changed="closeTextColorPicker"
                         v-model="textColor">
                     <button  @click="toggleTextColor" class="editor-button"><span class="text-color-button">T</span></button>
