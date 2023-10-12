@@ -30,8 +30,10 @@ const acknowledgeNotice = () => {
 .goa-logo {
   margin-left: auto;
   margin-right: auto;
-  height: 300px;
-  width: 600px;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  min-height: 100%;
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -45,16 +47,31 @@ const acknowledgeNotice = () => {
   z-index: 1000;
 }
 
-.notice-contents {
+.notice-content {
+  height: fit-content;
+  max-height: 80vh;
+  background-color: rgba(0, 0, 0, 0.8);
   width: 800px;
   max-width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.logo-container,
+.guild-logo-upload {
+  border-radius: 0px;
 }
 </style>
 
 <template>
   <div class=" uk-margin-large-bottom">
-    <div class="hero goa-container uk-padding uk-margin-bottom">
-      <div class="goa-logo" :data-src="GoaLogo" uk-img></div>
+    <div class="hero goa-container uk-padding uk-margin-bottom uk-width-1-1">
+      <!-- <div class="goa-logo" :data-src="GoaLogo" uk-img></div> -->
+      <div class="logo-container uk-margin-bottom"
+        >
+        <img class="guild-logo-upload uk-background-cover" :src="GoaLogo" alt="Uploaded Image" uk-img />
+      </div>
       <div class="hero-message">
         <p><span class="text-goa-red uk-text-lead">Welcome!</span> to Guilds of Ashes. This site was built as a portfolio project to demonstrate my skills as a web developer while also serving as a potential hub for the guild I am a member of. The site is still under development and it and all features may or may not be fully functional.</p>
 
@@ -83,7 +100,7 @@ const acknowledgeNotice = () => {
         </ul>
         <hr class="uk-margin-large">
         <h3 class="uk-text-lead text-goa-red">Development Status</h3>
-        <div class="uk-flex uk-flex-around">
+        <div class="uk-flex uk-child-width-1-1 uk-child-width-1-3@m" uk-grid>
           <div class="left">
             <h4 class="text-orange"><span uk-icon="icon: star"></span> Recently Added <span uk-icon="icon: star"></span></h4>
             <ul>
@@ -153,7 +170,7 @@ const acknowledgeNotice = () => {
     </div>
   </div>
   <div v-if="!noticeAcknowledged" id="Notice" class="notice goa-container-no-radius uk-padding">
-    <div class="notice-contents goa-container uk-position-top-center uk-margin-xlarge-top uk-padding-large">
+    <div class="uk-panel-scrollable notice-content">
       <h1 class="text-goa-red">NOTICE:</h1>
       <p class="text-goa-gray uk-text-large">
         This site is in early development and all features may or may not be
