@@ -3,7 +3,9 @@ import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
 import RichTextEditor from "../components/RichTextEditor.vue";
-import { useAPI } from '../stores/apiStore'
+import { useAPI } from '../stores/apiStore';
+import Editor from "../components/Editor.vue";
+
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Guilds";
@@ -262,9 +264,22 @@ textarea {
           </div>
         </div>
       </div>
+      <div class="uk-width-1-1 uk-margin-large-bottom">
+        <h3 class="text-goa-red uk-margin-remove">GUILD DESCRIPTION</h3>
+        <span>The editor below is a WYSIWYG editor. It accepts Markdown annotation, has in editor controls, and also accepts copy paste from a text editor such as Microsoft word.</span>
+        <p> Basic instruction:</p>
+        <ul>
+          <li>Click on the text area to start typing.</li>
+          <li>Highlight text to change basic styling</li>
+          <li>Returning to the next line will display quick formatting options for the line.</li>
+          <li>Use the top bar to control formatting and colors.</li>
+        </ul>
+        <Editor v-model="guildDescription"/>
+      </div>
       <div class="input uk-width-1-1">
         <label for="guild-description">Guild Description</label>
-        <RichTextEditor v-model="guildDescription" />
+        <pre><code>{{ guildDescription }}</code></pre>
+        <!-- <RichTextEditor v-model="guildDescription" /> -->
         <!-- <div
           id="guild-description"
           contenteditable="true"

@@ -431,7 +431,7 @@ let createApplication = () => {
               <div class="uk-flex uk-flex-column uk-flex-center">
                 <!-- <p>{{ events.Content }}</p> -->
                 <p class="uk-text-bold">Organizer: {{ events.Organizer }}</p>
-                <div class="uk-flex uk-child-width-1-2">
+                <div class="uk-child-width-1-2">
                   <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
                   <span class="uk-text-bold uk-text-left"><span class="text-goa-red">@</span> {{ events.StartTime }}</span>
                 </div>

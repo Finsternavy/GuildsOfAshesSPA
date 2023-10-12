@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
-import RichTextEditor from "../components/RichTextEditor.vue";
+import  Editor  from '../components/Editor.vue';
 import { useAPI } from '../stores/apiStore'
 
 let api = useAPI();
@@ -20,8 +20,9 @@ let finalized = ref(false);
 // description
 // let heading = ref("");
 // let paragraph = ref("");
-let section = ref();
+let section = ref('');
 let description = ref();
+let textEditorContent = ref('');
 
 // Requirements
 let requirement = ref("");
@@ -133,6 +134,12 @@ let finalizeApplication = async () => {
 </script>
 
 <style scoped>
+.goa-container-local {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 30px;
+  transition: background-color 0.3s ease-in-out;
+}
 .goa-textarea {
     height: 100px;
 }
@@ -156,7 +163,7 @@ let finalizeApplication = async () => {
         <div v-if="finalized" class="goa-container uk-padding">
             <h1 class="uk-text-center text-goa-red">Application Finalized</h1>
         </div>
-        <div v-if="!finalized" class="application-controls goa-container uk-padding">
+        <div v-if="!finalized" class="application-controls goa-container-local uk-padding">
             <h2 class="uk-light uk-text-center">Application Creation Controls</h2>
             <div class="control-button-container">
                 <div class="uk-flex uk-flex-center">
@@ -176,15 +183,8 @@ let finalizeApplication = async () => {
                 <div id="AddDescription" class="uk-padding uk-flex uk-flex-column" hidden>
                     <h2 class="text-goa-red uk-text-center">Description Creator</h2>
                     <p class="uk-text-center uk-text-danger">Note: This form uses a rich text editor. Make sure you description is formatted how you want it to appear on the application.</p>
-                    <!-- <div class="uk-margin-bottom uk-flex uk-flex-column">
-                        <label class="text-goa-red" for="">Heading: <span class="uk-text-muted">( Leave blank if adding a paragraph with no title. )</span></label>
-                        <input class="goa-input" type="text" v-model="heading">
-                    </div> -->
-                    <!-- <div class="uk-margin-bottom uk-flex uk-flex-column">
-                        <label class="text-goa-red" for="">Paragraph: <span class="uk-text-muted">( Leave blank if only adding a heading )</span></label>
-                        <textarea class="goa-textarea goa-input uk-width-1-1" name="Description-creator" id="Description-creator" v-model="paragraph"></textarea>
-                    </div> -->
-                    <RichTextEditor v-model="section" class="uk-margin-bottom"/>
+                    <Editor v-model="section"/>
+                    <!-- <RichTextEditor v-model="section" class="uk-margin-bottom"/> -->
                     <div class="uk-margin-bottom">
                         <button @click="addSection" class="goa-button">Add Description</button>
                     </div>
