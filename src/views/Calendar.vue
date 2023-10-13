@@ -165,6 +165,7 @@ const close = () => {
 const addEvent = async (data) => {
     // events.value.push(data);
     showEventCreationModal.value = false;
+    data.RecurringFrequency = 0;
     console.log("Adding event: ", data);
 
     // console.log("Fetching guild data..");
