@@ -348,7 +348,7 @@ const setLink = () => {
                         <option class="bg-black" value="battery-park">Battery-park</option>
                         
                         <option class="bg-black" value="bd-brick">Bd-brick</option>
-                        <option class="bg-black" value="broadsheetk">Broadsheet</option>
+                        <option class="bg-black" value="broadsheet">Broadsheet</option>
                         
                         <option class="bg-black" value="cc-spellcaster">CC-Spellcaster</option>
                         <option class="bg-black" value="charbroiled">Charbroiled</option>
