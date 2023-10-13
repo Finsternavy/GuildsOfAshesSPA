@@ -233,6 +233,16 @@ textarea {
           v-model="guild.Name"
         />
       </div>
+      <div>
+        <span>The editor below is a WYSIWYG editor. It accepts Markdown annotation, has in editor controls, and also accepts copy paste from a text editor such as Microsoft word.</span>
+        <p> Basic instruction:</p>
+        <ul>
+          <li>Click on the text area to start typing.</li>
+          <li>Highlight text to change basic styling</li>
+          <li>Returning to the next line will display quick formatting options for the line.</li>
+          <li>Use the top bar to control formatting</li>
+        </ul>
+      </div>
       <div class="uk-width-1-1 uk-flex uk-flex-column">
         <label> Guild Banner <span class="text-goa-red">( How guild name will appear at the top of your home page. )</span></label>
         <Editor v-model="guild.Banner" :limited="true"/>
@@ -287,14 +297,7 @@ textarea {
       </div>
       <div class="uk-width-1-1 uk-margin-large-bottom">
         <h3 class="text-goa-red uk-margin-remove">GUILD DESCRIPTION</h3>
-        <span>The editor below is a WYSIWYG editor. It accepts Markdown annotation, has in editor controls, and also accepts copy paste from a text editor such as Microsoft word.</span>
-        <p> Basic instruction:</p>
-        <ul>
-          <li>Click on the text area to start typing.</li>
-          <li>Highlight text to change basic styling</li>
-          <li>Returning to the next line will display quick formatting options for the line.</li>
-          <li>Use the top bar to control formatting and colors.</li>
-        </ul>
+        
         <Editor v-model="guild.Description"/>
       </div>
       <div class="input uk-width-1-1">
