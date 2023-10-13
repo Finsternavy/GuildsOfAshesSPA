@@ -23,14 +23,14 @@ let eventType = ref(null);
 let eventOrganizer = ref(null);
 let eventTitle = ref(null);
 let eventContent = ref(null);
-let eventStartDate = ref(null);
-let eventStartTime = ref(null);
-let eventEndDate = ref(null);
-let eventEndTime = ref(null);
+let eventStartDate = ref('');
+let eventStartTime = ref('');
+let eventEndDate = ref('');
+let eventEndTime = ref('');
 
 let recurringChecked = ref(false);
 let RecurringFrequency = ref('daily');
-let RecurringEndDate = ref(null);
+let RecurringEndDate = ref('');
 
 onBeforeMount(() => {
   user.value = store.getUser;
