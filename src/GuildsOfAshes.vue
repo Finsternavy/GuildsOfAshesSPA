@@ -1,7 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, computed } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
+import { useGuildStore } from "./stores/guildStore";
 import Menu from "./components/Menu.vue";
 import AOC_castle from "./public/AOCimages/AOC_castle.png";
 import AOC2023March from "./public/AOCimages/AOC2023March.jpg";
@@ -39,43 +40,51 @@ let backgroundImages = [
   AOCVaeluneCityA,
   AOCVaeluneEncampment,
   AOCWaterfall,
-
-  // "AOC_castle.png",
-  // "AOC2023March.jpg",
-  // "AOCGoblinVillage.jpg",
-  // "AOCJanuary.jpg",
-  // "AOCKaelarCamp.png",
-  // "AOCKaelarCityA.png",
-  // "AOCVaeluneCityD.png",
-  // "AOCMountainFantasy.png",
-  // "AOCRiverlands.png",
-  // "AOCSpooky.jpg",
-  // "AOCTropicalBay.jpg",
-  // "AOCVaeluneCityA.png",
-  // "AOCVaeluneEncampment.png",
-  // "AOCWaterfall.png",
 ];
-
+let background = ref();
+let guild = ref();
+let guildStore;
 let getRandomImage = () => {
   let index = Math.floor(Math.random() * backgroundImages.length);
   return backgroundImages[index];
 };
 
+
 onBeforeMount(() => {
+  guildStore = useGuildStore();
+  let guild = guildStore.getGuild;
+  console.log("Guild: ", guild);
+  let tmp = guild.Background ? guild.Background : getRandomImage();
+  background.value = guildStore.getGuild.Background ? guildStore.getGuild.Background : getRandomImage();
+  // background.value = guild.Background? guild.Background : getRandomImage();
+  console.log("Background: ", background.value);
   // console.log("PrimaryLayout mounted");
-  randomImage.value = getRandomImage;
 });
-let randomImage = ref();
+
 let currentYear = new Date().getFullYear();
+
+const getBackground = () => {
+  let tmp = guildStore.getGuild.Background;
+  if (tmp && tmp != 'random') {
+    console.log("Return guild background");
+    return tmp;
+  } else {
+    console.log("Generating random background")
+    return getRandomImage();
+  }
+  
+};
 </script>
 
-<style></style>
+<style>
+
+</style>
 
 <template>
-  <div
+  <div v-if="background"
     id="PrimaryLayout"
     class="uk-background-cover uk-background-fixed uk-width-1-1"
-    :data-src="getRandomImage()"
+    :data-src="getBackground()"
     uk-height-viewport="expand: true"
     uk-img
   >

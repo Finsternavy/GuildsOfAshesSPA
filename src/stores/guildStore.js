@@ -10,13 +10,14 @@ export let useGuildStore = defineStore('guildStore', {
 
   getters: {
     getGuild: (state) => state.Guild,
-    getGuildID: (state) => state.Guild.guildID,
-    getGuildName: (state) => state.Guild.guildName,
-    getGuildCategory: (state) => state.Guild.guildCategory,
-    getGuildFocus: (state) => state.Guild.guildFocus,
-    getGuildDescription: (state) => state.Guild.guildDescription,
-    getGuildLogo: (state) => state.Guild.guildLogo,
-    getGuildLogoBorder: (state) => state.Guild.guildLogoBorder,
+    getGuildID: (state) => state.Guild.GuildID,
+    getGuildName: (state) => state.Guild.Name,
+    getGuildBackground: (state) => state.Guild.Background,
+    getGuildCategory: (state) => state.Guild.Category,
+    getGuildFocus: (state) => state.Guild.Focus,
+    getGuildDescription: (state) => state.Guild.Description,
+    getGuildLogo: (state) => state.Guild.Logo,
+    getGuildLogoBorder: (state) => state.Guild.LogoBorder,
     getPrimaryRace: (state) => state.Guild.PrimaryRace,
     getRegion: (state) => state.Guild.Region,
     getXP: (state) => state.Guild.XP,
@@ -25,11 +26,15 @@ export let useGuildStore = defineStore('guildStore', {
     getApplications: (state) => state.Guild.Applications,
     getLeader: (state) => state.Guild.Leader,
     getTasks: (state) => state.Guild.Tasks,
+    getEvents: (state) => state.Guild.Events,
   },
 
   actions: {
     async setGuild(guild) {
         this.Guild = guild;
+    },
+    setGuildBackground(val) {
+        this.guild.Background = val;
     },
     setAlerts(alerts) {
         this.alerts = alerts;

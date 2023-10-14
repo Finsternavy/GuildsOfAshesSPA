@@ -43,6 +43,9 @@ export let useUserStore = defineStore('userStore', {
       localStorage.removeItem("User");
       localStorage.removeItem("authenticated");
       localStorage.removeItem("guildID");
+      localStorage.removeItem("guildName");
+      localStorage.removeItem("guildLogo");
+      localStorage.removeItem("guild");
       this.user = null,
       this.authenticated = false;
     },
