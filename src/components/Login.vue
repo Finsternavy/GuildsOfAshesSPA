@@ -2,6 +2,7 @@
 import { ref, onBeforeMount, watch } from "vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
+import { useGuildStore } from "../stores/guildStore";
 import { useAPI } from '../stores/apiStore'
 
 let username = ref("");
@@ -9,11 +10,13 @@ let password = ref("");
 let api = useAPI();
 let baseUrl = api.getAPI + "Users";
 let store;
+let guildStore;
 
 onBeforeMount(() => {
   // api = useAPI();
   // baseUrl = api.getAPI + "Users";
   store = useUserStore();
+  guildStore = useGuildStore();
   // console.log("Store user: ", store.user);
   if (store.user) {
     router.push({ name: "guilds" });
@@ -59,6 +62,7 @@ let doLogin = async () => {
       // );
       // localStorage.setItem("User", JSON.stringify(data.Data));
       // store.setUser(user);
+      console.log("Response from do login: ", data.Data);
       store.setUser(data.Data);
       store.setAuthenticated(true);
       store.setGuildID(data.Data.GuildID);

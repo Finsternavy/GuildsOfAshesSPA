@@ -28,6 +28,8 @@ let username = ref();
 
 let showContent = ref(false);
 
+let background = ref();
+
 onBeforeMount(() => {
   userStore = useUserStore();
   guildStore = useGuildStore();
@@ -105,6 +107,8 @@ let getGuildData = async () => {
     // console.log("Guild: ", guild.value);
     localStorage.setItem("guildLogo", guild.value.Logo);
     localStorage.setItem("guildName", guild.value.Name);
+    background.value = guild.Background;
+    localStorage.setItem("guild", JSON.stringify(guild.value));
     inbox.value = guild.value.Applications;
     guildLeaderName.value = guild.value.Leader.Username;
     // console.log("Inbox: ", inbox.value);
@@ -296,6 +300,10 @@ const getBanner = () => {
 .guild-title > * {
   height: 200px;
   font-size: 100px!important;
+}
+
+body {
+  background-image: v-bind(background)!important;
 }
 </style>
 

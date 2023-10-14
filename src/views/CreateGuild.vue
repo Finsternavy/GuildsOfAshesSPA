@@ -6,10 +6,27 @@ import RichTextEditor from "../components/RichTextEditor.vue";
 import { useAPI } from '../stores/apiStore';
 import Editor from "../components/Editor.vue";
 
+import AOC_castle from "../public/AOCimages/AOC_castle.png";
+import AOC2023March from "../public/AOCimages/AOC2023March.jpg";
+import AOCGoblinVillage from "../public/AOCimages/AOCGoblinVillage.jpg";
+import AOCJanuary from "../public/AOCimages/AOCJanuary.jpg";
+import AOCKaelarCamp from "../public/AOCimages/AOCKaelarCamp.png";
+import AOCKaelarCityA from "../public/AOCimages/AOCKaelarCityA.png";
+import AOCVaeluneCityD from "../public/AOCimages/AOCVaeluneCityD.png";
+import AOCMountainFantasy from "../public/AOCimages/AOCMountainFantasy.png";
+import AOCRiverlands from "../public/AOCimages/AOCRiverlands.png";
+import AOCSpooky from "../public/AOCimages/AOCSpooky.jpg";
+import AOCTropicalBay from "../public/AOCimages/AOCTropicalBay.jpg";
+import AOCVaeluneCityA from "../public/AOCimages/AOCVaeluneCityA.png";
+import AOCVaeluneEncampment from "../public/AOCimages/AOCVaeluneEncampment.png";
+import AOCWaterfall from "../public/AOCimages/AOCWaterfall.png";
+import { useGuildStore } from "../stores/guildStore";
+
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Guilds";
 let store;
+let guildStore;
 let user = ref();
 let guildName = ref();
 let guildBanner = ref();
@@ -26,7 +43,26 @@ let ranks = ref([
     {RankName: 'Guild Leader', RankLevel: 0}, 
     {RankName: 'Member', RankLevel: 1}, 
     {RankName: 'Recruit', RankLevel: 2}
-    ])
+    ]);
+
+const imagePrefix = "../public/AOCimages/";
+
+const backgroundImages = [
+  AOC_castle,
+  AOC2023March,
+  AOCGoblinVillage,
+  AOCJanuary,
+  AOCKaelarCamp,
+  AOCKaelarCityA,
+  AOCVaeluneCityD,
+  AOCMountainFantasy,
+  AOCRiverlands,
+  AOCSpooky,
+  AOCTropicalBay,
+  AOCVaeluneCityA,
+  AOCVaeluneEncampment,
+  AOCWaterfall,
+]
 
 const guildNameToPass = computed(() => {
   return guildName.value;
@@ -34,10 +70,11 @@ const guildNameToPass = computed(() => {
 
 let guild = ref({
   Name: "",
+  Background: "",
   Leader: "",
   Banner: "",
   Logo: "",
-  LogoBorder: "",
+  LogoBorder: false,
   Description: "",
   Category: "",
   Focus: "",
@@ -51,8 +88,11 @@ let guild = ref({
   AutoApprove: "",
 })
 
+const selectedBackground = ref();
+
 onBeforeMount(() => {
   store = useUserStore();
+  guildStore = useGuildStore();
   user = store.getUser;
   // console.log("User on before mount: ", user);
 });
@@ -145,10 +185,11 @@ const shiftRankUp = (index) => {
   // console.log('Ranks: ', ranks.value);
 }
 
-// let handleInput = () => {
-//   guildDescription.value = this.$refs.guildDescription.innerHTML;
-//   console.log("Guild description: ", guildDescription.value);
-// };
+const setBackground = (image) => {
+  console.log("Setting guild background to: ", image);
+  guildStore.setGuild(guild.value);
+  guild.value.Background = image;
+}
 </script>
 
 <style scoped>
@@ -215,15 +256,38 @@ textarea {
   min-height: 200px;
   padding: 8px;
 } */
+
+.image:hover {
+  cursor: pointer;
+  outline: 3px solid red;
+  outline-offset: 3px;
+}
+
+.selected {
+  outline: 3px solid gold;
+  outline-offset: 3px;
+}
 </style>
 
 <template>
-  <div class="create-guild goa-container">
-    <div class="goa-header uk-padding uk-padding-remove-bottom">
+  <div class="create-guild goa-container uk-padding">
+    <div class="goa-header uk-padding-remove-bottom">
       <h1 class="text-goa-red uk-text-center uk-margin-remove">GUILD CREATION</h1>
       <hr class="uk-margin-remove-bottom" />
     </div>
-    <div class="uk-form uk-padding uk-grid-small" uk-grid>
+    <!-- Guild background selector -->
+    <div id="GuildBackgroundSelector uk-margin-large-bottom">
+      <h3 class="text-goa-red uk-margin-left">GUILD BACKGROUND</h3>
+      <div class="image-card-container uk-flex uk-child-width-1-6 uk-width-1-1  uk-grid-small" uk-grid>
+        <div v-for="bgImage in backgroundImages" class="image-card" @click="setBackground(bgImage)">
+          <div class="image uk-height-small uk-background-cover" :class="{'selected' : bgImage == guild.Background}" :data-src="bgImage" uk-img></div>
+        </div>
+        <div  class="image-card ">
+          <div class="image uk-height-small uk-width-1-1 uk-background-cover uk-flex uk-flex-middle uk-flex-center uk-background-secondary" @click="setBackground('random')" uk-img> Always Random</div>
+        </div>
+      </div>
+    </div>
+    <div class="uk-form uk-grid-small uk-margin-medium-top" uk-grid>
       <div class="input uk-width-1-1">
         <label for="guild-name">Guild Name</label>
         <input
