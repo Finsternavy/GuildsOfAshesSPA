@@ -100,7 +100,8 @@ let displayUserInfo = () => {
           <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
         </div>
         <div class="dev-links">
-          <RouterLink to="/feedback" ><span class="goa-button">Feedback</span></RouterLink>
+          <RouterLink v-if="store.getAuthenticated
+          " to="/feedback" ><span class="goa-button">Feedback</span></RouterLink>
         </div>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">

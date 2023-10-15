@@ -106,7 +106,7 @@ const setColors = () => {
     console.log("Setting colors");
     primaryColor.value = colors.Primary ? colors.Primary : "#ff0000";
     secondaryColor.value = colors.Secondary ? colors.Secondary : "#333333";
-    accentColor.value = colors.Accent ? colors.Accent : "#ffd700";
+    accentColor.value = colors.Accent ? colors.Accent : "#333333";
     textColor.value = colors.Text ? colors.Text : "#ffffff";
     headerColor.value = colors.Header ? colors.Header : "#ffffff";
     backgroundColor.value = colors.Background ? colors.Background : "#000000";
