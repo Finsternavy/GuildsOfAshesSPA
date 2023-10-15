@@ -95,8 +95,8 @@ const getBackground = () => {
     console.log("Return guild background");
     setColors();
     backgroundImages.forEach(image => {
-      // console.log("Image: ", image);
-      // console.log("tmp: ", tmp);
+      console.log("Image: ", image);
+      console.log("tmp: ", tmp);
       if (image == tmp) {
         console.log("Match found");
         // background.value = image;
