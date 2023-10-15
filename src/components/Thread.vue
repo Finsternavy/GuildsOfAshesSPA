@@ -326,9 +326,6 @@ const isUnread = (comment) => {
 .thread-body-container {
 }
 
-.thread-body {
-  /* background-color: rgba(0, 0, 0, 0.5); */
-}
 
 .thread-footer {
   background-color: rgba(0, 0, 0, 0.8);
@@ -354,7 +351,6 @@ const isUnread = (comment) => {
   height: 0;
   opacity: 0;
   padding-top: 0px;
-  /* overflow: hidden; */
   transition: height 0.3s ease-in-out, opacity 0.3s ease-in, padding-top 0.3s ease-in;
 }
 
