@@ -216,13 +216,6 @@ const getBanner = () => {
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
-/* .goa-container {
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  border-radius: 30px;
-  transition: background-color 0.3s ease-in-out;
-} */
 
 .goa-alert-container {
   background-color: rgba(255, 0, 0, 0.7);

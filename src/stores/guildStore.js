@@ -27,6 +27,7 @@ export let useGuildStore = defineStore('guildStore', {
     getLeader: (state) => state.Guild.Leader,
     getTasks: (state) => state.Guild.Tasks,
     getEvents: (state) => state.Guild.Events,
+    getColors: (state) => state.Guild.Colors,
   },
 
   actions: {
