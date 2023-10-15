@@ -330,53 +330,34 @@ const checkUnread = () => {
     >
       <div class="button-container uk-flex uk-flex-1">
         <div class="likes uk-text-center uk-margin-right">
-          <button
-            @click="upVote"
-            class="goa-button uk-button-small uk-margin-small-right"
-          >
-            <span uk-icon="icon: arrow-up"></span>
-          </button>
+          <!-- <button class="goa-button uk-button-small uk-margin-small-right" > -->
+            <span @click="upVote" class="uk-icon-button uk-margin-small-right" uk-icon="icon: arrow-up"></span>
+          <!-- </button> -->
           <span>{{ data.UpVotes }}</span>
         </div>
         <div class="dislikes uk-text-center uk-margin-right">
-          <button
-            @click="downVote"
-            class="goa-button uk-button-small uk-margin-small-right uk-padding-small-top"
-          >
-            <span uk-icon="icon: arrow-down"></span>
-          </button>
+          <!-- <button class="goa-button uk-button-small uk-margin-small-right uk-padding-small-top"> -->
+            <span @click="downVote" class="uk-icon-button uk-margin-small-right" uk-icon="icon: arrow-down"></span>
+          <!-- </button> -->
           <span>{{ data.DownVotes }}</span>
         </div>
-        <div
-          v-if="data.AuthorID == user.UserID"
-          class="thread-controls uk-flex uk-margin-small-left"
-        >
-          <button
-            @click="deleteComment"
-            class="goa-button goa-delete-button uk-button-small uk-margin-small-right"
-          >
-            Delete
-          </button>
+        <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-margin-small-left">
+          <!-- <button class="goa-button goa-delete-button uk-button-small uk-margin-small-right"> -->
+            <span @click="deleteComment" class="uk-icon-button uk-margin-small-right" uk-icon="icon: trash"></span>
+          <!-- </button> -->
           <!-- This is not implemented yet -->
-          <button
-            @click="toggleEditCommentControls"
-            class="goa-button goa-edit-button uk-button-small uk-margin-small-right"
-          >
-            Edit
-          </button>
+          <!-- <button  class="goa-button goa-edit-button uk-button-small uk-margin-small-right"> -->
+            <span @click="toggleEditCommentControls" class="uk-icon-button uk-margin-small-right" uk-icon="icon: pencil"></span>
+          <!-- </button> -->
         </div>
       </div>
       <div class="uk-text-center uk-width-auto">
-        <button @click="showReplyControls" class="goa-button">Reply</button>
+        <!-- <button class="goa-button">Reply</button> -->
+        <span @click="showReplyControls" class="uk-icon-button" uk-icon="icon: reply"></span>
       </div>
     </div>
   </div>
-  <div
-    :class="{
-      'comment-edit-controls': {},
-      open: showEditcontrols,
-      closed: !showEditcontrols
-    }"
+  <div :class="{ 'comment-edit-controls': {}, open: showEditcontrols, closed: !showEditcontrols }"
   >
     <div class="title-input uk-flex uk-flex-column">
       <label class="uk-margin-small-left" for="CommentEditMessage">Message</label>

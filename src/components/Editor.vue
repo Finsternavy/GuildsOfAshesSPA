@@ -201,7 +201,7 @@ const setLink = () => {
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 30px 30px 0 0;
     padding: 5px 10px;
-    border-bottom: 3px solid rgb(81, 0, 0);
+    border-bottom: 3px solid var(--secondary-color);
 }
 
 
@@ -240,11 +240,11 @@ const setLink = () => {
 
 .editor-button:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    color: red;
+    color: var(--primary-color);
 }
 
 .tippy-content {
-    background-color: red;
+    background-color: var(--primary-color);
 }
 
 .hide {
@@ -276,7 +276,7 @@ const setLink = () => {
 }
 
 .border {
-    border: 3px solid rgb(81, 0, 0);
+    border: 3px solid var(--secondary-color);
 }
 </style>
 
@@ -342,47 +342,35 @@ const setLink = () => {
                         <option class="bg-black" value="acier-bat-noir">Acier-bat-noir</option>
                         <option class="bg-black" value="antiquarian-scribe">Antiquarian-scribe</option>
                         <option class="bg-black" value="aviano-future">Aviano-future</option>
-                        
                         <option class="bg-black" value="avebury-black">Avebury-black</option>
                         <option class="bg-black" value="banshee-std">Banshee-std</option>
                         <option class="bg-black" value="battery-park">Battery-park</option>
-                        
                         <option class="bg-black" value="bd-brick">Bd-brick</option>
                         <option class="bg-black" value="broadsheet">Broadsheet</option>
-                        
                         <option class="bg-black" value="cc-spellcaster">CC-Spellcaster</option>
                         <option class="bg-black" value="charbroiled">Charbroiled</option>
                         <option class="bg-black" value="Comic Sans MS, Comic Sans">Comic Sans</option>
                         <option class="bg-black" value="cursive">Cursive</option>
-                        
                         <option class="bg-black" value="exocet">Exocet</option>
-                        
                         <option class="bg-black" value="gloridot">Gloridot</option>
                         <option class="bg-black" value="Inter">Inter</option>
                         <option class="bg-black" value="itc-avant-garde-gothic-pro">Itc-avant-garde-gothic-pro</option>
                         <option class="bg-black" value="Lugrasimo">Lugrasimo</option>
                         <option class="bg-black" value="megavolt">Megavolt</option>
                         <option class="bg-black" value="monospace">Monospace</option>
-                        
                         <option class="bg-black" value="monsterific-bb">Monsterific-bb</option>
                         <option class="bg-black" value="p22-arts-and-crafts">P22-arts-and-crafts</option>
                         <option class="bg-black" value="pf-uniform">PF-uniform</option>
-                        
                         <option class="bg-black" value="saber">Saber</option>
                         <option class="bg-black" value="Sedgwick Ave Display">Sedgwick Ave Display</option>
-                        
                         <option class="bg-black" value="sepian">Sepian</option>
                         <option class="bg-black" value="serif">Serif</option>
-                        
                         <option class="bg-black" value="shogun">Shogun</option>
                         <option class="bg-black" value="sneakers-pro">Sneakers-pro</option>
-                        
                         <option class="bg-black" value="storefront-pro">Storefront-pro</option>
                         <option class="bg-black" value="timberline">Timberline</option>
                         <option class="bg-black" value="whomp">Whomp</option>
-                        
-                        
-                        
+
                     </select>
                 </div>
             </div>

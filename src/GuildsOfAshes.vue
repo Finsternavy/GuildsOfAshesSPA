@@ -144,17 +144,13 @@ const setColors = () => {
     uk-img
   >
     <div id="MenuContainer" class="">
-      <Menu />
+      <Menu></Menu>
     </div>
     <section id="MainBodySection" class="uk-padding-remove">
       <!-- <div class="hero uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light" 
       data-src="../../public/AOCimages/AOC_castle.png" 
       uk-img></div> -->
-      <div
-        id="MainBodyContainer"
-        class="mainbody container"
-        uk-height-viewport="expand: true"
-      >
+      <div id="MainBodyContainer" class="mainbody container" uk-height-viewport="expand: true">
         <RouterView />
       </div>
     </section>

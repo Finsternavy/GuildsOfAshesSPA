@@ -92,9 +92,9 @@ const createEvent = () => {
     cursor: pointer;
 }
 
-.day-container:hover{
-    background-color: rgba(255, 255, 255, 0.5);
-}
+/* .day-container:hover{
+    border-color: var(--secondary-color);
+} */
 
 .day-number{
     border: 2px solid gray;
@@ -105,6 +105,7 @@ const createEvent = () => {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--text-color);
     background-color: rgba(0, 0, 0, 0.7)!important;
 }
 textarea {
@@ -120,15 +121,15 @@ input, textarea {
 }
 
 .day-label{
-    border: 1px solid gray;
+    border: 1px solid var(--secondary-color);
     width: 100%;
     text-align: center;
     text-transform: uppercase;
     font-weight: 700;
     position: absolute;
     top: -40px;
-    color: white;
-    background-color: red;
+    color: var(--button-text-color);
+    background-color: var(--primary-color);
 }
 
 .disabled {
@@ -142,13 +143,15 @@ input, textarea {
 }
 
 .today {
-    border: 3px solid green!important;
-    background-color: rgba(70, 115, 2, 0.3);
+    --w-alpha: var(--primary-color) + 'e6';
+    border: 3px solid var(--primary-color)!important;
+    background-color: var(--w-alpha)!important;
 }
 
 .past {
-    color: red;
-    background-color: rgba(44, 0, 0, 0.5);
+    color: var(--primary-color);
+    --w-alpha: var(--primary-color) + 'e6';
+    background-color: var(--w-alpha);
     pointer-events: none;
 }
 
@@ -241,7 +244,7 @@ input, textarea {
 
 .add-event-button {
     /* background-color: white; */
-    border: 1px solid red;
+    border: 1px solid var(--primary-color);
     border-top: none;
     border-right: none;
     /* border-radius: 0 0 0 50%; */
@@ -249,12 +252,12 @@ input, textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: red;
+    color: var(--primary-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .add-event-button:hover {
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: var(--secondary-color);
     color: white;
    
 }

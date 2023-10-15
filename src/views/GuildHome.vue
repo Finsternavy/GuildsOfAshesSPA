@@ -230,8 +230,8 @@ const getBanner = () => {
 }
 
 .goa-deny-button:hover {
-  background-color: red;
-  color: white;
+  background-color: var(--secondary-color);
+  color: var(--button-text-color);
 }
 
 .goa-edit-button,
@@ -278,7 +278,7 @@ const getBanner = () => {
 }
 
 .event-card {
-  border: 1px solid red;
+  border: 1px solid var(--primary-color);
   border-radius: 30px;
 }
 
@@ -368,8 +368,7 @@ body {
 
     <!-- Guild Info Section -->
 
-    <div class="goa-container uk-padding uk-margin-bottom uk-margin-large-top" >
-      <Editor class="uk-margin-top" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
+    <div class="goa-container uk-margin-bottom uk-margin-large-top" >
       <div v-if=" user && !user.GuildID">
         <button
           v-if="user"
@@ -382,29 +381,15 @@ body {
         @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
         Create Application
       </button>
-      <p
-        v-if="guild.MemberList"
-        class="uk-text-small uk-text-warning uk-text-center uk-margin-remove-top"
-      >
+      <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
+      <p v-if="guild.MemberList" class="uk-text-small text-accent uk-text-center uk-margin-remove-top">
         ( Members: {{ guild.MemberList.length }} )
       </p>
-      <div class="guild-type-container uk-flex uk-width-1-1 uk-margin-large-bottom uk-text-uppercase">
-        <div class="guild-type-info-container uk-width-expand">
-          <div class="guild-type-info-label uk-text-center" for="">Type</div>
-          <div class="guild-type-info uk-text-center">{{ guild.Category }}</div>
-        </div>
-        <div class="guild-type-info-container uk-width-expand">
-          <div class="guild-type-info-label uk-text-center" for="">Focus</div>
-          <div class="guild-type-info uk-text-center">{{ guild.Focus }}</div>
-        </div>
-        <div v-if="guild.PrimaryRace" class="guild-type-info-container uk-width-expand">
-          <div class="guild-type-info-label uk-text-center" for="">Race</div>
-          <div class="guild-type-info uk-text-center">{{ guild.PrimaryRace }}</div>
-        </div>
-        <div class="guild-type-info-container uk-width-expand">
-          <div class="guild-type-info-label uk-text-center" for="">Region</div>
-          <div class="guild-type-info uk-text-center">{{ guild.Region }}</div>
-        </div>
+      <div class="uk-flex uk-flex-around uk-margin-bottom">
+        <span class="uk-text-large text-primary upper">{{ guild.Category }}</span>
+        <span class="uk-text-large text-primary upper">{{ guild.Focus }}</span>
+        <span class="uk-text-large text-primary upper" v-if="guild && guild.PrimaryRace">{{ guild.PrimaryRace }}</span>
+        <span class="uk-text-large text-primary upper">{{ guild.Region }}</span>
       </div>
       <div :class="{
           'logo-container': {},

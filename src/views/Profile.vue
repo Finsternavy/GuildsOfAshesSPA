@@ -154,7 +154,7 @@ let leaveGuild = async () => {
 
 <style scoped>
 label {
-  color: rgb(255, 65, 65);
+  color: var(--accent-color);
 }
 </style>
 

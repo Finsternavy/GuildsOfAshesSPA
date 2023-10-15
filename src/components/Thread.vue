@@ -354,11 +354,11 @@ const isUnread = (comment) => {
   transition: height 0.3s ease-in-out, opacity 0.3s ease-in, padding-top 0.3s ease-in;
 }
 
-.open {
+/* .open {
   height: 160px;
   opacity: 1;
   padding-top: 20px;
-}
+} */
 
 .open-comment {
   height: 160px;
@@ -455,39 +455,40 @@ const isUnread = (comment) => {
         <div class="thread-footer uk-flex uk-flex-middle uk-flex-between uk-padding-small">
           <div class="button-container uk-flex">
             <div class="likes uk-text-center uk-margin-right">
-              <button @click="upVote" class="goa-button uk-button-small uk-margin-small-right">
-                <span uk-icon="icon: arrow-up"></span>
-              </button>
+              <!-- <button class="goa-button uk-button-small uk-margin-small-right"> -->
+                <span @click="upVote" class="uk-icon-button uk-margin-small-right" uk-icon="icon: arrow-up"></span>
+              <!-- </button> -->
               <span>{{ data.UpVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
-              <button @click="downVote" class="goa-button uk-button-small uk-margin-small-right">
-                <span uk-icon="icon: arrow-down"></span>
-              </button>
+              <!-- <button class="goa-button uk-button-small uk-margin-small-right"> -->
+                <span @click="downVote" class="uk-icon-button uk-margin-small-right" uk-icon="icon: arrow-down"></span>
+              <!-- </button> -->
               <span>{{ data.DownVotes }}</span>
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
-              <button  @click="toggleChildren" :class="{'goa-button uk-button-small uk-margin-small-right' : {},
-                      unread: parentUnread,}">
-                <span uk-icon="icon: comment"></span>
-              </button>
+              <!-- <button > -->
+                <span   @click="toggleChildren" :class="{'uk-margin-small-right uk-icon-button uk-margin-small-right' : {},
+                      unread: parentUnread,}" uk-icon="icon: comment"></span>
+              <!-- </button> -->
               <span>{{ data.Comments.length }}</span>
             </div>
             <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-margin-small-left">
-              <button @click="deleteThread" class="goa-button goa-delete-button uk-button-small uk-margin-small-right">
-                Delete
-              </button>
+              <!-- <button class="goa-button goa-delete-button uk-button-small uk-margin-small-right"> -->
+                <span class="uk-icon-button uk-margin-small-right" @click="deleteThread"  uk-icon="icon: trash"></span>
+              <!-- </button> -->
               <!-- This is not implemented yet -->
-              <button @click="toggleEditcontrols" class="goa-button goa-edit-button uk-button-small uk-margin-small-right"> 
-                Edit
-              </button>
+              <!-- <button class="goa-button goa-edit-button uk-button-small uk-margin-small-right">  -->
+                <span @click="toggleEditcontrols" class="uk-icon-button" uk-icon="icon: pencil"></span>
+              <!-- </button> -->
             </div>
           </div>
-          <div class="comment uk-text-center">
-            <button class="goa-button" @click="showCreateCommentsControls()">
-              Reply
-            </button>
-          </div>
+          <li class="comment uk-text-center uk-transition-toggle uk-list" tabindex="0">
+            <!-- <button class="goa-button"> -->
+                <span  @click="showCreateCommentsControls()" class="uk-icon-button" uk-icon="icon: reply">
+                </span>
+            <!-- </button> -->
+          </li>
         </div>
       </div>
       <div :class="{ 'thread-edit-controls': {}, open: showEditcontrols, closed: !showEditcontrols}">

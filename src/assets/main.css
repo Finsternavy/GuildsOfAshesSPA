@@ -38,6 +38,33 @@
 
 }
 
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.text-default {
+  color: var(--text-color);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--header-color)!important;
+}
+
 .footer {
   position: sticky;
   top: 100%;
@@ -53,7 +80,7 @@
   margin-right: auto;
 }
 .container {
-  width: 80%;
+  width: 98%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -131,8 +158,10 @@
   backdrop-filter: blur(5px);
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
+  padding: 20px;
   /* background-image: url('../../public/Images/old_paper.jpg'); */
 }
+
 
 .map-container {
   background-color: rgba(0, 0, 0, 0.85);
@@ -449,7 +478,7 @@ progress::-webkit-progress-value {
 
 @media (max-width: 768){
   .container {
-    max-width: 95%;
+    max-width: 100%;
   }
 }
 
@@ -539,4 +568,15 @@ progress::-webkit-progress-value {
 
 .hideBorder {
   border: none!important;
+}
+
+.uk-icon-button {
+  background-color: var(--primary-color)!important;
+  color: var(--button-text-color)!important;
+  border: 2px outset var(--primary-color)!important;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.uk-icon-button:hover {
+  background-color: var(--secondary-color)!important;
 }

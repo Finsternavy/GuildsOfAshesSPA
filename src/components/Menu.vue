@@ -80,6 +80,10 @@ let displayUserInfo = () => {
 .logo {
   height: 40px;
 }
+
+.text-default:hover {
+  color: var(--primary-color);
+}
 </style>
 
 <template>
@@ -121,9 +125,9 @@ let displayUserInfo = () => {
         <div class="uk-flex uk-flex-right">
 
           <div v-if="!store.getAuthenticated" class="not-logged-in">
-            <RouterLink to="/login" class="uk-link">
+            <RouterLink to="/login" class="text-default">
               <div class="uk-flex uk-flex-column uk-text-center">
-                <span class="" uk-icon="icon: user"></span>
+                <span class="text-default" uk-icon="icon: user"></span>
                 <span class="text-goa-red">Login</span>
               </div>
             </RouterLink>
