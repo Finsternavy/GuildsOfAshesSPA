@@ -87,13 +87,24 @@ let currentYear = new Date().getFullYear();
 
 const getBackground = () => {
   let tmp = guildStore.getGuild.Background;
+  let imageToReturn = null;
   if (tmp && tmp != 'random') {
     console.log("Return guild background");
     setColors();
-    return tmp;
+    backgroundImages.forEach(image => {
+      // console.log("Image: ", image);
+      // console.log("tmp: ", tmp);
+      if (image == tmp) {
+        console.log("Match found");
+        // background.value = image;
+        imageToReturn = image;
+      }
+    });
+    return imageToReturn;
   } else {
     console.log("Generating random background")
-    return getRandomImage();
+    imageToReturn = getRandomImage();
+    return imageToReturn;
   }
   
 };
