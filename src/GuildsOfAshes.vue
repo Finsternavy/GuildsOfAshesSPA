@@ -90,6 +90,12 @@ let currentYear = new Date().getFullYear();
 
 const getBackground = () => {
   let tmp = guildStore.getGuild.Background;
+  if (tmp){
+    let start = tmp.lastIndexOf('/');
+    let end = tmp.lastIndexOf('.');
+    tmp = tmp.substring(start, end);
+  }
+  console.log("tmp: ", tmp);
   let imageToReturn = null;
   if (tmp && tmp != 'random') {
     console.log("Return guild background");
@@ -97,7 +103,7 @@ const getBackground = () => {
     backgroundImages.forEach(image => {
       console.log("Image: ", image);
       console.log("tmp: ", tmp);
-      if (image == tmp) {
+      if (image.includes(tmp)) {
         console.log("Match found");
         // background.value = image;
         imageToReturn = image;
