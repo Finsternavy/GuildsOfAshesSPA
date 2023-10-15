@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import CharacterMatrix from "../components/Charactermatrix.vue";
+import CharacterMatrix from "../components/CharacterMatrix.vue";
 import GoaLogo from "../public/Images/GoALogoFinalwithwordsandShadow.png";
 
 let selectedClass = ref();
