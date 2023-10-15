@@ -111,6 +111,10 @@ const acknowledgeNotice = () => {
               <li>Guild Event RSVP</li>
               <li>Upcoming events on the guild home page</li>
               <li>Feedback - Bug report and feature request tools</li>
+              <li>Background selection at guild creation</li>
+              <li>Custom color themes at guild creation</li>
+              <li>Rich text editor for guild banner and description</li>
+              <li>Added 20+ custom fonts</li>
             </ul>
           </div>
           <div class="center">
