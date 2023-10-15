@@ -236,7 +236,7 @@ label {
 }
 
 .xp-label {
-  background-color: orange;
+  background-color: var(--text-color);
   color: black;
 }
 
@@ -259,13 +259,13 @@ label {
 }
 
 .uk-button {
-  background-color: rgba(248, 47, 47, 0.5);
+  background-color: var(--primary-color);
   color: white;
   padding: 5px 10px;
 }
 
 .uk-button:hover {
-  background-color: rgb(117, 3, 3);
+  background-color: var(--secondary-color);
 }
 </style>
 

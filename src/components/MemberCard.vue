@@ -33,10 +33,14 @@ let guildStore;
 let guild = ref({});
 let stars = ref(0);
 const maxRanks = 6;
+// const primaryColor = document.querySelector(":root").style.getPropertyValue("--primary-color");
+const leaderBG = ref(document.querySelector(":root").style.getPropertyValue("--accent-color") + "22");
+const memberBG = ref(document.querySelector(":root").style.getPropertyValue("--primary-color") + "22");
 
 onBeforeMount(() => {
     guildStore = useGuildStore();
     guild.value = guildStore.getGuild;
+    console.log("leaderBG: ", leaderBG.value);
     stars.value = maxRanks - props.member.Rank.RankLevel;
     if (props.member.Rank.RankName == "Guild Leader") {
         showRole.value = true;
@@ -104,7 +108,7 @@ let removeFromGuild = async () => {
 /* @import '../assets/main.css'; */
 
 label {
-  color: rgb(255, 65, 65);
+  color: var(--primary-color);
 }
 .gold {
   border: 2px solid gray;
@@ -163,13 +167,14 @@ label {
 }
 
 .leader {
-    background-color: rgba(255, 165, 0, .1);
-    color: rgb(255, 190, 68);
+  --w-alpha: var(--primary-color) + 'e6';
+    background-color: v-bind(leaderBG);
+    color: var(--button-text-color);
 }
 
 .member {
-  background-color: rgba(255, 65, 65, .1);
-  color: lightgray;
+  background-color: v-bind(memberBG);
+  color: var(--button-text-color);
 }
 
 .member-professions {
@@ -195,12 +200,12 @@ label {
 .xp-label {
     width: 75px;
     padding: 3px 20px;
-    background-color: rgb(255, 65, 65);
+    background-color: var(--primary-color);
     /* color: white; */
 }
 
 .xp-label-text {
-  color: white;
+  color: var(--button-text-color);
 }
 
 .xp-value {
@@ -213,8 +218,8 @@ label {
 
 .class-container {
     width: fit-content;
-    background-color: rgb(255, 65, 65);
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
     border: 2px solid gray;
     border-bottom: none;
     padding: 3px 10px;
@@ -228,7 +233,7 @@ label {
     border-radius: 0 20px 0 0;
     padding: 3px 20px;
     padding-top: 1px;
-    color: orange;
+    color: var(--accent-color);
     background-color: rgba(0, 0, 0, .5);
 }
 
@@ -238,7 +243,7 @@ label {
     border-bottom: none;
     padding: 3px 20px;
     padding-top: 1px;
-    color: orange;
+    color: var(--accent-color);
     background-color: rgba(0, 0, 0, .5);
 }
 

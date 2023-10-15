@@ -24,6 +24,9 @@ onBeforeMount(() => {
 });
 
 let selectedClass = ref(props.modelValue);
+const primaryLight = ref(document.querySelector(":root").style.getPropertyValue("--accent-color") + "33");
+const selected = ref(document.querySelector(":root").style.getPropertyValue("--primary-color") + "e6");
+const trueBG = ref(document.querySelector(":root").style.getPropertyValue("--primary-color") + "33");
 
 let classes = {
   FIGHTER: [
@@ -500,7 +503,7 @@ let getClassIcon = (className) => {
 
 <style scoped>
 .title {
-  color: rgb(255, 65, 65);
+  color: var(--primary-color);
 }
 
 .small-text {
@@ -508,30 +511,30 @@ let getClassIcon = (className) => {
 }
 
 .true-class {
-  background-color: var(--goa-red-transparent);
+  background-color: v-bind(trueBG);
 }
 
 .selected-types {
   /* background-color: rgba(255, 165, 0, .3); */
-  outline: 1px solid rgb(255, 65, 65) !important;
+  outline: 1px solid var(--primary-color) !important;
   /* color: black; */
 }
 
 .selected {
-  background-color: rgb(255, 100, 100);
-  color: white;
+  background-color: v-bind(selected);
+  color: var(--button-text-color);
 }
 
 .between {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: v-bind(primaryLight);
 }
 
 .orange {
-  outline: 1px solid rgb(255, 65, 65) !important;
+  outline: 1px solid var(--primary-color) !important;
 }
 
 label {
-  color: rgb(255, 65, 65);
+  color: var(--accent-color);
 }
 
 .gradient-black {
