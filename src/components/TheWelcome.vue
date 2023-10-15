@@ -27,6 +27,7 @@ const acknowledgeNotice = () => {
   color: rgb(255, 65, 65)!important;
 }
 
+
 .goa-logo {
   margin-left: auto;
   margin-right: auto;
