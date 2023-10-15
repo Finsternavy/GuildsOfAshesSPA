@@ -76,10 +76,13 @@ onBeforeMount(() => {
 
 onMounted(() => {
   // setColors();
+  console.log("Mounted, now getting background");
+  getBackground();
 });
 
 watch(() => guild, (newVal, oldVal) => {
   console.log("Guild changed: ", newVal);
+  getBackground();
   setColors();
 });
 
@@ -92,8 +95,8 @@ const getBackground = () => {
     console.log("Return guild background");
     setColors();
     backgroundImages.forEach(image => {
-      // console.log("Image: ", image);
-      // console.log("tmp: ", tmp);
+      console.log("Image: ", image);
+      console.log("tmp: ", tmp);
       if (image == tmp) {
         console.log("Match found");
         // background.value = image;
@@ -102,6 +105,7 @@ const getBackground = () => {
     });
     return imageToReturn;
   } else {
+    setColors();
     console.log("Generating random background")
     imageToReturn = getRandomImage();
     return imageToReturn;
