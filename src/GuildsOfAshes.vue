@@ -65,23 +65,22 @@ let getRandomImage = () => {
 onBeforeMount(() => {
   guildStore = useGuildStore();
   let guild = guildStore.getGuild;
-  console.log("Guild: ", guild);
+  // console.log("Guild: ", guild);
   let tmp = guild.Background ? guild.Background : getRandomImage();
   // set colors from guild
   background.value = guildStore.getGuild.Background ? guildStore.getGuild.Background : getRandomImage();
   // background.value = guild.Background? guild.Background : getRandomImage();
-  console.log("Background: ", background.value);
+  // console.log("Background: ", background.value);
   // console.log("PrimaryLayout mounted");
 });
 
 onMounted(() => {
   // setColors();
-  console.log("Mounted, now getting background");
-  getBackground();
+  // console.log("Mounted, now getting background");
 });
 
 watch(() => guild, (newVal, oldVal) => {
-  console.log("Guild changed: ", newVal);
+  // console.log("Guild changed: ", newVal);
   getBackground();
   setColors();
 });
@@ -95,16 +94,16 @@ const getBackground = () => {
     let end = tmp.lastIndexOf('.');
     tmp = tmp.substring(start, end);
   }
-  console.log("tmp: ", tmp);
+  // console.log("tmp: ", tmp);
   let imageToReturn = null;
   if (tmp && tmp != 'random') {
-    console.log("Return guild background");
+    // console.log("Return guild background");
     setColors();
     backgroundImages.forEach(image => {
-      console.log("Image: ", image);
-      console.log("tmp: ", tmp);
+      // console.log("Image: ", image);
+      // console.log("tmp: ", tmp);
       if (image.includes(tmp)) {
-        console.log("Match found");
+        // console.log("Match found");
         // background.value = image;
         imageToReturn = image;
       }
@@ -112,7 +111,7 @@ const getBackground = () => {
     return imageToReturn;
   } else {
     setColors();
-    console.log("Generating random background")
+    // console.log("Generating random background")
     imageToReturn = getRandomImage();
     return imageToReturn;
   }
@@ -122,9 +121,9 @@ const getBackground = () => {
 const setColors = () => {
   let doc = document.querySelector(':root');
   let colors = guildStore.getGuild.Colors;
-  console.log("Guild colors: ", colors);
+  // console.log("Guild colors: ", colors);
   if (colors){
-    console.log("Setting colors");
+    // console.log("Setting colors");
     primaryColor.value = colors.Primary ? colors.Primary : "#ff0000";
     secondaryColor.value = colors.Secondary ? colors.Secondary : "#333333";
     accentColor.value = colors.Accent ? colors.Accent : "#333333";
