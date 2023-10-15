@@ -1,13 +1,18 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import router from "../router/routes";
-import { useAPI } from '../stores/apiStore'
+import { useAPI } from '../stores/apiStore';
+import { useUserStore } from "../stores/userStore";
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Guilds";
 let guildsList = ref();
+let user;
+let userStore;
 
 onBeforeMount(() => {
+  userStore = useUserStore();
+  user = userStore.getUser;
   getAllGuilds();
 });
 
@@ -48,7 +53,11 @@ let visit = (id) => {
 
 let goToCreate = () => {
   // console.log("goToCreate");
-  router.push({ name: "guild-create" });
+  if ( user && user.Username){
+    router.push({ name: "guild-create" });
+  } else {
+    router.push({ name: "login" });
+  }
 };
 </script>
 
