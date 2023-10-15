@@ -122,8 +122,8 @@ let displayUserInfo = () => {
 
           <div v-if="!store.getAuthenticated" class="not-logged-in">
             <RouterLink to="/login" class="uk-link">
-              <div class="uk-flex uk-flex-column">
-                <span class="text-goa-red uk-margin-small-right" uk-icon="icon: user"></span>
+              <div class="uk-flex uk-flex-column uk-text-center">
+                <span class="" uk-icon="icon: user"></span>
                 <span class="text-goa-red">Login</span>
               </div>
             </RouterLink>

@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { onBeforeMount, ref, computed } from "vue";
+import { onBeforeMount, ref, computed, onMounted, watch } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import { useGuildStore } from "./stores/guildStore";
 import Menu from "./components/Menu.vue";
@@ -44,6 +44,18 @@ let backgroundImages = [
 let background = ref();
 let guild = ref();
 let guildStore;
+
+const primaryColor = ref('#ff0000');
+const secondaryColor = ref('#333333');
+const accentColor = ref('#ffd700');
+const textColor = ref('#ffffff');
+const buttonTextColor = ref('#ffffff');
+const buttonHoverTextColor = ref('#ff0000');
+const inputTextColor = ref('#ffffff');
+const headerColor = ref('#ffffff');
+const backgroundColor = ref('#000000');
+const backgroundColorAlpha = ref('#000000e6');
+
 let getRandomImage = () => {
   let index = Math.floor(Math.random() * backgroundImages.length);
   return backgroundImages[index];
@@ -55,10 +67,20 @@ onBeforeMount(() => {
   let guild = guildStore.getGuild;
   console.log("Guild: ", guild);
   let tmp = guild.Background ? guild.Background : getRandomImage();
+  // set colors from guild
   background.value = guildStore.getGuild.Background ? guildStore.getGuild.Background : getRandomImage();
   // background.value = guild.Background? guild.Background : getRandomImage();
   console.log("Background: ", background.value);
   // console.log("PrimaryLayout mounted");
+});
+
+onMounted(() => {
+  // setColors();
+});
+
+watch(() => guild, (newVal, oldVal) => {
+  console.log("Guild changed: ", newVal);
+  setColors();
 });
 
 let currentYear = new Date().getFullYear();
@@ -67,6 +89,7 @@ const getBackground = () => {
   let tmp = guildStore.getGuild.Background;
   if (tmp && tmp != 'random') {
     console.log("Return guild background");
+    setColors();
     return tmp;
   } else {
     console.log("Generating random background")
@@ -74,10 +97,42 @@ const getBackground = () => {
   }
   
 };
+
+const setColors = () => {
+  let doc = document.querySelector(':root');
+  let colors = guildStore.getGuild.Colors;
+  console.log("Guild colors: ", colors);
+  if (colors){
+    console.log("Setting colors");
+    primaryColor.value = colors.Primary ? colors.Primary : "#ff0000";
+    secondaryColor.value = colors.Secondary ? colors.Secondary : "#333333";
+    accentColor.value = colors.Accent ? colors.Accent : "#ffd700";
+    textColor.value = colors.Text ? colors.Text : "#ffffff";
+    headerColor.value = colors.Header ? colors.Header : "#ffffff";
+    backgroundColor.value = colors.Background ? colors.Background : "#000000";
+    inputTextColor.value = colors.InputText ? colors.InputText : "#ffffff";
+    buttonTextColor.value = colors.ButtonText ? colors.ButtonText : "#ffffff";
+    buttonHoverTextColor.value = colors.ButtonHoverText ? colors.ButtonHoverText : "#ff0000";
+    const backgroundColorAlpha = ref('#000000e6');
+  }
+  doc.style.setProperty('--primary-color', primaryColor.value);
+  doc.style.setProperty('--secondary-color', secondaryColor.value);
+  doc.style.setProperty('--accent-color', accentColor.value);
+  doc.style.setProperty('--text-color', textColor.value);
+  doc.style.setProperty('--header-color', headerColor.value);
+  doc.style.setProperty('--background-color', backgroundColor.value);
+  doc.style.setProperty('--input-text-color', inputTextColor.value);
+  doc.style.setProperty('--button-text-color', buttonTextColor.value);
+  doc.style.setProperty('--button-hover-text-color', buttonHoverTextColor.value);
+  let backgroundWithAlpha = backgroundColor.value + "e6";
+  doc.style.setProperty('--background-color-alpha', backgroundWithAlpha);
+}
 </script>
 
 <style>
-
+.guild-button {
+  background-color: v-bind(primaryColor);
+}
 </style>
 
 <template>

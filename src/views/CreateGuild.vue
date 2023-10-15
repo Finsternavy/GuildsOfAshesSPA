@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
 import RichTextEditor from "../components/RichTextEditor.vue";
@@ -46,6 +46,24 @@ let ranks = ref([
     ]);
 
 const imagePrefix = "../public/AOCimages/";
+const primaryColor = ref('#ff0000');
+const secondaryColor = ref('#ff0000');
+const accentColor = ref('#ffd700');
+const textColor = ref('#ffffff');
+const buttonTextColor = ref('#ffffff');
+const buttonHoverTextColor = ref('#ff0000');
+const inputTextColor = ref('#ffffff');
+const headerColor = ref('#ffffff');
+const backgroundColor = ref('#000000');
+const backgroundColorAlpha = ref('#000000e6');
+
+
+watch(backgroundColor, () => {
+  let tmp = backgroundColor.value;
+  // get substring of tmp from index 0 to the third , and add 0.9) to the end;
+  tmp = tmp + 'e6';
+  backgroundColorAlpha.value = tmp;
+});
 
 const backgroundImages = [
   AOC_castle,
@@ -86,6 +104,17 @@ let guild = ref({
     {RankName: 'Recruit', RankLevel: 2}
     ],
   AutoApprove: false,
+  Colors: {
+    Primary: '#ff0000',
+    Secondary: '#ff0000',
+    Accent: '#ffd700',
+    Text: '#ffffff',
+    Header: '#ffffff',
+    Background: '#000000',
+    InputText: '#ffffff',
+    ButtonText: '#ffffff',
+    ButtonHoverText: '#ff0000',
+  }
 })
 
 const selectedBackground = ref();
@@ -94,6 +123,7 @@ const currentStep = ref(0);
 
 const steps = [
   'Guild Background',
+  'Guild Colors',
   'Guild Name',
   'Guild Logo',
   'Guild Description',
@@ -231,11 +261,87 @@ const guildValid = () => {
         return false;
       }
 }
+
+const setPrimaryColor = () => {
+  document.getElementById('PrimaryColor').click();
+}
+
+const updateGuildPrimary = () => {
+  // console.log("Updating guild primary color..");
+  guild.value.Colors.Primary = primaryColor.value;
+  // console.log("Guild: ", guild.value);
+}
+
+const setSecondaryColor = () => {
+  document.getElementById('SecondaryColor').click();
+}
+
+const updateGuildSecondary = () => {
+  guild.value.Colors.Secondary = secondaryColor.value;
+}
+
+const setAccentColor = () => {
+  document.getElementById('AccentColor').click();
+}
+
+const updateGuildAccent = () => {
+  guild.value.Colors.Accent = accentColor.value;
+}
+
+const setTextColor = () => {
+  document.getElementById('TextColor').click();
+}
+
+const updateGuildText = () => {
+  guild.value.Colors.Text = textColor.value;
+}
+
+const setHeaderColor = () => {
+  document.getElementById('HeaderColor').click();
+}
+
+const updateGuildHeader = () => {
+  guild.value.Colors.Header = headerColor.value;
+}
+
+const setBackgroundColor = () => {
+  document.getElementById('BackgroundColor').click();
+}
+
+const updateGuildBackground = () => {
+  guild.value.Colors.Background = backgroundColor.value;
+}
+
+const setInputTextColor = () => {
+  document.getElementById('InputTextColor').click();
+}
+
+const updateGuildInputText = () => {
+  guild.value.Colors.InputText = inputTextColor.value;
+}
+
+const setButtonTextColor = () => {
+  document.getElementById('ButtonTextColor').click();
+}
+
+const updateGuildButtonText = () => {
+  guild.value.Colors.ButtonText = buttonTextColor.value;
+}
+
+const setButtonHoverTextColor = () => {
+  document.getElementById('ButtonHoverTextColor').click();
+}
+
+const updateGuildButtonHoverText = () => {
+  guild.value.Colors.ButtonHoverText = buttonHoverTextColor.value;
+}
+
 </script>
 
 <style scoped>
 .goa-container {
-  background-color: rgba(0, 0, 0, 0.9);
+  --bg-color: v-bind(backgroundColor);
+  background-color: v-bind(backgroundColorAlpha);
   backdrop-filter: blur(5px);
   border-radius: 30px;
   transition: background-color 0.3s ease-in-out;
@@ -245,6 +351,7 @@ const guildValid = () => {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  color: v-bind(inputTextColor);
 }
 
 input,
@@ -257,17 +364,17 @@ button {
 
 label {
   padding-left: 20px;
-  color: orange;
+  color: v-bind(accentColor);
 }
 .input > input,
 .input > textarea {
   /* padding: 3px; */
   background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: v-bind(inputTextColor);
 }
 select {
   background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: v-bind(inputTextColor);
 }
 
 textarea {
@@ -276,42 +383,139 @@ textarea {
 
 .goa-button {
   border-radius: 20px;
-  /* background-color: transparent; */
-  color: white;
+  background-color: v-bind(primaryColor);
+  color: v-bind(buttonTextColor);
   padding: 5px 30px;
   /* height: 40px; */
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .goa-button:hover {
-  background-color: gold;
-  color: black;
+  background-color: v-bind(secondaryColor);
+  color: v-bind(buttonHoverTextColor);
 }
-
-.add-border {
-  box-shadow: inset 0 0 100px 10px rgba(0, 0, 0, 1), 0 0 10px 5px rgba(0, 0, 0, 1);
-}
-
-/* .editable-content {
-  border: 1px solid #ccc;
-  min-height: 200px;
-  padding: 8px;
-} */
 
 .image:hover {
   cursor: pointer;
-  outline: 3px solid red;
+  outline: 3px solid v-bind(primaryColor);
   outline-offset: 3px;
 }
 
 .selected {
-  outline: 3px solid gold;
+  outline: 3px solid v-bind(secondaryColor);
   outline-offset: 3px;
 }
 
 .bg-black {
-  background-color: black;
+  background-color: v-bind(backgroundColor);
 }
+
+.text-goa-red {
+  color: v-bind(headerColor)!important;
+}
+
+.color-picker {
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
+
+.primary-button,
+.secondary-button,
+.accent-button,
+.text-button,
+.header-button,
+.background-button,
+.input-text-button,
+.button-text-button,
+.button-hover-text-button {
+  background-color: v-bind(primaryColor);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  /* height: 40px; */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.primary-button {
+  background-color: v-bind(primaryColor);
+}
+
+.secondary-button {
+  background-color: v-bind(secondaryColor);
+}
+
+.accent-button {
+  background-color: v-bind(accentColor);
+}
+
+.text-button {
+  background-color: v-bind(textColor);
+}
+
+.input-text-button {
+  background-color: v-bind(inputTextColor);
+}
+
+.header-button {
+  background-color: v-bind(headerColor);
+}
+
+.background-button {
+  background-color: v-bind(backgroundColor);
+}
+
+.button-text-button {
+  background-color: v-bind(buttonTextColor);
+}
+
+.button-hover-text-button {
+  background-color: v-bind(buttonHoverTextColor);
+}
+
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+
+.test-button {
+  background-color: v-bind(primaryColor);
+  color: v-bind(backgroundColor);
+}
+
+.test-text {
+  color: v-bind(textColor);
+}
+
+.test-label {
+  color: v-bind(accentColor);
+}
+
+.test-input {
+  border-color: v-bind(primaryColor);
+  color: v-bind(inputTextColor);
+}
+
+::placeholder {
+  color: v-bind(accentColor);
+}
+
+.test-header {
+  color: v-bind(headerColor);
+}
+
+.test-container {
+  border: 1px solid v-bind(primaryColor);
+  border-radius: 30px;
+}
+
+
 </style>
 
 <template>
@@ -321,14 +525,15 @@ textarea {
       <hr class="uk-margin-remove-bottom" />
       <ul class="uk-breadcrumb">
         <li @click="currentStep = 0"><a>Background</a></li>
-        <li v-if="guild.Background" @click="currentStep = 1"><a>Name</a></li>
-        <li v-if="guild.Name" @click="currentStep = 2"><a>Logo</a></li>
-        <li v-if="guild.Logo" @click="currentStep = 3"><a>Description</a></li>
-        <li v-if="guild.Description" @click="currentStep = 4"><a>Types</a></li>
-        <li v-if="guild.Region" @click="currentStep = 5"><a>Ranks</a></li>
-        <li v-if="guild.Region" @click="currentStep = 6"><a>Approval</a></li>
-        <li v-if="guildValid()" @click="currentStep = 7"><a>Finalize</a></li>
-    </ul>
+        <li @click="currentStep = 1"><a>Colors</a></li>
+        <li v-if="guild.Background" @click="currentStep = 2"><a>Name</a></li>
+        <li v-if="guild.Name" @click="currentStep = 3"><a>Logo</a></li>
+        <li v-if="guild.Logo" @click="currentStep = 4"><a>Description</a></li>
+        <li v-if="guild.Description" @click="currentStep = 5"><a>Types</a></li>
+        <li v-if="guild.Region" @click="currentStep = 6"><a>Ranks</a></li>
+        <li v-if="guild.Region" @click="currentStep = 7"><a>Approval</a></li>
+        <li v-if="guildValid()" @click="currentStep = 8"><a>Finalize</a></li>
+      </ul>
     </div>
 
     <!-- Guild background selector -->
@@ -342,7 +547,113 @@ textarea {
           <div class="image uk-height-small uk-width-1-1 uk-background-cover uk-flex uk-flex-middle uk-flex-center uk-background-secondary" @click="setBackground('random')" uk-img> Always Random</div>
         </div>
       </div>
-      <button @click="nextStep" class="goa-button uk-align-center uk-flex uk-flex-middle">Guild Name <span uk-icon="icon: chevron-double-right"></span></button>
+      <button @click="nextStep" class="goa-button uk-align-center uk-flex uk-flex-middle">Guild Colors <span uk-icon="icon: chevron-double-right"></span></button>
+    </div>
+
+    <!-- Guild Colors -->
+    <div v-show="steps[currentStep] == 'Guild Colors'" >
+      <h3 class="uk-text-center text-goa-red">Select your guild colors</h3>
+      <div class="uk-flex uk-flex-column uk-margin-large-bottom">
+        <h3 class="test-header">Main Guild Colors</h3>
+        <hr>
+        <div class="main-color-container uk-flex">
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="PrimaryColor">Primary Color</label>
+            <button @click="setPrimaryColor" class="primary-button">
+              <input @change="updateGuildPrimary" visible="false" class="color-picker" type="color" id="PrimaryColor" v-model="primaryColor" >
+            </button>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="SecondaryColor">Hover Color</label>
+            <button @click="setSecondaryColor" class="secondary-button">
+              <input @change="updateGuildSecondary" visible="false" class="color-picker" type="color" id="SecondaryColor" v-model="secondaryColor" >
+            </button>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="AccentColor">Accent Color</label>
+            <button @click="setAccentColor" class="accent-button">
+              <input @change="updateGuildAccent" visible="false" class="color-picker" type="color" id="AccentColor" v-model="accentColor" >
+            </button>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="BackgroundColor">Background Color</label>
+            <button @click="setBackgroundColor" class="background-button">
+              <input @change="updateGuildBackground" visible="false" class="color-picker" type="color" id="BackgroundColor" v-model="backgroundColor" >
+            </button>
+          </div>
+        </div>
+        <h3 class="test-header">Text Colors</h3>
+        <hr>
+        <div class="text-color-container uk-flex">
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="HeaderColor">Header Color</label>
+            <button @click="setHeaderColor" class="header-button">
+              <input @change="updateGuildHeader" visible="false" class="color-picker" type="color" id="HeaderColor" v-model="headerColor" >
+            </button>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="TextColor">Text Color</label>
+            <button @click="setTextColor" class="text-button">
+              <input @change="updateGuildText" visible="false" class="color-picker" type="color" id="TextColor" v-model="textColor" >
+            </button>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="InputTextColor">Input Text Color</label>
+            <button @click="setInputTextColor" class="input-text-button">
+              <input @change="updateGuildInputText" visible="false" class="color-picker" type="color" id="InputTextColor" v-model="inputTextColor" >
+            </button>
+          </div>
+        </div>
+        <h3 class="test-header">Button Text Colors</h3>
+        <hr>
+        <div class="button-text-container uk-flex">
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="ButtonTextColor">Button Text Color</label>
+            <button @click="setButtonTextColor" class="button-text-button">
+              <input @change="updateGuildButtonText" visible="false" class="color-picker" type="color" id="ButtonTextColor" v-model="buttonTextColor" >
+            </button>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <label for="ButtonHoverTextColor">Button Hover Text Color</label>
+            <button @click="setButtonHoverTextColor" class="button-hover-text-button">
+              <input @change="updateGuildButtonHoverText" visible="false" class="color-picker" type="color" id="ButtonHoverTextColor" v-model="buttonHoverTextColor" >
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="previews uk-flex uk-flex-column uk-flex-middle">
+        <h3 class="test-header">Content examples</h3>
+        <div class="uk-margin-bottom">
+          <button class="goa-button">Button</button>
+        </div>
+        <div class="uk-margin-bottom">
+          <input class="goa-input test-input" type="text" placeholder="Placeholder...">
+        </div>
+        <div class="uk-margin-bottom">
+          <input class="goa-input test-input" type="text" value="User text...">
+        </div>
+        <div class="uk-margin-bottom">
+          <h3 class="test-header">Headers</h3>
+        </div>
+        <div class="uk-margin-bottom">
+          <label class="test-label" for="">Labels</label>
+        </div>
+        <div class="uk-margin-bottom">
+          <p class="test-text">Regular Text</p>
+        </div>
+        <div class="test-container uk-padding">
+          <h3 class="test-header">Container</h3>
+          <p class="test-text"> Paragraph of text that would show on your site. This could be your description or the main text of an event or task.</p>
+          <div class="uk-flex uk-flex-column">
+            <label class="test-label" for="">Input Label</label>
+            <input class="goa-input test-input" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="uk-flex uk-flex-between uk-margin-large-top">
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Background</button>
+        <button @click="nextStep" class="goa-button">Guild Name <span uk-icon="icon: chevron-double-right"></span></button>
+      </div>
     </div>
 
     <!-- Guild Name -->
@@ -370,7 +681,7 @@ textarea {
         <Editor v-model="guild.Banner" :limited="true"/>
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Background</button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Colors</button>
         <button @click="nextStep" class="goa-button">Guild Logo <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
