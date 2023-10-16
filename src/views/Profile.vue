@@ -201,12 +201,12 @@ label {
     </div>
     <div class="goa-container uk-padding user-info uk-flex uk-flex-column">
       <h4 class="text-goa-red">User Details</h4>
-      <div class="uk-margin-bottom uk-width-1-1 uk-child-width-1-2 uk-flex uk-flex-center">
-        <div>
+      <div class="uk-margin-bottom uk-width-1-1 uk-flex uk-flex-center">
+        <div class="uk-width-1-1">
           <MemberCard  :member="user" />
         </div>
       </div>
-      <div v-if="user" class="user-details uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-4">
+      <div v-if="user" class="user-details uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-3">
         <div class="input-container uk-padding-small uk-flex uk-flex-column">
           <label for="">Email</label>
           <input class="goa-input" type="text" v-model="user.Email">
