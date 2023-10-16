@@ -526,7 +526,7 @@ let getClassIcon = (className) => {
 }
 
 .between {
-  background-color: v-bind(primaryLight);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .orange {
