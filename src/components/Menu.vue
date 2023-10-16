@@ -191,15 +191,15 @@ li > a {
                 <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
               </div>
               <div class="uk-dropdown uk-background-secondary goa-dropnav">
-                <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
+                <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-middle uk-flex-column uk-width-1-1">
                   <!-- <li class="uk-active"><a href="#">Active</a></li> -->
-                  <li>
+                  <!-- <li class="">
                     <RouterLink to="/guild/about">
                       <span class="">
                         Settings
                       </span>
                     </RouterLink>
-                  </li>
+                  </li> -->
                   <li>
                     <RouterLink to="/profile">
                       <span class="">
@@ -272,13 +272,13 @@ li > a {
         <div>
           <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
             <!-- <li class="uk-active"><a href="#">Active</a></li> -->
-            <li>
+            <!-- <li>
               <RouterLink to="/guild/about">
                 <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
                   Settings
                 </span>
               </RouterLink>
-            </li>
+            </li> -->
             <li>
               <RouterLink to="/profile">
                 <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">

@@ -206,16 +206,16 @@ label {
           <MemberCard  :member="user" />
         </div>
       </div>
-      <div v-if="user" class="user-details uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-3">
+      <div v-if="user" class="user-details uk-padding uk-padding-remove-vertical uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-1 uk-child-width-1-3@s" uk-grid>
         <div class="input-container uk-padding-small uk-flex uk-flex-column">
           <label for="">Email</label>
           <input class="goa-input" type="text" v-model="user.Email">
         </div>
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
+        <div class="input-container uk-padding-small uk-flex uk-flex-column uk-margin-remove">
           <label for="">Guild Name</label>
           <input class="goa-input" type="text" v-model="user.GuildName">
         </div>
-        <div class="input-container uk-padding-small uk-flex uk-flex-column">
+        <div class="input-container uk-padding-small uk-flex uk-flex-column uk-margin-remove">
           <label for="">Guild Role</label>
           <input class="goa-input" type="text" v-model="user.Rank.RankName">
         </div>

@@ -295,9 +295,10 @@ const getBanner = () => {
   font-size: 100px!important;
 }
 
-body {
+/* body {
   background-image: v-bind(background)!important;
-}
+} */
+
 </style>
 
 <template>
@@ -382,23 +383,29 @@ body {
         Create Application
       </button>
       <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
-      <p v-if="guild.MemberList" class="uk-text-small text-accent uk-text-center uk-margin-remove-top">
-        ( Members: {{ guild.MemberList.length }} )
+      <p v-if="guild.MemberList" class="member-count uk-position-top-right text-primary uk-margin-right">
+       Members: <span class="text-default">{{ guild.MemberList.length }} </span>
       </p>
-      <div class="uk-flex uk-flex-around uk-margin-bottom">
-        <span class="uk-text-large text-primary upper">{{ guild.Category }}</span>
-        <span class="uk-text-large text-primary upper">{{ guild.Focus }}</span>
-        <span class="uk-text-large text-primary upper" v-if="guild && guild.PrimaryRace">{{ guild.PrimaryRace }}</span>
-        <span class="uk-text-large text-primary upper">{{ guild.Region }}</span>
-      </div>
+      
       <div :class="{
-          'logo-container': {},
+          'logo-container uk-margin-bottom': {},
           'bordered-logo-container': guild.LogoBorder == true,
         }"
       >
         <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
-        
+      
+      <div class="uk-flex uk-width-1-1 uk-child-width-1-2 uk-margin-bottom">
+        <div class="uk-flex uk-flex-column">
+          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper">{{ guild.Category }}</div>
+          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper">{{ guild.Focus }}</div>
+        </div>
+        <div class="uk-flex uk-flex-column">
+          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper" v-if="guild && guild.PrimaryRace">{{ guild.PrimaryRace }}</div>
+          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper">{{ guild.Region }}</div>
+        </div>
+      </div>
+
       <!-- This is where we display the rich text -->
       <div v-html="guild.Description" class="uk-margin-large-top"></div>
     </div>

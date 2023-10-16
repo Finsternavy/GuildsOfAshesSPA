@@ -113,7 +113,8 @@ let getThreads = async () => {
       // console.log("Unread thread IDs: ", unreadThreadIDs.value);
       // console.log("Unread comment IDs: ", unreadCommentIDs.value);
     } else {
-      // console.log("No Threads");
+      console.log("No Threads");
+      threads.value = [];
     }
   } else {
     // console.log("Error fetching thread data: ", response.statusText);
@@ -175,25 +176,6 @@ const addThreadToRead = (threadID) => {
     readThreadIDs.value.push(threadID);
     unreadThreadIDs.value = unreadThreadIDs.value.filter(id => id !== threadID);
   }
-  // if (unreadIDs.value[0].includes(threadID)){
-  //   let found = false;
-  //   for (let id of readThreadIDs.value) {
-  //     if (id === threadID) {
-  //       found = true;
-  //       break;
-  //     }
-  //   }
-  //   if (!found) {
-  //     console.log("Adding thread to read: ", threadID);
-  //     if (alreadyUpdatedIDs.value.includes(threadID)) {
-  //       console.log("Thread already updated.  Not adding to read.");
-  //       return;
-  //     }
-  //     readThreadIDs.value.push(threadID);
-  //   }
-  //   console.log("Read thread IDs: ", readThreadIDs.value);
-  // }
-  // console.log("That thread is not unread")
 }
 
 const addCommentToRead = (commentID) => {
@@ -203,32 +185,7 @@ const addCommentToRead = (commentID) => {
     // console.log("Adding comment to read: ", commentID)
     readCommentIDs.value.push(commentID);
     unreadCommentIDs.value = unreadCommentIDs.value.filter(id => id !== commentID);
-  } else {
-    // console.log("That comment is not unread");
-  }
-  // console.log("Adding comment to read: ", commentID);
-  // if (unreadIDs.value[1].includes(commentID)) {
-  //   let found = false;
-  //   for (let id of readCommentIDs.value) {
-  //     if (id === commentID) {
-  //       console.log("Comment already read.")
-  //       found = true;
-  //       break;
-  //     }
-  //   }
-  //   if (!found) {
-  //     if (alreadyUpdatedIDs.value.includes(commentID)) {
-  //       console.log("Comment already updated.  Not adding to read.");
-  //       return;
-  //     }
-  //     console.log("Adding comment to read: ", commentID);
-  //     readCommentIDs.value.push(commentID);
-  //   }
-  //   console.log("Read comment IDs: ", readCommentIDs.value);
-  // }
-  // else {
-  //   console.log("That comment is not unread");
-  // }
+  } 
 }
 </script>
 
