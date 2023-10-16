@@ -226,9 +226,11 @@ h4 {
 }
 
 .goa-container-no-radius {
-  background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
   transition: background-color 0.3s ease-in-out;
+  background-color: var(--background-color-alpha);
+  transition: background-color 0.3s ease-in-out;
+  padding: 20px;
 }
 
 .goa-input {
@@ -424,10 +426,10 @@ progress::-webkit-progress-value {
 
 .tool-tip:hover .tool-tip::after {
   opacity: 100%;
-  background: var(--goa-red);
+  background: var(--primary-color);
   /* color: rgba(0, 0, 0, 0.1); */
   font-size: 16px;
-  color: var(--text-color);
+  color: var(--button-text-color);
   font-weight: 700;
 }
 

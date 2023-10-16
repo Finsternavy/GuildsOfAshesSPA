@@ -8,6 +8,7 @@ let store = useUserStore();
 let user = ref();
 let authenticated = ref(false);
 let username = ref();
+const showMobileNav = ref(false);
 let goHome = () => {
   // console.log("Going home");
   router.push("/");
@@ -53,16 +54,21 @@ let displayUserInfo = () => {
   displayText += tempName;
   return displayText;
 };
+
+const toggleMobileNav = () => {
+  showMobileNav.value = !showMobileNav.value;
+};
+
 </script>
 
 <style scoped>
-.menu {
+/* .menu {
   background-color: rgba(0, 0, 0, 0.7) !important;
   padding-inline: 30px;
   padding-block: 20px;
   backdrop-filter: blur(5px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
+} */
 
 .sub-menu {
   background-color: transparent !important;
@@ -79,29 +85,71 @@ let displayUserInfo = () => {
 
 .logo {
   height: 40px;
+  min-width: 100px;
+  width: 100px;
 }
 
 .text-default:hover {
   color: var(--primary-color);
 }
+
+.mobile-menu-toggle {
+  cursor: pointer;
+  rotate: 0deg;
+  transition: rotate 0.5s ease;
+}
+
+.mobile-menu-toggle:hover {
+  rotate: 90deg;
+}
+
+.mobile-menu-toggle:hover > * {
+  background-position: right;
+  rotate: -90deg;
+}
+
+
+.box {
+  width: 15px;
+  aspect-ratio: 1;
+  border: 1px solid var(--primary-color);
+  background-image: linear-gradient(
+    to left,
+    var(--primary-color) 0,
+    var(--secondary-color) 50%,
+    var(--secondary-color) 75%,
+    var(--secondary-color) 100%
+  );
+  background-size: 400%;
+  transition: background-position 0.5s ease, rotate 0.5s ease;
+  rotate: 0deg;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px;
+  padding: 0;
+  margin: 0;
+  height: fit-content;
+}
+
+li > a {
+  padding: 0px!important;
+}
 </style>
 
 <template>
-  <div
-    class="menu"
-    uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;"
-  >
-    <nav
-      id="Menu"
-      class="uk-navbar-container sub-menu uk-flex uk-flex-between uk-flex-middle"
-    >
-      <div class="left-nav uk-width-auto uk-flex uk-flex-middle">
+  <div class="uk-visible@s goa-container-no-radius" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;">
+    <nav id="Menu" class="uk-navbar-container sub-menu uk-flex uk-flex-between uk-flex-middle">
+      <div class="left-nav uk-flex uk-flex-middle">
         <div class="remove-background uk-margin-right" @click="goHome">
           <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
         </div>
         <div class="dev-links">
-          <RouterLink v-if="store.getAuthenticated
-          " to="/feedback" ><span class="goa-button">Feedback</span></RouterLink>
+          <RouterLink v-if="store.getAuthenticated" to="/feedback" >
+            <span class="goa-button">Feedback</span>
+          </RouterLink>
         </div>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
@@ -146,27 +194,25 @@ let displayUserInfo = () => {
                 <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
                   <!-- <li class="uk-active"><a href="#">Active</a></li> -->
                   <li>
-                    <RouterLink to="/guild/about"
-                      ><span class="uk-align-center uk-margin-small uk-margin-remove-bottom"
-                        >Settings</span
-                      ></RouterLink
-                    >
+                    <RouterLink to="/guild/about">
+                      <span class="">
+                        Settings
+                      </span>
+                    </RouterLink>
                   </li>
                   <li>
-                    <RouterLink to="/profile"
-                      ><span class="uk-align-center uk-margin-small uk-margin-remove-bottom"
-                        >Profile</span
-                      ></RouterLink
-                    >
+                    <RouterLink to="/profile">
+                      <span class="">
+                        Profile
+                      </span>
+                    </RouterLink>
                   </li>
                   <li>
-                    <RouterLink to="/"
-                      ><span
-                        class="uk-align-center uk-margin-small uk-margin-remove-bottom"
-                        @click="logout"
-                        >Log Out</span
-                      ></RouterLink
-                    >
+                    <RouterLink to="/" >
+                      <span class="" @click="logout">
+                          Log Out
+                      </span>
+                    </RouterLink>
                   </li>
                 </ul>
               </div>
@@ -175,5 +221,81 @@ let displayUserInfo = () => {
         </div>
       </div>
     </nav>
+  </div>
+  <div class="mobile-menu goa-container-no-radius uk-hidden@s">
+    <div class="remove-background uk-margin-right uk-flex uk-flex-between uk-flex-middle" @click="goHome">
+      <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
+      <div v-if="store.getAuthenticated" class="dev-links">
+        <RouterLink v-if="store.getAuthenticated" to="/feedback" >
+          <span class="goa-button">Feedback</span>
+        </RouterLink>
+      </div>
+      <div @click="toggleMobileNav" class="mobile-menu-toggle grid">
+        <div class="box box1"></div>
+        <div class="box box2"></div>
+        <div class="box box3"></div>
+        <div class="box box4"></div>
+      </div>
+    </div>
+  </div>
+  <div v-if="showMobileNav" class="goa-container-no-radius uk-hidden@s">
+    <div v-if="!store.getAuthenticated" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
+      <div v-if="!store.getGuildID">
+        <RouterLink to="/guilds">
+          <span class="link uk-margin-remove">Browse Guilds</span>
+        </RouterLink>
+      </div>
+      <div>
+        <RouterLink to="/login" class="text-default">
+          <div class="uk-flex uk-flex-column uk-text-center">
+            <span class="text-default" uk-icon="icon: user"></span>
+            <span class="text-goa-red">Login</span>
+          </div>
+        </RouterLink>
+      </div>
+    </div>
+    <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
+      <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
+        <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
+        <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
+        <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
+        <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
+        <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
+        <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
+        <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
+      </div>
+      <div>
+        <div class="uk-flex uk-flex-column uk-text-center">
+          <span uk-icon="icon: user" class=""></span>
+          <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
+        </div>
+        <div>
+          <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
+            <!-- <li class="uk-active"><a href="#">Active</a></li> -->
+            <li>
+              <RouterLink to="/guild/about">
+                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
+                  Settings
+                </span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/profile">
+                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
+                  Profile
+                </span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/" >
+                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
+                    Log Out
+                </span>
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
