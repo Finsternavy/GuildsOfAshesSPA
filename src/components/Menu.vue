@@ -229,11 +229,6 @@ li > a {
   <div class="mobile-menu goa-container-no-radius uk-hidden@s" uk-sticky="start: 0">
     <div class="remove-background uk-margin-right uk-flex uk-flex-between uk-flex-middle" @click="goHome">
       <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
-      <div v-if="store.getAuthenticated" class="dev-links">
-        <RouterLink v-if="store.getAuthenticated" to="/feedback" >
-          <span class="goa-button">Feedback</span>
-        </RouterLink>
-      </div>
       <div @click="toggleMobileNav" class="mobile-menu-toggle grid">
         <div class="box box1"></div>
         <div class="box box2"></div>
@@ -242,8 +237,8 @@ li > a {
       </div>
     </div>
     <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@s uk-margin-top">
-      <div v-if="!store.getAuthenticated" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
-        <div v-if="!store.getGuildID">
+      <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
+        <div >
           <RouterLink to="/guilds">
             <span class="link uk-margin-remove">Browse Guilds</span>
           </RouterLink>
@@ -258,14 +253,21 @@ li > a {
         </div>
       </div>
       <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
-        <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
-          <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
-          <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
-          <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
-          <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
-          <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
-          <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
-          <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
+        <div>
+          <div class="dev-links uk-margin-small-bottom">
+            <RouterLink to="/feedback" >
+              <span class="goa-button">Feedback</span>
+            </RouterLink>
+          </div>
+          <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
+            <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
+            <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
+            <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
+            <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
+            <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
+            <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
+            <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
+          </div>
         </div>
         <div>
           <div class="uk-flex uk-flex-column uk-text-center">
