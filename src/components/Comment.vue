@@ -304,10 +304,16 @@ const checkUnread = () => {
     loading="eager"
   >
     <div class="comment uk-padding-small">
-      <div class="author-info">
-        <span class="uk-text-bold uk-margin-small-right">{{ data.AuthorUsername }} </span>
-        <span class=""> {{ data.CommentDate }}</span>
-        <!-- <span class="text-goa-red">{{ data.CommentID }}</span> -->
+      <div class="uk-flex uk-flex-between uk-flex-middle">
+        <div class="author-info">
+          <span class="uk-text-bold uk-margin-small-right">{{ data.AuthorUsername }} </span>
+          <span class=""> {{ data.CommentDate }}</span>
+          <!-- <span class="text-goa-red">{{ data.CommentID }}</span> -->
+        </div>
+        <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-margin-small-left">
+            <span @click="deleteComment" class="uk-icon-button uk-icon-delete uk-margin-small-right" uk-icon="icon: trash"></span>
+            <span @click="toggleEditCommentControls" class="uk-icon-button uk-icon-edit uk-margin-small-right" uk-icon="icon: pencil"></span>
+        </div>
       </div>
       <hr class="divider uk-margin-remove-bottom" />
       <div
@@ -319,9 +325,7 @@ const checkUnread = () => {
         </span>
         <span>{{ props.data.QuoteText }}</span>
       </div>
-      <div
-        class="uk-padding-small uk-margin-remove uk-padding-remove-bottom uk-text-bold"
-      >
+      <div class="uk-padding-small uk-margin-remove uk-padding-remove-bottom uk-padding-remove-left uk-text-bold">
         {{ data.CommentMessage }}
       </div>
     </div>
@@ -340,15 +344,6 @@ const checkUnread = () => {
             <span @click="downVote" class="uk-icon-button uk-margin-small-right" uk-icon="icon: arrow-down"></span>
           <!-- </button> -->
           <span>{{ data.DownVotes }}</span>
-        </div>
-        <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-margin-small-left">
-          <!-- <button class="goa-button goa-delete-button uk-button-small uk-margin-small-right"> -->
-            <span @click="deleteComment" class="uk-icon-button uk-margin-small-right" uk-icon="icon: trash"></span>
-          <!-- </button> -->
-          <!-- This is not implemented yet -->
-          <!-- <button  class="goa-button goa-edit-button uk-button-small uk-margin-small-right"> -->
-            <span @click="toggleEditCommentControls" class="uk-icon-button uk-margin-small-right" uk-icon="icon: pencil"></span>
-          <!-- </button> -->
         </div>
       </div>
       <div class="uk-text-center uk-width-auto">

@@ -510,17 +510,7 @@ progress::-webkit-progress-value {
 }
 @media (max-width: 1200px) {
   .ProseMirror h1 {
-    font-size: 50px;
-  }
-}
-@media (max-width: 800px) {
-  .ProseMirror h1 {
-    font-size: 30px;
-  }
-}
-@media (max-width: 550px) {
-  .ProseMirror h1 {
-    font-size: 20px;
+    font-size: 40px;
   }
 }
 
@@ -581,4 +571,23 @@ progress::-webkit-progress-value {
 
 .uk-icon-button:hover {
   background-color: var(--secondary-color)!important;
+}
+
+.uk-icon-delete,
+.uk-icon-edit {
+  background-color: #000000!important;
+  border-color: var(--primary-color)!important;
+  color: var(--primary-color)!important;
+}
+
+.uk-icon-delete:hover {
+  border-color: red!important;
+  color: red!important;
+  background-color: #292929!important;
+}
+
+.uk-icon-edit:hover {
+  border-color: orange!important;
+  color: orange!important;
+  background-color: #292929!important;
 }

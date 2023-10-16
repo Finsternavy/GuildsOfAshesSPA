@@ -440,15 +440,22 @@ const isUnread = (comment) => {
       }"
     >
       <div class="map-container map-top-left">
-        <div class="thread-body uk-padding text-black">
-          <span class="text-black uk-text-bold uk-margin-small-right">
-            {{ data.AuthorUsername }}
-          </span>
-          <span class="text-black"> {{ data.ThreadDate }}</span>
-          <hr class="divider" />
+        <div class="thread-body uk-padding-small text-black">
+          <div class="uk-flex uk-flex-between">
+            <div class="">
+              <span class="text-black uk-text-bold uk-margin-small-right">
+                {{ data.AuthorUsername }}
+              </span>
+              <span class="text-black"> {{ data.ThreadDate }}</span>
+            </div>
+            <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex">
+                <span class="uk-icon-button uk-icon-delete uk-margin-small-right" @click="deleteThread"  uk-icon="icon: trash"></span>
+                <span @click="toggleEditcontrols" class="uk-icon-button uk-icon-edit" uk-icon="icon: pencil"></span>
+            </div>
+          </div>
+          <hr class="divider uk-margin-small" />
           <div
-            class="uk-padding-small uk-margin-top uk-padding-remove-bottom text-black uk-text-bold"
-          >
+            class=" text-black uk-text-bold">
             {{ data.ThreadMessage }}
           </div>
         </div>
@@ -473,15 +480,10 @@ const isUnread = (comment) => {
               <!-- </button> -->
               <span>{{ data.Comments.length }}</span>
             </div>
-            <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-margin-small-left">
-              <!-- <button class="goa-button goa-delete-button uk-button-small uk-margin-small-right"> -->
+            <!-- <div v-if="data.AuthorID == user.UserID" class="thread-controls uk-flex uk-position-top-right uk-margin-top uk-margin-right">
                 <span class="uk-icon-button uk-margin-small-right" @click="deleteThread"  uk-icon="icon: trash"></span>
-              <!-- </button> -->
-              <!-- This is not implemented yet -->
-              <!-- <button class="goa-button goa-edit-button uk-button-small uk-margin-small-right">  -->
                 <span @click="toggleEditcontrols" class="uk-icon-button" uk-icon="icon: pencil"></span>
-              <!-- </button> -->
-            </div>
+            </div> -->
           </div>
           <li class="comment uk-text-center uk-transition-toggle uk-list" tabindex="0">
             <!-- <button class="goa-button"> -->
@@ -540,11 +542,6 @@ const isUnread = (comment) => {
       }"
       :data-size="commentCount"
     >
-      <span
-        v-if="data.Comments.length > 0"
-        class="reply text-goa-red uk-margin-left uk-margin-right uk-text-center"
-        uk-icon="icon: reply; ratio: 2;"
-      ></span>
       <div class="uk-width-stretch" >
         <div v-for="comment in props.data.Comments" @click="parentAddCommentToRead(comment)">
           <Comment :data="comment" :unread="isUnread(comment)" @comment-get-threads="parentFunction" />

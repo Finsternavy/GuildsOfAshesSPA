@@ -167,7 +167,7 @@ label {
 }
 
 .leader {
-  --w-alpha: var(--primary-color) + 'e6';
+    --w-alpha: var(--primary-color) + 'e6';
     background-color: v-bind(leaderBG);
     color: var(--button-text-color);
 }
@@ -233,7 +233,7 @@ label {
     border-radius: 0 20px 0 0;
     padding: 3px 20px;
     padding-top: 1px;
-    color: var(--accent-color);
+    color: var(--primary-color);
     background-color: rgba(0, 0, 0, .5);
 }
 

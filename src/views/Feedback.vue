@@ -212,17 +212,21 @@ const formatType = (type) => {
 
         <div>
             <table class="uk-table" v-for="data in feedback">
-                <title>Bug Reports</title>
+                <!-- <title class="text-primary">Bug Reports</title> -->
                 <thead>
-                    <tr>
-                        <th v-if="data[0]" class="text-goa-red">{{ formatType(data[0].MessageType) }}</th>
-                        <th class="text-goa-red">Progress</th>
-                        <th class="text-goa-red">Status</th>
+                    <tr class="">
+                        <th v-if="data[0]" class="text-primary">
+                            <span class="text-primary">{{ formatType(data[0].MessageType) }}</span>
+                        </th>
+                        <th class="text-goa-red">
+                            <span class="text-primary">Progress</span></th>
+                        <th class="text-goa-red">
+                            <span class="text-primary">Status</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="item in data" :class="{closed : item.Status == 'Closed'}">
-                        <td>{{ item.Message }}</td>
+                        <td class="uk-width-1-2">{{ item.Message }}</td>
                         <td>
                             <select class="goa-input" name="" id="" v-model="item.Progress" :disabled="!devUser || item.Status == 'Closed'">
                                 <option class="background-black text-goa-red" value="Pending">Pending</option>
@@ -243,9 +247,6 @@ const formatType = (type) => {
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-    
-                </tfoot>
             </table>
         </div>
     </div>
