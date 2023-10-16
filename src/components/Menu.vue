@@ -137,6 +137,10 @@ const toggleMobileNav = () => {
 li > a {
   padding: 0px!important;
 }
+
+.mobile-sub-nav {
+  border-top: 1px solid var(--primary-color);
+}
 </style>
 
 <template>
@@ -222,7 +226,7 @@ li > a {
       </div>
     </nav>
   </div>
-  <div class="mobile-menu goa-container-no-radius uk-hidden@s">
+  <div class="mobile-menu goa-container-no-radius uk-hidden@s" uk-sticky="start: 0">
     <div class="remove-background uk-margin-right uk-flex uk-flex-between uk-flex-middle" @click="goHome">
       <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
       <div v-if="store.getAuthenticated" class="dev-links">
@@ -237,63 +241,63 @@ li > a {
         <div class="box box4"></div>
       </div>
     </div>
-  </div>
-  <div v-if="showMobileNav" class="goa-container-no-radius uk-hidden@s">
-    <div v-if="!store.getAuthenticated" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
-      <div v-if="!store.getGuildID">
-        <RouterLink to="/guilds">
-          <span class="link uk-margin-remove">Browse Guilds</span>
-        </RouterLink>
-      </div>
-      <div>
-        <RouterLink to="/login" class="text-default">
-          <div class="uk-flex uk-flex-column uk-text-center">
-            <span class="text-default" uk-icon="icon: user"></span>
-            <span class="text-goa-red">Login</span>
-          </div>
-        </RouterLink>
-      </div>
-    </div>
-    <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
-      <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
-        <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
-        <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
-        <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
-        <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
-        <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
-        <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
-        <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
-      </div>
-      <div>
-        <div class="uk-flex uk-flex-column uk-text-center">
-          <span uk-icon="icon: user" class=""></span>
-          <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
+    <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@s uk-margin-top">
+      <div v-if="!store.getAuthenticated" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
+        <div v-if="!store.getGuildID">
+          <RouterLink to="/guilds">
+            <span class="link uk-margin-remove">Browse Guilds</span>
+          </RouterLink>
         </div>
         <div>
-          <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
-            <!-- <li class="uk-active"><a href="#">Active</a></li> -->
-            <!-- <li>
-              <RouterLink to="/guild/about">
-                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
-                  Settings
-                </span>
-              </RouterLink>
-            </li> -->
-            <li>
-              <RouterLink to="/profile">
-                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
-                  Profile
-                </span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/" >
-                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
-                    Log Out
-                </span>
-              </RouterLink>
-            </li>
-          </ul>
+          <RouterLink to="/login" class="text-default">
+            <div class="uk-flex uk-flex-column uk-text-center">
+              <span class="text-default" uk-icon="icon: user"></span>
+              <span class="text-goa-red">Login</span>
+            </div>
+          </RouterLink>
+        </div>
+      </div>
+      <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
+        <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
+          <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
+          <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
+          <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
+          <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
+          <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
+          <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
+          <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
+        </div>
+        <div>
+          <div class="uk-flex uk-flex-column uk-text-center">
+            <span uk-icon="icon: user" class=""></span>
+            <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
+          </div>
+          <div>
+            <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
+              <!-- <li class="uk-active"><a href="#">Active</a></li> -->
+              <!-- <li>
+                <RouterLink to="/guild/about">
+                  <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
+                    Settings
+                  </span>
+                </RouterLink>
+              </li> -->
+              <li>
+                <RouterLink to="/profile">
+                  <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
+                    Profile
+                  </span>
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/" >
+                  <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
+                      Log Out
+                  </span>
+                </RouterLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
