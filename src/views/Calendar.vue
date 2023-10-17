@@ -92,6 +92,9 @@ const getEvents = async () => {
     let data = await response.json();
     console.log("Guild data: ", data);
     events.value = data.Data;
+    if (events.value.length < 1){
+      events.value = [];
+    }
     // sortMembers();
 
   } else {
@@ -142,16 +145,19 @@ const generateCalendar = (year, month) => {
   for (let i = 0; i < emptyEntriesAtEnd; i++) {
     calendarArray.push(null);
   }
-
   return calendarArray;
 }
 
 const currentDate = computed(() => {
   const today = new Date();
+  let day = today.getDate();
+  if (day.length == 1){
+    day = "0" + day;
+  }
   console.log("Current date: ", today.getMonth());
   return {
     month: today.getMonth() + 1, // Add 1 because months are 0-based
-    day: today.getDate(),
+    day: day,
     year: today.getFullYear(),
   };
 });
@@ -173,6 +179,12 @@ const addEvent = async (data) => {
     showEventCreationModal.value = false;
     data.RecurringFrequency = 0;
     console.log("Adding event: ", data);
+    if (data.StartDate.length == 9){
+      data.StartDate = data.StartDate.substring(0, 8) + "0" + data.StartDate.substring(8);
+    }
+    if (data.EndDate.length == 9){
+      data.EndDate = data.EndDate.substring(0, 8) + "0" + data.EndDate.substring(8);
+    }
 
     // console.log("Fetching guild data..");
   let guildID = localStorage.getItem("guildID");
@@ -256,14 +268,18 @@ const addRecurringEvent = (data) => {
   let eventsToAdd = [];
   // based on the frequency, add events to the array until the end date is reached
   while (startDate <= endDate){
+    let newStart =startDate.getDate();
+    if (newStart.length == 1){
+      newStart = "0" + newStart;
+    }
     let event = {
       EventType: data.EventType,
       Organizer: data.Organizer,
       Title: data.Title,
       Content: data.Content,
-      StartDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate(),
+      StartDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + newStart,
       StartTime: data.StartTime,
-      EndDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate(),
+      EndDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + newStart,
       EndTime: data.EndTime,
       Attending: [],
       Canceled: false,
@@ -277,12 +293,23 @@ const addRecurringEvent = (data) => {
 
 const getDayData = (day) => {
   if (day != null){
-    let date = day.year + "-" + day.month + "-" + day.day;
+    let newDay = day.day.toString();
+    let newMonth = day.month.toString();
+
+    if (newDay.length == 1){
+      newDay = "0" + newDay;
+    }
+    if (newMonth.length == 1){
+      newMonth = "0" + newMonth;
+    }
+    let date = day.year.toString() + "-" + newMonth + "-" + newDay;
       // console.log("Day: ", date);
       let data = [];
       events.value.forEach(event => {
+        // console.log("Event: ", event.StartDate)
+        // console.log("Compared to date: ", date);
         if (event.StartDate == date){
-          // console.log("Event: ", event);
+          // console.log("Pushing: ", event.StartDate);
           data.push(event);
         }
       });
@@ -294,7 +321,13 @@ const getDayData = (day) => {
 
 
 const setEventDetails = (event) => {
-    // console.log("Event: ", event);
+    console.log("Event: ", event);
+    if (event.StartDate.length == 9){
+      event.StartDate = event.StartDate.substring(0, 8) + "0" + event.StartDate.substring(8);
+    }
+    if (event.EndDate.length == 9){
+      event.EndDate = event.EndDate.substring(0, 8) + "0" + event.EndDate.substring(8);
+    }
     activeEventDetails.value = event;
     showEventDetails.value = true;
 }
@@ -352,15 +385,23 @@ const cancelEvent = () => {
 
 const setActiveDay = (date) => {
   let screenwidth = window.innerWidth;
+  let newData = {
+    day: date.day.toString(),
+    month: date.month.toString(),
+    year: date.year.toString(),
+  }
   if (screenwidth < 960){
-    console.log("Setting activeDay: ", date);
+    if (newData.day.length == 1){
+      newData.day = "0" + newData.day;
+    }
+    console.log("Setting activeDay: ", newData);
     let monthText = months[date.month - 1];
     activeMonth.value = monthText;
-    activeDay.value = date.day;
-    activeDate.value = date;
+    activeDay.value = newData.day;
+    activeDate.value = newData;
     activeEventData.value.data = getDayData(date);
-    activeEventData.value.day = date.day;
-    activeEventData.value.date = date;
+    activeEventData.value.day = newData.day;
+    activeEventData.value.date = newData;
     console.log("Active event data: ", activeEventData.value);
     if (showMobileDay.value == false){
       showMobileDay.value = true;
@@ -399,7 +440,7 @@ const toggleMobilePopup = () => {
     justify-content: center;
     align-items: center;
     min-height: 550px;
-    height: 600px;
+    height: 700px;
     max-height: 70%;
     /* display: none; */
     /* visibility: hidden; */
