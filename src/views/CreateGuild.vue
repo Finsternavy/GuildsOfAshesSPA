@@ -2,7 +2,6 @@
 import { ref, onBeforeMount, computed, watch } from "vue";
 import { useUserStore } from "../stores/userStore";
 import router from "../router/routes";
-import RichTextEditor from "../components/RichTextEditor.vue";
 import { useAPI } from '../stores/apiStore';
 import Editor from "../components/Editor.vue";
 

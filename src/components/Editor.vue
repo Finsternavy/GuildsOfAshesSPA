@@ -418,7 +418,7 @@ const setLink = () => {
                 </button>
                 <!-- Text Color -->
                 <button @click="toggleTextColor"  class="is-active editor-button">
-                    <label class="fake-button" for="textColorInput"><span class="text-color-button">T</span>
+                    <label class="fake-button" for="textColorInput"><span class="">T</span>
                     <input
                         id="textColorInput"
                         type="color"
@@ -426,26 +426,23 @@ const setLink = () => {
                         visible="false"
                         @input="editor.chain().focus().setColor($event.target.value).run()"
                         @changed="closeTextColorPicker"
-                        v-model="textColor"></label>
+                        v-model="textColor">
+                    </label>
                     <!-- <button  @click="toggleTextColor" class="editor-button"></button> -->
                 </button>
 
-                <div class="uk-position-relative">
+                <button @click="toggleHighlight" class="is-active editor-button">
+                    <label class="fake-button" for="highlightInput"><span uk-icon="icon: paint-bucket; ratio: 1"></span>
                     <input
-                    id="highlightInput"
-                    type="color" 
-                    @input="editor.chain().focus().toggleHighlight({color: $event.target.value}).run()"
-                    v-model="highlightColor"
-                    class="hide"
-                    :class="{ 'is-active hide': editor.isActive('highlight', { color: highlightColor })}">
-    
-                    <button
-                        @click="toggleHighlight"
-                        class="editor-button"
-                        >
-                        <span uk-icon="icon: paint-bucket; ratio: 1"></span>
-                    </button>
-                </div>
+                        id="highlightInput"
+                        type="color" 
+                        @input="editor.chain().focus().toggleHighlight({color: $event.target.value}).run()"
+                        v-model="highlightColor"
+                        class="hide"
+                        visible="false"
+                        :class="{ 'is-active hide': editor.isActive('highlight', { color: highlightColor })}">
+                    </label>
+                </button>
         </BubbleMenu>
         <FloatingMenu v-if="!props.viewOnly && !props.limited"  :editor="editor" >
             <button class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
