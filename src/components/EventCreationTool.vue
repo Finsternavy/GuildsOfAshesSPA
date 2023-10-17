@@ -97,10 +97,25 @@ const close = () => {
 .bg-black {
     background-color: black;
 }
+
+.event-creation-tool {
+  position: fixed;
+  max-height: 80%;
+  height: 875px;
+  max-width: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+}
+
+.event-creation-tool::-webkit-scrollbar {
+  display: none;
+}
 </style>
 
 <template>
-    <div class="event-creation-tool uk-position-center uk-position-fixed">
+    <div class="event-creation-tool uk-panel-scrollable">
         <div class="goa-container uk-padding uk-width-large">
             <button @click="close" class="goa-button">Cancel</button>
             <h3 class="text-goa-red">This will be the event creator</h3>

@@ -49,6 +49,12 @@ const days = [
     "Thur", "Fri", "Sat"
 ];
 
+const showMobileDay = ref(false);
+const activeEventData = ref({
+  data: [],
+  date: null,
+  day: null,
+});
 
 const month = computed(() => {
     let date = new Date().getMonth();
@@ -151,10 +157,10 @@ const currentDate = computed(() => {
 });
 
 const createEvent = (date) => {
-    let monthText = months[date.month - 1];
-    activeMonth.value = monthText;
-    activeDay.value = date.day;
-    activeDate.value = date;
+  console.log("Date: ", date);
+  if (showMobileDay.value == true) {
+    showMobileDay.value = false;
+  }
     showEventCreationModal.value = true;
 }
 
@@ -341,9 +347,32 @@ const updateEvent = async (eventToUpdate) => {
 
 const cancelEvent = () => {
   activeEventDetails.value.Canceled = true;
-
   updateEvent(activeEventDetails.value);
 }
+
+const setActiveDay = (date) => {
+  let screenwidth = window.innerWidth;
+  if (screenwidth < 960){
+    console.log("Setting activeDay: ", date);
+    let monthText = months[date.month - 1];
+    activeMonth.value = monthText;
+    activeDay.value = date.day;
+    activeDate.value = date;
+    activeEventData.value.data = getDayData(date);
+    activeEventData.value.day = date.day;
+    activeEventData.value.date = date;
+    console.log("Active event data: ", activeEventData.value);
+    if (showMobileDay.value == false){
+      showMobileDay.value = true;
+    }
+  }
+  // showMobileDay.value = !showMobileDay.value;
+}
+
+const toggleMobilePopup = () => {
+  showMobileDay.value = !showMobileDay.value;
+}
+
 </script>
 
 <style scoped>
@@ -361,33 +390,272 @@ const cancelEvent = () => {
     top: 50%;
     left: 50%;
     transform:translate(-50%, -50%);
-    width: 50%;
+    width: 600px;
+    max-width: 90%;
     /* background-color: rgba(0, 0, 0, 0.5); */
     background-color: rgba(0, 0, 0, 1);
-    z-index: 1000;
+    z-index: 1000!important;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 550px;
+    height: 600px;
+    max-height: 70%;
     /* display: none; */
     /* visibility: hidden; */
     /* opacity: 0; */
     /* transition: all 0.3s ease-in-out; */
 }
-.calendar-title {
-  border-radius: 20px 20px 0 0;
+.day-container{
+    position: relative;
+    border: 2px solid gray;
+    border-radius: 5px;
+    margin: 5px;
+    display: flex;
+    min-height: 160px;
+    height: auto;
+    /* max-height: 160px; */
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}
+
+/* .day-container:hover{
+    border-color: var(--secondary-color);
+} */
+
+.day-number{
+    border: 2px solid gray;
+    border-left: none;
+    border-top: none;
+    aspect-ratio: 1;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    background-color: rgba(0, 0, 0, 0.7)!important;
+}
+textarea {
+    resize: none;
+}
+
+.bg-transparent {
+    background-color: transparent;
+}
+
+input, textarea {
+    border: none;
+}
+
+.day-label{
+    border: 1px solid var(--secondary-color);
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    position: absolute;
+    top: -40px;
+    color: var(--button-text-color);
+    background-color: var(--primary-color);
+}
+
+.disabled {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    pointer-events: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.today {
+    --w-alpha: var(--primary-color) + 'e6';
+    border: 3px solid var(--primary-color)!important;
+    background-color: var(--w-alpha)!important;
+}
+
+.past {
+    color: var(--primary-color);
+    --w-alpha: var(--primary-color) + 'e6';
+    background-color: var(--w-alpha);
+    pointer-events: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-rows: 1fr; */
+    grid-gap: 5px;
+    padding: 5px;
+}
+
+.event-icon {
+    position: relative;
+    height: auto;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 5px; */
+    aspect-ratio: 1;
+    transition: border-radius 0.3s ease-in-out;
+    /* border: 1px solid gray; */
+}
+
+/* .event-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+} */
+
+.guild-play{
+    border: 1px solid white;
+    color: white;
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(255, 115, 0, 1);  
+}
+
+.guild-play:hover {
+    background-color: rgba(255, 146, 57, 1);
+    border-radius: 50%;
+}
+
+.meeting {
+    border: 1px solid white;
+    color: black;
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(255, 238, 0, 1);
+}
+
+.meeting:hover {
+    background-color: rgba(255, 246, 126, 1);
+    border-radius: 50%;
+}
+
+.deadline {
+    border: 1px solid red;
+    color: red;
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.deadline:hover {
+    background-color: rgb(59, 59, 59);
+    border-radius: 50%;
+}
+
+.startDate {
+    border: 1px solid white;
+    color: white;
+    transition: border-radius 0.3s ease, background-color 0.3s ease;
+    background-color: rgba(98, 146, 31, 1);
+}
+
+.startDate:hover {
+    background-color: rgba(149, 255, 0, 0.5);
+    border-radius: 50%;
+}
+
+.icon-container {
+    transition: border-radius 0.3s ease;
+}
+
+.icon-container:hover > *  {
+    background-color: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.uk-position-absolute {
+    width: 100vw;
+}
+
+.add-event-button {
+    /* background-color: white; */
+    border: 1px solid var(--primary-color);
+    border-top: none;
+    border-right: none;
+    /* border-radius: 0 0 0 50%; */
+    padding: 7px 7px 7px 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-event-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+   
+}
+
+.day-container {
+    max-height: fit-content;
+}
+
+.canceled {
+    position: absolute;
+    font-weight: 900;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    /* padding: 5px; */
+    border-radius: 50%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.canceled-icon {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.canceled:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    /* color: white; */
+}
+
+.mobile-day-container {
+    padding: 2px;
+}
+.day-mobile {
+    border: 1px solid var(--secondary-color);
+}
+
+.popup-day {
+  background-color: black;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%;
+  width: 300px;
+  height: 300px;
 }
 </style>
 
 <template>
-    <div class="goa-container uk-padding-small uk-margin-large-bottom">
+  <div class="">
+    <div class="goa-container uk-padding-small uk-margin-large-bottom ">
       <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
-        <div class="calendar-container">
-          <!-- @click="openMenu(date, 10)" -->
-            <Day v-for="date, index in generateCalendar(2023, 10)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
+      <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
+        <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
+      </div>
+      <div class="calendar-container">
+        <!-- @click="openMenu(date, 10)" -->
+        <div v-for="date, index in generateCalendar(2023, 10)" @click="setActiveDay(date)">
+          <Day v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
         </div>
+      </div>
     </div>
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
       <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1) }}</h1>
+      <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
+        <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
+      </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
             <Day v-for="date, index in generateCalendar(2023, 11)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
@@ -395,51 +663,91 @@ const cancelEvent = () => {
     </div>
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
       <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
+      <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
+        <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
+      </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
             <Day v-for="date, index in generateCalendar(2023, 12)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
         </div>
     </div>
     <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent" :recurring="addRecurringEvent"/>
-    <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1" :hidden="!showEventDetails">
-        <button @click="showEventDetails = false" class="goa-button uk-width-auto uk-position-top-right uk-margin-top uk-margin-right">Close</button>
-        <h1 class="text-goa-red uk-text-center uk-margin-remove-bottom">{{ activeEventDetails.Title }} </h1>
-        <span v-if="activeEventDetails.Canceled" class="uk-text-center uk-margin-bottom uk-text-lead uk-text-warning">( Canceled )</span>
-        <div class="uk-flex uk-child-width-1-2">
-          <div class="uk-flex uk-flex-column uk-margin-small-right">
-              <label class="text-goa-red" for="EventTypeDisplay">Event Type</label>
-              <input class="goa-input" type="text" name="EventTypeDisplay" id="EventTypeDisplay" v-model="activeEventDetails.EventType">
-          </div>
-          <div class="uk-flex uk-flex-column">
-              <label class="text-goa-red" for="EventOrganizer">Organizer</label>
-              <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="activeEventDetails.Organizer">
-          </div>
+    
+  </div>
+  <div v-if="showMobileDay" class="popup-day day-container uk-position-absolute uk-flex uk-flex-column" @click="showEventTool">
+      <div class="uk-position-relative">
+        <div class="uk-flex uk-flex-between">
+            <div :class="{'uk-flex' : activeEventData}">
+                <span class="day-number">{{ activeEventData.day}}</span>
+            </div>
+            <div class="add-event-button" @click="createEvent(activeEventData)">
+                <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
+            </div>
+        </div>
+        <div class="event-icon-container uk-flex uk-height-auto grid">
+            <div v-for="event in activeEventData.data" @click="setEventDetails(event)" class="uk-text-center">
+              <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
+                  <span :class="{'event-icon': {}, 'guild-play' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: play; ratio: 1"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+              </div>
+              <div v-if="event.EventType == 'meeting'" class="meeting-bg uk-position-relative">
+                  <span :class="{'event-icon': {}, 'meeting' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: users; ratio: 1"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+              </div>
+              <div v-if="event.EventType == 'deadline'" class="deadline-bg uk-position-relative">
+                  <span  :class="{' event-icon' : {}, 'deadline': !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+              </div>
+              <div v-if="event.EventType == 'startDate'"  class="start-date-bg uk-position-relative">
+                  <span :class="{' event-icon': {}, 'startDate' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div>
+        <button @click="toggleMobilePopup" class="goa-button-no-radius uk-position-bottom">Close</button>
+      </div>
+    </div>
+    <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1 uk-panel-scrollable" :hidden="!showEventDetails">
+      <button @click="showEventDetails = false" class="goa-button uk-width-auto uk-position-top-right uk-margin-top uk-margin-right">Close</button>
+      <h1 class="text-goa-red uk-text-center uk-margin-remove-bottom">{{ activeEventDetails.Title }} </h1>
+      <span v-if="activeEventDetails.Canceled" class="uk-text-center uk-margin-bottom uk-text-lead uk-text-warning">( Canceled )</span>
+      <div class="uk-flex uk-child-width-1-2">
+        <div class="uk-flex uk-flex-column uk-margin-small-right">
+            <label class="text-goa-red" for="EventTypeDisplay">Event Type</label>
+            <input class="goa-input" type="text" name="EventTypeDisplay" id="EventTypeDisplay" v-model="activeEventDetails.EventType">
         </div>
         <div class="uk-flex uk-flex-column">
-            <label class="text-goa-red" for="EventContent">Event Message</label>
-            <textarea class="goa-input" name="EventContent" id="EventContent" cols="30" rows="10" v-model="activeEventDetails.Content"></textarea>
+            <label class="text-goa-red" for="EventOrganizer">Organizer</label>
+            <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="activeEventDetails.Organizer">
         </div>
-        <div class="uk-flex uk-child-width-1-2">
-            <div class="uk-flex uk-flex-column uk-margin-small-right">
-                <label class="text-goa-red" for="EventStartDate">Start Date</label>
-                <input class="goa-input" type="date" name="EventStartDate" id="EventStartDate" v-model="activeEventDetails.StartDate">
-            </div>
-            <div class="uk-flex uk-flex-column">
-                <label class="text-goa-red" for="EventStartTime">Start Time</label>
-                <input class="goa-input" type="time" name="EventStartTime" id="EventStartTime" v-model="activeEventDetails.StartTime">
-            </div>
-        </div>
-        <div class="uk-margin-top uk-margin-bottom">
-          <button @click="addUserToAttending" class="goa-button uk-margin-right">Interested</button>
-          <button v-if="user.Username == activeEventDetails.Organizer" @click="cancelEvent" class="goa-button">Cancel Event</button>
-        </div>
-        <div class="attending-list">
-          <h3 class="text-goa-red">Attending</h3>
+      </div>
+      <div class="uk-flex uk-flex-column">
+          <label class="text-goa-red" for="EventContent">Event Message</label>
+          <textarea class="goa-input" name="EventContent" id="EventContent" cols="30" rows="10" v-model="activeEventDetails.Content"></textarea>
+      </div>
+      <div class="uk-flex uk-child-width-1-2">
+          <div class="uk-flex uk-flex-column uk-margin-small-right">
+              <label class="text-goa-red" for="EventStartDate">Start Date</label>
+              <input class="goa-input" type="date" name="EventStartDate" id="EventStartDate" v-model="activeEventDetails.StartDate">
+          </div>
           <div class="uk-flex uk-flex-column">
-            <div v-for="person in activeEventDetails.Attending" class="uk-flex uk-flex-row">
-              <span class="text-goa-red">{{ person }}</span>
-            </div>
+              <label class="text-goa-red" for="EventStartTime">Start Time</label>
+              <input class="goa-input" type="time" name="EventStartTime" id="EventStartTime" v-model="activeEventDetails.StartTime">
+          </div>
+      </div>
+      <div class="uk-margin-top uk-margin-bottom">
+        <button @click="addUserToAttending" class="goa-button uk-margin-right">Interested</button>
+        <button v-if="user.Username == activeEventDetails.Organizer" @click="cancelEvent" class="goa-button">Cancel Event</button>
+      </div>
+      <div class="attending-list">
+        <h3 class="text-goa-red">Attending</h3>
+        <div class="uk-flex uk-flex-column">
+          <div v-for="person in activeEventDetails.Attending" class="uk-flex uk-flex-row">
+            <span class="text-goa-red">{{ person }}</span>
           </div>
         </div>
+      </div>
     </div>
 </template>

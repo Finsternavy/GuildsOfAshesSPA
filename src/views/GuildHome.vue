@@ -375,7 +375,7 @@ const getBanner = () => {
 
     <!-- Guild Info Section -->
 
-    <div class="goa-container uk-margin-bottom uk-margin-large-top" >
+    <div class="goa-container uk-margin-bottom uk-margin-large-top uk-position-relative">
       <div v-if=" user && !user.GuildID">
         <button
           v-if="user"
