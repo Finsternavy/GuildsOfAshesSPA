@@ -47,11 +47,11 @@ let ranks = ref([
 
 const imagePrefix = "../public/AOCimages/";
 const primaryColor = ref('#ff0000');
-const secondaryColor = ref('#ff0000');
+const secondaryColor = ref('#ff4444');
 const accentColor = ref('#ffd700');
 const textColor = ref('#ffffff');
 const buttonTextColor = ref('#ffffff');
-const buttonHoverTextColor = ref('#ff0000');
+const buttonHoverTextColor = ref('#ffffff');
 const inputTextColor = ref('#ffffff');
 const headerColor = ref('#ffffff');
 const backgroundColor = ref('#000000');
@@ -113,7 +113,7 @@ let guild = ref({
     Background: '#000000',
     InputText: '#ffffff',
     ButtonText: '#ffffff',
-    ButtonHoverText: '#ff0000',
+    ButtonHoverText: '#ffffff',
   }
 })
 
@@ -548,7 +548,7 @@ input[type="color"]::-webkit-color-swatch {
           <div class="image uk-height-small uk-width-1-1 uk-background-cover uk-flex uk-flex-middle uk-flex-center uk-background-secondary" @click="setBackground('random')" uk-img> Always Random</div>
         </div>
       </div>
-      <button @click="nextStep" class="goa-button uk-align-center uk-flex uk-flex-middle">Guild Colors <span uk-icon="icon: chevron-double-right"></span></button>
+      <button @click="nextStep" class="goa-button uk-align-center uk-flex uk-flex-middle">Colors <span uk-icon="icon: chevron-double-right"></span></button>
     </div>
 
     <!-- Guild Colors -->
@@ -603,7 +603,7 @@ input[type="color"]::-webkit-color-swatch {
         <h3 class="test-header">Button Text Colors</h3>
         <hr>
         <div class="button-text-container uk-flex">
-          <div class="uk-flex uk-flex-column uk-flex-middle">
+          <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
             <span class="test-label">Button Text Color</span>
             <label @click="setButtonTextColor" class="button-text-button" for="ButtonTextColor"></label>
               <input @change="updateGuildButtonText" visible="false" class="color-picker" type="color" id="ButtonTextColor" v-model="buttonTextColor" >
@@ -645,8 +645,8 @@ input[type="color"]::-webkit-color-swatch {
         </div>
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Background</button>
-        <button @click="nextStep" class="goa-button">Guild Name <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Background</button>
+        <button @click="nextStep" class="goa-button">Name <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -675,8 +675,8 @@ input[type="color"]::-webkit-color-swatch {
         <Editor v-model="guild.Banner" :limited="true"/>
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Colors</button>
-        <button @click="nextStep" class="goa-button">Guild Logo <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Colors</button>
+        <button @click="nextStep" class="goa-button">Logo <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -723,8 +723,8 @@ input[type="color"]::-webkit-color-swatch {
         Recommend 'No' for png and 'Yes' for opaque logos.
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Banner</button>
-        <button @click="nextStep" class="goa-button">Guild Description <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Banner</button>
+        <button @click="nextStep" class="goa-button">Description <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -733,14 +733,14 @@ input[type="color"]::-webkit-color-swatch {
       <h3 class="text-goa-red uk-margin-remove">GUILD DESCRIPTION</h3>
       <Editor v-model="guild.Description"/>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Logo</button>
-        <button @click="nextStep" class="goa-button">Guild Types <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Logo</button>
+        <button @click="nextStep" class="goa-button">Types <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
     <!-- Guild Types -->
     <div v-show="steps[currentStep] == 'Guild Categories'">
-      <div class="uk-flex uk-width-1-1 uk-child-width-1-4" uk-grid>
+      <div class="uk-flex uk-width-1-1 uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-4@m" uk-grid>
         <div class="input ">
           <label for="guild-type">Guild Category</label>
           <select id="guild-type" class="goa-input uk-input" v-model="guild.Category">
@@ -789,8 +789,8 @@ input[type="color"]::-webkit-color-swatch {
         </div>
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Description</button>
-        <button @click="nextStep" class="goa-button">Guild Ranks <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Description</button>
+        <button @click="nextStep" class="goa-button">Ranks <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -798,24 +798,27 @@ input[type="color"]::-webkit-color-swatch {
     <div v-show="steps[currentStep] == 'Guild Ranks'" class="rank-structure-container uk-width-1-1">
       <h3 class="text-goa-red uk-margin-remove">RANK STRUCTURE</h3>
       <div v-for="(rank, index) in ranks" class="uk-flex uk-margin-small-bottom">
-        <div class="uk-flex uk-flex-column uk-margin-right">
-          <label :for="'RankName' + index">Rank Name</label>
-          <input class="goa-input" :id="'RankName' + index" type="text" v-model="rank.RankName" :readonly="rank.RankName == 'Guild Leader'">
-        </div>
-        <div class="uk-flex uk-flex-column uk-margin-right uk-width-auto">
-          <label :for="'RankLevel' + index">Rank Level</label>
-          <input class="goa-input" :id="'RankLevel' + index" type="text" v-model="rank.RankLevel" readonly>
-        </div>
-        <span v-if="rank.RankName == 'Guild Leader'" class="text-goa-red uk-align-bottom uk-margin-remove-bottom">( This rank cannot be modified )</span>
-        <div v-if="index > 1" class="uk-flex uk-flex-column">
-          <label :for="'UpButton' + index">Move up</label>
-          <button @click="shiftRankUp(index)" :id="'UpButton' + index" class="goa-button"><span uk-icon="icon: chevron-up"></span></button>
+        <div class="uk-flex uk-width-1-1 uk-child-width-expand" uk-grid>
+          <div class="uk-flex uk-flex-column uk-margin-small-right">
+            <label :for="'RankName' + index">Rank Title</label>
+            <input class="goa-input" :id="'RankName' + index" type="text" v-model="rank.RankName" :readonly="rank.RankName == 'Guild Leader'">
+          </div>
+          <div class="uk-flex uk-flex-column uk-margin-small-right uk-width-1-4">
+            <label :for="'RankLevel' + index">Level</label>
+            <input class="goa-input" :id="'RankLevel' + index" type="text" v-model="rank.RankLevel" readonly>
+          </div>
+          <div class="uk-position-relative uk-width-1-4">
+            <div v-if="index > 1" class="uk-flex uk-flex-column">
+              <label :for="'UpButton' + index"> Up</label>
+              <button @click="shiftRankUp(index)" :id="'UpButton' + index" class="goa-button uk-button-small uk-padding-remove"><span uk-icon="icon: chevron-up"></span></button>
+            </div>
+          </div>
         </div>
       </div>
       <button @click="addRank" class="goa-button uk-margin-right">Add Rank</button>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Types</button>
-        <button @click="nextStep" class="goa-button">Guild Approval <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Types</button>
+        <button @click="nextStep" class="goa-button">Approval <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -832,8 +835,8 @@ input[type="color"]::-webkit-color-swatch {
         <option class="bg-black" :value="false">False</option>
       </select>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Ranks</button>
-        <button @click="nextStep" class="goa-button">Finalize Guild <span uk-icon="icon: chevron-double-right"></span></button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Ranks</button>
+        <button @click="nextStep" class="goa-button">Finalize<span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -846,7 +849,7 @@ input[type="color"]::-webkit-color-swatch {
         Create Guild
       </button>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
-        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span> Guild Approval</button>
+        <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Approval</button>
       </div>
     </div>
   </div>
