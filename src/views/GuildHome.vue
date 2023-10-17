@@ -4,7 +4,6 @@ import Discord from "../components/Discord.vue";
 import router from "../router/routes";
 import { useUserStore } from "../stores/userStore";
 import { useGuildStore } from "../stores/guildStore";
-import RichTextEditor from "../components/RichTextEditor.vue";
 import Loading from "../components/Loading.vue";
 import { useAPI } from '../stores/apiStore';
 import Editor from "../components/Editor.vue";
