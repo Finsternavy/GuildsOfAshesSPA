@@ -108,7 +108,7 @@ let getGuildData = async () => {
     localStorage.setItem("guildLogo", guild.value.Logo);
     localStorage.setItem("guildName", guild.value.Name);
     background.value = guild.Background;
-    localStorage.setItem("guild", JSON.stringify(guild.value));
+    // localStorage.setItem("guild", JSON.stringify(guild.value));
     inbox.value = guild.value.Applications;
     guildLeaderName.value = guild.value.Leader.Username;
     // console.log("Inbox: ", inbox.value);
