@@ -243,69 +243,59 @@ li > a {
         <div class="box box4"></div>
       </div>
     </div>
-    <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@s uk-margin-top">
-      <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
-        <div >
-          <div @click="navigate('/guilds')">
-            <span class="link uk-margin-remove">Browse Guilds</span>
+    <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@s uk-margin-top uk-flex uk-flex-around">
+      <div class="">
+        <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link uk-width-1-1">
+          <div class="uk-margin-bottom">
+            <div @click="navigate('/guilds')">
+              <span class="link">Browse Guilds</span>
+            </div>
           </div>
         </div>
-        <div>
-          <div @click="navigate('/login')" class="text-default">
-            <div class="uk-flex uk-flex-column uk-text-center">
-              <span class="text-default" uk-icon="icon: user"></span>
-              <span class="text-goa-red">Login</span>
+        <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
+          <div class="uk-flex uk-flex-column uk-flex-middle">
+            <div class="dev-links uk-margin-small-bottom">
+              <div @click="navigate('/feedback')">
+                <span class="goa-button">Feedback</span>
+              </div>
+            </div>
+            <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
+              <div @click="navigate('/guild/home')" ><span class="link">Guild Home</span></div>
+              <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
+              <div @click="navigate('/guild/forums')" ><span class="link">Forums</span></div>
+              <div @click="navigate('/guild/roster')"><span class="link">Roster</span></div>
+              <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
+              <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
+              <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
-        <div>
-          <div class="dev-links uk-margin-small-bottom">
-            <div @click="navigate('/feedback')">
-              <span class="goa-button">Feedback</span>
-            </div>
-          </div>
-          <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
-            <div @click="navigate('/guild/home')" ><span class="link">Guild Home</span></div>
-            <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
-            <div @click="navigate('/guild/forums')" ><span class="link">Forums</span></div>
-            <div @click="navigate('/guild/roster')"><span class="link">Roster</span></div>
-            <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
-            <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
-            <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
+      <div>
+        <div v-if="!store.getAuthenticated" @click="navigate('/login')" class="text-default">
+          <div class="uk-flex uk-flex-column uk-text-center">
+            <span class="text-default" uk-icon="icon: user"></span>
+            <span class="text-goa-red">Login</span>
           </div>
         </div>
-        <div>
+        <div v-if="store.getAuthenticated" class="uk-flex uk-flex-column uk-flex-middle">
           <div class="uk-flex uk-flex-column uk-text-center">
             <span uk-icon="icon: user" class=""></span>
             <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
           </div>
           <div>
-            <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
-              <!-- <li class="uk-active"><a href="#">Active</a></li> -->
-              <!-- <li>
-                <RouterLink to="/guild/about">
-                  <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
-                    Settings
-                  </span>
-                </RouterLink>
-              </li> -->
-              <li>
-                <div @click="navigate('/profile')">
-                  <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
-                    Profile
-                  </span>
-                </div>
-              </li>
-              <li>
-                <div @click="navigate('/')">
-                  <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
-                      Log Out
-                  </span>
-                </div>
-              </li>
-            </ul>
+            <div class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
+              <div @click="navigate('/profile')" class="uk-margin-small-top">
+                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
+                  Profile
+                </span>
+              </div>
+              <div @click="navigate('/')" class="uk-margin-small-top">
+                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
+                    Log Out
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -175,15 +175,15 @@ const setColors = () => {
       </div>
     </section>
 
-    <section id="GlobalFooter" class="footer">
+    <section id="GlobalFooter" class="goa-container-no-radius uk-padding-remove uk-flex uk-flex-column uk-text-center">
       <!-- <footer-navigation /> -->
       <p class="uk-text-center uk-margin-remove">
         Developed by
         <a href="https://www.linkedin.com/in/christopher-finster/" target="_blank"
           >Christopher Finster</a
         >
-        <span>. All rights reserved. {{ currentYear }}</span>
       </p>
+      <span>All rights reserved. {{ currentYear }}</span>
     </section>
   </div>
 </template>

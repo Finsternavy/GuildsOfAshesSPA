@@ -43,6 +43,9 @@ const activeEventDetails = ref(null);
 
 const showDetails = ref(false);
 
+const showMobileDay = ref(false);
+const primaryAlpha = document.documentElement.style.getPropertyValue('--primary-color') + '22';
+
 const today = computed(() => {
     // console.log("Today: ", props.Today, ' - ', day.value);
     if (props.Today && day.value == props.Today) {
@@ -73,6 +76,10 @@ const showEventDetails = (event) => {
 
 const createEvent = () => {
     props.createEvent(props.Date);
+}
+
+const toggleMobileDay = () => {
+    showMobileDay.value = !showMobileDay.value;
 }
 
 </script>
@@ -266,26 +273,6 @@ input, textarea {
     max-height: fit-content;
 }
 
-/* .guild-play-bg {
-    background-color: rgba(255, 115, 0, 1);
-    transition: border-radius 0.3s ease;
-}
-
-.meeting-bg {
-    background-color: rgba(255, 238, 0, 1);
-    transition: border-radius 0.3s ease;
-}
-
-.deadline-bg {
-    background-color: rgba(0, 0, 0, 1);
-    transition: border-radius 0.3s ease;
-}
-
-.start-date-bg {
-    background-color: rgba(98, 146, 31, 1);
-    transition: border-radius 0.3s ease;
-} */
-
 .canceled {
     position: absolute;
     font-weight: 900;
@@ -309,11 +296,19 @@ input, textarea {
     background-color: rgba(255, 255, 255, 0.4);
     /* color: white; */
 }
+
+.mobile-day-container {
+    padding: 2px;
+    height: 50px;
+}
+.day-mobile {
+    border: 1px solid var(--secondary-color);
+}
 </style>
 
 <template>
-    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool">
-        <label v-if="index < 7 " class="day-label">{{ dayText }}</label> <!-- This is the day of the week label-->
+    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column uk-visible@m' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool">
+        <!-- <label v-if="index < 7 " class="day-label">{{ dayText }}</label>  -->
         <div class="uk-flex">
             <div :class="{'uk-flex' : day, hidden : !day}">
                 <span class="day-number">{{ day }}</span>
@@ -343,6 +338,16 @@ input, textarea {
                 </div>
             </div>
         </div>
-        
     </div>
+
+    <div class="uk-hidden@m">
+        <div class="mobile-day-container uk-flex uk-position-relative uk-width-1-1">
+            <div :class="{'uk-flex uk-flex-center uk-flex-middle day-mobile uk-width-1-1' : day,
+                'has-events' : props.Data && props.Data.length > 0, hidden : !day}">
+                {{ day }}
+            </div>
+            <span v-if="past && day" class="uk-position-center text-primary" uk-icon="icon: close; ratio: 1;"></span>
+        </div>
+    </div>
+    
 </template>
