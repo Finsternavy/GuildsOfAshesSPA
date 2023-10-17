@@ -123,7 +123,7 @@ const setColors = () => {
   let colors = guildStore.getGuild.Colors;
   // console.log("Guild colors: ", colors);
   if (colors){
-    // console.log("Setting colors");
+    console.log("Setting colors", colors);
     primaryColor.value = colors.Primary ? colors.Primary : "#ff0000";
     secondaryColor.value = colors.Secondary ? colors.Secondary : "#333333";
     accentColor.value = colors.Accent ? colors.Accent : "#333333";
@@ -135,6 +135,7 @@ const setColors = () => {
     buttonHoverTextColor.value = colors.ButtonHoverText ? colors.ButtonHoverText : "#ffffff";
     const backgroundColorAlpha = ref('#000000e6');
   }
+  console.log("buttonTextColor: ", buttonTextColor.value);
   doc.style.setProperty('--primary-color', primaryColor.value);
   doc.style.setProperty('--secondary-color', secondaryColor.value);
   doc.style.setProperty('--accent-color', accentColor.value);
@@ -175,7 +176,7 @@ const setColors = () => {
       </div>
     </section>
 
-    <section id="GlobalFooter" class="goa-container-no-radius uk-padding-remove uk-flex uk-flex-column uk-text-center">
+    <section id="GlobalFooter" class="footer">
       <!-- <footer-navigation /> -->
       <p class="uk-text-center uk-margin-remove">
         Developed by
