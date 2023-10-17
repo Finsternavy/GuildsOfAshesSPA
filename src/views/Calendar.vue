@@ -31,7 +31,7 @@ onBeforeMount(()=> {
 let events = ref([]);
 
 let dataIn = computed(() => {
-  console.log("Setting data in", activeMonth.value, activeDay.value, activeDate.value)
+  // console.log("Setting data in", activeMonth.value, activeDay.value, activeDate.value)
     return {
         activeMonth: activeMonth.value,
         activeDay: activeDay.value,
@@ -60,21 +60,21 @@ const activeEventData = ref({
 const month = computed(() => {
     let date = new Date().getMonth();
     // let month = data.getMonth();
-    console.log(date);
+    // console.log(date);
     return date;
 })
 
 const today = computed(() => {
     let date = new Date().getDate();
     // let month = data.getMonth();
-    console.log(date);
+    // console.log(date);
     return date;
 })
 
 const getEvents = async () => {
   // console.log("Fetching guild data..");
   let guildID = localStorage.getItem("guildID");
-  console.log("Guild ID: ", guildID);
+  // console.log("Guild ID: ", guildID);
   let call = {
     GuildID: guildID,
   }
@@ -108,7 +108,7 @@ const getCurrentMonthAsString = (offset) => {
   const today = new Date();
   const currentMonthIndex = today.getMonth();
   const currentMonth = months[currentMonthIndex + offset];
-    console.log(currentMonth)
+    // console.log(currentMonth)
   return currentMonth;
 }
 
@@ -155,7 +155,7 @@ const currentDate = computed(() => {
   if (day.length == 1){
     day = "0" + day;
   }
-  console.log("Current date: ", today.getMonth());
+  // console.log("Current date: ", today.getMonth());
   return {
     month: today.getMonth() + 1, // Add 1 because months are 0-based
     day: day,
@@ -165,7 +165,7 @@ const currentDate = computed(() => {
 
 const createEvent = (date) => {
   setActiveDay(date);
-  console.log("Date: ", date);
+  // console.log("Date: ", date);
   if (showMobileDay.value == true) {
     showMobileDay.value = false;
   }
@@ -180,11 +180,11 @@ const addEvent = async (data) => {
     // events.value.push(data);
     showEventCreationModal.value = false;
     data.RecurringFrequency = 0;
-    console.log("Adding event: ", data);
+    // console.log("Adding event: ", data);
 
     // console.log("Fetching guild data..");
   let guildID = localStorage.getItem("guildID");
-  console.log("Guild ID: ", guildID);
+  // console.log("Guild ID: ", guildID);
   let call = {
     GuildID: guildID,
     GuildEvent: data
@@ -214,11 +214,11 @@ const addEvent = async (data) => {
 const addRecurringEvents = async (data) => {
     // events.value.push(data);
     showEventCreationModal.value = false;
-    console.log("Adding event: ", data);
+    // console.log("Adding event: ", data);
 
     // console.log("Fetching guild data..");
   let guildID = localStorage.getItem("guildID");
-  console.log("Guild ID: ", guildID);
+  // console.log("Guild ID: ", guildID);
   let call = {
     GuildID: guildID,
     GuildEvents: data
@@ -246,13 +246,13 @@ const addRecurringEvents = async (data) => {
 }
 
 const addRecurringEvent = (data) => {
-  console.log("Data from recurring event: ", data);
+  // console.log("Data from recurring event: ", data);
   let startDate = new Date(data.StartDate);
   startDate.setDate(startDate.getDate() + 1);
   let endDate = new Date(data.RecurringEndDate);
   endDate.setDate(endDate.getDate() + 2);
-  console.log("Start date: ", startDate);
-  console.log("End date: ", endDate);
+  // console.log("Start date: ", startDate);
+  // console.log("End date: ", endDate);
   let frequency = 0;
   if (data.RecurringFrequency == 'daily'){
     frequency = 1;
@@ -279,7 +279,7 @@ const addRecurringEvent = (data) => {
     eventsToAdd.push(event);
     startDate.setDate(startDate.getDate() + frequency);
   }
-  console.log("Events to add: ", eventsToAdd);
+  // console.log("Events to add: ", eventsToAdd);
   addRecurringEvents(eventsToAdd);
 }
 
@@ -304,12 +304,12 @@ const getDayData = (day) => {
 
 
 const setEventDetails = (event) => {
-    console.log("Event: ", event);
-    console.log("Event startdate: ", event.StartDate);
+    // console.log("Event: ", event);
+    // console.log("Event startdate: ", event.StartDate);
     let startDate = event.StartDate;
-    console.log("Day string: ", startDate.substring(startDate.length - 2, startDate.length));
+    // console.log("Day string: ", startDate.substring(startDate.length - 2, startDate.length));
     if (startDate.substring(startDate.length - 2, startDate.length).startsWith("-")){
-      console.log("Single digit day")
+      // console.log("Single digit day")
       event.StartDate = startDate.substring(0, startDate.length - 1) + "0" + startDate.substring(startDate.length - 1, startDate.length);
     }
     activeEventDetails.value = event;
@@ -335,7 +335,7 @@ const updateEvent = async (eventToUpdate) => {
   let guildEvent = eventToUpdate;
 
   let guildID = localStorage.getItem("guildID");
-  console.log("Guild ID: ", guildID);
+  // console.log("Guild ID: ", guildID);
   let call = {
     GuildID: guildID,
     GuildEvent: guildEvent
@@ -373,14 +373,13 @@ const setActiveDay = (date, index) => {
   //   return;
   // }
   let screenwidth = window.innerWidth;
-  console.log("Screen width: ", screenwidth);
+  // console.log("Screen width: ", screenwidth);
       let monthText = months[date.month - 1];
-      console.log("Setting active date to: ", date)
+      // console.log("Setting active date to: ", date)
       activeMonth.value = monthText;
       activeDay.value = date.day;
       activeDate.value = date;
-      console.log()
-      console.log("activeDate: ", activeDate.value);
+      // console.log("activeDate: ", activeDate.value);
       // activeEventData.value.data = getDayData(date);
       // activeEventData.value.day = newData.day;
       // activeEventData.value.date = newData;
@@ -660,14 +659,20 @@ input, textarea {
   transform: translate(-50%, -50%);
   max-width: 70%;
   width: 300px;
-  aspect-ratio: 1;
+  max-height: fit-content;
+  min-height: 300px;
+}
+
+.calendar-title {
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
 }
 </style>
 
 <template>
   <div class="">
     <div class="goa-container uk-padding-small uk-margin-large-bottom ">
-      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(0) }}</h1>
+      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-bottom">{{ getCurrentMonthAsString(0) }}</h1>
       <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
         <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
       </div>
@@ -679,7 +684,7 @@ input, textarea {
       </div>
     </div>
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
-      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(1) }}</h1>
+      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-bottom">{{ getCurrentMonthAsString(1) }}</h1>
       <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
         <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
       </div>
@@ -691,7 +696,7 @@ input, textarea {
         </div>
     </div>
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
-      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-medium-bottom">{{ getCurrentMonthAsString(2) }}</h1>
+      <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-bottom">{{ getCurrentMonthAsString(2) }}</h1>
       <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
         <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
       </div>
@@ -734,7 +739,7 @@ input, textarea {
             </div>
         </div>
       </div>
-      <div>
+      <div class="uk-margin-medium-top">
         <button @click="closeMobilePopup" class="goa-button-no-radius uk-position-bottom">Close</button>
       </div>
     </div>
