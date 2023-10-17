@@ -169,28 +169,32 @@ const formatType = (type) => {
 .closed {
     background-color: rgba(144, 238, 144, 0.3);
 }
+
+.report {
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+}
 </style>
 
 <template>
     <div class="feedback-page goa-container uk-padding uk-margin-bottom">
         <h1 class="text-goa-red">Feedback</h1>
         <p>Have a suggestion or found a bug?  Let us know!</p>
-        <div class="uk-flex uk-flex-between">
-            <div class="uk-margin uk-width-1-1 uk-margin-top uk-margin-right">
+        <div class="uk-flex uk-flex-between uk-child-width-1-1 uk-child-width-1-2@s" uk-grid>
+            <div class="uk-margin uk-margin-top">
                 <label class="text-goa-red" for="feedback">Report a Bug</label>
-                <textarea class="goa-input goa-textarea uk-width-1-1" id="feedback" rows="5" placeholder="Enter your feedback here..." v-model="feedbackText"></textarea>
+                <textarea class="goa-input goa-textarea uk-width-1-1 uk-margin-small-bottom" id="feedback" rows="5" placeholder="Enter your feedback here..." v-model="feedbackText"></textarea>
                 <button @click="submitFeedback" class="goa-button">Submit Report</button>
             </div>
-            <div class="uk-margin uk-width-1-1">
+            <div class="uk-margin">
                 <label class="text-goa-red" for="feedback">Feature Request</label>
-                <textarea class="goa-input goa-textarea uk-width-1-1" id="feedback" rows="5" placeholder="Enter your feature request here..." v-model="featureRequestText"></textarea>
-                <button @click="submitFeatureRequest" class="goa-button">Submit Feature Request</button>
+                <textarea class="goa-input goa-textarea uk-width-1-1 uk-margin-small-bottom" id="feedback" rows="5" placeholder="Enter your feature request here..." v-model="featureRequestText"></textarea>
+                <button @click="submitFeatureRequest" class="goa-button">Submit Feature</button>
             </div>
         </div>
     </div>
 
     <div class="goa-container uk-padding">
-        <h2 class="text-goa-red uk-text-center">Feedback</h2>
         <div v-if="showThankYou" class="thank-you-container goa-container uk-padding uk-margin-bottom">
             <h3 class="text-goa-red">Thank you!</h3>
             <p>{{ thankYouMessage }}</p>
@@ -211,7 +215,7 @@ const formatType = (type) => {
         </div>
 
         <div>
-            <table class="uk-table" v-for="data in feedback">
+            <table class="uk-table uk-visible@s" v-for="data in feedback">
                 <!-- <title class="text-primary">Bug Reports</title> -->
                 <thead>
                     <tr class="">
@@ -248,6 +252,43 @@ const formatType = (type) => {
                     </tr>
                 </tbody>
             </table>
+            <div v-for="data in feedback" class="mobile-feedback-table uk-hidden@s uk-margin-large-bottom">
+                <div>
+                    <div>
+                        <div colspan="3" v-if="data[0]" class="text-primary uk-text-center uk-margin-bottom">
+                            <h3 class="text-primary">{{ formatType(data[0].MessageType) }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div v-for="item in data" :class="{'report uk-padding-small uk-margin-bottom' : item, closed : item.Status == 'Closed'}">
+                        <label class="text-primary" for="">Report:</label>
+                        <div class="uk-margin-small-bottom">{{ item.Message }}</div>
+                        <div class="uk-flex uk-flex-between">
+                            <div class="uk-flex uk-flex-column">
+                                <label class="text-primary uk-margin-small-bottom" for="">Progress:</label>
+                                <select class="goa-input" name="" id="" v-model="item.Progress" :disabled="!devUser || item.Status == 'Closed'">
+                                    <option class="background-black text-goa-red" value="Pending">Pending</option>
+                                    <option class="background-black text-goa-red" value="Accepted">Accepted</option>
+                                    <option class="background-black text-goa-red" value="Backlogged">Backlogged</option>
+                                    <option class="background-black text-goa-red" value="In Progress">In Progress</option>
+                                    <option class="background-black text-goa-red" value="Rejected">Rejected</option>
+                                    <option class="background-black text-goa-red" value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="uk-flex uk-flex-column">
+                                <label class="text-primary uk-margin-small-bottom" for="">Status:</label>
+                                <span>{{ item.Status }}</span>
+                            </div>
+                        </div>
+                        <div class="uk-margin-top">
+                            <button v-if="devUser && item.Status == 'Open'" @click="updateFeedback(item)" class="goa-button uk-width-1-1" :disabled="!devUser">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

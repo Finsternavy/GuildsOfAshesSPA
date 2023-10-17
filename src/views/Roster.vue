@@ -274,24 +274,18 @@ label {
     <div class="guild-stats goa-container uk-padding uk-flex uk-flex-column uk-width-1-1">
       <h3 class="text-goa-red uk-text-center">Guild Character Data</h3>
       <span class="text-goa-gray uk-text-center uk-margin-bottom">Click a cell to filter the guild list</span>
-      <table class="uk-table">
+      <table class="uk-table uk-visible@s">
         <thead>
           <tr class="uk-text-center"> <!-- Add something here to change the background behind the images -->
             <th @click="clearFilter" class="uk-button uk-button-small uk-border-pill uk-text-bolder">Clear Filter</th>
             <th v-for="architype in architypes" style="height: 50px"
-            :class="{
-              'tool-tip background-black uk-text-center uk-padding-remove gradient-black': architype,
-            }"
-            >
-            <div
-              style="height: 50px; width: 50px"
-              :class="{
-                'tool-tip uk-background-contain uk-align-center shadow uk-margin-remove-bottom': architype,
-              }"
-              :data-src="getClassIcon(architype.toLocaleLowerCase())"
-              :data="architype"
-              uk-img
-            ></div>
+            :class="{'tool-tip background-black uk-text-center uk-padding-remove gradient-black': architype}">
+              <div style="height: 50px; width: 50px"
+                :class="{'tool-tip uk-background-contain uk-align-center shadow uk-margin-remove-bottom': architype}"
+                :data-src="getClassIcon(architype.toLocaleLowerCase())"
+                :data="architype"
+                uk-img>
+              </div>
             </th>
           </tr>
         </thead>
@@ -309,12 +303,35 @@ label {
             </td>
           </tr>
         </tbody>
-        <tfoot>
-
-        </tfoot>
+      </table>
+      <table class="mobile-class-filter uk-hidden@s">
+        <thead>
+          <tr>
+            <td colspan="3"><button @click="clearFilter" class="goa-button uk-width-1-1">Clear Filter</button></td>
+          </tr>
+          <tr>
+            <th class="uk-text-center uk-text-bold">Primary</th>
+            <th></th>
+            <th class="uk-text-center uk-text-bold">Secondary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="architype in architypes" class="">
+            <td class="cell uk-width-1-2" @click="setPrimaryFilter(architype)">{{ getPrimaryArchiteypeCount(architype) }}</td>
+            <td class="tool-tip">
+              <div style="height: 50px; width: 50px"
+                :class="{'tool-tip uk-background-contain shadow uk-margin-remove-bottom': architype}"
+                :data-src="getClassIcon(architype.toLocaleLowerCase())"
+                :data="architype"
+                uk-img>
+              </div>
+            </td>
+            <td class="cell uk-width-1-2" @click="setSecondaryFilter(architype)">{{ getSecondaryArchiteypeCount(architype) }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
-    <div class="guild-roster">
+    <div class="guild-roster uk-margin-large-bottom">
       <div class="header goa-container uk-margin-top uk-padding uk-margin-large-top">
         <h2 class="uk-light uk-text-center uk-text-bold">Chain of Command</h2>
         <hr class="uk-margin-large-bottom">
@@ -324,6 +341,9 @@ label {
             <MemberCard :viewer="user.Rank.RankName" :member="member" :function="getGuildData" />
           </div>
             <!-- {{ member.Username }} -->
+        </div>
+        <div v-if="sortMembers().length == 0">
+          <h3 class="text-goa-red uk-text-center">No members play that class...</h3>
         </div>
       </div>
     </div>
