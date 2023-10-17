@@ -59,6 +59,11 @@ const toggleMobileNav = () => {
   showMobileNav.value = !showMobileNav.value;
 };
 
+const navigate = (path) => {
+  showMobileNav.value = false;
+  router.push(path);
+};
+
 </script>
 
 <style scoped>
@@ -241,34 +246,34 @@ li > a {
     <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@s uk-margin-top">
       <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link uk-width-1-1 uk-flex uk-flex-around">
         <div >
-          <RouterLink to="/guilds">
+          <div @click="navigate('/guilds')">
             <span class="link uk-margin-remove">Browse Guilds</span>
-          </RouterLink>
+          </div>
         </div>
         <div>
-          <RouterLink to="/login" class="text-default">
+          <div @click="navigate('/login')" class="text-default">
             <div class="uk-flex uk-flex-column uk-text-center">
               <span class="text-default" uk-icon="icon: user"></span>
               <span class="text-goa-red">Login</span>
             </div>
-          </RouterLink>
+          </div>
         </div>
       </div>
       <div v-if="store.getAuthenticated" class="uk-flex uk-flex-around">
         <div>
           <div class="dev-links uk-margin-small-bottom">
-            <RouterLink to="/feedback" >
+            <div @click="navigate('/feedback')">
               <span class="goa-button">Feedback</span>
-            </RouterLink>
+            </div>
           </div>
           <div v-if="store.getGuildID" class="uk-flex uk-flex-column uk-flex-center">
-            <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
+            <div @click="navigate('/guild/home')" ><span class="link">Guild Home</span></div>
             <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
-            <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
-            <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
+            <div @click="navigate('/guild/forums')" ><span class="link">Forums</span></div>
+            <div @click="navigate('/guild/roster')"><span class="link">Roster</span></div>
             <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
             <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
-            <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
+            <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
           </div>
         </div>
         <div>
@@ -287,18 +292,18 @@ li > a {
                 </RouterLink>
               </li> -->
               <li>
-                <RouterLink to="/profile">
+                <div @click="navigate('/profile')">
                   <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
                     Profile
                   </span>
-                </RouterLink>
+                </div>
               </li>
               <li>
-                <RouterLink to="/" >
+                <div @click="navigate('/')">
                   <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
                       Log Out
                   </span>
-                </RouterLink>
+                </div>
               </li>
             </ul>
           </div>

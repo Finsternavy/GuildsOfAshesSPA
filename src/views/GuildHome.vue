@@ -288,6 +288,12 @@ const getBanner = () => {
   /* grid-template-rows: 1fr; */
   grid-gap: 20px;
   padding: 5px;
+
+}
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .guild-title > * {

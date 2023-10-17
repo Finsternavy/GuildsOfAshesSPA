@@ -160,13 +160,10 @@ label {
 
 <template>
   <div class="profile">
-    
     <div class="goa-container uk-margin-bottom">
       <!-- <h3 class="uk-light uk-text-center">{ Guild name } Roster</h3> -->
-      <h3
-        class="uk-light uk-text-center uk-padding uk-padding-remove-bottom uk-text-bold"
-      >
-        Character Matrix
+      <h3 class="uk-light uk-text-center uk-padding uk-padding-remove-bottom uk-text-bold">
+        Class Selection Matrix
       </h3>
       <div class="uk-padding uk-padding-remove-top">
         <CharacterMatrix v-model="selectedClass" />
@@ -199,7 +196,7 @@ label {
         </div>
       </div>
     </div>
-    <div class="goa-container uk-padding user-info uk-flex uk-flex-column">
+    <div class="goa-container uk-padding user-info uk-flex uk-flex-column uk-margin-large-bottom">
       <h4 class="text-goa-red">User Details</h4>
       <div class="uk-margin-bottom uk-width-1-1 uk-flex uk-flex-center">
         <div class="uk-width-1-1">
