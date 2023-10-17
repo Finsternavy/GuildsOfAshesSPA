@@ -431,6 +431,7 @@ textarea {
 .button-hover-text-button {
   background-color: v-bind(primaryColor);
   border-radius: 10px;
+  border: 2px outset gray;
   width: 40px;
   height: 40px;
   /* height: 40px; */
@@ -573,7 +574,7 @@ input[type="color"]::-webkit-color-swatch {
               </button>
             </div>
           </div>
-          <div class="uk-flex uk-flex-column uk-flex-middle">
+          <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
             <label for="AccentColor" class="uk-flex uk-flex-column uk-flex-middle">
               <span class="text-accent">Accent Color</span>
               <button @click="setAccentColor" class="accent-button"></button>
@@ -581,10 +582,9 @@ input[type="color"]::-webkit-color-swatch {
             <input @change="updateGuildAccent" visible="false" class="color-picker" type="color" id="AccentColor" v-model="accentColor" >
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="BackgroundColor">Background Color</label>
-            <button @click="setBackgroundColor" class="background-button">
+            <span class="text-accent">Background Color</span>
+            <label @click="setBackgroundColor" for="BackgroundColor" class="background-button"></label>
               <input @change="updateGuildBackground" visible="false" class="color-picker" type="color" id="BackgroundColor" v-model="backgroundColor" >
-            </button>
           </div>
         </div>
         <h3 class="test-header">Text Colors</h3>
