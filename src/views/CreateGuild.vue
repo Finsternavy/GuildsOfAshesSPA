@@ -557,17 +557,21 @@ input[type="color"]::-webkit-color-swatch {
         <h3 class="test-header">Main Guild Colors</h3>
         <hr>
         <div class="main-color-container uk-flex">
-          <div @click="setPrimaryColor" class="uk-flex uk-flex-column uk-flex-middle">
-            <div class="text-accent">Primary Color</div>
-            <button class="primary-button">
-              <input @change="updateGuildPrimary" visible="false" class="color-picker" type="color" id="PrimaryColor" v-model="primaryColor" >
-          </button>
+          <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
+            <label class="uk-flex uk-flex-column uk-flex-middle" for="" @click="setPrimaryColor"> 
+              <span class="text-accent">Primary Color</span>
+              <button class="primary-button">
+                <input @change="updateGuildPrimary" visible="false" class="color-picker " type="color" id="PrimaryColor" v-model="primaryColor" >
+              </button>
+            </label>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="SecondaryColor">Hover Color</label>
-            <button @click="setSecondaryColor" class="secondary-button">
-              <input @change="updateGuildSecondary" visible="false" class="color-picker" type="color" id="SecondaryColor" v-model="secondaryColor" >
-            </button>
+            <div @click="setSecondaryColor" class="uk-flex uk-flex-column uk-flex-middle">
+              <div class="text-accent">Hover Color</div>
+              <button class="secondary-button">
+                <input @change="updateGuildSecondary" visible="false" class="color-picker" type="color" id="SecondaryColor" v-model="secondaryColor" >
+              </button>
+            </div>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
             <label for="AccentColor">Accent Color</label>
