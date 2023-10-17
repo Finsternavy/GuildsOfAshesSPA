@@ -559,30 +559,24 @@ input[type="color"]::-webkit-color-swatch {
         <hr>
         <div class="main-color-container uk-flex">
           <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
-            <label class="uk-flex uk-flex-column uk-flex-middle" for="" @click="setPrimaryColor"> 
-              <span class="text-accent">Primary Color</span>
-              <button class="primary-button">
+            <span class="test-label">Primary Color</span>
+            <label class="primary-button" for="PrimaryColor" @click="setPrimaryColor"> 
                 <input @change="updateGuildPrimary" class="color-picker " type="color" id="PrimaryColor" v-model="primaryColor" >
-              </button>
             </label>
-          </div>
-          <div class="uk-flex uk-flex-column uk-flex-middle">
-            <div @click="setSecondaryColor" class="uk-flex uk-flex-column uk-flex-middle">
-              <div class="text-accent">Hover Color</div>
-              <button class="secondary-button">
-                <input @change="updateGuildSecondary" visible="false" class="color-picker" type="color" id="SecondaryColor" v-model="secondaryColor" >
-              </button>
-            </div>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
-            <label for="AccentColor" class="uk-flex uk-flex-column uk-flex-middle">
-              <span class="text-accent">Accent Color</span>
-              <button @click="setAccentColor" class="accent-button"></button>
+            <span class="test-label">Hover Color</span>
+            <label @click="setSecondaryColor" class="secondary-button">
+              <input @change="updateGuildSecondary" visible="false" class="color-picker" type="color" id="SecondaryColor" v-model="secondaryColor" >
             </label>
+          </div>
+          <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
+            <span class="test-label">Accent Color</span>
+            <label @click="setAccentColor"  for="AccentColor" class="accent-button"></label>
             <input @change="updateGuildAccent" visible="false" class="color-picker" type="color" id="AccentColor" v-model="accentColor" >
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <span class="text-accent">Background Color</span>
+            <span class="test-label">Background Color</span>
             <label @click="setBackgroundColor" for="BackgroundColor" class="background-button"></label>
               <input @change="updateGuildBackground" visible="false" class="color-picker" type="color" id="BackgroundColor" v-model="backgroundColor" >
           </div>
@@ -590,39 +584,34 @@ input[type="color"]::-webkit-color-swatch {
         <h3 class="test-header">Text Colors</h3>
         <hr>
         <div class="text-color-container uk-flex">
-          <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="HeaderColor">Header Color</label>
-            <button @click="setHeaderColor" class="header-button">
+          <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
+            <span class="test-label">Header Color</span>
+            <label @click="setHeaderColor" class="header-button" for="HeaderColor"></label>
               <input @change="updateGuildHeader" visible="false" class="color-picker" type="color" id="HeaderColor" v-model="headerColor" >
-            </button>
           </div>
-          <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="TextColor">Text Color</label>
-            <button @click="setTextColor" class="text-button">
+          <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-right">
+            <span class="test-label">Text Color</span>
+            <label @click="setTextColor" class="text-button" for="TextColor"></label>
               <input @change="updateGuildText" visible="false" class="color-picker" type="color" id="TextColor" v-model="textColor" >
-            </button>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="InputTextColor">Input Text Color</label>
-            <button @click="setInputTextColor" class="input-text-button">
+            <span class="test-label">Input Text Color</span>
+            <label @click="setInputTextColor" class="input-text-button" for="InputTextColor"></label>
               <input @change="updateGuildInputText" visible="false" class="color-picker" type="color" id="InputTextColor" v-model="inputTextColor" >
-            </button>
           </div>
         </div>
         <h3 class="test-header">Button Text Colors</h3>
         <hr>
         <div class="button-text-container uk-flex">
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="ButtonTextColor">Button Text Color</label>
-            <button @click="setButtonTextColor" class="button-text-button">
+            <span class="test-label">Button Text Color</span>
+            <label @click="setButtonTextColor" class="button-text-button" for="ButtonTextColor"></label>
               <input @change="updateGuildButtonText" visible="false" class="color-picker" type="color" id="ButtonTextColor" v-model="buttonTextColor" >
-            </button>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="ButtonHoverTextColor">Button Hover Text Color</label>
-            <button @click="setButtonHoverTextColor" class="button-hover-text-button">
+            <span class="test-label">Button Hover Color</span>
+            <label @click="setButtonHoverTextColor" class="button-hover-text-button" for="ButtonHoverTextColor"></label>
               <input @change="updateGuildButtonHoverText" visible="false" class="color-picker" type="color" id="ButtonHoverTextColor" v-model="buttonHoverTextColor" >
-            </button>
           </div>
         </div>
       </div>
