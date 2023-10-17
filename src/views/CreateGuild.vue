@@ -561,7 +561,7 @@ input[type="color"]::-webkit-color-swatch {
             <label class="uk-flex uk-flex-column uk-flex-middle" for="" @click="setPrimaryColor"> 
               <span class="text-accent">Primary Color</span>
               <button class="primary-button">
-                <input @change="updateGuildPrimary" visible="false" class="color-picker " type="color" id="PrimaryColor" v-model="primaryColor" >
+                <input @change="updateGuildPrimary" class="color-picker " type="color" id="PrimaryColor" v-model="primaryColor" >
               </button>
             </label>
           </div>
@@ -574,10 +574,11 @@ input[type="color"]::-webkit-color-swatch {
             </div>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="AccentColor">Accent Color</label>
-            <button @click="setAccentColor" class="accent-button">
-              <input @change="updateGuildAccent" visible="false" class="color-picker" type="color" id="AccentColor" v-model="accentColor" >
-            </button>
+            <label for="AccentColor" class="uk-flex uk-flex-column uk-flex-middle">
+              <span class="text-accent">Accent Color</span>
+              <button @click="setAccentColor" class="accent-button"></button>
+            </label>
+            <input @change="updateGuildAccent" visible="false" class="color-picker" type="color" id="AccentColor" v-model="accentColor" >
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
             <label for="BackgroundColor">Background Color</label>
