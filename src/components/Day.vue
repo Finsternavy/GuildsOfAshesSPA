@@ -142,7 +142,7 @@ input, textarea {
 .disabled {
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    pointer-events: none;
+    pointer-events: none!important;
 }
 
 .hidden {
@@ -343,6 +343,7 @@ input, textarea {
     <div class="uk-hidden@m">
         <div class="mobile-day-container uk-flex uk-position-relative uk-width-1-1">
             <div :class="{'uk-flex uk-flex-center uk-flex-middle day-mobile uk-width-1-1' : day,
+                'past': past && day, 'today' : today, 'disabled' : !day,
                 'has-events' : props.Data && props.Data.length > 0, hidden : !day}">
                 {{ day }}
             </div>
