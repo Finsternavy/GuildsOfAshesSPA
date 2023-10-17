@@ -227,8 +227,10 @@ li > a {
     </nav>
   </div>
   <div class="mobile-menu goa-container-no-radius uk-hidden@s" uk-sticky="start: 0">
-    <div class="remove-background uk-margin-right uk-flex uk-flex-between uk-flex-middle" @click="goHome">
-      <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
+    <div class="uk-flex uk-flex-between uk-flex-middle">
+      <div class="remove-background uk-margin-right " @click="goHome">
+        <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
+      </div>
       <div @click="toggleMobileNav" class="mobile-menu-toggle grid">
         <div class="box box1"></div>
         <div class="box box2"></div>
