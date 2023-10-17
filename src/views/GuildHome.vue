@@ -379,13 +379,13 @@ const getBanner = () => {
       <div v-if=" user && !user.GuildID">
         <button
           v-if="user"
-          @click="apply" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
+          @click="apply" class="goa-button uk-margin-left uk-margin-top uk-position-top-left">
           Apply
         </button>
       </div>
       <button
         v-if="user && user.Rank.RankName == 'Guild Leader'"
-        @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-light uk-position-top-left">
+        @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-position-top-left">
         Create Application
       </button>
       <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>

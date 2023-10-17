@@ -149,7 +149,7 @@ li > a {
 </style>
 
 <template>
-  <div class="uk-visible@s goa-container-no-radius" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;">
+  <div class="uk-visible@m goa-container-no-radius" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;">
     <nav id="Menu" class="uk-navbar-container sub-menu uk-flex uk-flex-between uk-flex-middle">
       <div class="left-nav uk-flex uk-flex-middle">
         <div class="remove-background uk-margin-right" @click="goHome">
@@ -231,7 +231,7 @@ li > a {
       </div>
     </nav>
   </div>
-  <div class="mobile-menu goa-container-no-radius uk-hidden@s" uk-sticky="start: 0">
+  <div class="mobile-menu goa-container-no-radius uk-hidden@m" uk-sticky="start: 0">
     <div class="uk-flex uk-flex-between uk-flex-middle">
       <div class="remove-background uk-margin-right " @click="goHome">
         <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
@@ -243,7 +243,7 @@ li > a {
         <div class="box box4"></div>
       </div>
     </div>
-    <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@s uk-margin-top uk-flex uk-flex-around">
+    <div v-if="showMobileNav" class="mobile-sub-nav uk-padding uk-padding-remove-horizontal uk-hidden@m uk-margin-top uk-flex uk-flex-around">
       <div class="">
         <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link uk-width-1-1">
           <div class="uk-margin-bottom">

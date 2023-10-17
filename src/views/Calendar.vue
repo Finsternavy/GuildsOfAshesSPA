@@ -480,10 +480,9 @@ input, textarea {
     text-align: center;
     text-transform: uppercase;
     font-weight: 700;
-    position: absolute;
     top: -40px;
-    color: var(--button-text-color);
-    background-color: var(--primary-color);
+    color: var(--button-hover-text-color);
+    background-color: var(--secondary-color);
 }
 
 .disabled {
@@ -623,13 +622,12 @@ input, textarea {
 .canceled {
     position: absolute;
     font-weight: 900;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     color: red;
-    /* padding: 5px; */
+    height: 100%;
+    width: 100%;
     border-radius: 50%;
     transition: background-color 0.3s ease, color 0.3s ease;
+    pointer-events: none;
 }
 
 .canceled-icon {
@@ -674,7 +672,7 @@ input, textarea {
     <div class="goa-container uk-padding-small uk-margin-large-bottom ">
       <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-bottom">{{ getCurrentMonthAsString(0) }}</h1>
       <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
-        <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
+        <div v-for="day in days" class="day-label uk-width-1-1 uk-text-center border-black">{{ day }}</div>
       </div>
       <div class="calendar-container">
         <!-- @click="openMenu(date, 10)" -->
@@ -686,7 +684,7 @@ input, textarea {
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
       <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-bottom">{{ getCurrentMonthAsString(1) }}</h1>
       <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
-        <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
+        <div v-for="day in days" class="day-label uk-width-1-1 uk-text-center border-black">{{ day }}</div>
       </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
@@ -698,7 +696,7 @@ input, textarea {
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
       <h1 class="calendar-title goa-container-no-radius uk-padding-small text-goa-red uk-text-center uk-margin-bottom">{{ getCurrentMonthAsString(2) }}</h1>
       <div class="uk-flex uk-flex-around uk-width-1-1 text-default">
-        <div v-for="day in days" class="background-primary uk-width-1-1 uk-text-center border-black">{{ day }}</div>
+        <div v-for="day in days" class="day-label uk-width-1-1 uk-text-center border-black">{{ day }}</div>
       </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
@@ -722,19 +720,19 @@ input, textarea {
             <div v-for="event in getDayData(dataIn.activeDate)" @click="setEventDetails(event)" class="uk-text-center">
               <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
                   <span :class="{'event-icon': {}, 'guild-play' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: play; ratio: 1"></span>
-                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 5"></span>
               </div>
               <div v-if="event.EventType == 'meeting'" class="meeting-bg uk-position-relative">
                   <span :class="{'event-icon': {}, 'meeting' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: users; ratio: 1"></span>
-                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 5"></span>
               </div>
               <div v-if="event.EventType == 'deadline'" class="deadline-bg uk-position-relative">
                   <span  :class="{' event-icon' : {}, 'deadline': !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
-                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                  <span v-if="event.Canceled" class="canceled" uk-icon="icon: ban; ratio: 5"></span>
               </div>
               <div v-if="event.EventType == 'startDate'"  class="start-date-bg uk-position-relative">
                   <span :class="{' event-icon': {}, 'startDate' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
-                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                  <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 5"></span>
               </div>
             </div>
         </div>
@@ -745,29 +743,29 @@ input, textarea {
     </div>
     <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1 uk-panel-scrollable" :hidden="!showEventDetails">
       <button @click="showEventDetails = false" class="goa-button uk-width-auto uk-position-top-right uk-margin-top uk-margin-right">Close</button>
-      <h1 class="text-goa-red uk-text-center uk-margin-remove-bottom">{{ activeEventDetails.Title }} </h1>
+      <h1 class="text-header uk-text-center uk-margin-remove-bottom">{{ activeEventDetails.Title }} </h1>
       <span v-if="activeEventDetails.Canceled" class="uk-text-center uk-margin-bottom uk-text-lead uk-text-warning">( Canceled )</span>
-      <div class="uk-flex uk-child-width-1-2">
+      <div class="uk-flex uk-child-width-1-2 uk-margin-top">
         <div class="uk-flex uk-flex-column uk-margin-small-right">
-            <label class="text-goa-red" for="EventTypeDisplay">Event Type</label>
+            <label class="text-accent" for="EventTypeDisplay">Event Type</label>
             <input class="goa-input" type="text" name="EventTypeDisplay" id="EventTypeDisplay" v-model="activeEventDetails.EventType">
         </div>
         <div class="uk-flex uk-flex-column">
-            <label class="text-goa-red" for="EventOrganizer">Organizer</label>
+            <label class="text-accent" for="EventOrganizer">Organizer</label>
             <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="activeEventDetails.Organizer">
         </div>
       </div>
       <div class="uk-flex uk-flex-column">
-          <label class="text-goa-red" for="EventContent">Event Message</label>
+          <label class="text-accent" for="EventContent">Event Message</label>
           <textarea class="goa-input" name="EventContent" id="EventContent" cols="30" rows="10" v-model="activeEventDetails.Content"></textarea>
       </div>
       <div class="uk-flex uk-child-width-1-2">
           <div class="uk-flex uk-flex-column uk-margin-small-right">
-              <label class="text-goa-red" for="EventStartDate">Start Date</label>
+              <label class="text-accent" for="EventStartDate">Start Date</label>
               <input class="goa-input" type="date" name="EventStartDate" id="EventStartDate" v-model="activeEventDetails.StartDate">
           </div>
           <div class="uk-flex uk-flex-column">
-              <label class="text-goa-red" for="EventStartTime">Start Time</label>
+              <label class="text-accent" for="EventStartTime">Start Time</label>
               <input class="goa-input" type="time" name="EventStartTime" id="EventStartTime" v-model="activeEventDetails.StartTime">
           </div>
       </div>
@@ -776,10 +774,10 @@ input, textarea {
         <button v-if="user.Username == activeEventDetails.Organizer" @click="cancelEvent" class="goa-button">Cancel Event</button>
       </div>
       <div class="attending-list">
-        <h3 class="text-goa-red">Attending</h3>
+        <h3 class="text-accent">Attending</h3>
         <div class="uk-flex uk-flex-column">
           <div v-for="person in activeEventDetails.Attending" class="uk-flex uk-flex-row">
-            <span class="text-goa-red">{{ person }}</span>
+            <span class="text-primary">{{ person }}</span>
           </div>
         </div>
       </div>

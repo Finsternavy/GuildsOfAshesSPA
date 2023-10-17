@@ -232,14 +232,15 @@ const setLink = () => {
     border-color: black;
     color: white;
     background-color: black;
-    height: 34px;
+    /* height: 34px; */
     margin-right: 3px;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     /* font-weight: 500; */
 }
 
 .editor-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--background-color-alpha);
+    /* background-color: rgba(255, 255, 255, 0.2); */
     color: var(--primary-color);
 }
 
@@ -278,6 +279,12 @@ const setLink = () => {
 .border {
     border: 3px solid var(--secondary-color);
 }
+
+.fake-button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
 </style>
 
 <template>
@@ -286,8 +293,8 @@ const setLink = () => {
             <input type="checkbox" v-model="isEditable">
             Editable
         </div> -->
-        <div class="controls">
-            <div v-if="!props.viewOnly" class="uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-1 uk-child-width-auto@m uk-margin-remove-bottom" uk-grid>
+        <div v-if="!props.viewOnly" class="controls">
+            <div class="uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-1 uk-child-width-auto@m uk-margin-remove-bottom" uk-grid>
                 <div class="text-controls uk-flex-column uk-flex-center uk-margin-small-top uk-margin-small-bottom">
                     <div class="uk-text-center control-header">
                         Text Style
@@ -410,16 +417,18 @@ const setLink = () => {
                     strike
                 </button>
                 <!-- Text Color -->
-                <div>
+                <button @click="toggleTextColor"  class="is-active editor-button">
+                    <label class="fake-button" for="textColorInput"><span class="text-color-button">T</span>
                     <input
                         id="textColorInput"
                         type="color"
                         class="hide"
+                        visible="false"
                         @input="editor.chain().focus().setColor($event.target.value).run()"
                         @changed="closeTextColorPicker"
-                        v-model="textColor">
-                    <button  @click="toggleTextColor" class="editor-button"><span class="text-color-button">T</span></button>
-                </div>
+                        v-model="textColor"></label>
+                    <!-- <button  @click="toggleTextColor" class="editor-button"></button> -->
+                </button>
 
                 <div class="uk-position-relative">
                     <input

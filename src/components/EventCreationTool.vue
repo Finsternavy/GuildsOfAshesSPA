@@ -120,10 +120,10 @@ const close = () => {
     <div class="event-creation-tool uk-panel-scrollable">
         <div class="goa-container uk-padding uk-width-large">
             <button @click="close" class="goa-button">Cancel</button>
-            <h3 class="text-goa-red">This will be the event creator</h3>
-            <p>Creating event for {{ data.activeMonth + ', ' + data.activeDay }}</p>
+            <h3 class="text-header uk-text-center">Event Creator</h3>
+            <p>Creating event for <span class="text-primary">{{ data.activeMonth + ', ' + data.activeDay }}</span></p>
             <div class="uk-flex uk-flex-column">
-              <label class="text-goa-red" for="EventTypeSelect">Event Type</label>
+              <label class="text-accent" for="EventTypeSelect">Event Type</label>
               <select class="goa-input" name="EventTypeSelect" id="EventTypeSelect" v-model="eventType">
                 <option class="bg-black" value="meeting">Meeting</option>
                 <option class="bg-black" value="guildPlay">Guild Play</option>
@@ -132,44 +132,44 @@ const close = () => {
               </select>
             </div>
             <div class="uk-flex uk-flex-column">
-              <label class="text-goa-red" for="EventOrganizer">Organizer</label>
+              <label class="text-accent" for="EventOrganizer">Organizer</label>
               <input class="goa-input" type="text" name="EventOrganizer" id="EventOrganizer" v-model="eventOrganizer">
             </div>
             <div class="uk-flex uk-flex-column">
-              <label class="text-goa-red" for="EventTitle">Event Title</label>
+              <label class="text-accent" for="EventTitle">Event Title</label>
               <input class="goa-input" type="text" name="EventTitle" id="EventTitle" v-model="eventTitle">
             </div>
             <div class="uk-flex uk-flex-column">
-              <label class="text-goa-red" for="EventContent">Event Message</label>
+              <label class="text-accent" for="EventContent">Event Message</label>
               <textarea class="goa-input" name="EventContent" id="EventContent" cols="30" rows="10" v-model="eventContent"></textarea>
             </div>
             <div class="uk-flex uk-child-width-1-2">
               <div class="uk-flex uk-flex-column uk-margin-small-right">
-                <label class="text-goa-red" for="EventStartDate">Start Date</label>
+                <label class="text-accent" for="EventStartDate">Start Date</label>
                 <input class="goa-input" type="date" name="EventStartDate" id="EventStartDate" v-model="eventStartDate">
               </div>
               <div class="uk-flex uk-flex-column">
-                <label class="text-goa-red" for="EventStartTime">Start Time</label>
+                <label class="text-accent" for="EventStartTime">Start Time</label>
                 <input class="goa-input" type="time" name="EventStartTime" id="EventStartTime" v-model="eventStartTime">
               </div>
             </div>
             <div class="uk-flex uk-child-width-1-2">
               <div class="uk-flex uk-flex-column uk-margin-small-right">
-                <label class="text-goa-red" for="EventEndDate">End Date</label>
+                <label class="text-accent" for="EventEndDate">End Date</label>
                 <input class="goa-input" type="date" name="EventEndDate" id="EventEndDate" v-model="eventEndDate">
               </div>
               <div class="uk-flex uk-flex-column">
-                <label class="text-goa-red" for="EventEndTime">End Time</label>
+                <label class="text-accent" for="EventEndTime">End Time</label>
                 <input class="goa-input" type="time" name="EventEndTime" id="EventEndTime" v-model="eventEndTime">
               </div>
             </div>
             <div class="uk-flex uk-margin-small-top">
-              <label for="IsRecurring" class="text-goa-red uk-margin-right">Is Recurring?</label>
+              <label for="IsRecurring" class="text-accent uk-margin-right">Is Recurring?</label>
               <input type="checkbox" name="IsRecurring" id="IsRecurring" :value="true" v-model="recurringChecked">
             </div>
             <div v-if="recurringChecked" class="uk-flex uk-margin-top uk-child-width-1-2">
               <div class=" uk-flex uk-flex-column uk-margin-small-right">
-                <label class="text-goa-red" for="Frequency">Frequency</label>
+                <label class="text-accent" for="Frequency">Frequency</label>
                 <select class="goa-input" name="Frequency" id="Frequency" v-model="RecurringFrequency">
                   <option class="bg-black" value="daily">Daily</option>
                   <option class="bg-black" value="weekly">Weekly</option>
@@ -177,7 +177,7 @@ const close = () => {
                 </select>
               </div>
               <div class="uk-flex uk-flex-column">
-                <label class="text-goa-red" for="RecurringEndDate">End Date</label>
+                <label class="text-accent" for="RecurringEndDate">End Date</label>
                 <input class="goa-input" type="date" name="RecurringEndDate" id="RecurringEndDate" v-model="RecurringEndDate">
             </div>
             </div>
