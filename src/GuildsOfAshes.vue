@@ -132,7 +132,7 @@ const setColors = () => {
     backgroundColor.value = colors.Background ? colors.Background : "#000000";
     inputTextColor.value = colors.InputText ? colors.InputText : "#ffffff";
     buttonTextColor.value = colors.ButtonText ? colors.ButtonText : "#ffffff";
-    buttonHoverTextColor.value = colors.ButtonHoverText ? colors.ButtonHoverText : "#333333";
+    buttonHoverTextColor.value = colors.ButtonHoverText ? colors.ButtonHoverText : "#ffffff";
     const backgroundColorAlpha = ref('#000000e6');
   }
   doc.style.setProperty('--primary-color', primaryColor.value);

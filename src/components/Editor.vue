@@ -286,102 +286,104 @@ const setLink = () => {
             <input type="checkbox" v-model="isEditable">
             Editable
         </div> -->
-        <div v-if="!props.viewOnly" class="controls uk-flex uk-flex-around uk-margin-bottom">
-            <div class="text-controls uk-flex-column uk-margin-right">
-                <div class="uk-text-center control-header">
-                    Text Style
+        <div class="controls">
+            <div v-if="!props.viewOnly" class="uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-1 uk-child-width-auto@m uk-margin-remove-bottom" uk-grid>
+                <div class="text-controls uk-flex-column uk-flex-center uk-margin-small-top uk-margin-small-bottom">
+                    <div class="uk-text-center control-header">
+                        Text Style
+                    </div>
+                    <div class="uk-flex uk-flex-center">
+                        <button class="editor-button" @click="editor.chain().focus().toggleBold().run()">
+                            <span uk-icon="icon: bold"></span>
+                        </button>
+                        <button class="editor-button" @click="editor.chain().focus().toggleItalic().run()">
+                            <span uk-icon="icon: italic"></span>
+                        </button>
+                        <button  id="H1" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
+                            Giant
+                        </button>
+                        <button v-show="!props.limited" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+                            H1
+                        </button>
+                        <button v-show="!props.limited" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+                            H2
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <button class="editor-button" @click="editor.chain().focus().toggleBold().run()">
-                        <span uk-icon="icon: bold"></span>
-                    </button>
-                    <button class="editor-button" @click="editor.chain().focus().toggleItalic().run()">
-                        <span uk-icon="icon: italic"></span>
-                    </button>
-                    <button  id="H1" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
-                        Giant
-                    </button>
-                    <button v-show="!props.limited" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
-                        H1
-                    </button>
-                    <button v-show="!props.limited" class="editor-button" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
-                        H2
-                    </button>
+                <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-small-top uk-margin-small-bottom">
+                    <div class="uk-width-1-1 uk-text-center control-header">
+                        Text Alignment
+                    </div>
+                    <div class="alignment-controls uk-flex uk-flex-center">
+                        <button v-show="!props.limited"  class="editor-button" @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }">
+                            <span uk-icon="icon: chevron-left; ratio: 1"></span>
+                        </button>
+                        <button id="AlignCenter" class="editor-button" @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }">
+                            <span uk-icon="icon: chevron-right; ratio: 1"></span><span uk-icon="icon: chevron-left; ratio: 1"></span>
+                        </button>
+                        <button v-show="!props.limited"  class="editor-button" @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }">
+                            <span uk-icon="icon: chevron-right; ratio: 1"></span>
+                        </button>
+                        <button v-show="!props.limited"  class="editor-button" @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'justify' }) }">
+                            <span uk-icon="icon: chevron-left; ratio: 1"></span><span uk-icon="icon: chevron-right; ratio: 1"></span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="uk-flex uk-flex-column uk-margin-right">
-                <div class="uk-width-1-1 uk-text-center control-header">
-                    Text Alignment
+                <!--  Font Family -->
+                <div class="uk-flex uk-flex-column uk-flex-middle uk-margin-small-top uk-margin-small-bottom">
+                    <div class="uk-width-1-1 uk-text-center control-header">
+                        Font Family
+                    </div>
+                    <div class="font-family-options">
+                        <select name="FontSelect" id="FontSelect" @change="updateFontChoice"
+                        class="editor-button"
+                        :class="{ 'is-active': editor.isActive('textStyle', { fontFamily: fontChoice }) }"
+                        v-model="fontChoice">
+                        
+                            <option class="bg-black" value="acier-bat-noir">Acier-bat-noir</option>
+                            <option class="bg-black" value="antiquarian-scribe">Antiquarian-scribe</option>
+                            <option class="bg-black" value="aviano-future">Aviano-future</option>
+                            <option class="bg-black" value="avebury-black">Avebury-black</option>
+                            <option class="bg-black" value="banshee-std">Banshee-std</option>
+                            <option class="bg-black" value="battery-park">Battery-park</option>
+                            <option class="bg-black" value="bd-brick">Bd-brick</option>
+                            <option class="bg-black" value="broadsheet">Broadsheet</option>
+                            <option class="bg-black" value="cc-spellcaster">CC-Spellcaster</option>
+                            <option class="bg-black" value="charbroiled">Charbroiled</option>
+                            <option class="bg-black" value="Comic Sans MS, Comic Sans">Comic Sans</option>
+                            <option class="bg-black" value="cursive">Cursive</option>
+                            <option class="bg-black" value="exocet">Exocet</option>
+                            <option class="bg-black" value="gloridot">Gloridot</option>
+                            <option class="bg-black" value="Inter">Inter</option>
+                            <option class="bg-black" value="itc-avant-garde-gothic-pro">Itc-avant-garde-gothic-pro</option>
+                            <option class="bg-black" value="Lugrasimo">Lugrasimo</option>
+                            <option class="bg-black" value="megavolt">Megavolt</option>
+                            <option class="bg-black" value="monospace">Monospace</option>
+                            <option class="bg-black" value="monsterific-bb">Monsterific-bb</option>
+                            <option class="bg-black" value="p22-arts-and-crafts">P22-arts-and-crafts</option>
+                            <option class="bg-black" value="pf-uniform">PF-uniform</option>
+                            <option class="bg-black" value="saber">Saber</option>
+                            <option class="bg-black" value="Sedgwick Ave Display">Sedgwick Ave Display</option>
+                            <option class="bg-black" value="sepian">Sepian</option>
+                            <option class="bg-black" value="serif">Serif</option>
+                            <option class="bg-black" value="shogun">Shogun</option>
+                            <option class="bg-black" value="sneakers-pro">Sneakers-pro</option>
+                            <option class="bg-black" value="storefront-pro">Storefront-pro</option>
+                            <option class="bg-black" value="timberline">Timberline</option>
+                            <option class="bg-black" value="whomp">Whomp</option>
+    
+                        </select>
+                    </div>
                 </div>
-                <div class="alignment-controls uk-flex uk-flex-center">
-                    <button v-show="!props.limited"  class="editor-button" @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }">
-                        <span uk-icon="icon: chevron-left; ratio: 1"></span>
-                    </button>
-                    <button id="AlignCenter" class="editor-button" @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'center' }) }">
-                        <span uk-icon="icon: chevron-right; ratio: 1"></span><span uk-icon="icon: chevron-left; ratio: 1"></span>
-                    </button>
-                    <button v-show="!props.limited"  class="editor-button" @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }">
-                        <span uk-icon="icon: chevron-right; ratio: 1"></span>
-                    </button>
-                    <button v-show="!props.limited"  class="editor-button" @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'justify' }) }">
-                        <span uk-icon="icon: chevron-left; ratio: 1"></span><span uk-icon="icon: chevron-right; ratio: 1"></span>
-                    </button>
-                </div>
-            </div>
-            <!--  Font Family -->
-            <div>
-                <div class="uk-width-1-1 uk-text-center control-header">
-                    Font Family
-                </div>
-                <div class="font-family-options">
-                    <select name="FontSelect" id="FontSelect" @change="updateFontChoice"
-                    class="editor-button"
-                    :class="{ 'is-active': editor.isActive('textStyle', { fontFamily: fontChoice }) }"
-                    v-model="fontChoice">
-                    
-                        <option class="bg-black" value="acier-bat-noir">Acier-bat-noir</option>
-                        <option class="bg-black" value="antiquarian-scribe">Antiquarian-scribe</option>
-                        <option class="bg-black" value="aviano-future">Aviano-future</option>
-                        <option class="bg-black" value="avebury-black">Avebury-black</option>
-                        <option class="bg-black" value="banshee-std">Banshee-std</option>
-                        <option class="bg-black" value="battery-park">Battery-park</option>
-                        <option class="bg-black" value="bd-brick">Bd-brick</option>
-                        <option class="bg-black" value="broadsheet">Broadsheet</option>
-                        <option class="bg-black" value="cc-spellcaster">CC-Spellcaster</option>
-                        <option class="bg-black" value="charbroiled">Charbroiled</option>
-                        <option class="bg-black" value="Comic Sans MS, Comic Sans">Comic Sans</option>
-                        <option class="bg-black" value="cursive">Cursive</option>
-                        <option class="bg-black" value="exocet">Exocet</option>
-                        <option class="bg-black" value="gloridot">Gloridot</option>
-                        <option class="bg-black" value="Inter">Inter</option>
-                        <option class="bg-black" value="itc-avant-garde-gothic-pro">Itc-avant-garde-gothic-pro</option>
-                        <option class="bg-black" value="Lugrasimo">Lugrasimo</option>
-                        <option class="bg-black" value="megavolt">Megavolt</option>
-                        <option class="bg-black" value="monospace">Monospace</option>
-                        <option class="bg-black" value="monsterific-bb">Monsterific-bb</option>
-                        <option class="bg-black" value="p22-arts-and-crafts">P22-arts-and-crafts</option>
-                        <option class="bg-black" value="pf-uniform">PF-uniform</option>
-                        <option class="bg-black" value="saber">Saber</option>
-                        <option class="bg-black" value="Sedgwick Ave Display">Sedgwick Ave Display</option>
-                        <option class="bg-black" value="sepian">Sepian</option>
-                        <option class="bg-black" value="serif">Serif</option>
-                        <option class="bg-black" value="shogun">Shogun</option>
-                        <option class="bg-black" value="sneakers-pro">Sneakers-pro</option>
-                        <option class="bg-black" value="storefront-pro">Storefront-pro</option>
-                        <option class="bg-black" value="timberline">Timberline</option>
-                        <option class="bg-black" value="whomp">Whomp</option>
-
-                    </select>
-                </div>
-            </div>
-            <div v-show="!props.limited" class="media control-header">
-                <div>
-                    Media
-                </div>
-                <div class="uk-flex">
-                    <button class="editor-button" @click="setLink" :class="{ 'is-active': editor.isActive('link') }">
-                        <span uk-icon="icon: link"></span>
-                    </button>
+                <div v-show="!props.limited" class="media control-header uk-margin-small-top uk-margin-small-bottom uk-flex uk-flex-column uk-flex-middle">
+                    <div>
+                        Media
+                    </div>
+                    <div class="uk-flex">
+                        <button class="editor-button" @click="setLink" :class="{ 'is-active': editor.isActive('link') }">
+                            <span uk-icon="icon: link"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
