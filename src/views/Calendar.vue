@@ -658,7 +658,9 @@ input, textarea {
       </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
-            <Day v-for="date, index in generateCalendar(2023, 11)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
+          <div v-for="date, index in generateCalendar(2023, 11)" @click="setActiveDay(date)">
+            <Day  v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
+          </div>
         </div>
     </div>
     <div class="goa-container uk-padding-small uk-margin-large-bottom">
@@ -668,13 +670,15 @@ input, textarea {
       </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
-            <Day v-for="date, index in generateCalendar(2023, 12)" v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
+          <div v-for="date, index in generateCalendar(2023, 12)" @click="setActiveDay(date)">
+            <Day v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
+          </div>
         </div>
     </div>
     <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent" :recurring="addRecurringEvent"/>
     
   </div>
-  <div v-if="showMobileDay" class="popup-day day-container uk-position-absolute uk-flex uk-flex-column" @click="showEventTool">
+  <div v-if="showMobileDay" class="popup-day day-container uk-flex uk-flex-column" @click="showEventTool">
       <div class="uk-position-relative">
         <div class="uk-flex uk-flex-between">
             <div :class="{'uk-flex' : activeEventData}">
