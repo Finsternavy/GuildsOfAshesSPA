@@ -31,6 +31,7 @@ onBeforeMount(()=> {
 let events = ref([]);
 
 let dataIn = computed(() => {
+  console.log("Setting data in", activeMonth.value, activeDay.value, activeDate.value)
     return {
         activeMonth: activeMonth.value,
         activeDay: activeDay.value,
@@ -90,7 +91,7 @@ const getEvents = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    console.log("Guild data: ", data);
+    // console.log("Guild data: ", data);
     events.value = data.Data;
     if (events.value.length < 1){
       events.value = [];
@@ -103,7 +104,7 @@ const getEvents = async () => {
 }
 
 const getCurrentMonthAsString = (offset) => {
-console.log("Offset: ", offset);
+// console.log("Offset: ", offset);
   const today = new Date();
   const currentMonthIndex = today.getMonth();
   const currentMonth = months[currentMonthIndex + offset];
@@ -163,11 +164,12 @@ const currentDate = computed(() => {
 });
 
 const createEvent = (date) => {
+  setActiveDay(date);
   console.log("Date: ", date);
   if (showMobileDay.value == true) {
     showMobileDay.value = false;
   }
-    showEventCreationModal.value = true;
+  showEventCreationModal.value = true;
 }
 
 const close = () => {
@@ -179,12 +181,6 @@ const addEvent = async (data) => {
     showEventCreationModal.value = false;
     data.RecurringFrequency = 0;
     console.log("Adding event: ", data);
-    if (data.StartDate.length == 9){
-      data.StartDate = data.StartDate.substring(0, 8) + "0" + data.StartDate.substring(8);
-    }
-    if (data.EndDate.length == 9){
-      data.EndDate = data.EndDate.substring(0, 8) + "0" + data.EndDate.substring(8);
-    }
 
     // console.log("Fetching guild data..");
   let guildID = localStorage.getItem("guildID");
@@ -268,18 +264,14 @@ const addRecurringEvent = (data) => {
   let eventsToAdd = [];
   // based on the frequency, add events to the array until the end date is reached
   while (startDate <= endDate){
-    let newStart =startDate.getDate();
-    if (newStart.length == 1){
-      newStart = "0" + newStart;
-    }
     let event = {
       EventType: data.EventType,
       Organizer: data.Organizer,
       Title: data.Title,
       Content: data.Content,
-      StartDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + newStart,
+      StartDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate(),
       StartTime: data.StartTime,
-      EndDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + newStart,
+      EndDate: startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate(),
       EndTime: data.EndTime,
       Attending: [],
       Canceled: false,
@@ -292,17 +284,9 @@ const addRecurringEvent = (data) => {
 }
 
 const getDayData = (day) => {
+  // console.log("Get day data: ", day);
   if (day != null){
-    let newDay = day.day.toString();
-    let newMonth = day.month.toString();
-
-    if (newDay.length == 1){
-      newDay = "0" + newDay;
-    }
-    if (newMonth.length == 1){
-      newMonth = "0" + newMonth;
-    }
-    let date = day.year.toString() + "-" + newMonth + "-" + newDay;
+    let date = day.year + "-" + day.month + "-" + day.day;
       // console.log("Day: ", date);
       let data = [];
       events.value.forEach(event => {
@@ -316,17 +300,17 @@ const getDayData = (day) => {
       // console.log("Data: ", data);
       return data;
   }
-  return null;
 }
 
 
 const setEventDetails = (event) => {
     console.log("Event: ", event);
-    if (event.StartDate.length == 9){
-      event.StartDate = event.StartDate.substring(0, 8) + "0" + event.StartDate.substring(8);
-    }
-    if (event.EndDate.length == 9){
-      event.EndDate = event.EndDate.substring(0, 8) + "0" + event.EndDate.substring(8);
+    console.log("Event startdate: ", event.StartDate);
+    let startDate = event.StartDate;
+    console.log("Day string: ", startDate.substring(startDate.length - 2, startDate.length));
+    if (startDate.substring(startDate.length - 2, startDate.length).startsWith("-")){
+      console.log("Single digit day")
+      event.StartDate = startDate.substring(0, startDate.length - 1) + "0" + startDate.substring(startDate.length - 1, startDate.length);
     }
     activeEventDetails.value = event;
     showEventDetails.value = true;
@@ -383,35 +367,37 @@ const cancelEvent = () => {
   updateEvent(activeEventDetails.value);
 }
 
-const setActiveDay = (date) => {
+const setActiveDay = (date, index) => {
+  // let doc = document.getElementById(date + index);
+  // if (doc.classList.contains("disabled")){
+  //   return;
+  // }
   let screenwidth = window.innerWidth;
-  let newData = {
-    day: date.day.toString(),
-    month: date.month.toString(),
-    year: date.year.toString(),
-  }
-  if (screenwidth < 960){
-    if (newData.day.length == 1){
-      newData.day = "0" + newData.day;
-    }
-    console.log("Setting activeDay: ", newData);
-    let monthText = months[date.month - 1];
-    activeMonth.value = monthText;
-    activeDay.value = newData.day;
-    activeDate.value = newData;
-    activeEventData.value.data = getDayData(date);
-    activeEventData.value.day = newData.day;
-    activeEventData.value.date = newData;
-    console.log("Active event data: ", activeEventData.value);
-    if (showMobileDay.value == false){
-      showMobileDay.value = true;
-    }
-  }
+  console.log("Screen width: ", screenwidth);
+      let monthText = months[date.month - 1];
+      console.log("Setting active date to: ", date)
+      activeMonth.value = monthText;
+      activeDay.value = date.day;
+      activeDate.value = date;
+      console.log()
+      console.log("activeDate: ", activeDate.value);
+      // activeEventData.value.data = getDayData(date);
+      // activeEventData.value.day = newData.day;
+      // activeEventData.value.date = newData;
+      // console.log("Active event data: ", activeEventData.value);
+      // if (screenwidth < 960){
+      if (screenwidth < 960){
+        showMobileDay.value = true;
+      }
   // showMobileDay.value = !showMobileDay.value;
 }
 
-const toggleMobilePopup = () => {
-  showMobileDay.value = !showMobileDay.value;
+// const showEventTool = () => {
+//   showMobileDay.value = true;
+// }
+
+const closeMobilePopup = () => {
+  showMobileDay.value = false;
 }
 
 </script>
@@ -504,7 +490,7 @@ input, textarea {
 .disabled {
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    pointer-events: none;
+    pointer-events: none!important;
 }
 
 .hidden {
@@ -672,9 +658,9 @@ input, textarea {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 90%;
+  max-width: 70%;
   width: 300px;
-  height: 300px;
+  aspect-ratio: 1;
 }
 </style>
 
@@ -687,7 +673,7 @@ input, textarea {
       </div>
       <div class="calendar-container">
         <!-- @click="openMenu(date, 10)" -->
-        <div v-for="date, index in generateCalendar(2023, 10)" @click="setActiveDay(date)">
+        <div v-for="date, index in generateCalendar(2023, 10)" @click="setActiveDay(date)" :class="{'disabled' : !date}">
           <Day v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
         </div>
       </div>
@@ -716,21 +702,19 @@ input, textarea {
           </div>
         </div>
     </div>
-    <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent" :recurring="addRecurringEvent"/>
-    
   </div>
   <div v-if="showMobileDay" class="popup-day day-container uk-flex uk-flex-column" @click="showEventTool">
       <div class="uk-position-relative">
         <div class="uk-flex uk-flex-between">
-            <div :class="{'uk-flex' : activeEventData}">
-                <span class="day-number">{{ activeEventData.day}}</span>
+            <div :class="{'uk-flex' : dataIn}">
+                <span class="day-number">{{ dataIn.activeDay}}</span>
             </div>
-            <div class="add-event-button" @click="createEvent(activeEventData)">
+            <div class="add-event-button" @click="createEvent(dataIn.activeDate)">
                 <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
             </div>
         </div>
         <div class="event-icon-container uk-flex uk-height-auto grid">
-            <div v-for="event in activeEventData.data" @click="setEventDetails(event)" class="uk-text-center">
+            <div v-for="event in getDayData(dataIn.activeDate)" @click="setEventDetails(event)" class="uk-text-center">
               <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
                   <span :class="{'event-icon': {}, 'guild-play' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: play; ratio: 1"></span>
                   <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
@@ -751,7 +735,7 @@ input, textarea {
         </div>
       </div>
       <div>
-        <button @click="toggleMobilePopup" class="goa-button-no-radius uk-position-bottom">Close</button>
+        <button @click="closeMobilePopup" class="goa-button-no-radius uk-position-bottom">Close</button>
       </div>
     </div>
     <div v-if="showEventDetails" class="goa-container uk-padding event-details-modal uk-flex uk-flex-column uk-child-width-1-1 uk-panel-scrollable" :hidden="!showEventDetails">
@@ -795,4 +779,5 @@ input, textarea {
         </div>
       </div>
     </div>
+    <EventCreationTool v-if="showEventCreationModal" :data="dataIn" :close="close" :parentFunction="addEvent" :recurring="addRecurringEvent"/>
 </template>
