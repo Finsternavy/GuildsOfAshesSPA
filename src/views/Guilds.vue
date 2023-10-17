@@ -99,11 +99,6 @@ let goToCreate = () => {
       class="guild-header uk-padding-small uk-margin-bottom uk-flex uk-flex-middle uk-flex-between"
     >
       <input class="goa-input" type="text" placeholder="Search..." />
-      <h3
-        class="uk-text-center uk-text-bold uk-position-center uk-light uk-margin-remove"
-      >
-        Guild List
-      </h3>
       <button class="goa-button" @click="goToCreate">
         <span uk-icon="icon: plus"> </span> Create Guild
       </button>

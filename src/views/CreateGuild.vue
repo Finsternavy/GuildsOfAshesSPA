@@ -557,9 +557,9 @@ input[type="color"]::-webkit-color-swatch {
         <h3 class="test-header">Main Guild Colors</h3>
         <hr>
         <div class="main-color-container uk-flex">
-          <div class="uk-flex uk-flex-column uk-flex-middle">
+          <div @click="setPrimaryColor" class="uk-flex uk-flex-column uk-flex-middle">
             <label for="PrimaryColor">Primary Color</label>
-            <button @click="setPrimaryColor" class="primary-button">
+            <button class="primary-button">
               <input @change="updateGuildPrimary" visible="false" class="color-picker" type="color" id="PrimaryColor" v-model="primaryColor" >
             </button>
           </div>
