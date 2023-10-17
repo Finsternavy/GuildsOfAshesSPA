@@ -34,11 +34,11 @@ let RecurringEndDate = ref('');
 
 onBeforeMount(() => {
   user.value = store.getUser;
-  console.log("User: ", user.value);
+  // console.log("User: ", user.value);
   eventOrganizer.value = user.value.Username;
-  console.log("Props.data : ", props.data);
+  // console.log("Props.data : ", props.data);
   eventStartDate.value = props.data.activeDate.year + '-' + props.data.activeDate.month + '-' + props.data.activeDate.day;
-  console.log("Event start date: ", eventStartDate.value);
+  // console.log("Event start date: ", eventStartDate.value);
   eventEndDate.value = props.data.activeDate.year + '-' + props.data.activeDate.month + '-' + props.data.activeDate.day;
 })
 
