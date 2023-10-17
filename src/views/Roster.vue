@@ -272,8 +272,8 @@ label {
 <template>
   <div class="roster">
     <div class="guild-stats goa-container uk-padding uk-flex uk-flex-column uk-width-1-1">
-      <h3 class="text-goa-red uk-text-center">Guild Character Data</h3>
-      <span class="text-goa-gray uk-text-center uk-margin-bottom">Click a cell to filter the guild list</span>
+      <h3 class="text-goa-red uk-text-center">Guild Class Filter</h3>
+      <span class="uk-text-center uk-margin-bottom text-accent">Click a cell to filter the guild list</span>
       <table class="uk-table uk-visible@s">
         <thead>
           <tr class="uk-text-center"> <!-- Add something here to change the background behind the images -->
@@ -306,13 +306,13 @@ label {
       </table>
       <table class="mobile-class-filter uk-hidden@s">
         <thead>
-          <tr>
-            <td colspan="3"><button @click="clearFilter" class="goa-button uk-width-1-1">Clear Filter</button></td>
+          <tr >
+            <td colspan="3"><button @click="clearFilter" class="goa-button uk-margin-bottom uk-width-1-1">Clear Filter</button></td>
           </tr>
           <tr>
-            <th class="uk-text-center uk-text-bold">Primary</th>
+            <th class="uk-text-center uk-text-bold text-primary">Primary</th>
             <th></th>
-            <th class="uk-text-center uk-text-bold">Secondary</th>
+            <th class="uk-text-center uk-text-bold text-primary">Secondary</th>
           </tr>
         </thead>
         <tbody>
