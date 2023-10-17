@@ -539,7 +539,7 @@ input[type="color"]::-webkit-color-swatch {
     <!-- Guild background selector -->
     <div v-show="steps[currentStep] == 'Guild Background'" id="GuildBackgroundSelector uk-margin-large-bottom">
       <h3 class="text-goa-red uk-margin-left">GUILD BACKGROUND</h3>
-      <div class="image-card-container uk-flex uk-child-width-1-6 uk-width-1-1 uk-grid-small uk-margin-large-bottom" uk-grid>
+      <div class="image-card-container uk-flex uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-6@m uk-width-1-1 uk-grid-small uk-margin-large-bottom" uk-grid>
         <div v-for="bgImage in backgroundImages" class="image-card" @click="setBackground(bgImage)">
           <div class="image uk-height-small uk-background-cover" :class="{'selected' : bgImage == guild.Background}" :data-src="bgImage" uk-img></div>
         </div>
@@ -558,10 +558,10 @@ input[type="color"]::-webkit-color-swatch {
         <hr>
         <div class="main-color-container uk-flex">
           <div @click="setPrimaryColor" class="uk-flex uk-flex-column uk-flex-middle">
-            <label for="PrimaryColor">Primary Color</label>
+            <div class="text-accent">Primary Color</div>
             <button class="primary-button">
               <input @change="updateGuildPrimary" visible="false" class="color-picker" type="color" id="PrimaryColor" v-model="primaryColor" >
-            </button>
+          </button>
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
             <label for="SecondaryColor">Hover Color</label>

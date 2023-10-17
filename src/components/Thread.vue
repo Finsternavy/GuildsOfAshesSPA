@@ -413,24 +413,28 @@ const isUnread = (comment) => {
   pointer-events: none;
 }
 
+.unread {
+  outline: 1px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
 </style>
 
 <template>
   <div :class="{'thread' : {}, 'unread' : parentUnread}">
     <div class="thread-header">
       <div class="uk-width-stretch uk-padding-small" @click="toggleThread()">
-        <h4 class="uk-light uk-margin-remove uk-text-left text-goa-red">
-          <span>{{ data.ThreadTitle }} - </span>
-          <span class="uk-text-muted uk-text-small"
-            >Author: {{ data.AuthorUsername }}</span
-          >
-          <span class="interactions uk-float-right uk-text-primary"
-            >Interactions:
-            <span class="text-goa-red">{{
-              data.Comments.length + data.UpVotes + data.DownVotes
-            }}</span></span
-          >
-        </h4>
+        <div class="uk-light uk-margin-remove uk-text-left uk-flex uk-flex-column">
+          <div class="uk-flex uk-flex-column">
+            <span class="text-primary uk-text-large">{{ data.ThreadTitle }}</span>
+          </div>
+          <div class="interactions uk-text-primary uk-flex uk-flex-between uk-width-1-1">
+            <span class="uk-text-muted uk-text-small">Author: {{ data.AuthorUsername }}</span>
+            <span class="text-goa-red"> Interactions: {{
+              data.Comments.length + data.UpVotes + data.DownVotes}}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -475,7 +479,7 @@ const isUnread = (comment) => {
             </div>
             <div class="dislikes uk-text-center uk-margin-right">
               <!-- <button > -->
-                <span   @click="toggleChildren" :class="{'uk-margin-small-right uk-icon-button uk-margin-small-right' : {},
+                <span @click="toggleChildren" :class="{'uk-margin-small-right uk-icon-button uk-margin-small-right' : {},
                       unread: parentUnread,}" uk-icon="icon: comment"></span>
               <!-- </button> -->
               <span>{{ data.Comments.length }}</span>
