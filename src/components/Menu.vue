@@ -79,9 +79,29 @@ const navigate = (path) => {
   background-color: transparent !important;
 }
 .link {
-  color: white;
+  position: relative;
+  color: var(--primary-color);
   margin-right: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
+
+.link:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -3px;
+  left: 50%;
+  background-color: var(--secondary-color);
+  transition: width 0.5s ease, left 0.5s ease;
+}
+
+.link:hover:before {
+  width: 100%;
+  left: 0;
+}
+
 
 .goa-dropnav {
   border-radius: 20px;
@@ -156,39 +176,39 @@ li > a {
           <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
         </div>
         <div class="dev-links">
-          <RouterLink v-if="store.getAuthenticated" to="/feedback" >
+          <div @click="navigate('/feedback')" v-if="store.getAuthenticated">
             <span class="goa-button">Feedback</span>
-          </RouterLink>
+          </div>
         </div>
       </div>
       <div class="right-nav uk-text-center uk-width-2-3">
         <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link">
-          <RouterLink to="/guilds">
+          <div @click="navigate('/guilds')" >
             <span class="link uk-margin-remove">Browse Guilds</span>
-          </RouterLink>
+          </div>
         </div>
 
         <!-- Need to add to this if. If member is not in a guild most of these should not show -->
         <div v-if="store.getAuthenticated && store.getGuildID" class="uk-flex uk-flex-center">
-          <RouterLink to="/guild/home"><span class="link">Guild Home</span></RouterLink>
+          <div @click="navigate('/guild/home')"><span class="link">Guild Home</span></div>
           <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
-          <RouterLink to="/guild/forums"><span class="link">Forums</span></RouterLink>
-          <RouterLink to="/guild/roster"><span class="link">Roster</span></RouterLink>
+          <div @click="navigate('/guild/forums')"><span class="link">Forums</span></div>
+          <div @click="navigate('/guild/roster')" ><span class="link">Roster</span></div>
           <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
           <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
-          <RouterLink to="/guild/calendar"><span class="link">Calendar</span></RouterLink>
+          <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
         </div>
       </div>
       <div class="login-profile-container uk-text-right uk-width-1-6">
         <div class="uk-flex uk-flex-right">
 
           <div v-if="!store.getAuthenticated" class="not-logged-in">
-            <RouterLink to="/login" class="text-default">
+            <div @click="navigate('/login')" class="text-default">
               <div class="uk-flex uk-flex-column uk-text-center">
                 <span class="text-default" uk-icon="icon: user"></span>
                 <span class="text-goa-red">Login</span>
               </div>
-            </RouterLink>
+            </div>
           </div>
           <div
             v-if="store.getAuthenticated"
@@ -210,18 +230,18 @@ li > a {
                     </RouterLink>
                   </li> -->
                   <li>
-                    <RouterLink to="/profile">
+                    <div @click="navigate('/profile')">
                       <span class="">
                         Profile
                       </span>
-                    </RouterLink>
+                    </div>
                   </li>
                   <li>
-                    <RouterLink to="/" >
+                    <div @click="navigate('/')">
                       <span class="" @click="logout">
                           Log Out
                       </span>
-                    </RouterLink>
+                    </div>
                   </li>
                 </ul>
               </div>

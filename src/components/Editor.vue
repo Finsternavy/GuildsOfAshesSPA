@@ -201,7 +201,7 @@ const setLink = () => {
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 30px 30px 0 0;
     padding: 5px 10px;
-    border-bottom: 3px solid var(--secondary-color);
+    border-bottom: 3px solid var(--primary-color);
 }
 
 
@@ -277,7 +277,7 @@ const setLink = () => {
 }
 
 .border {
-    border: 3px solid var(--secondary-color);
+    border: 3px solid var(--primary-color);
 }
 
 .fake-button {

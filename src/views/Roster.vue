@@ -269,8 +269,10 @@ label {
 }
 
 .selected {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
 }
+
 </style>
 
 <template>

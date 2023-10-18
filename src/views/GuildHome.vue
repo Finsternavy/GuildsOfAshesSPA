@@ -303,23 +303,53 @@ const getBanner = () => {
 /* body {
   background-image: v-bind(background)!important;
 } */
+.guild-control-container {
+  position: sticky;
+  z-index: 100;
+  border-radius: 30px 30px 0 0;
+}
 
+.goa-container-mod {
+  border-radius: 0px 0px 30px 30px;
+}
 </style>
 
 <template>
+  <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between">
+    <!-- <button v-if="inbox && inbox.length > 0" uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+      class="goa-button goa-edit-button uk-flex uk-flex-middle"> -->
+    <button  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+      class="goa-button uk-flex uk-flex-middle">
+      <span  uk-icon="icon: warning" class=""></span>
+      <span class="uk-margin-small-left">New Applications!</span>
+    </button>
+    <button
+      @click="createApplication" class="goa-button uk-margin-left">
+      Create Application
+    </button>
+    <button
+      @click="" class="goa-button uk-margin-left">
+      Change Logo
+    </button>
+    <button
+      @click="" class="goa-button uk-margin-left">
+      Edit Banner
+    </button>
+    <button
+      @click="" class="goa-button uk-margin-left">
+      Edit Info
+    </button>
+    <button
+      @click="" class="goa-button uk-margin-left">
+      Edit Colors
+    </button>
+  </div>
   <Loading v-model="showContent" :message="'Loading Guild ...'" />
   <div v-if="showContent" class="guild-home">
     <!-- This will only show for guild leaders (Or delegated rank)-->
-    <div v-if="guildLeaderName == username" class="guild-control-container uk-margin-bottom">
-      <button v-if="inbox && inbox.length > 0" uk-toggle="target: #Inbox; animation: uk-animation-fade" 
-        class="goa-button goa-edit-button uk-flex uk-flex-middle">
-        <span  uk-icon="icon: warning" class="uk-text-danger"></span>
-        <span class="uk-text-danger uk-margin-small-left">New Applications!</span>
-      </button> 
-    </div>
 
     <!-- Guild Application Review-->
-    <div id="Inbox" class="goa-container uk-padding uk-margin-large-bottom" hidden>
+    <div id="Inbox" class="goa-container-no-radius uk-padding" hidden>
       <div v-for="application in inbox" class="applicant-container goa-container uk-flex uk-flex-column">
         <h3 class="text-goa-red">Applicant Info</h3>
         <div class="applicant-info uk-width-1-1 uk-flex uk-child-width-1-4 uk-grid-small uk-margin-bottom" uk-grid>
@@ -374,7 +404,7 @@ const getBanner = () => {
 
     <!-- Guild Info Section -->
 
-    <div class="goa-container uk-margin-bottom uk-margin-large-top uk-position-relative">
+    <div class="goa-container goa-container-mod uk-padding uk-margin-bottom uk-position-relative">
       <div v-if=" user && !user.GuildID">
         <button
           v-if="user"
@@ -382,11 +412,7 @@ const getBanner = () => {
           Apply
         </button>
       </div>
-      <button
-        v-if="user && user.Rank.RankName == 'Guild Leader'"
-        @click="createApplication" class="goa-button uk-margin-left uk-margin-top uk-position-top-left">
-        Create Application
-      </button>
+      
       <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
       <p v-if="guild.MemberList" class="member-count uk-position-top-right text-primary uk-margin-right">
        Members: <span class="text-default">{{ guild.MemberList.length }} </span>
@@ -441,14 +467,14 @@ const getBanner = () => {
         <div class="event-list uk-flex uk-width-1-1 grid">
           <div v-for="events in upcomingEvents" class="event-card uk-flex uk-flex-column uk-text-center uk-padding-small uk-width-1-1">
               <div>
-                <h4 class="uk-text-bold text-goa-red">{{ events.Title }}</h4>
+                <h4 class="uk-text-bold text-header">{{ events.Title }}</h4>
               </div>
               <div class="uk-flex uk-flex-column uk-flex-center">
                 <!-- <p>{{ events.Content }}</p> -->
-                <p class="uk-text-bold">Organizer: {{ events.Organizer }}</p>
+                <p class="uk-text-bold"><span class="text-accent">Organizer:</span> {{ events.Organizer }}</p>
                 <div class="uk-child-width-1-2">
                   <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
-                  <span class="uk-text-bold uk-text-left"><span class="text-goa-red">@</span> {{ events.StartTime }}</span>
+                  <span class="uk-text-bold uk-text-left"><span class="text-accent">@</span> {{ events.StartTime }}</span>
                 </div>
               </div>
           </div>
