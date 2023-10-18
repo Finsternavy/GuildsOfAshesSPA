@@ -250,9 +250,9 @@ label {
   /* background-color: rgb(11, 11, 11); */
 }
 
-.cell {
+/* .cell {
   border: 1px solid gray;
-}
+} */
 
 .background-black {
   background-color: rgba(0, 0, 0, 1);
@@ -267,6 +267,10 @@ label {
 .uk-button:hover {
   background-color: var(--secondary-color);
 }
+
+.selected {
+  background-color: var(--secondary-color);
+}
 </style>
 
 <template>
@@ -277,7 +281,9 @@ label {
       <table class="uk-table uk-visible@s">
         <thead>
           <tr class="uk-text-center"> <!-- Add something here to change the background behind the images -->
-            <th @click="clearFilter" class="uk-button uk-button-small uk-border-pill uk-text-bolder">Clear Filter</th>
+            <th class="uk-width-small">
+              <button @click="clearFilter" class="goa-button">Clear Filter</button>
+            </th>
             <th v-for="architype in architypes" style="height: 50px"
             :class="{'tool-tip background-black uk-text-center uk-padding-remove gradient-black': architype}">
               <div style="height: 50px; width: 50px"
@@ -291,14 +297,14 @@ label {
         </thead>
         <tbody>
           <tr class="uk-text-center">
-            <td class="text-goa-red">Primary</td>
-            <td v-for="architype in architypes" @click="setPrimaryFilter(architype)" class="cell">
+            <td class="text-header">Primary</td>
+            <td v-for="architype in architypes" @click="setPrimaryFilter(architype)" class="cell" :class="{'selected' : primaryFilter == architype}">
               {{ getPrimaryArchiteypeCount(architype) }}
             </td>
           </tr>
           <tr class="uk-text-center">
-            <td class="text-goa-red">Secondary</td>
-            <td v-for="architype in architypes" @click="setSecondaryFilter(architype)" class="cell">
+            <td class="text-header">Secondary</td>
+            <td v-for="architype in architypes" @click="setSecondaryFilter(architype)" class="cell" :class="{'selected' : secondaryFilter == architype}">
               {{ getSecondaryArchiteypeCount(architype) }}
             </td>
           </tr>
@@ -306,18 +312,20 @@ label {
       </table>
       <table class="mobile-class-filter uk-hidden@s">
         <thead>
-          <tr >
-            <td colspan="3"><button @click="clearFilter" class="goa-button uk-margin-bottom uk-width-1-1">Clear Filter</button></td>
+          <tr class="">
+            <td colspan="3"><button @click="clearFilter" class="goa-button text-button uk-margin-bottom uk-width-1-1"><span class="text-button">Clear Filter</span></button></td>
           </tr>
           <tr>
-            <th class="uk-text-center uk-text-bold text-primary">Primary</th>
+            <th class="uk-text-center uk-text-bold text-header">Primary</th>
             <th></th>
-            <th class="uk-text-center uk-text-bold text-primary">Secondary</th>
+            <th class="uk-text-center uk-text-bold text-header">Secondary</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="architype in architypes" class="">
-            <td class="cell uk-width-1-2" @click="setPrimaryFilter(architype)">{{ getPrimaryArchiteypeCount(architype) }}</td>
+            <td class="cell uk-width-1-2" @click="setPrimaryFilter(architype)" :class="{'selected' : primaryFilter == architype}">
+              {{ getPrimaryArchiteypeCount(architype) }}
+            </td>
             <td class="tool-tip">
               <div style="height: 50px; width: 50px"
                 :class="{'tool-tip uk-background-contain shadow uk-margin-remove-bottom': architype}"
@@ -326,7 +334,9 @@ label {
                 uk-img>
               </div>
             </td>
-            <td class="cell uk-width-1-2" @click="setSecondaryFilter(architype)">{{ getSecondaryArchiteypeCount(architype) }}</td>
+            <td class="cell uk-width-1-2" @click="setSecondaryFilter(architype)" :class="{'selected' : secondaryFilter == architype}">
+              {{ getSecondaryArchiteypeCount(architype) }}
+            </td>
           </tr>
         </tbody>
       </table>

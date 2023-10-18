@@ -409,7 +409,7 @@ textarea {
   background-color: v-bind(backgroundColor);
 }
 
-.text-goa-red {
+.test-header {
   color: v-bind(headerColor)!important;
 }
 
@@ -521,7 +521,7 @@ input[type="color"]::-webkit-color-swatch {
 <template>
   <div class="create-guild goa-container uk-padding">
     <div class="goa-header uk-margin-large-bottom">
-      <h1 class="text-goa-red uk-text-center uk-margin-remove">GUILD CREATION</h1>
+      <h1 class="test-header uk-text-center uk-margin-remove">GUILD CREATION</h1>
       <hr class="uk-margin-remove-bottom" />
       <ul class="uk-breadcrumb">
         <li @click="currentStep = 0"><a>Background</a></li>
@@ -537,8 +537,9 @@ input[type="color"]::-webkit-color-swatch {
     </div>
 
     <!-- Guild background selector -->
-    <div v-show="steps[currentStep] == 'Guild Background'" id="GuildBackgroundSelector uk-margin-large-bottom">
-      <h3 class="text-goa-red uk-margin-left">GUILD BACKGROUND</h3>
+    <div v-show="steps[currentStep] == 'Guild Background'" id="GuildBackgroundSelector uk-margin-large-bottom"
+      class="uk-margin-left">
+      <h3 class="test-header uk-margin-left">GUILD BACKGROUND</h3>
       <div class="image-card-container uk-flex uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-6@m uk-width-1-1 uk-grid-small uk-margin-large-bottom" uk-grid>
         <div v-for="bgImage in backgroundImages" class="image-card" @click="setBackground(bgImage)">
           <div class="image uk-height-small uk-background-cover" :class="{'selected' : bgImage == guild.Background}" :data-src="bgImage" uk-img></div>
@@ -552,7 +553,7 @@ input[type="color"]::-webkit-color-swatch {
 
     <!-- Guild Colors -->
     <div v-show="steps[currentStep] == 'Guild Colors'" >
-      <h3 class="uk-text-center text-goa-red">Select your guild colors</h3>
+      <h3 class="uk-text-center test-header">Select your guild colors</h3>
       <div class="uk-flex uk-flex-column uk-margin-large-bottom">
         <h3 class="test-header">Main Guild Colors</h3>
         <hr>
@@ -608,7 +609,7 @@ input[type="color"]::-webkit-color-swatch {
               <input @change="updateGuildButtonText" visible="false" class="color-picker" type="color" id="ButtonTextColor" v-model="buttonTextColor" >
           </div>
           <div class="uk-flex uk-flex-column uk-flex-middle">
-            <span class="test-label">Button Hover Color</span>
+            <span class="test-label">Button Text Hover Color</span>
             <label @click="setButtonHoverTextColor" class="button-hover-text-button" for="ButtonHoverTextColor"></label>
               <input @change="updateGuildButtonHoverText" visible="false" class="color-picker" type="color" id="ButtonHoverTextColor" v-model="buttonHoverTextColor" >
           </div>
@@ -629,7 +630,7 @@ input[type="color"]::-webkit-color-swatch {
           <h3 class="test-header">Headers</h3>
         </div>
         <div class="uk-margin-bottom">
-          <label class="test-label" for="">Labels</label>
+          <label class="test-label uk-padding-remove" for="">Labels</label>
         </div>
         <div class="uk-margin-bottom">
           <p class="test-text">Regular Text</p>
@@ -661,7 +662,7 @@ input[type="color"]::-webkit-color-swatch {
           maxlength="20"
         />
       </div>
-      <label> Guild Banner <span class="text-goa-red">( How guild name will appear at the top of your home page. )</span></label>
+      <label> Guild Banner <span class="text-accent">( How guild name will appear at the top of your home page. )</span></label>
       <span>The editor below is a WYSIWYG editor. It accepts Markdown annotation, has in editor controls, and also accepts copy paste from a text editor such as Microsoft word.</span>
       <p> Basic instruction:</p>
       <ul>
@@ -692,7 +693,7 @@ input[type="color"]::-webkit-color-swatch {
         </button>
       </div>
       <div v-if="guildLogoBase64" class="hero-preview uk-position-relative uk-width-1-1 uk-text-center">
-        <h1 class="text-goa-red">Guild Logo Preview</h1>
+        <h1 class="test-header">Guild Logo Preview</h1>
         <div v-if="guildLogoBase64"
           :class="{ 'logo-container': {}, 'bordered-logo-container': guild.LogoBorder == true }">
           <img
@@ -718,7 +719,7 @@ input[type="color"]::-webkit-color-swatch {
           <option class="bg-black text-goa-gray" :value="false">No</option>
         </select>
       </div>
-      <div class="text-goa-red uk-text-middle uk-padding-small uk-margin-top">
+      <div class="text-accent uk-text-middle uk-padding-small uk-margin-top">
         Recommend 'No' for png and 'Yes' for opaque logos.
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
@@ -729,7 +730,7 @@ input[type="color"]::-webkit-color-swatch {
 
     <!-- Guild Description -->
     <div v-show="steps[currentStep] == 'Guild Description'" class="uk-width-1-1 uk-margin-large-bottom">
-      <h3 class="text-goa-red uk-margin-remove">GUILD DESCRIPTION</h3>
+      <h3 class="test-header uk-margin-remove">GUILD DESCRIPTION</h3>
       <Editor v-model="guild.Description"/>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
         <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Logo</button>
@@ -795,7 +796,7 @@ input[type="color"]::-webkit-color-swatch {
 
     <!-- Rank Structure -->
     <div v-show="steps[currentStep] == 'Guild Ranks'" class="rank-structure-container uk-width-1-1">
-      <h3 class="text-goa-red uk-margin-remove">RANK STRUCTURE</h3>
+      <h3 class="test-header uk-margin-remove">RANK STRUCTURE</h3>
       <div v-for="(rank, index) in ranks" class="uk-flex uk-margin-small-bottom">
         <div class="uk-flex uk-width-1-1 uk-child-width-expand" uk-grid>
           <div class="uk-flex uk-flex-column uk-margin-small-right">

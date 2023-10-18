@@ -34,7 +34,7 @@ let guild = ref({});
 let stars = ref(0);
 const maxRanks = 6;
 // const primaryColor = document.querySelector(":root").style.getPropertyValue("--primary-color");
-const leaderBG = ref(document.querySelector(":root").style.getPropertyValue("--accent-color") + "22");
+const leaderBG = ref(document.querySelector(":root").style.getPropertyValue("--primary-color") + "22");
 const memberBG = ref(document.querySelector(":root").style.getPropertyValue("--primary-color") + "22");
 
 onBeforeMount(() => {
@@ -132,6 +132,15 @@ label {
   box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.5);
 }
 
+.leader-class {
+  box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.member-class {
+  box-shadow: inset 0 0 30px rgb(0, 0, 0);
+  background-color: black;
+}
+
 .member-list-member {
   border: 1px solid gray;
   border-radius: 30px;
@@ -168,13 +177,13 @@ label {
 
 .leader {
     --w-alpha: var(--primary-color) + 'e6';
-    background-color: v-bind(leaderBG);
-    color: var(--button-text-color);
+    background-color: rgba(255, 215, 0, 0.2);
+    color: white;
 }
 
 .member {
-  background-color: v-bind(memberBG);
-  color: var(--button-text-color);
+  background-color: v-bind(leaderBG);
+  color: white;
 }
 
 .member-professions {
@@ -255,11 +264,14 @@ label {
 }
 
 .uk-icon-button {
-  background-color: transparent;
+  background-color: transparent!important;
+  color: var(--primary-color)!important;
+  border: none!important;
 }
 
 .uk-icon-button:hover {
-  background-color: rgba(255, 255, 255, .1);
+  background-color: var(--primary-color)!important;
+  color: var(--button-text-color)!important;
   font-weight: bolder;
 
   /* color: red; */
@@ -284,8 +296,8 @@ label {
     <div class="member-card uk-flex uk-width-auto">
         <div class="member-info-container uk-width-expand uk-flex uk-flex-column">
             <div :class="{'member-name-container uk-text-center uk-flex uk-overflow-hidden': member,
-                'leader' : member.Rank.RankName == 'Guild Leader',
-                'member' : member.Rank.RankName == 'Member'}">
+                'leader leader-class' : member.Rank.RankName == 'Guild Leader',
+                'member member-class' : member.Rank.RankName == 'Member'}">
                 <!-- <div>
                     <div class="card-logo " :data-src="guild.Logo" alt="Uploaded Image" uk-img></div>
                 </div> -->
