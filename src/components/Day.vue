@@ -302,7 +302,8 @@ input, textarea {
     height: 50px;
 }
 .day-mobile {
-    border: 1px solid var(--secondary-color);
+    border: 1px solid gray;
+    cursor: pointer;
 }
 </style>
 

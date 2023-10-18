@@ -50,6 +50,14 @@
   color: var(--accent-color)!important;
 }
 
+.text-button {
+  color: var(--button-text-color)!important;
+}
+
+.text-header {
+  color: var(--header-color)!important;
+}
+
 .upper {
   text-transform: uppercase!important;
 }
@@ -363,13 +371,19 @@ h4 {
 }
 
 .cell {
-  border: 1px solid rgba(255, 255, 255, .2);
+  border: 1px solid var(--primary-color);
   height: 50px;
   text-align: center;
   cursor: pointer;
 }
 .cell:hover {
-  background-color: var(--primary-color)!important;
+  background-color: var(--button-text-color)!important;
+  color: var(--button-hover-text-color);
+}
+
+.cell:focus,
+.cell:active {
+  background-color: var(--secondary-color)!important;
   color: var(--button-hover-text-color);
 }
 
