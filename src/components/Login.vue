@@ -129,12 +129,12 @@ let register = () => {
       </div>
       <div class="login-button-container uk-flex uk-child-width-1-2 uk-width-1-1">
         <button
-          class="goa-button uk-light uk-margin-right uk-padding-small"
+          class="goa-button uk-margin-right uk-padding-small"
           @click="doLogin"
         >
           Login
         </button>
-        <button class="goa-button uk-light uk-padding-small" @click="register">
+        <button class="goa-button uk-padding-small" @click="register">
           Register
         </button>
       </div>
