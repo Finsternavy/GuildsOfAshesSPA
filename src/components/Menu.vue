@@ -105,7 +105,7 @@ const navigate = (path) => {
 
 .goa-dropnav {
   border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--background-color);
 }
 
 .logo {
@@ -166,6 +166,10 @@ li > a {
 .mobile-sub-nav {
   border-top: 1px solid var(--primary-color);
 }
+
+.user-link {
+  cursor: pointer;
+}
 </style>
 
 <template>
@@ -216,7 +220,7 @@ li > a {
             uk-dropnav="mode: hover; offset: 50">
             <ul class="uk-margin-remove">
               <div class="uk-flex uk-flex-column uk-text-center">
-                <span uk-icon="icon: user" class=""></span>
+                <span uk-icon="icon: user" class="text-secondary"></span>
                 <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
               </div>
               <div class="uk-dropdown uk-background-secondary goa-dropnav">
@@ -231,14 +235,14 @@ li > a {
                   </li> -->
                   <li>
                     <div @click="navigate('/profile')">
-                      <span class="">
+                      <span class="text-primary user-link">
                         Profile
                       </span>
                     </div>
                   </li>
                   <li>
                     <div @click="navigate('/')">
-                      <span class="" @click="logout">
+                      <span class="text-primary user-link" @click="logout">
                           Log Out
                       </span>
                     </div>
@@ -292,26 +296,26 @@ li > a {
         </div>
       </div>
       <div>
-        <div v-if="!store.getAuthenticated" @click="navigate('/login')" class="text-default">
+        <div v-if="!store.getAuthenticated" @click="navigate('/login')" class="text-primary">
           <div class="uk-flex uk-flex-column uk-text-center">
-            <span class="text-default" uk-icon="icon: user"></span>
+            <span class="text-primary" uk-icon="icon: user"></span>
             <span class="text-goa-red">Login</span>
           </div>
         </div>
         <div v-if="store.getAuthenticated" class="uk-flex uk-flex-column uk-flex-middle">
           <div class="uk-flex uk-flex-column uk-text-center">
             <span uk-icon="icon: user" class=""></span>
-            <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
+            <span class="text-primary uk-margin-remove">{{ displayUserInfo() }}</span>
           </div>
           <div>
-            <div class="uk-nav uk-dropdown-nav uk-flex uk-flex-center uk-flex-column">
+            <div class=" uk-flex uk-flex-center uk-flex-column">
               <div @click="navigate('/profile')" class="uk-margin-small-top">
-                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom">
+                <span class="uk-align-center uk-margin-small text-primary">
                   Profile
                 </span>
               </div>
               <div @click="navigate('/')" class="uk-margin-small-top">
-                <span class="uk-align-center uk-margin-small uk-margin-remove-bottom" @click="logout">
+                <span class="uk-align-center uk-margin-small text-primary uk-margin-remove-bottom" @click="logout">
                     Log Out
                 </span>
               </div>
