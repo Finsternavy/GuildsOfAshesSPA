@@ -373,7 +373,7 @@ const getBanner = () => {
       rgba(255, 255, 255, 0.05) 21%,
       transparent 28%);
   background-size: contain;
-  z-index: 1;
+  z-index: 2;
 }
 
 .banner-bar {
@@ -389,6 +389,7 @@ const getBanner = () => {
 
 .sub-bar {
   top: -5px;
+  z-index: 1;
 }
 
 .vertical-rod {
