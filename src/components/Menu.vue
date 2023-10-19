@@ -174,7 +174,7 @@ li > a {
 
 <template>
   <div class="uk-visible@m goa-container-no-radius" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;">
-    <nav id="Menu" class="uk-navbar-container sub-menu uk-container uk-flex uk-flex-middle">
+    <nav id="Menu" class="uk-navbar-container sub-menu container uk-flex uk-flex-middle uk-margin-remove-top">
       <div class="left-nav uk-flex uk-flex-middle uk-width-small">
         <div class="remove-background uk-margin-right" @click="goHome">
           <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
