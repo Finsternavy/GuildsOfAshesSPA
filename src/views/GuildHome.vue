@@ -411,8 +411,8 @@ const getBanner = () => {
 <template>
   <div class="uk-flex uk-position-relative">
     <div class="vertical-rod"></div>
-  <div class="banner-bar uk-visible@m" :data-src="BannerBar" uk-img></div>
-    <div class="guild-side-banner uk-padding-small uk-width-1-6 uk-margin-right uk-visible@m" uk-sticky>
+  <div class="banner-bar uk-visible@l" :data-src="BannerBar" uk-img></div>
+    <div class="guild-side-banner uk-padding-small uk-width-1-6 uk-margin-right uk-visible@l" uk-sticky>
       <div :class="{
           'logo-container uk-margin-bottom': {} }">
         <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
@@ -454,12 +454,12 @@ const getBanner = () => {
         <!-- </div> -->
         <Loading v-model="showContent" :message="'Loading Guild ...'" />
         <div v-if="showContent" class="guild-home">
-          <div class="uk-hidden@m uk-padding" :class="{
+          <Editor class="uk-width-1-1" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
+          <div class="uk-hidden@l uk-padding" :class="{
               'logo-container uk-margin-bottom': {},
               'bordered-logo-container': guild.LogoBorder == true }">
             <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
           </div>
-          <Editor class="uk-width-1-1" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
       
           <!-- Guild Application Review ( move this to a component )-->
           <div id="Inbox" class="uk-padding" hidden>
@@ -617,8 +617,8 @@ const getBanner = () => {
           </div> -->
         </div>
       </div>
-      <div class="uk-position-relative">
-        <div class="banner-bar sub-bar uk-visible@m" :data-src="BannerBar" uk-img></div>
+      <div v-if="user && user.GuildID == guildID" class="uk-position-relative">
+        <div class="banner-bar sub-bar uk-visible@l" :data-src="BannerBar" uk-img></div>
         <!-- <div class="vertical-rod" :data-src="VerticalRod" uk-img></div> -->
         <div class="guild-banner-test uk-width-1-1 uk-margin-large-bottom uk-position-relative">
           <div class="banner-container right-side uk-width-1-1">
@@ -643,7 +643,7 @@ const getBanner = () => {
         </div>
       </div>
     </div>
-  <div class="guild-side-banner uk-padding-small uk-margin-left uk-width-1-6 uk-visible@m" uk-sticky>
+  <div class="guild-side-banner uk-padding-small uk-margin-left uk-width-1-6 uk-visible@l" uk-sticky>
     <div :class="{
         'logo-container uk-margin-bottom': {},
         'bordered-logo-container': guild.LogoBorder == true }">

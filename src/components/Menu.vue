@@ -181,7 +181,7 @@ li > a {
         </div>
       </div>
       <div class="right-nav uk-text-center uk-width-expand">
-        <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link">
+        <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container ">
           <div @click="navigate('/guilds')" >
             <span class="link uk-margin-remove">Browse Guilds</span>
           </div>

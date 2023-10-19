@@ -313,6 +313,7 @@ h4 {
   word-wrap: nowrap;
   /* height: 40px; */
   transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
 }
 
 .goa-button-no-radius {
