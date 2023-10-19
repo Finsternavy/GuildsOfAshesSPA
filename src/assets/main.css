@@ -156,7 +156,7 @@ h4 {
   width: 100%;
   background-size: contain;
   pointer-events: none;
-  opacity: 75%;
+  /* opacity: 75%; */
 }
 
 /* Maybe add a frame option on image upload? Then add another
