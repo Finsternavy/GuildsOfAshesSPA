@@ -3,9 +3,12 @@ import { defineStore } from 'pinia'
 export let useUserStore = defineStore('userStore', {
 
   state: () => ({
-    user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")) : null,
-    authenticated: localStorage.getItem("authenticated") ? true : false,
-    guildID: localStorage.getItem("guildID") ? localStorage.getItem("guildID") : null
+    // user: localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User")) : null,
+    // authenticated: localStorage.getItem("authenticated") ? true : false,
+    // guildID: localStorage.getItem("guildID") ? localStorage.getItem("guildID") : null
+    user: null,
+    authenticated: false,
+    guildID: null
   }),
 
   getters: {
@@ -25,11 +28,15 @@ export let useUserStore = defineStore('userStore', {
   },
 
   actions: {
+    // setUser(user) {
+    //   localStorage.setItem("User", JSON.stringify(user));
+    //   localStorage.setItem("authenticated", true);
+    //     localStorage.setItem("guildID", user.GuildID);
+    //   this.user = user;
+    // },
     setUser(user) {
-      localStorage.setItem("User", JSON.stringify(user));
-      localStorage.setItem("authenticated", true);
-        localStorage.setItem("guildID", user.GuildID);
       this.user = user;
+      this.authenticated = true;
     },
     setAuthenticated(val) {
       this.authenticated = val;

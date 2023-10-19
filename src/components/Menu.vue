@@ -25,7 +25,7 @@ onMounted(() => {
 });
 
 let checkUser = () => {
-  user = store.getUser;
+  user.value = store.getUser;
   // console.log(user);
   if (!user) {
     authenticated.value = false;
@@ -93,7 +93,7 @@ const navigate = (path) => {
   height: 3px;
   bottom: -3px;
   left: 50%;
-  background-color: var(--secondary-color);
+  background-color: var(--accent-color);
   transition: width 0.5s ease, left 0.5s ease;
 }
 
@@ -174,18 +174,13 @@ li > a {
 
 <template>
   <div class="uk-visible@m goa-container-no-radius" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;">
-    <nav id="Menu" class="uk-navbar-container sub-menu uk-flex uk-flex-between uk-flex-middle">
-      <div class="left-nav uk-flex uk-flex-middle">
+    <nav id="Menu" class="uk-navbar-container sub-menu uk-container uk-flex uk-flex-middle">
+      <div class="left-nav uk-flex uk-flex-middle uk-width-small">
         <div class="remove-background uk-margin-right" @click="goHome">
           <img class="logo" src="../public/Images/GoALogoFinalShadow.png" alt="LOGO" />
         </div>
-        <div class="dev-links">
-          <div @click="navigate('/feedback')" v-if="store.getAuthenticated">
-            <span class="goa-button">Feedback</span>
-          </div>
-        </div>
       </div>
-      <div class="right-nav uk-text-center uk-width-2-3">
+      <div class="right-nav uk-text-center uk-width-expand">
         <div v-if="!store.getAuthenticated || !store.getGuildID" class="page-links-container uk-link">
           <div @click="navigate('/guilds')" >
             <span class="link uk-margin-remove">Browse Guilds</span>
@@ -194,6 +189,11 @@ li > a {
 
         <!-- Need to add to this if. If member is not in a guild most of these should not show -->
         <div v-if="store.getAuthenticated && store.getGuildID" class="uk-flex uk-flex-center">
+          <div class="dev-links uk-margin-right">
+            <div @click="navigate('/feedback')" v-if="store.getAuthenticated">
+              <span class="goa-button">Feedback</span>
+            </div>
+          </div>
           <div @click="navigate('/guild/home')"><span class="link">Guild Home</span></div>
           <!-- <RouterLink to="/guild/news"><span class="link">News</span></RouterLink> -->
           <div @click="navigate('/guild/forums')"><span class="link">Forums</span></div>
@@ -203,14 +203,13 @@ li > a {
           <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
         </div>
       </div>
-      <div class="login-profile-container uk-text-right uk-width-1-6">
+      <div class="login-profile-container uk-width-small">
         <div class="uk-flex uk-flex-right">
-
           <div v-if="!store.getAuthenticated" class="not-logged-in">
             <div @click="navigate('/login')" class="text-default">
               <div class="uk-flex uk-flex-column uk-text-center">
                 <span class="text-default" uk-icon="icon: user"></span>
-                <span class="text-goa-red">Login</span>
+                <span class="text-primary">Login</span>
               </div>
             </div>
           </div>
@@ -220,8 +219,8 @@ li > a {
             uk-dropnav="mode: hover; offset: 50">
             <ul class="uk-margin-remove">
               <div class="uk-flex uk-flex-column uk-text-center">
-                <span uk-icon="icon: user" class="text-secondary"></span>
-                <span class="text-goa-red uk-margin-remove">{{ displayUserInfo() }}</span>
+                <span uk-icon="icon: user" class="text-default"></span>
+                <span class="text-primary uk-margin-remove">{{ displayUserInfo() }}</span>
               </div>
               <div class="uk-dropdown uk-background-secondary goa-dropnav">
                 <ul class="uk-nav uk-dropdown-nav uk-flex uk-flex-middle uk-flex-column uk-width-1-1">
@@ -298,13 +297,13 @@ li > a {
       <div>
         <div v-if="!store.getAuthenticated" @click="navigate('/login')" class="text-primary">
           <div class="uk-flex uk-flex-column uk-text-center">
-            <span class="text-primary" uk-icon="icon: user"></span>
-            <span class="text-goa-red">Login</span>
+            <span class="text-default" uk-icon="icon: user"></span>
+            <span class="text-primary">Login</span>
           </div>
         </div>
         <div v-if="store.getAuthenticated" class="uk-flex uk-flex-column uk-flex-middle">
           <div class="uk-flex uk-flex-column uk-text-center">
-            <span uk-icon="icon: user" class=""></span>
+            <span uk-icon="icon: user" class="text-default"></span>
             <span class="text-primary uk-margin-remove">{{ displayUserInfo() }}</span>
           </div>
           <div>
