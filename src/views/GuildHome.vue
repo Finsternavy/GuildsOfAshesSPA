@@ -71,7 +71,7 @@ const upcomingEvents = computed(() => {
       if (event.StartDate) {
         let eventDate = new Date(event.StartDate);
         let today = new Date();
-        if (eventDate > today && eventDate - today < (604800000 * 2)) { // 604800000 = 1 week in milliseconds
+        if (eventDate.getDate() + 1 >= today.getDate() && eventDate - today < (604800000 * 2)) { // 604800000 = 1 week in milliseconds
           events.push(event);
         }
       }
@@ -367,15 +367,31 @@ const getBanner = () => {
   border-radius: 10px;
   box-shadow: inset 0px 0px 20px 10px rgba(255, 255, 255, 0.1);
   background-color: var(--background-color);
-  background-image: repeating-linear-gradient(89deg, 
+  /* background-image: repeating-linear-gradient(89deg, 
       transparent, 
       transparent 7%, 
       rgba(255, 255, 255, 0.05) 14%, 
       rgba(255, 255, 255, 0.05) 21%,
-      transparent 28%);
+      transparent 28%); */
   background-size: contain;
   clip-path: polygon(0% 0%, 100% 0%, 99% 12%, 98% 23%, 98% 37%, 98% 49%, 98% 62%, 98% 83%, 99% 92%, 100% 100%, 97% 99%, 96% 97%, 94% 99%, 93% 98%, 90% 100%, 86% 99%, 84% 99%, 80% 99%, 78% 99%, 75% 100%, 74% 96%, 73% 98%, 72% 98%, 70% 100%, 68% 100%, 67% 99%, 64% 99%, 62% 96%, 62% 100%, 58% 100%, 51% 100%, 49% 98%, 48% 100%, 45% 100%, 44% 96%, 43% 98%, 40% 99%, 39% 98%, 36% 100%, 34% 100%, 32% 99%, 29% 99%, 26% 99%, 23% 100%, 22% 98%, 19% 100%, 16% 100%, 14% 98%, 12% 99%, 10% 97%, 8% 99%, 6% 99%, 4% 100%, 2% 99%, 0% 100%, 1% 84%, 2% 57%, 2% 24%, 1% 10%);
   z-index: 2;
+}
+
+.guild-side-banner:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(89deg, 
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7) 7%, 
+      rgba(255, 255, 255, 0.07) 14%, 
+      rgba(255, 255, 255, 0.07) 21%,
+      rgba(0, 0, 0, 0.7) 28%);
+  background-size: contain;
 }
 
 .banner-bar {
@@ -620,7 +636,7 @@ const getBanner = () => {
         </div>
       </div>
       <div v-if="user && user.GuildID == guildID" class="uk-position-relative">
-        <div class="banner-bar sub-bar uk-visible@l" :data-src="BannerBar" uk-img></div>
+        <div v-if="upcomingEvents && upcomingEvents.length > 0" class="banner-bar sub-bar uk-visible@l" :data-src="BannerBar" uk-img></div>
         <!-- <div class="vertical-rod" :data-src="VerticalRod" uk-img></div> -->
         <div class="guild-banner-test uk-width-1-1 uk-margin-large-bottom uk-position-relative">
           <div class="banner-container right-side uk-width-1-1">
