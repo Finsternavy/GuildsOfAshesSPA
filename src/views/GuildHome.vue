@@ -7,6 +7,8 @@ import { useGuildStore } from "../stores/guildStore";
 import Loading from "../components/Loading.vue";
 import { useAPI } from '../stores/apiStore';
 import Editor from "../components/Editor.vue";
+import BannerBar from '../public/Images/BannerRod.png';
+// import VerticalRod from '../public/Images/VerticalRod.png';
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Guilds";
@@ -306,203 +308,346 @@ const getBanner = () => {
 .guild-control-container {
   position: sticky;
   z-index: 100;
-  border-radius: 30px 30px 0 0;
+  border-radius: 30px;
+  margin-bottom: 40px;
 }
 
 .goa-container-mod {
   border-radius: 0px 0px 30px 30px;
 }
+
+.banner {
+  position: absolute!important;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.radius-top {
+  border-radius: 30px 30px 0 0;
+}
+
+.radius-bottom {
+  border-radius: 0 0 30px 30px;
+}
+@media (max-width: 768px) {
+  .font-shrink {
+    font-size: 16px!important;
+  }
+}
+
+.guild-banner-test-container {
+  position: fixed;
+}
+.guild-banner-test {
+  /* position: absolute;
+  height: 100vh;
+  width: 100%;
+  max-width: 100%; */
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 20px 10px rgba(255, 255, 255, 0.1);
+  background-color: var(--background-color);
+  background-image: repeating-linear-gradient(89deg, 
+      transparent, 
+      transparent 7%, 
+      rgba(255, 255, 255, 0.05) 14%, 
+      rgba(255, 255, 255, 0.05) 21%,
+      transparent 28%);
+  background-size: contain;
+  z-index: 2!important;
+  /* overflow: hidden; */
+}
+
+.guild-side-banner {
+  display: flex;
+  align-items: center;
+  min-height: fit-content;
+  max-height: 70vh;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 20px 10px rgba(255, 255, 255, 0.1);
+  background-color: var(--background-color);
+  background-image: repeating-linear-gradient(89deg, 
+      transparent, 
+      transparent 7%, 
+      rgba(255, 255, 255, 0.05) 14%, 
+      rgba(255, 255, 255, 0.05) 21%,
+      transparent 28%);
+  background-size: contain;
+  z-index: 1;
+}
+
+.banner-bar {
+  position: absolute;
+  width: calc(100% + 250px);
+  transform: translateX(-125px);
+  top: -15px;
+  height: 90px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 1;
+}
+
+.sub-bar {
+  top: -5px;
+}
+
+.vertical-rod {
+  position: fixed;
+  height: 100%;
+  width: 15px;
+  /* top: 25vh; */
+  left: calc(50% - 10px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: linear-gradient(to right, gray, gray 10%, rgb(68, 68, 68) 15%, rgb(36, 36, 36) 30%, rgb(16, 16, 16) 100%);
+}
+
+.banner-container {
+  z-index: -1!important;
+}
 </style>
 
 <template>
-  <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between">
-    <!-- <buttonuk-toggle="target: #Inbox; animation: uk-animation-fade" 
-      class="goa-button goa-edit-button uk-flex uk-flex-middle"> -->
-
-      <!-- Move this to an admin control panel | probably option under the user icon -->
-    <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
-      class="goa-button uk-flex uk-flex-middle">
-      <span  uk-icon="icon: warning" class=""></span>
-      <span class="uk-margin-small-left">New Applications!</span>
-    </button>
-    <!-- <button
-      @click="createApplication" class="goa-button uk-margin-left">
-      Create Application
-    </button>
-    <button
-      @click="" class="goa-button uk-margin-left">
-      Change Logo
-    </button>
-    <button
-      @click="" class="goa-button uk-margin-left">
-      Edit Banner
-    </button>
-    <button
-      @click="" class="goa-button uk-margin-left">
-      Edit Info
-    </button>
-    <button
-      @click="" class="goa-button uk-margin-left">
-      Edit Colors
-    </button> -->
-  </div>
-  <Loading v-model="showContent" :message="'Loading Guild ...'" />
-  <div v-if="showContent" class="guild-home">
-    <!-- This will only show for guild leaders (Or delegated rank)-->
-
-    <!-- Guild Application Review-->
-    <div id="Inbox" class="goa-container-no-radius uk-padding" hidden>
-      <div v-for="application in inbox" class="applicant-container goa-container uk-flex uk-flex-column">
-        <h3 class="text-goa-red">Applicant Info</h3>
-        <div class="applicant-info uk-width-1-1 uk-flex uk-child-width-1-4 uk-grid-small uk-margin-bottom" uk-grid>
-          <div class="applicant-data-item uk-flex uk-flex-column">
-            <label for="">Username</label>
-            <input class="goa-input" type="text" readonly v-model="application.User.Username">
-          </div>
-          <div class="applicant-data-item uk-flex uk-flex-column">
-            <label for="">Class</label>
-            <input class="goa-input" type="text" readonly v-model="application.User.Subclass">
-          </div>
-          <div class="applicant-data-item uk-flex uk-flex-column">
-            <label for="">Primary</label>
-            <input class="goa-input" type="text" readonly v-model="application.User.Primary">
-          </div>
-          <div class="applicant-data-item uk-flex uk-flex-column">
-            <label for="">Secondary</label>
-            <input class="goa-input" type="text" readonly v-model="application.User.Secondary">
-          </div>
-        </div>
-        <hr class="uk-divider-icon uk-width-1-1 text-goa-red">
-        <div class="application-responses">
-          <div class="question-info">
-            <h3 class="text-goa-red">Questions</h3>
-            <div v-for="question in application.Questions" class="uk-margin-bottom">
-              <p class="text-goa-red">{{ question.question }}</p>
-              <p>{{ question.answer }}</p>
-            </div>
-          </div>
-        </div>
-        <hr class="uk-divider-icon uk-width-1-1 text-goa-red">
-        <h4 class="text-goa-red uk-text-center uk-margin-remove-top uk-margin-medium-bottom">Process Application</h4>
-        <div class="application-responses uk-flex uk-flex-around uk-width-1-1">
-          <div class="Approve-container">
-            <button class="goa-button goa-success-button" uk-toggle="target: #ApprovalRank">Grant Full Membership</button>
-          </div>
-          <div class="Approve-container">
-            <button class="goa-button goa-deny-button uk-width-small">Deny</button>
-          </div>
-        </div>
-        <div id="ApprovalRank" class="approval-rank-container" hidden>
-          <div class="uk-flex uk-flex-column uk-margin-bottom">
-            <label for="">Rank</label>
-            <select class="goa-input" v-model="application.User.Rank">
-              <option class="text-goa-red uk-background-secondary" v-for="rank in guild.Ranks" :value="rank">{{rank.RankName}}</option>
-            </select>
-          </div>
-          <button @click="approveApplication(application)" class="goa-button">Approve as {{ application.User.Rank.RankName }}</button>
-        </div>
-      </div>
-  </div>
-
-    <!-- Guild Info Section -->
-
-    <div class="goa-container goa-container-mod uk-padding uk-margin-bottom uk-position-relative">
-      <div v-if=" user && !user.GuildID">
-        <button
-          v-if="user"
-          @click="apply" class="goa-button uk-margin-left uk-margin-top uk-position-top-left">
-          Apply
-        </button>
-      </div>
-      
-      <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
-      <p v-if="guild.MemberList" class="member-count uk-position-top-right text-primary uk-margin-right">
-       Members: <span class="text-default">{{ guild.MemberList.length }} </span>
-      </p>
-      
+  <div class="uk-flex uk-position-relative">
+    <div class="vertical-rod"></div>
+  <div class="banner-bar uk-visible@m" :data-src="BannerBar" uk-img></div>
+    <div class="guild-side-banner uk-padding-small uk-width-1-6 uk-margin-right uk-visible@m" uk-sticky>
       <div :class="{
-          'logo-container uk-margin-bottom': {},
-          'bordered-logo-container': guild.LogoBorder == true,
-        }"
-      >
+          'logo-container uk-margin-bottom': {} }">
         <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
       </div>
+    </div>
+    <div class="center-content uk-width-expand uk-flex uk-flex-column">
+        <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-padding uk-margin-medium-bottom" uk-stick="start: 0">
+        
+        <!-- <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between"> -->
+          <!-- <buttonuk-toggle="target: #Inbox; animation: uk-animation-fade" 
+            class="goa-button goa-edit-button uk-flex uk-flex-middle"> -->
       
-      <div class="uk-flex uk-width-1-1 uk-child-width-1-2 uk-margin-bottom">
-        <div class="uk-flex uk-flex-column">
-          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper">{{ guild.Category }}</div>
-          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper">{{ guild.Focus }}</div>
-        </div>
-        <div class="uk-flex uk-flex-column">
-          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper" v-if="guild && guild.PrimaryRace">{{ guild.PrimaryRace }}</div>
-          <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper">{{ guild.Region }}</div>
-        </div>
-      </div>
-
-      <!-- This is where we display the rich text -->
-      <div v-html="guild.Description" class="uk-margin-large-top"></div>
-    </div>
-    <!-- Only show if guild leader or mod issues alert-->
-    <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">
-      <h3 class="uk-light uk-text-center">GUILD ALERT!</h3>
-      <hr />
-      <div class="uk-margin-bottom goa-container uk-padding">
-        <p class="uk-margin-remove-bottom">
-          Alert issued by:
-          <span v-if="guild.Leader" class="text-goa-red uk-text-bold">{{
-            guild.Leader.Username
-          }}</span>
-        </p>
-        <p class="uk-margin-remove-top">
-          Alert will expire at: <span class="uk-text-warning">4:15 PM EST</span>
-        </p>
-        <p class="uk-margin-remove">The castle is under attack!</p>
-        <p class="uk-margin-remove">
-          War has been declaired! Participate in pre-war events. WE MUST PROTECT THIS
-          HOUSE!
-        </p>
-      </div>
-    </div>
-    <div class="right-side uk-width-1-1">
-      <div class="goa-container upcoming-events uk-padding uk-light">
-        <h3>Upcoming Events</h3>
-        <div class="event-list uk-flex uk-width-1-1 grid">
-          <div v-for="events in upcomingEvents" class="event-card uk-flex uk-flex-column uk-text-center uk-padding-small uk-width-1-1">
-              <div>
-                <h4 class="uk-text-bold text-header">{{ events.Title }}</h4>
-              </div>
-              <div class="uk-flex uk-flex-column uk-flex-center">
-                <!-- <p>{{ events.Content }}</p> -->
-                <p class="uk-text-bold"><span class="text-accent">Organizer:</span> {{ events.Organizer }}</p>
-                <div class="uk-child-width-1-2">
-                  <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
-                  <span class="uk-text-bold uk-text-left"><span class="text-accent">@</span> {{ events.StartTime }}</span>
+            <!-- Move this to an admin control panel | probably option under the user icon -->
+          <!-- <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+            class="goa-button uk-flex uk-flex-middle">
+            <span  uk-icon="icon: warning" class=""></span>
+            <span class="uk-margin-small-left">New Applications!</span>
+          </button> -->
+          <!-- <button
+            @click="createApplication" class="goa-button uk-margin-left">
+            Create Application
+          </button>
+          <button
+            @click="" class="goa-button uk-margin-left">
+            Change Logo
+          </button>
+          <button
+            @click="" class="goa-button uk-margin-left">
+            Edit Banner
+          </button>
+          <button
+            @click="" class="goa-button uk-margin-left">
+            Edit Info
+          </button>
+          <button
+            @click="" class="goa-button uk-margin-left">
+            Edit Colors
+          </button> -->
+        <!-- </div> -->
+        <Loading v-model="showContent" :message="'Loading Guild ...'" />
+        <div v-if="showContent" class="guild-home">
+          <div class="uk-hidden@m uk-padding" :class="{
+              'logo-container uk-margin-bottom': {},
+              'bordered-logo-container': guild.LogoBorder == true }">
+            <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
+          </div>
+          <Editor class="uk-width-1-1" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
+      
+          <!-- Guild Application Review ( move this to a component )-->
+          <div id="Inbox" class="uk-padding" hidden>
+            <div v-for="application in inbox" class="applicant-container uk-flex uk-flex-column">
+              <h3 class="text-goa-red">Applicant Info</h3>
+              <div class="applicant-info uk-width-1-1 uk-flex uk-child-width-1-4 uk-grid-small uk-margin-bottom" uk-grid>
+                <div class="applicant-data-item uk-flex uk-flex-column">
+                  <label for="">Username</label>
+                  <input class="goa-input" type="text" readonly v-model="application.User.Username">
+                </div>
+                <div class="applicant-data-item uk-flex uk-flex-column">
+                  <label for="">Class</label>
+                  <input class="goa-input" type="text" readonly v-model="application.User.Subclass">
+                </div>
+                <div class="applicant-data-item uk-flex uk-flex-column">
+                  <label for="">Primary</label>
+                  <input class="goa-input" type="text" readonly v-model="application.User.Primary">
+                </div>
+                <div class="applicant-data-item uk-flex uk-flex-column">
+                  <label for="">Secondary</label>
+                  <input class="goa-input" type="text" readonly v-model="application.User.Secondary">
                 </div>
               </div>
+              <hr class="uk-divider-icon uk-width-1-1 text-goa-red">
+              <div class="application-responses">
+                <div class="question-info">
+                  <h3 class="text-goa-red">Questions</h3>
+                  <div v-for="question in application.Questions" class="uk-margin-bottom">
+                    <p class="text-goa-red">{{ question.question }}</p>
+                    <p>{{ question.answer }}</p>
+                  </div>
+                </div>
+              </div>
+              <hr class="uk-divider-icon uk-width-1-1 text-goa-red">
+              <h4 class="text-goa-red uk-text-center uk-margin-remove-top uk-margin-medium-bottom">Process Application</h4>
+              <div class="application-responses uk-flex uk-flex-around uk-width-1-1">
+                <div class="Approve-container">
+                  <button class="goa-button goa-success-button" uk-toggle="target: #ApprovalRank">Grant Full Membership</button>
+                </div>
+                <div class="Approve-container">
+                  <button class="goa-button goa-deny-button uk-width-small">Deny</button>
+                </div>
+              </div>
+              <div id="ApprovalRank" class="approval-rank-container" hidden>
+                <div class="uk-flex uk-flex-column uk-margin-bottom">
+                  <label for="">Rank</label>
+                  <select class="goa-input" v-model="application.User.Rank">
+                    <option class="text-goa-red uk-background-secondary" v-for="rank in guild.Ranks" :value="rank">{{rank.RankName}}</option>
+                  </select>
+                </div>
+                <button @click="approveApplication(application)" class="goa-button">Approve as {{ application.User.Rank.RankName }}</button>
+              </div>
+            </div>
+        </div>
+      
+          <!-- Guild Info Section -->
+      
+          <div class="uk-padding uk-margin-bottom uk-position-relative">
+            <div v-if=" user && !user.GuildID">
+              <button
+                v-if="user"
+                @click="apply" class="goa-button uk-margin-left uk-margin-top uk-position-top-left">
+                Apply
+              </button>
+            </div>
+            
+            <!-- <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
+            <p v-if="guild.MemberList" class="member-count uk-position-top-right text-primary uk-margin-right">
+            Members: <span class="text-default">{{ guild.MemberList.length }} </span>
+            </p> -->
+            
+            <!-- <div :class="{
+                'logo-container uk-margin-bottom': {},
+                'bordered-logo-container': guild.LogoBorder == true,
+              }">
+              <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
+            </div> -->
+            
+            <div class="uk-flex uk-width-1-1 uk-flex-between uk-margin-bottom">
+                <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink">
+                  <label class="text-accent" for="">Style</label>
+                  <p class="uk-margin-remove"> {{ guild.Category }} - {{ guild.Focus }}</p>
+                </div>
+                <!-- <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper"></div> -->
+                <div v-if="guild && guild.PrimaryRace" class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink">
+                  <label class="text-accent" for="">Race</label> 
+                  <p class="uk-margin-remove">{{ guild.PrimaryRace }}</p> 
+                </div>
+                <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink">
+                  <label class="text-accent" for="">Region</label> 
+                  <p class="uk-margin-remove">{{ guild.Region }}</p>
+                </div>
+            </div>
+      
+            <!-- This is where we display the rich text -->
+            <div v-html="guild.Description" class="uk-margin-large-top"></div>
           </div>
+          <!-- Only show if guild leader or mod issues alert-->
+          <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">
+            <h3 class="uk-light uk-text-center">GUILD ALERT!</h3>
+            <hr />
+            <div class="uk-margin-bottom uk-padding">
+              <p class="uk-margin-remove-bottom">
+                Alert issued by:
+                <span v-if="guild.Leader" class="text-goa-red uk-text-bold">{{
+                  guild.Leader.Username
+                }}</span>
+              </p>
+              <p class="uk-margin-remove-top">
+                Alert will expire at: <span class="uk-text-warning">4:15 PM EST</span>
+              </p>
+              <p class="uk-margin-remove">The castle is under attack!</p>
+              <p class="uk-margin-remove">
+                War has been declaired! Participate in pre-war events. WE MUST PROTECT THIS
+                HOUSE!
+              </p>
+            </div>
+          </div>
+          <!-- <div class="right-side uk-width-1-1">
+            <div v-if="upcomingEvents && upcomingEvents.length > 0" class="upcoming-events uk-padding uk-light">
+              <h3>Upcoming Events</h3>
+              <div class="event-list uk-flex uk-width-1-1 grid">
+                <div v-for="events in upcomingEvents" class="event-card uk-flex uk-flex-column uk-text-center uk-padding-small uk-width-1-1">
+                    <div>
+                      <h4 class="uk-text-bold text-header">{{ events.Title }}</h4>
+                    </div>
+                    <div class="uk-flex uk-flex-column uk-flex-center">
+                      <p class="uk-text-bold"><span class="text-accent">Organizer:</span> {{ events.Organizer }}</p>
+                      <div class="uk-child-width-1-2">
+                        <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
+                        <span class="uk-text-bold uk-text-left"><span class="text-accent">@</span> {{ events.StartTime }}</span>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <!-- <div class="guild-main-content uk-flex">
+            <div class="left-side uk-width-2-3">
+              <div class="goa-container newest-mod-message uk-margin-right uk-padding uk-light">
+                <h3>Get to work!</h3>
+                <p class="uk-text-bold uk-text-warning">The Leader @<span> 01/01/1901</span></p>
+                <p>
+                  We are in need of resources. Check out the task section, claim a task, gather
+                  resources and support the guild!
+                </p>
+              </div>
+              <div
+                class="popular-threads goa-container uk-margin-top uk-margin-right uk-padding"
+              >
+                <h3 class="uk-light">Popular Threads</h3>
+                <a href="#">Character Build Guides</a>
+              </div>
+            </div>
+          </div> -->
         </div>
       </div>
-      <div class="discord uk-margin-top">
-        <!-- <Discord class="goa-container" v-model="discordServers" /> -->
+      <div class="uk-position-relative">
+        <div class="banner-bar sub-bar uk-visible@m" :data-src="BannerBar" uk-img></div>
+        <!-- <div class="vertical-rod" :data-src="VerticalRod" uk-img></div> -->
+        <div class="guild-banner-test uk-width-1-1 uk-margin-large-bottom uk-position-relative">
+          <div class="banner-container right-side uk-width-1-1">
+              <div v-if="upcomingEvents && upcomingEvents.length > 0" class="upcoming-events uk-padding uk-light">
+                <h1 class="uk-text-center">Upcoming Events</h1>
+                <div class="event-list uk-flex uk-width-1-1 grid">
+                  <div v-for="events in upcomingEvents" class="event-card uk-flex uk-flex-column uk-text-center uk-padding-small uk-width-1-1">
+                      <div>
+                        <h4 class="uk-text-bold text-header">{{ events.Title }}</h4>
+                      </div>
+                      <div class="uk-flex uk-flex-column uk-flex-center">
+                        <p class="uk-text-bold"><span class="text-accent">Organizer:</span> {{ events.Organizer }}</p>
+                        <div class="uk-child-width-1-2">
+                          <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
+                          <span class="uk-text-bold uk-text-left"><span class="text-accent">@</span> {{ events.StartTime }}</span>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
-    <!-- <div class="guild-main-content uk-flex">
-      <div class="left-side uk-width-2-3">
-        <div class="goa-container newest-mod-message uk-margin-right uk-padding uk-light">
-          <h3>Get to work!</h3>
-          <p class="uk-text-bold uk-text-warning">The Leader @<span> 01/01/1901</span></p>
-          <p>
-            We are in need of resources. Check out the task section, claim a task, gather
-            resources and support the guild!
-          </p>
-        </div>
-        <div
-          class="popular-threads goa-container uk-margin-top uk-margin-right uk-padding"
-        >
-          <h3 class="uk-light">Popular Threads</h3>
-          <a href="#">Character Build Guides</a>
-        </div>
-      </div>
-    </div> -->
+  <div class="guild-side-banner uk-padding-small uk-margin-left uk-width-1-6 uk-visible@m" uk-sticky>
+    <div :class="{
+        'logo-container uk-margin-bottom': {},
+        'bordered-logo-container': guild.LogoBorder == true }">
+      <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
+    </div>
   </div>
+</div>
 </template>
