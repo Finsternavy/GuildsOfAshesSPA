@@ -343,15 +343,15 @@ const getBanner = () => {
   /* position: absolute;
   height: 100vh;
   width: 100%;
-  max-width: 100%; */
+  max-width: 100%; */;
   border-radius: 10px;
   box-shadow: inset 0px 0px 20px 10px rgba(255, 255, 255, 0.1);
   background-color: var(--background-color);
   background-image: repeating-linear-gradient(89deg, 
       transparent, 
       transparent 7%, 
-      rgba(255, 255, 255, 0.05) 14%, 
-      rgba(255, 255, 255, 0.05) 21%,
+      rgba(255, 255, 255, 0.03) 14%, 
+      rgba(255, 255, 255, 0.03) 21%,
       transparent 28%);
   background-size: contain;
   z-index: 2!important;
@@ -365,6 +365,7 @@ const getBanner = () => {
   min-height: fit-content;
   max-height: 70vh;
   border-radius: 10px;
+  overflow: hidden;
   box-shadow: inset 0px 0px 20px 10px rgba(255, 255, 255, 0.1);
   background-color: var(--background-color);
   /* background-image: repeating-linear-gradient(89deg, 
@@ -386,11 +387,11 @@ const getBanner = () => {
   width: 100%;
   height: 100%;
   background-image: repeating-linear-gradient(89deg, 
-      rgba(0, 0, 0, 0.7), 
-      rgba(0, 0, 0, 0.7) 7%, 
-      rgba(255, 255, 255, 0.07) 14%, 
-      rgba(255, 255, 255, 0.07) 21%,
-      rgba(0, 0, 0, 0.7) 28%);
+      rgba(0, 0, 0, 0.6), 
+      rgba(0, 0, 0, 0.6) 7%, 
+      rgba(255, 255, 255, 0.03) 14%, 
+      rgba(255, 255, 255, 0.03) 21%,
+      rgba(0, 0, 0, 0.6) 28%);
   background-size: contain;
 }
 
@@ -439,17 +440,14 @@ const getBanner = () => {
     <div class="center-content uk-width-expand uk-flex uk-flex-column">
         <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-padding uk-margin-medium-bottom" uk-stick="start: 0">
         
-        <!-- <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between"> -->
-          <!-- <buttonuk-toggle="target: #Inbox; animation: uk-animation-fade" 
-            class="goa-button goa-edit-button uk-flex uk-flex-middle"> -->
-      
+        <div v-if="guildLeaderName == username" class="guild-control-container uk-flex uk-flex-between">
             <!-- Move this to an admin control panel | probably option under the user icon -->
-          <!-- <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+          <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
             class="goa-button uk-flex uk-flex-middle">
             <span  uk-icon="icon: warning" class=""></span>
             <span class="uk-margin-small-left">New Applications!</span>
-          </button> -->
-          <!-- <button
+          </button>
+          <button
             @click="createApplication" class="goa-button uk-margin-left">
             Create Application
           </button>
@@ -468,10 +466,17 @@ const getBanner = () => {
           <button
             @click="" class="goa-button uk-margin-left">
             Edit Colors
-          </button> -->
-        <!-- </div> -->
+          </button>
+        </div>
         <Loading v-model="showContent" :message="'Loading Guild ...'" />
         <div v-if="showContent" class="guild-home">
+          <div v-if=" user && !user.GuildID">
+              <button
+                v-if="user"
+                @click="apply" class="goa-button uk-margin-left uk-margin-top">
+                Apply
+              </button>
+            </div>
           <Editor class="uk-width-1-1" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
           <div class="uk-hidden@l uk-padding" :class="{
               'logo-container uk-margin-bottom': {},
@@ -536,13 +541,7 @@ const getBanner = () => {
           <!-- Guild Info Section -->
       
           <div class="uk-padding uk-margin-bottom uk-position-relative">
-            <div v-if=" user && !user.GuildID">
-              <button
-                v-if="user"
-                @click="apply" class="goa-button uk-margin-left uk-margin-top uk-position-top-left">
-                Apply
-              </button>
-            </div>
+            
             
             <!-- <Editor class="uk-margin-top uk-margin-remove-bottom" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
             <p v-if="guild.MemberList" class="member-count uk-position-top-right text-primary uk-margin-right">
@@ -571,6 +570,7 @@ const getBanner = () => {
                   <p class="uk-margin-remove">{{ guild.Region }}</p>
                 </div>
             </div>
+            
       
             <!-- This is where we display the rich text -->
             <div v-html="guild.Description" class="uk-margin-large-top"></div>
@@ -635,10 +635,10 @@ const getBanner = () => {
           </div> -->
         </div>
       </div>
-      <div v-if="user && user.GuildID == guildID" class="uk-position-relative">
+      <div v-if="user && user.GuildID == guildID" class="uk-position-relative uk-padding-large uk-padding-remove-horizontal uk-padding-remove-top">
         <div v-if="upcomingEvents && upcomingEvents.length > 0" class="banner-bar sub-bar uk-visible@l" :data-src="BannerBar" uk-img></div>
         <!-- <div class="vertical-rod" :data-src="VerticalRod" uk-img></div> -->
-        <div class="guild-banner-test uk-width-1-1 uk-margin-large-bottom uk-position-relative">
+        <div class="guild-banner-test uk-width-1-1 uk-margin-large-bottom uk-position-relative uk-padding-large uk-padding-remove-horizontal uk-padding-remove-top">
           <div class="banner-container right-side uk-width-1-1">
               <div v-if="upcomingEvents && upcomingEvents.length > 0" class="upcoming-events uk-padding uk-light">
                 <h1 class="uk-text-center">Upcoming Events</h1>
