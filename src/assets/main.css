@@ -604,9 +604,15 @@ progress::-webkit-progress-value {
 }
 @media (max-width: 1200px) {
   .ProseMirror h1 {
-    font-size: 40px;
+    font-size: 50px;
   }
 }
+@media (max-width: 1000px) {
+  .ProseMirror h1 {
+    font-size: 33px;
+  }
+}
+
 
 .tippy-content {
   background-color: transparent;
