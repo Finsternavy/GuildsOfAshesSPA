@@ -365,6 +365,7 @@ const getBanner = () => {
   min-height: fit-content;
   max-height: 70vh;
   border-radius: 10px;
+  overflow: hidden;
   box-shadow: inset 0px 0px 20px 10px rgba(255, 255, 255, 0.1);
   background-color: var(--background-color);
   /* background-image: repeating-linear-gradient(89deg, 
@@ -437,7 +438,7 @@ const getBanner = () => {
       </div>
     </div>
     <div class="center-content uk-width-expand uk-flex uk-flex-column">
-        <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-padding uk-margin-medium-bottom" uk-stick="start: 0">
+        <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-margin-medium-bottom" uk-stick="start: 0">
         
         <!-- <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between"> -->
           <!-- <buttonuk-toggle="target: #Inbox; animation: uk-animation-fade" 
@@ -472,7 +473,7 @@ const getBanner = () => {
         <!-- </div> -->
         <Loading v-model="showContent" :message="'Loading Guild ...'" />
         <div v-if="showContent" class="guild-home">
-          <Editor class="uk-width-1-1" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
+          <Editor class="uk-width-1-1 uk-padding" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>
           <div class="uk-hidden@l uk-padding" :class="{
               'logo-container uk-margin-bottom': {},
               'bordered-logo-container': guild.LogoBorder == true }">
@@ -573,7 +574,8 @@ const getBanner = () => {
             </div>
       
             <!-- This is where we display the rich text -->
-            <div v-html="guild.Description" class="uk-margin-large-top"></div>
+            <!-- <div v-html="guild.Description" class="uk-margin-large-top"></div> -->
+            <Editor class="uk-margin-top uk-margin-large-bottom" v-if="guild.Description" v-model="guild.Description" :viewOnly="true"/>
           </div>
           <!-- Only show if guild leader or mod issues alert-->
           <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">
@@ -596,43 +598,6 @@ const getBanner = () => {
               </p>
             </div>
           </div>
-          <!-- <div class="right-side uk-width-1-1">
-            <div v-if="upcomingEvents && upcomingEvents.length > 0" class="upcoming-events uk-padding uk-light">
-              <h3>Upcoming Events</h3>
-              <div class="event-list uk-flex uk-width-1-1 grid">
-                <div v-for="events in upcomingEvents" class="event-card uk-flex uk-flex-column uk-text-center uk-padding-small uk-width-1-1">
-                    <div>
-                      <h4 class="uk-text-bold text-header">{{ events.Title }}</h4>
-                    </div>
-                    <div class="uk-flex uk-flex-column uk-flex-center">
-                      <p class="uk-text-bold"><span class="text-accent">Organizer:</span> {{ events.Organizer }}</p>
-                      <div class="uk-child-width-1-2">
-                        <span class="uk-text-bold uk-text-right uk-margin-small-right">{{ events.StartDate }}</span>
-                        <span class="uk-text-bold uk-text-left"><span class="text-accent">@</span> {{ events.StartTime }}</span>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          <!-- <div class="guild-main-content uk-flex">
-            <div class="left-side uk-width-2-3">
-              <div class="goa-container newest-mod-message uk-margin-right uk-padding uk-light">
-                <h3>Get to work!</h3>
-                <p class="uk-text-bold uk-text-warning">The Leader @<span> 01/01/1901</span></p>
-                <p>
-                  We are in need of resources. Check out the task section, claim a task, gather
-                  resources and support the guild!
-                </p>
-              </div>
-              <div
-                class="popular-threads goa-container uk-margin-top uk-margin-right uk-padding"
-              >
-                <h3 class="uk-light">Popular Threads</h3>
-                <a href="#">Character Build Guides</a>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
       <div v-if="user && user.GuildID == guildID" class="uk-position-relative">

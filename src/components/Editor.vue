@@ -394,7 +394,7 @@ const setLink = () => {
                 </div>
             </div>
         </div>
-        <div class="uk-padding-small">
+        <div class="">
             <editor-content id="Editor" :editor="editor" :class="{'hideBorder' : props.viewOnly}" />
         </div>
         <div v-if="!props.viewOnly">
