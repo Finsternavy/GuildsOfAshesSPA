@@ -146,8 +146,8 @@ const close = () => {
 
 .event-creation-tool {
   position: fixed;
-  max-height: 80%;
-  height: 1500px;
+  max-height: 70%;
+  height: 700px;
   max-height: fit-content;
   max-width: 90%;
   top: 50%;
