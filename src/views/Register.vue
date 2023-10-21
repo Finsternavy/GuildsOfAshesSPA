@@ -68,6 +68,7 @@ async function hash(string) {
 }
 
 let checkForm = () => {
+  console.log("Checking form...");
   formChecked.value = true;
   errorMessage.value = [];
   // console.log("Checking form...");
@@ -80,6 +81,20 @@ let checkForm = () => {
       found = false;
     }
   });
+
+  let atFound = false
+  console.log("Checking email...", registrationForm.value['Email'].value)
+  for (let i = 0; i < registrationForm.value['Email'].value.length; i++) {
+    console.log(registrationForm.value['Email'].value[i]);
+    if (registrationForm.value['Email'].value[i] == '@') {
+      console.log("Found @");
+      atFound = true;
+    }
+  }
+  if (!atFound) {
+    errorMessage.value.push("Email is invalid!");
+    found = false;
+  }
   if (!found) {
     // console.log("Missing value");
     return false;
@@ -106,9 +121,7 @@ let checkForm = () => {
   <div class="register uk-flex uk-flex-center">
     <div class="uk-form goa-container uk-padding uk-width-large uk-child-width-1-1">
       <h3 class="uk-text-center text-goa-red">REGISTRATION</h3>
-      <div
-        class="input-container uk-flex uk-flex-column uk-flex-center uk-child-width-auto uk-margin-bottom"
-      >
+      <div class="input-container uk-flex uk-flex-column uk-flex-center uk-child-width-auto uk-margin-bottom">
         <label for="UsernameInput">Username</label>
         <input
           class="goa-input"
@@ -126,7 +139,7 @@ let checkForm = () => {
           class="goa-input"
           :class="{ error: formChecked && !email }"
           id="EmailInput"
-          type="text"
+          type="email"
           v-model="email"
         />
       </div>
