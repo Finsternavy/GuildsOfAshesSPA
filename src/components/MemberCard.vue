@@ -279,7 +279,7 @@ label {
 </style>
 
 <template>
-  <div class="uk-position-relative">
+  <div class="uk-position-relative uk-margin-bottom">
     <div class="uk-flex">
         <div class="class-container class-label">
             <span v-if="member.Subclass" class="uk-text-bold">{{ member.Subclass }}</span>

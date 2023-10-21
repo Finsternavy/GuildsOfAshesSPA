@@ -349,7 +349,7 @@ label {
         <hr class="uk-margin-large-bottom">
         <div v-for="rank, index in sortMembers()">
           <h3 class="text-goa-red">{{rank[0].Rank.RankName}}</h3>
-          <div v-for="member in rank">
+          <div v-for="member in rank" class="uk-margin-medium-bottom">
             <MemberCard :viewer="user.Rank.RankName" :member="member" :function="getGuildData" />
           </div>
             <!-- {{ member.Username }} -->

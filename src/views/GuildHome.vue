@@ -440,17 +440,15 @@ const getBanner = () => {
     <div class="center-content uk-width-expand uk-flex uk-flex-column">
         <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-margin-medium-bottom" uk-stick="start: 0">
         
-        <!-- <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between"> -->
-          <!-- <buttonuk-toggle="target: #Inbox; animation: uk-animation-fade" 
-            class="goa-button goa-edit-button uk-flex uk-flex-middle"> -->
+        <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between">
       
             <!-- Move this to an admin control panel | probably option under the user icon -->
-          <!-- <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+          <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
             class="goa-button uk-flex uk-flex-middle">
             <span  uk-icon="icon: warning" class=""></span>
             <span class="uk-margin-small-left">New Applications!</span>
-          </button> -->
-          <!-- <button
+          </button>
+          <button
             @click="createApplication" class="goa-button uk-margin-left">
             Create Application
           </button>
@@ -469,8 +467,8 @@ const getBanner = () => {
           <button
             @click="" class="goa-button uk-margin-left">
             Edit Colors
-          </button> -->
-        <!-- </div> -->
+          </button>
+        </div>
         <Loading v-model="showContent" :message="'Loading Guild ...'" />
         <div v-if="showContent" class="guild-home">
           <Editor class="uk-width-1-1 uk-padding" v-if="guild.Banner" v-model="guild.Banner" :viewOnly="true"/>

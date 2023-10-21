@@ -782,3 +782,11 @@ progress::-webkit-progress-value {
 .no-radius {
   border-radius: 0px!important;
 }
+
+.warning-container {
+  background-color: rgb(255, 255, 153);
+  border: 2px solid orangered;
+  color: orangered;
+  font-weight: 700;
+  padding: 5px 10px;
+}

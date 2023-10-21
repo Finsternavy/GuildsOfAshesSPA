@@ -23,14 +23,17 @@ let eventType = ref(null);
 let eventOrganizer = ref(null);
 let eventTitle = ref(null);
 let eventContent = ref(null);
-let eventStartDate = ref('');
-let eventStartTime = ref('');
-let eventEndDate = ref('');
-let eventEndTime = ref('');
+let eventStartDate = ref(null);
+let eventStartTime = ref(null);
+let eventEndDate = ref(null);
+let eventEndTime = ref(null);
 
 let recurringChecked = ref(false);
-let RecurringFrequency = ref('daily');
-let RecurringEndDate = ref('');
+let RecurringFrequency = ref(null);
+let RecurringEndDate = ref(null);
+
+let requiredFields = ref(['EventType', 'Organizer', 'Title', 'Content', 'StartDate', 'StartTime', 'EndDate', 'EndTime']);
+let warningMessage = ref([]);
 
 onBeforeMount(() => {
   user.value = store.getUser;
@@ -71,8 +74,43 @@ const clearEventTool = () => {
     eventEndTime.value = null;
 }
 
+const validateEvent = () => {
+  warningMessage.value = [];
+  console.log("DataOut: ", dataOut.value)
+  console.log("testing field: ", dataOut.value['EventType']);
+  requiredFields.value.forEach(field => {
+    if (dataOut.value[field] == null || dataOut.value[field] == '' || dataOut.value[field] == undefined) {
+      warningMessage.value.push(field + ' is required.');
+    }
+  })
+
+  if (dataOut.value['StartDate'] > dataOut.value['EndDate'] || dataOut.value['StartTime'] > dataOut.value['EndTime']) {
+    warningMessage.value.push('Start date cannot be after end date.');
+  }
+
+  if (dataOut.value['Recurring'] && dataOut.value['RecurringFrequency'] == null || dataOut.value['RecurringFrequency'] == '' || dataOut.value['RecurringFrequency'] == undefined) {
+    warningMessage.value.push('Recurring frequency is required.');
+  }
+
+  if (dataOut.value['Recurring'] && dataOut.value['RecurringEndDate'] < dataOut.value['StartDate']) {
+    warningMessage.value.push('Recurring end date cannot be before start date.');
+  }
+
+  if (dataOut.value['Recurring'] && dataOut.value['RecurringEndDate'] == null || dataOut.value['RecurringEndDate'] == '' || dataOut.value['RecurringEndDate'] == undefined) {
+    warningMessage.value.push('Recurring end date cannot be before end date.');
+  }
+}
+
 const createEvent = () => {
     // console.log("DataOut: ", dataOut.value);
+    // check dataout for null values
+    validateEvent();
+
+    if (warningMessage.value.length > 0) {
+      console.log("Warning: ", warningMessage.value);
+      return;
+    }
+
     if (props.parentFunction) {
         props.parentFunction(dataOut.value);
         clearEventTool();
@@ -81,6 +119,12 @@ const createEvent = () => {
 
 const createRecurringEvent = () => {
     // console.log("DataOut: ", dataOut.value);
+    validateEvent();
+
+    if (warningMessage.value.length > 0) {
+      console.log("Warning: ", warningMessage.value);
+      return;
+    }
     if (props.parentFunction) {
         props.recurring(dataOut.value);
         clearEventTool();
@@ -103,7 +147,8 @@ const close = () => {
 .event-creation-tool {
   position: fixed;
   max-height: 80%;
-  height: 875px;
+  height: 1500px;
+  max-height: fit-content;
   max-width: 90%;
   top: 50%;
   left: 50%;
@@ -182,6 +227,9 @@ const close = () => {
             </div>
             </div>
             <div class="uk-margin-top">
+              <div v-if="warningMessage.length > 0" class="warning-container uk-margin-small-bottom">
+                <p v-for="error in warningMessage" class="warning-message uk-margin-remove">{{ error }}</p>
+              </div>
               <button v-if="recurringChecked" @click="createRecurringEvent" class="goa-button uk-width-1-1">Create Recurring Event</button>
               <button v-else @click="createEvent" class="goa-button uk-width-1-1">Create Event</button>
             </div>

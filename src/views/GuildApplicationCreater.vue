@@ -35,6 +35,10 @@ let application = ref({
     questions: []
 })
 
+// validation
+let optionError = ref(null);
+let questionError = ref(null);
+
 onBeforeMount(() => {
     store = useUserStore();
     guildID.value = store.getGuildID;
@@ -50,6 +54,23 @@ watch(questionType, (newVal, oldVal) => {
 })
 let addToApp = () => {
     // console.log("Adding to app");
+    questionError.value = null;
+
+    if (questionText.value == '' || questionText.value == null || questionText.value == undefined) {
+        questionError.value = "Question cannot be empty";
+        return;
+    }
+
+    if (questionType.value == '' || questionType.value == null || questionType.value == undefined) {
+        questionError.value = "Question type cannot be empty";
+        return;
+    }
+
+    if (questionType.value == 'multi' && options.value.length < 2) {
+        questionError.value = "Multiple choice questions must have at least 2 options";
+        return;
+    }
+
     let question = {
         id: data.value.length + 1,
         question: questionText.value,
@@ -80,6 +101,11 @@ let addSection = () => {
 
 let addOption = () => {
     // console.log("Adding option");
+    optionError.value = null;
+    if (option.value == '' || option.value == null || option.value == undefined) {
+        optionError.value = "Option cannot be empty";
+        return;
+    }
     options.value.push(option.value);
     option.value = '';
 
@@ -166,17 +192,18 @@ let finalizeApplication = async () => {
         <div v-if="!finalized" class="application-controls goa-container-local uk-padding">
             <h2 class="uk-light uk-text-center">Application Creation Controls</h2>
             <div class="control-button-container">
-                <div class="uk-flex uk-flex-center">
-                    <span class="uk-margin-right text-goa-red">Step 1: </span><button class="goa-button add-question uk-width-medium uk-margin-small-bottom" uk-toggle="target: #AddDescription; animation: uk-animation-fade">Add Guild Description</button>
+                <div class="uk-flex uk-flex-column uk-flex-middle">
+                    <span class="uk-margin-right text-accent">Step 1: </span>
+                    <button class="goa-button add-question uk-width-medium uk-margin-small-bottom" uk-toggle="target: #AddDescription; animation: uk-animation-fade">Add Guild Description</button>
                 </div>
-                <div class="uk-flex uk-flex-center">
-                    <span class="uk-margin-right text-goa-red">Step 2: </span><button class="goa-button add-question uk-width-medium uk-margin-small-bottom" uk-toggle="target: #AddParagraph; animation: uk-animation-fade">Add Requirements</button>
+                <div class="uk-flex uk-flex-column uk-flex-middle">
+                    <span class="uk-margin-right text-accent">Step 2: </span><button class="goa-button add-question uk-width-medium uk-margin-small-bottom" uk-toggle="target: #AddParagraph; animation: uk-animation-fade">Add Requirements</button>
                 </div>
-                <div class="uk-flex uk-flex-center">
-                    <span class="uk-margin-right text-goa-red">Step 3: </span><button class="goa-button add-question uk-width-medium uk-margin-small-bottom" uk-toggle="target: #AddQuestion; animation: uk-animation-fade">Add Question</button>
+                <div class="uk-flex uk-flex-column uk-flex-middle">
+                    <span class="uk-margin-right text-accent">Step 3: </span><button class="goa-button add-question uk-width-medium uk-margin-small-bottom" uk-toggle="target: #AddQuestion; animation: uk-animation-fade">Add Question</button>
                 </div>
-                <div class="uk-flex uk-flex-center">
-                    <span class="uk-margin-right text-goa-red">Step 4: </span><button @click="finalizeApplication" class="goa-button add-question uk-width-medium uk-margin-small-bottom" >Finalize Application</button>
+                <div class="uk-flex uk-flex-column uk-flex-middle">
+                    <span class="uk-margin-right text-accent">Step 4: </span><button @click="finalizeApplication" class="goa-button add-question uk-width-medium uk-margin-small-bottom" >Finalize Application</button>
                 </div>
             </div>
             <div class="uk-margin-small-bottom">
@@ -228,6 +255,9 @@ let finalizeApplication = async () => {
                     <div v-if="questionType == 'multi'" class="uk-flex uk-flex-column uk-width-medium">
                         <label class="text-goa-red" for="">Option</label>
                         <input class="goa-input uk-margin-small-bottom" type="text" v-model="option">
+                        <div v-if="optionError" class="warning-container uk-margin-small-bottom">
+                            <span class="warning-message">{{ optionError }}</span>
+                        </div>
                         <button @click="addOption" class="goa-button uk-margin-small-bottom">Add Option</button>
                     </div>
                     <div>
@@ -236,6 +266,9 @@ let finalizeApplication = async () => {
                         </ul>
                     </div>
                     <div class="uk-margin-bottom">
+                        <div v-if="questionError" class="warning-container uk-margin-small-bottom">
+                            <span class="warning-message">{{ questionError }}</span>
+                        </div>
                         <button @click="addToApp" class="goa-button">Add to Application</button>
                     </div>
                     

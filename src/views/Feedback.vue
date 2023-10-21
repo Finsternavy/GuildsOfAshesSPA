@@ -15,6 +15,9 @@ let devUser = ref(false);
 let store;
 let user;
 
+let bugError = ref(null);
+let featureError = ref(null);
+
 onBeforeMount(() => {
     store = useUserStore();
     user = store.getUser;
@@ -26,36 +29,64 @@ onBeforeMount(() => {
 });
 
 const submitFeedback = async () => {
+    validateBugReport();
+    if (!validateBugReport()) {
+        return;
+    }
     
-  let call = {
-    MessageType: "Feedback",
-    Message: feedbackText.value,
-  };
+    let call = {
+        MessageType: "Feedback",
+        Message: feedbackText.value,
+    };
 
-  console.log("call: ", call);
-  let response = await fetch(baseURL + "Users/submitFeedback", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-      "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
-    },
-    body: JSON.stringify(call),
-  });
+    console.log("call: ", call);
+    let response = await fetch(baseURL + "Users/submitFeedback", {
+        method: "POST",
+        headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+        },
+        body: JSON.stringify(call),
+    });
 
-  if (response.ok) {
-    let data = await response.json();
-    thankYouMessage.value = "Thank you for submitting a bug report! We will look into the issue as soon as possible";
-    showThankYou.value = true;
-    getFeedback();
-  } else {
-    // console.log("Error fetching thread data: ", response.statusText);
-  }
+    if (response.ok) {
+        let data = await response.json();
+        thankYouMessage.value = "Thank you for submitting a bug report! We will look into the issue as soon as possible";
+        showThankYou.value = true;
+        getFeedback();
+    } else {
+        // console.log("Error fetching thread data: ", response.statusText);
+    }
 
 };
 
+const validateBugReport = () => {
+    if (feedbackText.value == "" || feedbackText.value == null || feedbackText.value == undefined) {
+        bugError.value = "Please enter a bug report before submitting";
+        return false;
+    } else {
+        bugError.value = null;
+        return true;
+    }
+}
+
+const validateFeatureRequest = () => {
+    if (featureRequestText.value == "" || featureRequestText.value == null || featureRequestText.value == undefined) {
+        featureError.value = "Please enter a feature request before submitting";
+        return false;
+    } else {
+        featureError.value = null;
+        return true;
+    }
+}
+
 const submitFeatureRequest = async () => {
+    validateFeatureRequest();
+    if (!validateFeatureRequest()) {
+        return;
+    }
 
     let call = {
         MessageType: "FeatureRequest",
@@ -184,11 +215,17 @@ const formatType = (type) => {
             <div class="uk-margin uk-margin-top">
                 <label class="text-goa-red" for="feedback">Report a Bug</label>
                 <textarea class="goa-input goa-textarea uk-width-1-1 uk-margin-small-bottom" id="feedback" rows="5" placeholder="Enter your feedback here..." v-model="feedbackText"></textarea>
+                <div v-if="bugError" class="warning-container uk-margin-small-bottom">
+                    <span class="warning-message">{{ bugError }}</span>
+                </div>
                 <button @click="submitFeedback" class="goa-button">Submit Report</button>
             </div>
             <div class="uk-margin">
                 <label class="text-goa-red" for="feedback">Feature Request</label>
                 <textarea class="goa-input goa-textarea uk-width-1-1 uk-margin-small-bottom" id="feedback" rows="5" placeholder="Enter your feature request here..." v-model="featureRequestText"></textarea>
+                <div v-if="featureError" class="warning-container uk-margin-small-bottom">
+                    <span class="warning-message">{{ featureError }}</span>
+                </div>
                 <button @click="submitFeatureRequest" class="goa-button">Submit Feature</button>
             </div>
         </div>

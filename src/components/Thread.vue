@@ -21,6 +21,7 @@ let unreadComments = ref([]);
 let readThreadIDs = [];
 let readCommentIDs = ref([]);
 let parentUnread = ref(false);
+let warningMessage = ref(null);
 
 let props = defineProps({
   modelValue: {},
@@ -110,6 +111,12 @@ let toggleEditcontrols = () => {
 };
 
 let postComment = async () => {
+  if (commentMessage.value.length < 1) {
+    warningMessage.value = "Please enter a message.";
+    return;
+  } else {
+    warningMessage.value = null;
+  }
   let user = store.getUser;
   let threadID = props.data.ThreadID;
   let date = new Date().toISOString();
@@ -361,7 +368,8 @@ const isUnread = (comment) => {
 } */
 
 .open-comment {
-  height: 160px;
+  height: fit-content;
+  max-height: 700px;
   opacity: 1;
   padding-top: 20px;
 }
@@ -438,11 +446,7 @@ const isUnread = (comment) => {
       </div>
     </div>
     <div
-      :class="{
-        'thread-body-container': props,
-        show: showThread,
-      }"
-    >
+      :class="{ 'thread-body-container': props, show: showThread }">
       <div class="map-container map-top-left">
         <div class="thread-body uk-padding-small text-black">
           <div class="uk-flex uk-flex-between">
@@ -525,6 +529,9 @@ const isUnread = (comment) => {
         }"
       >
         <div class="title-input uk-flex uk-flex-column">
+          <div v-if="warningMessage" class="warning-container">
+            <span class="warning-message">{{ warningMessage }}</span>
+          </div>
           <label class="uk-margin-small-left" for="CommentMessage">Message</label>
           <textarea
             id="CommentMessage"
