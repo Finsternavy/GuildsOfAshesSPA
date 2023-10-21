@@ -21,6 +21,7 @@ let replyMessage = ref("");
 let commentEditMessage = ref();
 let showEditcontrols = ref(false);
 let replyText = ref();
+let errorMessage = ref(null);
 // let unread = ref(false);
 
 onBeforeMount(() => {
@@ -31,6 +32,13 @@ onBeforeMount(() => {
 });
 
 let postComment = async () => {
+  if (replyMessage.value == "") {
+    errorMessage.value = "Sorry! You cannot post an empty comment."
+    return;
+  } else {
+    errorMessage.value = null;
+  }
+
   let user = store.getUser;
   let threadID = props.data.ThreadID;
   let date = new Date().toISOString();
@@ -47,7 +55,6 @@ let postComment = async () => {
     QuoteAuthor: props.data.AuthorUsername,
   };
 
-  // console.log("Posting comment: ", payload);
   let response = await fetch(baseUrl + "/postComment", {
     method: "POST",
     headers: {
@@ -376,6 +383,9 @@ const checkUnread = () => {
     }"
   >
     <div class="title-input uk-flex uk-flex-column">
+      <div v-if="errorMessage" class="error-container warning-container">
+        <span class="error-message warning-message">{{ errorMessage }}</span>
+      </div>
       <label class="uk-margin-small-left" for="ReplyMessage">Message</label>
       <textarea
         id="ReplyMessage"

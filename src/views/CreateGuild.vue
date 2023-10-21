@@ -87,7 +87,7 @@ const guildNameToPass = computed(() => {
 
 let guild = ref({
   Name: null,
-  Background: null,
+  Background: '',
   Leader: null,
   Banner: null,
   Logo: null,
@@ -229,9 +229,10 @@ const shiftRankUp = (index) => {
   // console.log('Shifting rank up..');
   // console.log('Index: ', index);
   // console.log('Ranks: ', ranks.value);
-  let temp = ranks.value[index];
-  ranks.value[index] = ranks.value[index - 1];
-  ranks.value[index - 1] = temp;
+  console.log('Rank to shift up: ', ranks.value[index]);
+  let temp = ranks.value[index]['RankName'];
+  ranks.value[index]['RankName'] = ranks.value[index - 1]['RankName'];
+  ranks.value[index - 1]['RankName'] = temp;
   // console.log('Ranks: ', ranks.value);
 }
 
@@ -548,7 +549,7 @@ input[type="color"]::-webkit-color-swatch {
           <div class="image uk-height-small uk-width-1-1 uk-background-cover uk-flex uk-flex-middle uk-flex-center uk-background-secondary" @click="setBackground('random')" uk-img> Always Random</div>
         </div>
       </div>
-      <button @click="nextStep" class="goa-button uk-align-center uk-flex uk-flex-middle">Colors <span uk-icon="icon: chevron-double-right"></span></button>
+      <button v-if="guild && guild.Background" @click="nextStep" class="goa-button uk-align-center uk-flex uk-flex-middle">Colors <span uk-icon="icon: chevron-double-right"></span></button>
     </div>
 
     <!-- Guild Colors -->
@@ -676,7 +677,7 @@ input[type="color"]::-webkit-color-swatch {
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
         <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Colors</button>
-        <button @click="nextStep" class="goa-button">Logo <span uk-icon="icon: chevron-double-right"></span></button>
+        <button v-if="guild.Name && guild.Banner" @click="nextStep" class="goa-button">Logo <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -724,7 +725,7 @@ input[type="color"]::-webkit-color-swatch {
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
         <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Banner</button>
-        <button @click="nextStep" class="goa-button">Description <span uk-icon="icon: chevron-double-right"></span></button>
+        <button v-if="guild.Logo" @click="nextStep" class="goa-button">Description <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -734,7 +735,7 @@ input[type="color"]::-webkit-color-swatch {
       <Editor v-model="guild.Description"/>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
         <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Logo</button>
-        <button @click="nextStep" class="goa-button">Types <span uk-icon="icon: chevron-double-right"></span></button>
+        <button v-if="guild.Description" @click="nextStep" class="goa-button">Types <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
@@ -765,7 +766,7 @@ input[type="color"]::-webkit-color-swatch {
           </select>
         </div>
         <div class="input">
-          <label for="guild-race">Primary Race</label>
+          <label for="guild-race">Primary Race (Can be blank)</label>
           <select id="guild-race" class="goa-input uk-input" v-model="guild.PrimaryRace">
             <option class="bg-black" value=""></option>
             <option class="bg-black" value="aelune">Aelune</option>
@@ -790,7 +791,7 @@ input[type="color"]::-webkit-color-swatch {
       </div>
       <div class="uk-flex uk-flex-between uk-margin-large-top">
         <button @click="prevStep" class="goa-button"><span uk-icon="icon: chevron-double-left"></span>Description</button>
-        <button @click="nextStep" class="goa-button">Ranks <span uk-icon="icon: chevron-double-right"></span></button>
+        <button v-if="guild.Category && guild.Focus && guild.Region" @click="nextStep" class="goa-button">Ranks <span uk-icon="icon: chevron-double-right"></span></button>
       </div>
     </div>
 
