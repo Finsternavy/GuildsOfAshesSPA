@@ -23,6 +23,8 @@ let alreadyUpdatedIDs = ref([]);
 
 let intervalID = null;
 
+let warningMessage = ref(null);
+
 onBeforeMount(() => {
   // console.log("before mount - threads");
   store = useUserStore();
@@ -122,6 +124,14 @@ let getThreads = async () => {
 };
 
 let postThread = async () => {
+
+  if (threadTitle.value == "" || threadTitle.value == null || threadMessage.value == "" || threadMessage.value == null) {
+    warningMessage.value = "Please enter a title and message.";
+    return;
+  } else {
+    warningMessage.value = null;
+  }
+
   let user = store.getUser;
   let date = new Date().toISOString();
   // let time = new Date().toTimeString();
@@ -198,7 +208,8 @@ const addCommentToRead = (commentID) => {
 }
 
 .open {
-  height: 240px;
+  height: fit-content;
+  max-height: 1500px;
   opacity: 1;
 }
 
@@ -224,6 +235,9 @@ const addCommentToRead = (commentID) => {
           cols="50"
           v-model="threadMessage"
         ></textarea>
+      </div>
+      <div v-if="warningMessage" class="warning-container uk-margin-top">
+        <span class="warning-message">{{ warningMessage }}</span>
       </div>
       <div class="create-thread-button uk-margin-top">
         <button @click="postThread" class="goa-button">Post Thread</button>
