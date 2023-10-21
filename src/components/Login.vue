@@ -12,6 +12,8 @@ let baseUrl = api.getAPI + "Users";
 let store;
 let guildStore;
 
+let warningMessage = ref(null);
+
 onBeforeMount(() => {
   // api = useAPI();
   // baseUrl = api.getAPI + "Users";
@@ -24,6 +26,12 @@ onBeforeMount(() => {
 });
 
 let doLogin = async () => {
+  if (username.value == "" || username.value == null || username.value == undefined || password.value == "" || password.value == null || password.value == undefined) {
+    warningMessage.value = "Please enter a username and password";
+    return;
+  } else {
+    warningMessage.value = null;
+  }
   // console.log("baseURL: ", baseUrl);
   let hashedPassword = await hash(password.value);
   let call = {
@@ -77,10 +85,10 @@ let doLogin = async () => {
       }
       // location.reload();
     } else {
-      alert("User not found");
+      warningMessage.value = data.Message;
     }
   } else {
-    // console.log("Error fetching data: ", response.statusText);
+    warningMessage.value = response.statusText;
   }
 };
 
@@ -126,6 +134,9 @@ let register = () => {
           class="goa-input uk-width-1-1 uk-text-large"
           v-model="password"
         />
+      </div>
+      <div v-if="warningMessage" class="warning-container uk-margin-small-bottom">
+        <span class="warning-message">{{ warningMessage }}</span>
       </div>
       <div class="login-button-container uk-flex uk-child-width-1-2 uk-width-1-1">
         <button
