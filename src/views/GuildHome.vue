@@ -432,6 +432,10 @@ const getBanner = () => {
     <div class="vertical-rod"></div>
   <div class="banner-bar uk-visible@l" :data-src="BannerBar" uk-img></div>
     <div class="guild-side-banner uk-padding-small uk-width-1-6 uk-margin-right uk-visible@l" uk-sticky>
+      <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink uk-position-bottom uk-padding-large uk-padding-remove-horizontal">
+        <label class="text-accent uk-margin-top" for="">Category</label>
+        <p class="uk-margin-remove"> {{ guild.Category }} - {{ guild.Focus }}</p>
+      </div>
       <div :class="{
           'logo-container uk-margin-bottom': {} }">
         <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
@@ -555,7 +559,7 @@ const getBanner = () => {
               <img class="guild-logo-upload uk-background-cover" :src="guild.Logo" alt="Uploaded Image" uk-img />
             </div> -->
             
-            <div class="uk-flex uk-width-1-1 uk-flex-between uk-margin-bottom">
+            <div class="uk-hidden@l uk-flex uk-width-1-1 uk-flex-between uk-margin-large-bottom">
                 <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink">
                   <label class="text-accent" for="">Style</label>
                   <p class="uk-margin-remove"> {{ guild.Category }} - {{ guild.Focus }}</p>
@@ -573,7 +577,7 @@ const getBanner = () => {
       
             <!-- This is where we display the rich text -->
             <!-- <div v-html="guild.Description" class="uk-margin-large-top"></div> -->
-            <Editor class="uk-margin-top uk-margin-large-bottom" v-if="guild.Description" v-model="guild.Description" :viewOnly="true"/>
+            <Editor class="uk-margin-large-bottom" v-if="guild.Description" v-model="guild.Description" :viewOnly="true"/>
           </div>
           <!-- Only show if guild leader or mod issues alert-->
           <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">
@@ -625,6 +629,16 @@ const getBanner = () => {
       </div>
     </div>
   <div class="guild-side-banner uk-padding-small uk-margin-left uk-width-1-6 uk-visible@l" uk-sticky>
+    <div class="uk-position-bottom uk-padding-large uk-padding-remove-horizontal">
+      <div v-if="guild && guild.PrimaryRace" class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink">
+        <label class="text-accent" for="">Race</label> 
+        <p class="uk-margin-remove">{{ guild.PrimaryRace }}</p> 
+      </div>
+      <div class="uk-text-center uk-margin-remove uk-text-large text-primary upper uk-flex uk-flex-column font-shrink">
+        <label class="text-accent" for="">Region</label> 
+        <p class="uk-margin-remove">{{ guild.Region }}</p>
+      </div>
+    </div>
     <div :class="{
         'logo-container uk-margin-bottom': {},
         'bordered-logo-container': guild.LogoBorder == true }">
