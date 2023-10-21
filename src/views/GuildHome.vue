@@ -412,7 +412,7 @@ const getBanner = () => {
 }
 
 .vertical-rod {
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 15px;
   /* top: 25vh; */
