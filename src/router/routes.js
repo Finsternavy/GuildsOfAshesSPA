@@ -15,6 +15,7 @@ import GuildApplicatiopn from '../views/GuildApplication.vue';
 import GuildCreateApplication from '../views/GuildApplicationCreater.vue';
 import Feedback from '../views/Feedback.vue';
 import Calendar from '../views/Calendar.vue';
+import Verra from '../views/Verra.vue';
 
 let router = createRouter({
   history: createWebHistory(),
@@ -35,6 +36,8 @@ let router = createRouter({
     { path: '/guild/application', name: 'guild-application',  component: GuildApplicatiopn },
     { path: '/guild/create-application', name: 'create-application',  component: GuildCreateApplication },
     { path: '/feedback', name: 'feedback',  component: Feedback },
+    { path: '/guild/verra', name: 'map',  component: Verra },
+    
   ]
 })
 
