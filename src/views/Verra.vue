@@ -74,48 +74,13 @@ const closeCellInfo = () => {
     showCellInfoModal.value = false;
 }
 
-const wheelZoom = (e) => {
+const wheelZoom = (event) => {
     console.log('wheelZoom');
-    if (!map){
-        map = document.getElementById('verraContainer');
+    if (event.deltaY < 0){
+        zoomIn();
     }
-    if (map){
-        if (e.deltaY < 0){
-            if (mapCurrentScale.value < 300){
-                map.style.width = mapCurrentScale.value + zoomAmount.value + '%';
-                map.style.height = mapCurrentScale.value + zoomAmount.value + '%';
-                map.style.top = currentY.value - (zoomAmount.value / 2) + '%';
-                let Xoffset = currentX.value - (zoomAmount.value / 2);
-                currentRight.value = currentRight.value + (zoomAmount.value / 2);
-                if (Xoffset > 0) Xoffset = 0;
-                map.style.left = Xoffset + '%';
-                mapCurrentScale.value += zoomAmount.value;
-                currentY.value -= (zoomAmount.value / 2);
-                currentX.value -= (zoomAmount.value / 2);
-                console.log("Current Right: ", currentRight.value);
-                console.log("Current mapCurrentScale: ", mapCurrentScale.value);
-            }
-        }
-        else if (e.deltaY > 0){
-            if (mapCurrentScale.value > 100){
-                map.style.width = mapCurrentScale.value - zoomAmount.value + '%';
-                map.style.height = mapCurrentScale.value - zoomAmount.value + '%';
-                let Yoffset = currentY.value + (zoomAmount.value / 2);
-                if (Yoffset > 0) Yoffset = 0;
-                map.style.top = Yoffset + '%';
-                let Xoffset = currentX.value - (zoomAmount.value / 2);
-                currentRight.value = currentRight.value - (zoomAmount.value / 2);
-                if (Xoffset > 0) Xoffset = 0;
-                map.style.left = Xoffset + '%';
-                mapCurrentScale.value -= zoomAmount.value;
-                currentY.value += (zoomAmount.value / 2);
-                currentX.value += (zoomAmount.value / 2);
-                console.log("Current Right: ", currentRight.value);
-            }
-            if (mapCurrentScale.value == 100){
-                resetMap();
-            }
-        }
+    if (event.deltaY > 0){
+        zoomOut();
     }
 }
 
@@ -191,7 +156,7 @@ const moveRight = () => {
                 // if (Xoffset > currentRight.value) Xoffset = 0;
                 map.style.left = Xoffset + '%';
                 currentX.value -= offset.value;
-                currentRight.value -= offset.value;
+                // currentRight.value -= offset.value;
             }
         }
         if (mapCurrentScale.value <= 250 && mapCurrentScale.value > 150){
@@ -202,7 +167,7 @@ const moveRight = () => {
                 // if (Xoffset > currentRight.value) Xoffset = 0;
                 map.style.left = Xoffset + '%';
                 currentX.value -= offset.value;
-                currentRight.value -= offset.value;
+                // currentRight.value -= offset.value;
             }
         }
         if (mapCurrentScale.value <= 150 && mapCurrentScale.value > 100){
