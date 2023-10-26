@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import Verra from '../public/Images/Verra_Map.png'
 
 const gridSize = ref(20);
@@ -11,6 +11,62 @@ let activeCell = ref(null);
 let dataCells = ref([]);
 let disableCellClick = ref(false);
 let showHelp = ref(true);
+let showKeybinds = ref(true);
+
+let hideInstructions = ref(false);
+let hideKeybinds = ref(false);
+
+watch(hideInstructions, (value) => {
+    if (value){
+        localStorage.setItem('hideInstructions', value);
+        showHelp.value = false;
+    } else {
+        localStorage.removeItem('hideInstructions');
+        showHelp.value = true;
+    }
+});
+
+watch(hideKeybinds, (value) => {
+    if (value) {
+        localStorage.setItem('hideKeybinds', value);
+        showKeybinds.value = false;
+    } else {
+        localStorage.removeItem('hideKeybinds');
+        showKeybinds.value = true;
+    }
+});
+
+const keybinds = [
+    {
+        bind: 'Ctrl',
+        action: 'Toggle Add Location'
+    },
+    {
+        bind: 'Left Click',
+        action: 'Add Location'
+    },
+    {
+        bind: 'Left Click Hold',
+        action: 'Move Map'
+    },
+    {
+        bind: 'Arrow Keys',
+        action: 'Move Map'
+    },
+    {
+        bind: 'Scroll Wheel Up',
+        action: 'Zoom In'
+    },
+    {
+        bind: 'Scroll Wheel Down',
+        action: 'Zoom Out'
+    },
+    {
+        bind: 'Scroll Wheel Click',
+        action: 'Reset Map'
+    }
+
+]
 
 let markMap = ref(false);
 let mapWarningText = computed(() => {
@@ -38,15 +94,52 @@ let cellWidth = computed(() => {
 });
 
 onMounted(() => {
+    hideInstructions.value = localStorage.getItem('hideInstructions');
+    hideKeybinds.value = localStorage.getItem('hideKeybinds');
     // window.addEventListener('mousedown', handleMouseDown);
     // window.addEventListener('mouseup', handleMouseUp);
+    // window.addEventListener('keydown.ctrl', toggleMarkMap);
+    map = document.getElementById('verraContainer');
+    document.body.addEventListener('keydown', handleKeyDown);
+    document.body.addEventListener('mouseclick.middle', handleMouseClick);
 });
 
-// while mousedown move map
+const handleKeyDown = (event) => {
+    console.log(event.key)
+    if (event.key == 'Control'){
+        toggleMarkMap();
+    }
+    if (event.key == 'ArrowRight'){
+        moveRight();
+    }
+    if (event.key == 'ArrowLeft'){
+        moveLeft();
+    }
+    if (event.key == 'ArrowUp'){
+        moveUp();
+    }
+    if (event.key == 'ArrowDown'){
+        moveDown();
+    }
+    if (event.key == 'Middle'){
+        resetMap();
+    }
+}
 
-
+const handleMouseClick = (event) => {
+    console.log('handleMouseClick');
+    // if (markMap.value){
+    //     setActiveCell(event.target);
+    // }
+}
 
 const handleMouseDown = (event) => {
+    console.log('handleMouseDown', event.button);
+    if (event.button == 1){
+        resetMap();
+        return
+    }
+
     if (!map){
         map = document.getElementById('verraContainer');
     }
@@ -222,6 +315,11 @@ const resetMap = () => {
 const toggleHelp = () => {
     showHelp.value = !showHelp.value;
 }
+
+const toggleKeybinds = () => {
+    showKeybinds.value = !showKeybinds.value;
+}
+
 </script>
 
 <style scoped>
@@ -340,14 +438,35 @@ const toggleHelp = () => {
     width: fit-content;
     height: fit-content;
     border-radius: 30px;
-    background-color: var(--background-color-alpha);
-    border: 2px solid rgba(0, 0, 0, 0.8);
     overflow: hidden;
+}
+
+
+.help {
+    border-radius: 30px;
+    padding: 5px;
+    height: fit-content;
+    width: fit-content;
+    background-color: var(--background-color-alpha);
+    transition: padding 0.3s ease-in-out;
+}
+.instructions-open {
+    padding: 10px;
+}
+
+.keybinds-menu {
+    padding: 20px;
+    width: 400px;
+}
+
+.settings-icon {
+    padding: 2px;
 }
 
 .controls {
     position: absolute;
-    top: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     right: 10px;
     padding: 20px;
     width: fit-content;
@@ -370,11 +489,18 @@ const toggleHelp = () => {
 .disabled {
     pointer-events: none;
 }
+
+.key {
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
 </style>
 
 <template>
     <div @wheel="wheelZoom" class=" map-board-container uk-overflow-hidden uk-margin-bottom">
-        <div  id="verraContainer" class="verra uk-position-relative">
+        <div id="verraContainer" class="verra uk-position-relative">
             <div class="verra-map-container uk-flex uk-flex-center">
                 <div id="VerraMap" class="verra-map uk-position-relative" :data-src="Verra" uk-img></div>
             </div>
@@ -400,32 +526,47 @@ const toggleHelp = () => {
         <div v-if="mapWarningText" class="map-warnings-container">
             <span>{{ mapWarningText }}</span>
         </div>
-        <div class="instructions uk-flex" :class="{'instructions-open' : showHelp}">
-            <span @click="toggleHelp" class="text-primary" uk-icon="icon: question; ratio: 1.5"></span>
-            <ul v-if="showHelp" >
-                <button @click="toggleHelp" class="goa-button uk-float-right">Close</button>
-                <h3 class="text-primary">Instructions:</h3>
-                <li class="uk-text-bold text-button">Click the <span class="goa-button uk-button-small">Add Location</span> button to enable/disable adding markers to the map.</li>
-                <li class="uk-text-bold text-button">With adding marks enabled, click the map to add a location marker.</li>
-                <li class="uk-text-bold text-button">Click and drag the map to move it around.</li>
-                <li class="uk-text-bold text-button">Use the scroll wheel to zoom in and out.</li>
-                <li class="uk-text-bold text-button">You can also navigate with the control cluster in the upper right corner.</li>
-            </ul>
+        <div class="instructions uk-flex uk-flex-column">
+            <div class="help uk-flex uk-flex-column uk-position-relative uk-margin-small-right uk-margin-small-bottom" :class="{'instructions-open' : showHelp}">
+                <!-- Add checkbox for user to select to start this menu as closed next load -->
+                <span @click="toggleHelp" class="text-primary" uk-icon="icon: question; ratio: 1.5"></span>
+                <ul v-if="showHelp" >
+                    <div class="uk-position-top-right uk-margin-small-top uk-margin-small-right">
+                        <input class="uk-checkbox uk-margin-small-right" type="checkbox" v-model="hideInstructions">
+                        <span class="text-primary">Hide Instructions at load? </span>
+                        <button @click="toggleHelp" class="goa-button">Close</button>
+                    </div>
+                    <h3 class="text-primary uk-margin-remove-top">Instructions:</h3>
+                    <li class="uk-text-bold text-button">Click the <span class="goa-button uk-button-small">Add Location</span> button to enable/disable adding markers to the map.</li>
+                    <li class="uk-text-bold text-button">With adding marks enabled, click the map to add a location marker.</li>
+                    <li class="uk-text-bold text-button">Click and drag the map to move it around.</li>
+                    <li class="uk-text-bold text-button">Use the scroll wheel to zoom in and out.</li>
+                    <li class="uk-text-bold text-button">You can also navigate with the control cluster in the upper right corner.</li>
+                </ul>
+            </div>
+            <div class="help uk-position-relative" :class="{'instructions-open' : showKeybinds}">
+                <span @click="toggleKeybinds" class="text-primary settings-icon" uk-icon="icon: settings; ratio: 1.3"></span>
+                <div v-if="showKeybinds" class="keybinds-menu">
+                    <div class="uk-position-top-right uk-margin-small-top uk-margin-small-right">
+                        <input class="uk-checkbox uk-margin-small-right" type="checkbox" v-model="hideKeybinds">
+                        <span class="text-primary">Hide keybinds at load? </span>
+                        <button @click="toggleKeybinds" class="goa-button">Close</button>
+                    </div>
+                    <h3 class="text-primary uk-margin-remove-top">Keybinds:</h3>
+                    <div v-for="key in keybinds" class="uk-flex uk-flex-middle uk-flex-between uk-width-expand">
+                        <span class="key">{{ key.bind }}</span><span>{{ key.action }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="controls uk-flex uk-flex-column uk-flex-middle">
-            <div class="zoom-buttons">
-                <button class="uk-icon-button" @click="zoomIn"><span uk-icon="icon: plus-circle"></span></button>
-                <button class="uk-icon-button" @click="zoomOut"><span uk-icon="icon: minus-circle"></span></button>
-            </div>
-            <div class="direction-buttons uk-flex uk-flex-middle">
-                <button class="uk-icon-button" @click="moveLeft"><span uk-icon="icon: chevron-left"></span></button>
-                <div class="up-down-buttons uk-flex uk-flex-column">
-                    <button class="uk-icon-button" @click="moveUp"><span uk-icon="icon: chevron-up"></span></button>
-                    <button class="uk-icon-button" @click="resetMap"><span uk-icon="icon: refresh"></span></button>
-                    <button class="uk-icon-button" @click="moveDown"><span uk-icon="icon: chevron-down"></span></button>
-                </div>
-                <button class="uk-icon-button" @click="moveRight"><span uk-icon="icon: chevron-right"></span></button>
-            </div>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="zoomIn"><span uk-icon="icon: plus-circle"></span></button>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="zoomOut"><span uk-icon="icon: minus-circle"></span></button>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="resetMap"><span uk-icon="icon: refresh"></span></button>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="moveUp"><span uk-icon="icon: chevron-up"></span></button>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="moveDown"><span uk-icon="icon: chevron-down"></span></button>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="moveLeft"><span uk-icon="icon: chevron-left"></span></button>
+            <button class="uk-icon-button uk-margin-small-bottom" @click="moveRight"><span uk-icon="icon: chevron-right"></span></button>
         </div>
         <div class="bottom-controls">
             <button @click="toggleMarkMap" class="goa-button">Add Location</button>
