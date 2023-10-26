@@ -291,6 +291,7 @@ li > a {
               <!-- <RouterLink to="/guild/tasks"><span class="link">Tasks</span></RouterLink>
               <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
               <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
+              <div @click="navigate('/guild/verra')"><span class="link">Map</span></div>
             </div>
           </div>
         </div>
