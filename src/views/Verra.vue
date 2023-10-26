@@ -1,12 +1,20 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import Verra from '../public/Images/Verra_Map.png'
+import Verra from '../public/Images/Verra_Map.png';
+import { useUserStore } from "../stores/userStore";
+import { useAPI } from '../stores/apiStore';
 
+let api = useAPI();
+let baseUrl = api.getAPI + "Guilds";
+let store = useUserStore();
+let user = store.getUser;
 const gridSize = ref(20);
 const gridColumns = ref(80);
 const gridRows = ref(80);
 
 let activeCell = ref({
+    guildID: user.GuildID,
+    author: user.Username,
     layer: null,
     cell: null,
     name: null,
@@ -14,35 +22,34 @@ let activeCell = ref({
 });
 
 let dataCells = ref([]);
-let disableCellClick = ref(false);
 let showHelp = ref(true);
 let showKeybinds = ref(true);
 let clickMode = ref('add');
+let locationDetailsOpen = ref(false);
+let locationDetails = ref([])
 
 let hideInstructions = ref(false);
 let hideKeybinds = ref(false);
 
-let showLocationMarker = ref(false);
 
-let layer = ref('Strategy');
+let layer = ref('All');
 
 const layers = [
-    'Dungeons',
-    'Mobs',
-    'Nodes',
-    'Quests',
-    'Resources',
+    'All',
+    'Dungeon',
+    'Mob',
+    'Node',
+    'Quest',
+    'Resource',
     'Strategy',
 ]
 
-const dungeons = ref([
-    {
-        layer: 'dungeons',
-        cell: '2345',
-        name: 'Dungeon Name',
-        description: 'Dungeon Description',
-    },
-])
+const dungeons = ref([]);
+const mobs = ref([]);
+const nodes = ref([]);
+const quests = ref([]);
+const resources = ref([]);
+const strategies = ref([]);
 
 
 
@@ -137,6 +144,8 @@ let cellWidth = computed(() => {
 });
 
 onMounted(() => {
+    console.log("User: ", user);
+    getMapData();
     hideInstructions.value = localStorage.getItem('hideInstructions');
     hideKeybinds.value = localStorage.getItem('hideKeybinds');
     // activeCell.layer = layer.value;
@@ -149,8 +158,84 @@ onMounted(() => {
     // document.body.addEventListener('mouseclick.middle', handleMouseClick);
 });
 
+let getMapData = async () => {
+    // console.log("Attempting to create guild..");
+    let call = user;
+    console.log("call: ", call);
+    let response = await fetch(baseUrl + "/getMapData", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+      },
+      body: JSON.stringify(call),
+    });
+  
+    if (response.ok) {
+      let data = await response.json();
+      // console.log("Create Guild response data: ", data);
+      console.log("data: ", data);
+      dataCells.value = formatMapData(data.Data);
+      // threads.value = data.Data;
+    } else {
+      // console.log("Error fetching thread data: ", response.statusText);
+    }
+};
+
+const formatMapData = (data) => {
+    let allData = [];
+
+    data.Dungeons.forEach((dungeon) => {
+        allData.push(dungeon);
+    });
+    data.Mobs.forEach((mob) => {
+        allData.push(mob);
+    });
+    data.Nodes.forEach((node) => {
+        allData.push(node);
+    });
+    data.Quests.forEach((quest) => {
+        allData.push(quest);
+    });
+    data.Resources.forEach((resource) => {
+        allData.push(resource);
+    });
+    data.Strategy.forEach((strategy) => {
+        allData.push(strategy);
+    });
+    console.log("allData: ", allData);
+    return allData;
+}
+
+let addMapData = async (location) => {
+    // console.log("Attempting to create guild..");
+    let call = location;
+    console.log("call: ", call);
+    let response = await fetch(baseUrl + "/addMapData", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+      },
+      body: JSON.stringify(call),
+    });
+  
+    if (response.ok) {
+      let data = await response.json();
+      // console.log("Create Guild response data: ", data);
+      console.log("data: ", data);
+      // threads.value = data.Data;
+    } else {
+      // console.log("Error fetching thread data: ", response.statusText);
+    }
+};
+
 const handleKeyDown = (event) => {
-    console.log(event.key)
+    // console.log(event.key)
     if (event.key == 'Control'){
         clickMode.value = 'add';
         toggleMarkMap();
@@ -176,15 +261,9 @@ const handleKeyDown = (event) => {
     }
 }
 
-const handleMouseClick = (event) => {
-    // console.log('handleMouseClick');
-    // if (markMap.value){
-    //     setActiveCell(event.target);
-    // }
-}
 
 const handleMouseDown = (event) => {
-    console.log('handleMouseDown', event.button);
+    // console.log('handleMouseDown', event.button);
     if (event.button == 1){
         resetMap();
         return
@@ -214,7 +293,7 @@ const handleMouseUp = () => {
 }
 
 const handleScroll = () => {
-    console.log('handleScroll');
+    // console.log('handleScroll');
     if (map){
         map.style.left = currentX.value + '%';
         map.style.top = currentY.value + '%';
@@ -222,10 +301,15 @@ const handleScroll = () => {
 }
 
 const setActiveCell = (index) => {
-    console.log('setActiveCell: ', index);
+    if (!markMap.value){
+        console.log("location click with markMap false")
+        showLocationDetails(index);
+        return;
+    }
+    // console.log('setActiveCell: ', index);
     activeCell.value.cell = index;
     activeCell.value.layer = layer.value;
-    console.log("ClickMode: ", clickMode.value);
+    // console.log("ClickMode: ", clickMode.value);
     if (clickMode.value == 'add'){
         showCellInfoModal.value = true;
     }
@@ -233,30 +317,22 @@ const setActiveCell = (index) => {
         removeLocation(index);
     }
     toggleMarkMap();
-    // showLocationMarker.value = true;
-
-
-
-    // if (!dataCells.value.includes(index)) {
-    //     dataCells.value.push(index);
-    // }
-    // else if (dataCells.value.includes(index)) {
-    //     dataCells.value.splice(dataCells.value.indexOf(index), 1);
-    //     activeCell.value = null;
-    // }
 }
 
 const submitLocation = () => {
-    console.log('submitLocation');
+    // console.log('submitLocation');
     let location = {...activeCell.value};
+    location.layer = layer.value;
     if (location.cell && location.name && location.description){
         dataCells.value.push(location);
+        console.log("dataCells: ", dataCells.value);
         showCellInfoModal.value = false;
+        addMapData(location);
     }
 }
 
 const removeLocation = (index) => {
-    console.log('removeLocation');
+    // console.log('removeLocation');
     activeCell.value.cell = index;
     // if (activeCell.value.cell){
     //     dataCells.value.splice(dataCells.value.indexOf(activeCell.value.cell), 1);
@@ -282,9 +358,14 @@ const hasContent = (index) => {
     if (dataCells.value.length > 0){
         for (let i = 0; i < dataCells.value.length; i++){
             if (dataCells.value[i].cell == index){
-                console.log('datacells: ', dataCells.value[i], " index: ", index);
-                console.log('datacells: ', dataCells.value);
-                return true;
+                // console.log('datacells: ', dataCells.value[i], " index: ", index);
+                // console.log('datacells: ', dataCells.value);
+                if (layer.value == 'All'){
+                    return true;
+                }
+                if (dataCells.value[i].layer == layer.value){
+                    return true;
+                }
             }
         }
     }
@@ -296,7 +377,7 @@ const closeCellInfo = () => {
 }
 
 const wheelZoom = (event) => {
-    console.log('wheelZoom');
+    // console.log('wheelZoom');
     if (event.deltaY < 0){
         zoomIn();
     }
@@ -307,11 +388,11 @@ const wheelZoom = (event) => {
 
 const setClickStart = (event) => {
     let clickX = event.clientX;
-    console.log("clickX: ", event.clientX);
+    // console.log("clickX: ", event.clientX);
 }
 
 const zoomIn = () => {
-    console.log('testZoom');
+    // console.log('testZoom');
     if (!map) {
         map = document.getElementById('verraContainer');
     }
@@ -329,8 +410,8 @@ const zoomIn = () => {
             mapCurrentScale.value += zoomAmount.value;
             currentY.value = newY;
             currentX.value = newX;
-            console.log("currentX: ", currentX.value);
-            console.log("mapCurrentScale: ", mapCurrentScale.value);
+            // console.log("currentX: ", currentX.value);
+            // console.log("mapCurrentScale: ", mapCurrentScale.value);
             startX.value = currentX.value;
             startY.value = currentY.value;
         }
@@ -338,7 +419,7 @@ const zoomIn = () => {
 }
 
 const zoomOut = () => {
-    console.log('zoomOut');
+    // console.log('zoomOut');
     if (!map) {
         map = document.getElementById('verraContainer');
     }
@@ -356,8 +437,8 @@ const zoomOut = () => {
             mapCurrentScale.value -= zoomAmount.value;
             currentY.value = newY;
             currentX.value = newX;
-            console.log("currentX: ", currentX.value);
-            console.log("mapCurrentScale: ", mapCurrentScale.value);
+            // console.log("currentX: ", currentX.value);
+            // console.log("mapCurrentScale: ", mapCurrentScale.value);
         }
         if (mapCurrentScale.value == 100) {
             resetMap();
@@ -396,7 +477,7 @@ const moveDown = () => {
 
 const resetMap = () => {
     // disableCellClick.value = false;
-    console.log('resetMap');
+    // console.log('resetMap');
     if (!map){
         map = document.getElementById('verraContainer');
     }
@@ -421,6 +502,27 @@ const toggleKeybinds = () => {
     showKeybinds.value = !showKeybinds.value;
 }
 
+const showLocationDetails = (index) => {
+    console.log('showLocationDetails');
+    locationDetails.value = [];
+    // get all data from dataCells that have a cell number matching the index
+    dataCells.value.forEach((cell) => {
+        if (cell.cell == index){
+            if (layer.value == 'All'){
+                locationDetails.value.push(cell);
+
+            } else if (cell.layer == layer.value){
+                locationDetails.value.push(cell);
+            }
+        }
+    });
+
+    toggleLocationDetails();
+}
+
+const toggleLocationDetails = () => {
+    locationDetailsOpen.value = !locationDetailsOpen.value;
+}
 </script>
 
 <style scoped>
@@ -456,7 +558,7 @@ const toggleKeybinds = () => {
     /* background-image: 
         repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent v-bind(mapCurrentScale / 5 + 'px')), 
         repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent v-bind(mapCurrentScale / 5 + 'px')); */
-    outline: 1px solid black;
+    /* outline: 1px solid black; */
     pointer-events: none;
 }
 .verra-map {
@@ -520,6 +622,9 @@ const toggleKeybinds = () => {
     background-color: red;
     border-radius: 50%;
     margin: none;
+    scale: 2;
+    /* z-index: 20000; */
+    pointer-events: all;
     /* padding: 2px; */
 }
 
@@ -634,6 +739,19 @@ const toggleKeybinds = () => {
 .map-option {
     background-color: var(--background-color-alpha);
 }
+
+.location-details {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    height: fit-content;
+    border-radius: 30px;
+    background-color: var(--background-color-alpha);
+    /* padding: 10px; */
+    overflow: hidden;
+}
 </style>
 
 <template>
@@ -653,9 +771,6 @@ const toggleKeybinds = () => {
                         :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
                             <span class="location uk-position-center" v-if="hasContent(index)" uk-icon="icon: location; ratio: 1"></span>
-                        <!-- <div v-if="hasContent(index)" class="location-container uk-margin-remove uk-padding-remove uk-position-relative">
-                            <span class="location uk-margin-remove uk-padding-remove uk-height-1-1 uk-width-1-1" uk-icon="icon: location; ratio: 0.8"></span>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -674,7 +789,12 @@ const toggleKeybinds = () => {
                         <button @click="toggleHelp" class="goa-button">Close</button>
                     </div>
                     <h3 class="text-primary uk-margin-remove-top">Instructions:</h3>
-                    <li class="uk-text-bold text-button">Click the <span class="goa-button uk-button-small">Add Location</span> button to enable/disable adding markers to the map.</li>
+                    <li class="uk-text-bold text-button">Use the filter in the top-center to filter map data.</li>
+                    <li class="uk-text-bold text-button">Click the 
+                        <button class="uk-icon-button uk-margin-small-bottom" disabled>
+                            <span uk-icon="icon: location"></span>
+                        </button>
+                        button to enable/disable adding markers to the map.</li>
                     <li class="uk-text-bold text-button">With adding marks enabled, click the map to add a location marker.</li>
                     <li class="uk-text-bold text-button">Click and drag the map to move it around.</li>
                     <li class="uk-text-bold text-button">Use the scroll wheel to zoom in and out.</li>
@@ -730,14 +850,16 @@ const toggleKeybinds = () => {
             </div>
             <div class="uk-width-1-1 uk-flex uk-flex-column uk-margin-small-bottom">
                 <label class="text-primary" for="markerLayer">Layer</label>
-                <input class="goa-input uk-width-1-1" type="text" name="markerLayer" id="markerLayer" readonly v-model="activeCell.layer">
+                <select class="goa-input"  id="markerLayer" name="markerLayer" v-model="layer">
+                    <option class="map-option" v-for="layer in layers">{{ layer }}</option>
+                </select>
             </div>
             <div class="uk-flex uk-flex-column uk-margin-small-bottom">
                 <label class="text-primary" for="markerCell">Cell</label>
                 <input class="goa-input" type="text" name="markerCell" id="markerCell" readonly v-model="activeCell.cell">
             </div>
             <div class="uk-flex uk-flex-column uk-margin-small-bottom">
-                <label class="text-primary" for="markerName">{{ layer}} Name</label>
+                <label class="text-primary" for="markerName">{{ layer != 'Strategy' ? layer : 'Location' }} Name</label>
                 <input class="goa-input" type="text" name="markerName" id="markerName" v-model="activeCell.name">
             </div>
             <div class="uk-flex uk-flex-column uk-margin-small-bottom">
@@ -747,6 +869,29 @@ const toggleKeybinds = () => {
         </div>
         <div>
             <button @click="submitLocation" class="goa-button">Submit Location</button>
+        </div>
+    </div>
+    <div v-if="locationDetailsOpen && locationDetails.length > 0" class="location-details uk-margin-bottom uk-padding-small">
+        <button @click="toggleLocationDetails" class="goa-button uk-float-right">Close</button>
+        <div class="uk-flex">
+            <div class="uk-flex uk-flex-column uk-margin-right uk-margin-bottom">
+                <label class="text-primary" for="locationCell">Location #</label>
+                <input id="locationCell" class="goa-input" type="text" :value="locationDetails[0].cell">
+            </div>
+        </div>
+        <div v-for="location in locationDetails" class="uk-margin-top">
+            <div class="uk-flex uk-flex-column">
+                <label class="text-primary" for="locationLayer">Layer</label>
+                <input id="locationLayer" class="goa-input" type="text" :value="location.layer">    
+            </div>
+            <div class="uk-flex uk-flex-column">
+                <label class="text-primary" for="locationName">Name</label>
+                <input id="locationName" class="goa-input" type="text" :value="location.name">
+            </div>
+            <div class="uk-flex uk-flex-column">
+                <label class="text-primary" for="locationDescription">Description</label>
+                <textarea id="locationDescription" class="goa-input" type="text"  :value="location.description"></textarea>
+            </div>
         </div>
     </div>
 </template>
