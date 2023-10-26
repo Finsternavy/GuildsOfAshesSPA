@@ -6,15 +6,45 @@ const gridSize = ref(20);
 const gridColumns = ref(80);
 const gridRows = ref(80);
 
-let activeCell = ref(null);
+let activeCell = ref({
+    layer: null,
+    cell: null,
+    name: null,
+    description: null,
+});
 
 let dataCells = ref([]);
 let disableCellClick = ref(false);
 let showHelp = ref(true);
 let showKeybinds = ref(true);
+let clickMode = ref('add');
 
 let hideInstructions = ref(false);
 let hideKeybinds = ref(false);
+
+let showLocationMarker = ref(false);
+
+let layer = ref('Strategy');
+
+const layers = [
+    'Dungeons',
+    'Mobs',
+    'Nodes',
+    'Quests',
+    'Resources',
+    'Strategy',
+]
+
+const dungeons = ref([
+    {
+        layer: 'dungeons',
+        cell: '2345',
+        name: 'Dungeon Name',
+        description: 'Dungeon Description',
+    },
+])
+
+
 
 watch(hideInstructions, (value) => {
     if (value){
@@ -42,8 +72,16 @@ const keybinds = [
         action: 'Toggle Add Location'
     },
     {
+        bind: 'Delete',
+        action: 'Toggle Remove Location'
+    },
+    {
         bind: 'Left Click',
-        action: 'Add Location'
+        action: 'Add Location (Add Active)'
+    },
+    {
+        bind: 'Left Click',
+        action: 'Remove Location (Remove Active)'
     },
     {
         bind: 'Left Click Hold',
@@ -70,8 +108,13 @@ const keybinds = [
 
 let markMap = ref(false);
 let mapWarningText = computed(() => {
-    if (markMap.value){
-        return 'Add Location enabled!';
+    if (markMap.value == true){
+        if (clickMode.value == 'add'){
+            return 'Add Location enabled!';
+        }
+        if (clickMode.value == 'remove'){
+            return 'Remove Location enabled!';
+        }
     }
     return null;
 });
@@ -96,17 +139,20 @@ let cellWidth = computed(() => {
 onMounted(() => {
     hideInstructions.value = localStorage.getItem('hideInstructions');
     hideKeybinds.value = localStorage.getItem('hideKeybinds');
+    // activeCell.layer = layer.value;
     // window.addEventListener('mousedown', handleMouseDown);
     // window.addEventListener('mouseup', handleMouseUp);
     // window.addEventListener('keydown.ctrl', toggleMarkMap);
+    clickMode.value = 'add';
     map = document.getElementById('verraContainer');
     document.body.addEventListener('keydown', handleKeyDown);
-    document.body.addEventListener('mouseclick.middle', handleMouseClick);
+    // document.body.addEventListener('mouseclick.middle', handleMouseClick);
 });
 
 const handleKeyDown = (event) => {
     console.log(event.key)
     if (event.key == 'Control'){
+        clickMode.value = 'add';
         toggleMarkMap();
     }
     if (event.key == 'ArrowRight'){
@@ -124,10 +170,14 @@ const handleKeyDown = (event) => {
     if (event.key == 'Middle'){
         resetMap();
     }
+    if (event.key == 'Delete'){
+        clickMode.value = 'remove';
+        toggleRemoveMap();
+    }
 }
 
 const handleMouseClick = (event) => {
-    console.log('handleMouseClick');
+    // console.log('handleMouseClick');
     // if (markMap.value){
     //     setActiveCell(event.target);
     // }
@@ -172,25 +222,71 @@ const handleScroll = () => {
 }
 
 const setActiveCell = (index) => {
-    if (!disableCellClick.value){
-        console.log('setActiveCell: ', index);
-        activeCell.value = index;
-        if (!dataCells.value.includes(index)) {
-            dataCells.value.push(index);
-        }
-        else if (dataCells.value.includes(index)) {
-            dataCells.value.splice(dataCells.value.indexOf(index), 1);
-            activeCell.value = null;
-        }
-        toggleMarkMap();
+    console.log('setActiveCell: ', index);
+    activeCell.value.cell = index;
+    activeCell.value.layer = layer.value;
+    console.log("ClickMode: ", clickMode.value);
+    if (clickMode.value == 'add'){
         showCellInfoModal.value = true;
     }
+    if (clickMode.value == 'remove'){
+        removeLocation(index);
+    }
+    toggleMarkMap();
+    // showLocationMarker.value = true;
+
+
+
+    // if (!dataCells.value.includes(index)) {
+    //     dataCells.value.push(index);
+    // }
+    // else if (dataCells.value.includes(index)) {
+    //     dataCells.value.splice(dataCells.value.indexOf(index), 1);
+    //     activeCell.value = null;
+    // }
+}
+
+const submitLocation = () => {
+    console.log('submitLocation');
+    let location = {...activeCell.value};
+    if (location.cell && location.name && location.description){
+        dataCells.value.push(location);
+        showCellInfoModal.value = false;
+    }
+}
+
+const removeLocation = (index) => {
+    console.log('removeLocation');
+    activeCell.value.cell = index;
+    // if (activeCell.value.cell){
+    //     dataCells.value.splice(dataCells.value.indexOf(activeCell.value.cell), 1);
+    //     activeCell.value = {};
+    // }
+    if (dataCells.value.length > 0){
+        dataCells.value.forEach((cell, i) => {
+            if (cell.cell == index){
+                dataCells.value.splice(i, 1);
+            }
+        })
+    }
+    clickMode.value = 'add';
+    // toggleMarkMap('add');
 }
 
 
 const hasContent = (index) => {
-    if (dataCells.value.includes(index)) {
-        return true;
+    // if (dataCells.value.includes(index)) {
+    //     return true;
+    // }
+    // return false;
+    if (dataCells.value.length > 0){
+        for (let i = 0; i < dataCells.value.length; i++){
+            if (dataCells.value[i].cell == index){
+                console.log('datacells: ', dataCells.value[i], " index: ", index);
+                console.log('datacells: ', dataCells.value);
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -273,6 +369,11 @@ const toggleMarkMap = () => {
     markMap.value = !markMap.value;
 }
 
+const toggleRemoveMap = () => {
+    clickMode.value = 'remove';
+    toggleMarkMap();
+}
+
 const moveRight = () => {
     map.style.left = currentX.value - offset.value + 'px';
     currentX.value -= offset.value;
@@ -345,14 +446,16 @@ const toggleKeybinds = () => {
 }
 
 .verra::after {
-    --width: v-bind(mapCurrentScale * 0.2 + 'px');
+    --width: v-bind(mapCurrentScale / 5 + 'px');
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent var(--width)), repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent var(--width));
+    /* background-image: 
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent v-bind(mapCurrentScale / 5 + 'px')), 
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent v-bind(mapCurrentScale / 5 + 'px')); */
     outline: 1px solid black;
     pointer-events: none;
 }
@@ -392,16 +495,32 @@ const toggleKeybinds = () => {
 }
 
 .map-cell:hover {
+    /* box-sizing: border-box; */
     background-color: rgba(119, 13, 13, 0.8);
 }
 
-.circle {
+.circle::after {
+    content: '';
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
     border-radius: 50%;
     background-color: red;
-    min-height: 50%;
-    min-width: 50%;
-    max-height: 50%;
-    max-width: 50%;
+}
+
+.location-container {
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+.location {
+    box-sizing: border-box;
+    color: white;
+    background-color: red;
+    border-radius: 50%;
+    margin: none;
+    /* padding: 2px; */
 }
 
 .cell-info-modal {
@@ -418,7 +537,7 @@ const toggleKeybinds = () => {
 
 .map-warnings-container {
     position: absolute;
-    top: 10px;
+    top: 65px;
     left: 50%;
     transform: translateX(-50%);
     padding: 10px;
@@ -462,13 +581,22 @@ const toggleKeybinds = () => {
 .settings-icon {
     padding: 2px;
 }
+.top-controls {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    border-radius: 30px;
+    background-color: var(--background-color-alpha);
+}
 
 .controls {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 10px;
-    padding: 20px;
+    padding: 10px;
     width: fit-content;
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -477,11 +605,12 @@ const toggleKeybinds = () => {
 
 .bottom-controls {
     position: absolute;
-    bottom: 0px;
-    right: 50%;
-    transform: translateX(50%);
-    padding: 20px;
-    width: 100%;
+    left: 10px;
+    top: 50%;
+    transform: translateY(50%);
+    padding: 10px;
+    width: fit-content;
+    border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid rgba(0, 0, 0, 0.8);
 }
@@ -496,6 +625,15 @@ const toggleKeybinds = () => {
     padding: 5px;
     margin-bottom: 5px;
 }
+
+.goa-input {
+    border: 10px;
+    /* background-color: var(--background-color-alpha); */
+}
+
+.map-option {
+    background-color: var(--background-color-alpha);
+}
 </style>
 
 <template>
@@ -504,21 +642,20 @@ const toggleKeybinds = () => {
             <div class="verra-map-container uk-flex uk-flex-center">
                 <div id="VerraMap" class="verra-map uk-position-relative" :data-src="Verra" uk-img></div>
             </div>
-            <div class=" uk-margin-bottom">
+            <div class="uk-margin-bottom">
                 <div class="map-grid uk-width-1-1"
                 @mousedown="handleMouseDown"
                 @mousemove="moveImage"
                 @mouseup="handleMouseUp">
                     <div v-for="row, index in (gridColumns * gridRows)" 
                         :key="index" 
-                        class="map-cell uk-flex uk-flex-center uk-flex-middle"
-                        :class="{'disabled' : !markMap}"
+                        class="map-cell uk-flex uk-flex-center uk-flex-middle uk-margin-remove uk-padding-remove uk-position-relative"
+                        :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
-    
-                        <div v-if="hasContent(index)" class="">
-                            <!-- <div class="circle"></div> -->
-                            <span class="uk-icon-button" uk-icon="icon: location; ratio: 3"></span>
-                        </div>
+                            <span class="location uk-position-center" v-if="hasContent(index)" uk-icon="icon: location; ratio: 1"></span>
+                        <!-- <div v-if="hasContent(index)" class="location-container uk-margin-remove uk-padding-remove uk-position-relative">
+                            <span class="location uk-margin-remove uk-padding-remove uk-height-1-1 uk-width-1-1" uk-icon="icon: location; ratio: 0.8"></span>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -559,6 +696,11 @@ const toggleKeybinds = () => {
                 </div>
             </div>
         </div>
+        <div class="top-controls">
+            <select class="goa-input" name="layerSelect" id="layerSelect" v-model="layer">
+                <option class="map-option" v-for="layer in layers">{{ layer }}</option>
+            </select>
+        </div>
         <div class="controls uk-flex uk-flex-column uk-flex-middle">
             <button class="uk-icon-button uk-margin-small-bottom" @click="zoomIn"><span uk-icon="icon: plus-circle"></span></button>
             <button class="uk-icon-button uk-margin-small-bottom" @click="zoomOut"><span uk-icon="icon: minus-circle"></span></button>
@@ -566,27 +708,45 @@ const toggleKeybinds = () => {
             <button class="uk-icon-button uk-margin-small-bottom" @click="moveUp"><span uk-icon="icon: chevron-up"></span></button>
             <button class="uk-icon-button uk-margin-small-bottom" @click="moveDown"><span uk-icon="icon: chevron-down"></span></button>
             <button class="uk-icon-button uk-margin-small-bottom" @click="moveLeft"><span uk-icon="icon: chevron-left"></span></button>
-            <button class="uk-icon-button uk-margin-small-bottom" @click="moveRight"><span uk-icon="icon: chevron-right"></span></button>
+            <button class="uk-icon-button" @click="moveRight"><span uk-icon="icon: chevron-right"></span></button>
         </div>
-        <div class="bottom-controls">
-            <button @click="toggleMarkMap" class="goa-button">Add Location</button>
+        <div class="bottom-controls uk-flex uk-flex-column uk-flex-middle">
+            <button @click="toggleMarkMap()" class="uk-icon-button uk-margin-small-bottom">
+                <span uk-icon="icon: location"></span>
+            </button>
+            <button @click="toggleRemoveMap()" class="uk-icon-button">
+                <span uk-icon="icon: trash"></span>
+            </button>
         </div>
     </div>
     <div v-if="showCellInfoModal" id="cellModal" class="cell-info-modal goa-container uk-padding uk-width-1-1 uk-panel-scrollable" >
         <button @click="closeCellInfo" class="goa-button uk-float-right">X</button>
         <div class="uk-width-1-1">
             <div class="cell-data uk-margin-bottom">
-                <span>Active Cell: </span><span class="text-primary">{{ activeCell  }}</span>
+                <span class="text-primary">Active Cell: </span><span>{{ activeCell.cell  }}</span>
                 <div class="coordinates">
-                    <span>Coordinates: </span><span class="text-primary">X: {{ Math.floor(activeCell / gridColumns) }}, Y: {{ activeCell % gridColumns }}</span>
+                    <span class="text-primary">Coordinates: </span><span>X: {{ Math.floor(activeCell.cell / gridColumns) }}, Y: {{ activeCell.cell % gridColumns }}</span>
                 </div>
             </div>
-            <div class="location-information-container">
-                <span>Location Information:</span>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellendus veniam neque possimus at obcaecati provident culpa. Laboriosam, incidunt! Praesentium accusamus aliquid ut cum consequatur sequi?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. A architecto ipsa fuga facere. Ad, iste possimus at delectus laborum eligendi cupiditate rerum voluptates distinctio! Pariatur!</p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est explicabo quibusdam, ab perspiciatis repellendus in minima repudiandae. Fugit hic perferendis, quidem vitae nisi unde nulla esse exercitationem mollitia voluptas ad temporibus autem architecto et vero optio error amet minima, veniam placeat doloribus sapiente natus! In eaque ut praesentium cum labore beatae repellat delectus dolorum facere possimus. Ea a unde tempora aspernatur veritatis doloribus ducimus consequatur, minus et labore necessitatibus aliquam ipsam? Sequi vero maxime, quod neque, rem accusantium facere commodi sit eum dolore placeat quia ut? Consectetur reiciendis aut beatae saepe dolore porro architecto repudiandae tempore natus libero? Incidunt, fugiat.
+            <div class="uk-width-1-1 uk-flex uk-flex-column uk-margin-small-bottom">
+                <label class="text-primary" for="markerLayer">Layer</label>
+                <input class="goa-input uk-width-1-1" type="text" name="markerLayer" id="markerLayer" readonly v-model="activeCell.layer">
             </div>
+            <div class="uk-flex uk-flex-column uk-margin-small-bottom">
+                <label class="text-primary" for="markerCell">Cell</label>
+                <input class="goa-input" type="text" name="markerCell" id="markerCell" readonly v-model="activeCell.cell">
+            </div>
+            <div class="uk-flex uk-flex-column uk-margin-small-bottom">
+                <label class="text-primary" for="markerName">{{ layer}} Name</label>
+                <input class="goa-input" type="text" name="markerName" id="markerName" v-model="activeCell.name">
+            </div>
+            <div class="uk-flex uk-flex-column uk-margin-small-bottom">
+                <label class="text-primary" for="markerDescription">Description</label>
+                <textarea class="goa-input" type="text" name="markerDescription" rows="10" id="markerDescription" v-model="activeCell.description"></textarea>
+            </div>
+        </div>
+        <div>
+            <button @click="submitLocation" class="goa-button">Submit Location</button>
         </div>
     </div>
 </template>
