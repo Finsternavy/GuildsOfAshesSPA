@@ -10,6 +10,15 @@ let activeCell = ref(null);
 
 let dataCells = ref([]);
 let disableCellClick = ref(false);
+let showHelp = ref(true);
+
+let markMap = ref(false);
+let mapWarningText = computed(() => {
+    if (markMap.value){
+        return 'Add Location enabled!';
+    }
+    return null;
+});
 
 let showCellInfoModal = ref(false);
 let map = document.getElementById('verraContainer');
@@ -17,14 +26,11 @@ let mapCurrentScale = ref(100);
 let zoomAmount = ref(15);
 let currentX = ref(0);
 let currentY = ref(0);
-let currentRight = ref(0);
-let currentBottom = ref(0);
-let offset = ref(10);
+let offset = ref(50);
+const startX = ref(0);
+const startY = ref(0);
 
-let clickX = ref(0);
-let clickY = ref(0);
-let releaseX = ref(0);
-let releaseY = ref(0);
+let isDragging = ref(false);
 
 let cellWidth = computed(() => {
     gridSize.value = (mapCurrentScale.value / gridSize.value);
@@ -32,8 +38,37 @@ let cellWidth = computed(() => {
 });
 
 onMounted(() => {
-
+    // window.addEventListener('mousedown', handleMouseDown);
+    // window.addEventListener('mouseup', handleMouseUp);
 });
+
+// while mousedown move map
+
+
+
+const handleMouseDown = (event) => {
+    if (!map){
+        map = document.getElementById('verraContainer');
+    }
+    isDragging.value = true;
+    startX.value = event.clientX - currentX.value;
+    startY.value = event.clientY - currentY.value;
+}
+
+const moveImage = (event) => {
+    if (isDragging.value) {
+        const newLeft = event.clientX - startX.value;
+        const newTop = event.clientY - startY.value;
+        currentX.value = newLeft;
+        currentY.value = newTop;
+        map.style.left = `${currentX.value}px`;
+        map.style.top = `${currentY.value}px`;
+    }
+};
+
+const handleMouseUp = () => {
+    isDragging.value = false;
+}
 
 const handleScroll = () => {
     console.log('handleScroll');
@@ -54,14 +89,11 @@ const setActiveCell = (index) => {
             dataCells.value.splice(dataCells.value.indexOf(index), 1);
             activeCell.value = null;
         }
-    
+        toggleMarkMap();
         showCellInfoModal.value = true;
     }
 }
 
-const keyUp = () => {
-    console.log('keyUp');
-}
 
 const hasContent = (index) => {
     if (dataCells.value.includes(index)) {
@@ -91,163 +123,81 @@ const setClickStart = (event) => {
 
 const zoomIn = () => {
     console.log('testZoom');
-    if (!map){
+    if (!map) {
         map = document.getElementById('verraContainer');
     }
-    if (map){
-        if (mapCurrentScale.value < 300){
-                map.style.width = mapCurrentScale.value + zoomAmount.value + '%';
-                map.style.height = mapCurrentScale.value + zoomAmount.value + '%';
-                map.style.top = currentY.value - (zoomAmount.value / 2) + '%';
-                map.style.left = currentX.value - (zoomAmount.value / 2) + '%';
-                mapCurrentScale.value += zoomAmount.value;
-                currentY.value -= (zoomAmount.value / 2);
-                currentX.value -= (zoomAmount.value / 2);
-                console.log("currentX: ", currentX.value);
-                console.log("mapCurrenScale: ", mapCurrentScale.value);
-            }
+    if (map) {
+        if (mapCurrentScale.value < 300) {
+            const zoomRatio = 1 + zoomAmount.value / mapCurrentScale.value;
+            map.style.width = mapCurrentScale.value + zoomAmount.value + '%';
+            map.style.height = mapCurrentScale.value + zoomAmount.value + '%';
+            const newWidth = map.offsetWidth * zoomRatio;
+            const newHeight = map.offsetHeight * zoomRatio;
+            const newX = currentX.value - (newWidth - map.offsetWidth) / 2;
+            const newY = currentY.value - (newHeight - map.offsetHeight) / 2;
+            map.style.top = newY + 'px';
+            map.style.left = newX + 'px';
+            mapCurrentScale.value += zoomAmount.value;
+            currentY.value = newY;
+            currentX.value = newX;
+            console.log("currentX: ", currentX.value);
+            console.log("mapCurrentScale: ", mapCurrentScale.value);
+            startX.value = currentX.value;
+            startY.value = currentY.value;
+        }
     }
 }
 
 const zoomOut = () => {
     console.log('zoomOut');
-    if (!map){
+    if (!map) {
         map = document.getElementById('verraContainer');
     }
-    if (map){
-        if (mapCurrentScale.value > 100){
-                map.style.width = mapCurrentScale.value - zoomAmount.value + '%';
-                map.style.height = mapCurrentScale.value - zoomAmount.value + '%';
-                map.style.top = currentY.value + (zoomAmount.value / 2) + '%';
-                map.style.left = currentX.value + (zoomAmount.value / 2) + '%';
-                mapCurrentScale.value -= zoomAmount.value;
-                currentY.value += (zoomAmount.value / 2);
-                currentX.value += (zoomAmount.value / 2);
-                console.log("currentX: ", currentX.value);
-                console.log("mapCurrenScale: ", mapCurrentScale.value);
-            }
-            if (mapCurrentScale.value == 100){
-                resetMap();
-            }
+    if (map) {
+        if (mapCurrentScale.value > 100) {
+            const zoomRatio = 1 - zoomAmount.value / mapCurrentScale.value;
+            map.style.width = mapCurrentScale.value - zoomAmount.value + '%';
+            map.style.height = mapCurrentScale.value - zoomAmount.value + '%';
+            const newWidth = map.offsetWidth * zoomRatio;
+            const newHeight = map.offsetHeight * zoomRatio;
+            const newX = currentX.value + (map.offsetWidth - newWidth) / 2;
+            const newY = currentY.value + (map.offsetHeight - newHeight) / 2;
+            map.style.top = newY + 'px';
+            map.style.left = newX + 'px';
+            mapCurrentScale.value -= zoomAmount.value;
+            currentY.value = newY;
+            currentX.value = newX;
+            console.log("currentX: ", currentX.value);
+            console.log("mapCurrentScale: ", mapCurrentScale.value);
+        }
+        if (mapCurrentScale.value == 100) {
+            resetMap();
+        }
     }
 }
 
+const toggleMarkMap = () => {
+    markMap.value = !markMap.value;
+}
 
 const moveRight = () => {
-    // disableCellClick.value = true;
-    console.log('moveRight');
-    if (!map){
-        map = document.getElementById('verraContainer');
-    }
-    if (map){
-        if (mapCurrentScale.value == 100){
-            resetMap();
-            return;
-        }
-        console.log("currentX: ", currentX.value);
-        // if (currentRight.value < 0) {
-        //     currentRight.value = 0;
-        // }
-        if (mapCurrentScale.value > 250){
-            if (currentX.value < 10 && currentX.value > -200){
-                console.log("currentX: ", currentX.value);
-                let Xoffset = currentX.value - offset.value;
-                console.log("Xoffset: ", Xoffset);
-                // if (Xoffset > currentRight.value) Xoffset = 0;
-                map.style.left = Xoffset + '%';
-                currentX.value -= offset.value;
-                // currentRight.value -= offset.value;
-            }
-        }
-        if (mapCurrentScale.value <= 250 && mapCurrentScale.value > 150){
-            if (currentX.value < 10 && currentX.value > -150){
-                console.log("currentX: ", currentX.value);
-                let Xoffset = currentX.value - offset.value;
-                console.log("Xoffset: ", Xoffset);
-                // if (Xoffset > currentRight.value) Xoffset = 0;
-                map.style.left = Xoffset + '%';
-                currentX.value -= offset.value;
-                // currentRight.value -= offset.value;
-            }
-        }
-        if (mapCurrentScale.value <= 150 && mapCurrentScale.value > 100){
-            if (currentX.value < 10 && currentX.value > -46){
-                console.log("currentX: ", currentX.value);
-                let Xoffset = currentX.value - offset.value;
-                console.log("Xoffset: ", Xoffset);
-                // if (Xoffset > currentRight.value) Xoffset = 0;
-                map.style.left = Xoffset + '%';
-                currentX.value -= offset.value;
-                currentRight.value -= offset.value;
-            }
-        }
-        // console.log("currentX: ", currentX.value);
-        // map.style.left = currentX.value - offset.value + '%';
-        // currentX.value -= offset.value;
-    }
+    map.style.left = currentX.value - offset.value + 'px';
+    currentX.value -= offset.value;
 }
 
 const moveLeft = () => {
-    // disableCellClick.value = true;
-    console.log('moveLeft');
-    if (!map){
-        map = document.getElementById('verraContainer');
-    }
-    if (map){
-        if (mapCurrentScale.value == 100){
-            resetMap();
-            return;
-        }
-        if (currentX.value < 0 && currentX.value >= -220){
-            console.log("currentX: ", currentX.value);
-            let Xoffset = currentX.value + offset.value;
-            if (Xoffset > 0) Xoffset = 0;
-            map.style.left = Xoffset + '%';
-            currentX.value += offset.value;
-            currentRight.value += offset.value;
-        }
-        // console.log("currentX: ", currentX.value);
-        // map.style.left = currentX.value + offset.value + '%';
-        // currentX.value += offset.value;
-    }
+    map.style.left = currentX.value + offset.value + 'px';
+    currentX.value += offset.value;
 }
 
 const moveUp = () => {
-    // disableCellClick.value = true;
-    console.log('moveUp');
-    if (!map){
-        map = document.getElementById('verraContainer');
-    }
-    if (map){
-        if (mapCurrentScale.value == 100){
-            return;
-        }
-        if (currentY.value < 0){
-            console.log("currentY: ", currentY.value);
-            let Yoffset = currentY.value + offset.value;
-            if (Yoffset > 0) Yoffset = 0;
-            map.style.top = Yoffset + '%';
-            currentY.value += offset.value;
-        }
-    }
+    map.style.top = currentY.value + offset.value + 'px';
+    currentY.value += offset.value;
 }
 
 const moveDown = () => {
-    // disableCellClick.value = true;
-    console.log('moveDown');
-    if (!map){
-        map = document.getElementById('verraContainer');
-    }
-    if (map){
-        if (mapCurrentScale.value == 100){
-            return;
-        }
-        if (currentY.value <= 85 && currentY.value >= -175){
-            console.log("currentY: ", currentY.value);
-            map.style.top = currentY.value - offset.value + '%';
-            currentY.value -= offset.value;
-        }
-    }
+    map.style.top = currentY.value - offset.value + 'px';
+    currentY.value -= offset.value;
 }
 
 const resetMap = () => {
@@ -267,6 +217,10 @@ const resetMap = () => {
         currentX.value = 0;
         currentY.value = 0;
     }
+}
+
+const toggleHelp = () => {
+    showHelp.value = !showHelp.value;
 }
 </script>
 
@@ -364,38 +318,99 @@ const resetMap = () => {
 
 }
 
+.map-warnings-container {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 30px;
+    background-color: rgb(255, 255, 200);
+    border: 2px solid orangered;
+    color: orangered;
+    overflow: hidden;
+}
+.instructions {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 30px;
+    background-color: var(--background-color-alpha);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
 .controls {
     position: absolute;
-    bottom: 40px;
-    right: 50%;
-    transform: translateX(50%);
+    top: 10px;
+    right: 10px;
     padding: 20px;
     width: fit-content;
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px solid rgba(0, 0, 0, 0.8);
 }
+
+.bottom-controls {
+    position: absolute;
+    bottom: 0px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 20px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+}
+
+.disabled {
+    pointer-events: none;
+}
 </style>
 
 <template>
-    <div @wheel="wheelZoom" class="map-board-container uk-overflow-hidden uk-margin-bottom">
-        <div id="verraContainer" class="verra uk-position-relative">
+    <div @wheel="wheelZoom" class=" map-board-container uk-overflow-hidden uk-margin-bottom">
+        <div  id="verraContainer" class="verra uk-position-relative">
             <div class="verra-map-container uk-flex uk-flex-center">
                 <div id="VerraMap" class="verra-map uk-position-relative" :data-src="Verra" uk-img></div>
             </div>
             <div class=" uk-margin-bottom">
-                <div  class="map-grid uk-width-1-1">
+                <div class="map-grid uk-width-1-1"
+                @mousedown="handleMouseDown"
+                @mousemove="moveImage"
+                @mouseup="handleMouseUp">
                     <div v-for="row, index in (gridColumns * gridRows)" 
                         :key="index" 
                         class="map-cell uk-flex uk-flex-center uk-flex-middle"
+                        :class="{'disabled' : !markMap}"
                         @click="setActiveCell(index)">
     
-                        <div v-if="hasContent(index)" class="circle">
-                            <div class="circle"></div>
+                        <div v-if="hasContent(index)" class="">
+                            <!-- <div class="circle"></div> -->
+                            <span class="uk-icon-button" uk-icon="icon: location; ratio: 3"></span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-if="mapWarningText" class="map-warnings-container">
+            <span>{{ mapWarningText }}</span>
+        </div>
+        <div class="instructions uk-flex" :class="{'instructions-open' : showHelp}">
+            <span @click="toggleHelp" class="text-primary" uk-icon="icon: question; ratio: 1.5"></span>
+            <ul v-if="showHelp" >
+                <button @click="toggleHelp" class="goa-button uk-float-right">Close</button>
+                <h3 class="text-primary">Instructions:</h3>
+                <li class="uk-text-bold text-button">Click the <span class="goa-button uk-button-small">Add Location</span> button to enable/disable adding markers to the map.</li>
+                <li class="uk-text-bold text-button">With adding marks enabled, click the map to add a location marker.</li>
+                <li class="uk-text-bold text-button">Click and drag the map to move it around.</li>
+                <li class="uk-text-bold text-button">Use the scroll wheel to zoom in and out.</li>
+                <li class="uk-text-bold text-button">You can also navigate with the control cluster in the upper right corner.</li>
+            </ul>
         </div>
         <div class="controls uk-flex uk-flex-column uk-flex-middle">
             <div class="zoom-buttons">
@@ -411,6 +426,9 @@ const resetMap = () => {
                 </div>
                 <button class="uk-icon-button" @click="moveRight"><span uk-icon="icon: chevron-right"></span></button>
             </div>
+        </div>
+        <div class="bottom-controls">
+            <button @click="toggleMarkMap" class="goa-button">Add Location</button>
         </div>
     </div>
     <div v-if="showCellInfoModal" id="cellModal" class="cell-info-modal goa-container uk-padding uk-width-1-1 uk-panel-scrollable" >
