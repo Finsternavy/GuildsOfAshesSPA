@@ -363,6 +363,10 @@ const submitLocation = () => {
     // console.log('submitLocation');
     let location = {...activeCell.value};
     location.layer = layer.value;
+    if (location.layer == 'All'){
+        warningText.value = "You must select a layer to add a location.";
+        return;
+    }
     if (location.cell && location.name && location.description){
         dataCells.value.push(location);
         console.log("dataCells: ", dataCells.value);
@@ -437,7 +441,7 @@ const zoomIn = () => {
         map = document.getElementById('verraContainer');
     }
     if (map) {
-        if (mapCurrentScale.value < 300) {
+        if (mapCurrentScale.value < 500) {
             const zoomRatio = 1 + zoomAmount.value / mapCurrentScale.value;
             map.style.width = mapCurrentScale.value + zoomAmount.value + '%';
             map.style.height = mapCurrentScale.value + zoomAmount.value + '%';
@@ -560,6 +564,37 @@ const showLocationDetails = (index) => {
     toggleLocationDetails();
 }
 
+const getLocationIcon = (index) => {
+    let layer = '';
+    dataCells.value.forEach((cell) => {
+        if (cell.cell == index){
+            layer = cell.layer;
+        }
+    });
+
+    let icon = '';
+    if (layer == 'Dungeon'){
+        icon = 'world';
+    }
+    if (layer == 'Mob'){
+        icon = 'github';
+    }
+    if (layer == 'Node'){
+        icon = 'home';
+    }
+    if (layer == 'Quest'){
+        icon = 'location';
+    }
+    if (layer == 'Resource'){
+        icon = 'apple';
+    }
+    if (layer == 'Strategy'){
+        icon = 'info';
+    }
+
+    return icon;
+}
+
 const toggleLocationDetails = () => {
     locationDetailsOpen.value = !locationDetailsOpen.value;
 }
@@ -659,17 +694,24 @@ const toggleLocationDetails = () => {
 .location {
     position: absolute;
     box-sizing: border-box;
-    color: white;
-    background-color: red;
+    color: red;
+    background-color: black;
     border-radius: 50%;
     margin: none;
-    scale: 2;
+    scale: 3;
     left: 50%;
     top: 50%;
-    transform: translate(-25%, -25%);
+    /* padding: 2%; */
+    transform: translate(-17%, -17%);
     /* z-index: 20000; */
     pointer-events: all;
     /* padding: 2px; */
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.location:hover {
+    background-color: red;
+    color: black;
 }
 
 .cell-info-modal {
@@ -796,6 +838,24 @@ const toggleLocationDetails = () => {
     /* padding: 10px; */
     overflow: hidden;
 }
+
+.icon-key {
+    border-radius: 50%;
+    background-color: black;
+    color: red;
+}
+
+.map-key {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 5px solid rgba(0, 0, 0, 0.8);
+    border-bottom: none;
+    border-left: none;
+    color: white;
+}
 </style>
 
 <template>
@@ -814,7 +874,7 @@ const toggleLocationDetails = () => {
                         class="map-cell uk-flex uk-flex-center uk-flex-middle uk-margin-remove uk-padding-remove uk-position-relative"
                         :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
-                            <span class="location" v-if="hasContent(index)" uk-icon="icon: location; ratio: 1"></span>
+                            <span class="location" v-if="hasContent(index)" :uk-icon="'icon:' + getLocationIcon(index) + '; ratio: 1'"></span>
                     </div>
                 </div>
             </div>
@@ -884,6 +944,32 @@ const toggleLocationDetails = () => {
             <button @click="toggleRemoveMap()" class="uk-icon-button">
                 <span uk-icon="icon: trash"></span>
             </button>
+        </div>
+        <div class="map-key">
+            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                <span class="icon-key uk-margin-right" uk-icon="icon: world; ratio: 1.5"></span>
+                <span class="text-primary">Dungeon</span>
+            </div>
+            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                <span class="icon-key uk-margin-right" uk-icon="icon: github; ratio: 1.5"></span>
+                <span class="text-primary">Mob</span>
+            </div>
+            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                <span class="icon-key uk-margin-right" uk-icon="icon: home; ratio: 1.5"></span>
+                <span class="text-primary">Node</span>
+            </div>
+            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                <span class="icon-key uk-margin-right" uk-icon="icon: location; ratio: 1.5"></span>
+                <span class="text-primary">Quest</span>
+            </div>
+            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                <span class="icon-key uk-margin-right" uk-icon="icon: apple; ratio: 1.5"></span>
+                <span class="text-primary">Resource</span>
+            </div>
+            <div class="map-key-item uk-flex uk-flex-middle">
+                <span class="icon-key uk-margin-right" uk-icon="icon: info; ratio: 1.5"></span>
+                <span class="text-primary">Strategy</span>
+            </div>
         </div>
     </div>
     <div v-if="showCellInfoModal" id="cellModal" class="cell-info-modal goa-container uk-padding uk-width-1-1 uk-panel-scrollable" >
