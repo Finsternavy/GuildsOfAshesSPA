@@ -565,32 +565,46 @@ const showLocationDetails = (index) => {
 }
 
 const getLocationIcon = (index) => {
-    let layer = '';
+    let matches = [];
     dataCells.value.forEach((cell) => {
         if (cell.cell == index){
-            layer = cell.layer;
+            matches.push(cell);
         }
     });
 
-    let icon = '';
-    if (layer == 'Dungeon'){
-        icon = 'world';
+    let icon = 'question';
+    let match = null;
+    let tempLayer = null;
+    if (layer.value != 'All'){
+        match = matches.find((match) => match.layer == layer.value);
+        tempLayer = match.layer;
+    } else {
+        match = matches[0];
+        tempLayer = match.layer;
     }
-    if (layer == 'Mob'){
-        icon = 'github';
+
+    if (tempLayer){
+        if (tempLayer == 'Dungeon'){
+            icon = 'world';
+        }
+        if (tempLayer == 'Mob'){
+            icon = 'github';
+        }
+        if (tempLayer == 'Node'){
+            icon = 'home';
+        }
+        if (tempLayer == 'Quest'){
+            icon = 'location';
+        }
+        if (tempLayer == 'Resource'){
+            icon = 'apple';
+        }
+        if (tempLayer == 'Strategy'){
+            icon = 'info';
+        }
+        return icon;
     }
-    if (layer == 'Node'){
-        icon = 'home';
-    }
-    if (layer == 'Quest'){
-        icon = 'location';
-    }
-    if (layer == 'Resource'){
-        icon = 'apple';
-    }
-    if (layer == 'Strategy'){
-        icon = 'info';
-    }
+
 
     return icon;
 }
