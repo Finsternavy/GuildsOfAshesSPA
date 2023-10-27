@@ -609,6 +609,16 @@ const getLocationIcon = (index) => {
     return icon;
 }
 
+const contentCount = (index) => {
+    let count = 0;
+    dataCells.value.forEach((cell) => {
+        if (cell.cell == index){
+            count++;
+        }
+    });
+    return count;
+}
+
 const toggleLocationDetails = () => {
     locationDetailsOpen.value = !locationDetailsOpen.value;
 }
@@ -688,6 +698,7 @@ const toggleLocationDetails = () => {
 .map-cell:hover {
     /* box-sizing: border-box; */
     background-color: rgba(119, 13, 13, 0.8);
+    border-radius: 50%;
 }
 
 .circle::after {
@@ -726,6 +737,30 @@ const toggleLocationDetails = () => {
 .location:hover {
     background-color: red;
     color: black;
+}
+
+.location-count {
+    position: absolute;
+    box-sizing: border-box;
+    color: white;
+    /* background-color: black; */
+    /* border-radius: 50%; */
+    margin: none;
+    scale: 1.2;
+    left: 50%;
+    top: -30px;
+    padding: 0px 6px;
+    /* border-radius: 50%; */
+    /* border: 2px solid white; */
+    text-shadow: 0px 0px 5px red;
+    font-size: large;
+    font-weight: bold;
+    /* padding: 2%; */
+    /* transform: translateX(-17%); */
+    /* z-index: 20000; */
+    pointer-events: all;
+    /* padding: 2px; */
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
 .cell-info-modal {
@@ -889,6 +924,7 @@ const toggleLocationDetails = () => {
                         :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
                             <span class="location" v-if="hasContent(index)" :uk-icon="'icon:' + getLocationIcon(index) + '; ratio: 1'"></span>
+                            <span class="location-count" v-if="contentCount(index) > 1">{{contentCount(index)}}</span>
                     </div>
                 </div>
             </div>
