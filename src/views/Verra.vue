@@ -3,9 +3,11 @@ import { computed, onMounted, ref, watch } from 'vue';
 import Verra from '../public/Images/Verra_Map.png';
 import { useUserStore } from "../stores/userStore";
 import { useAPI } from '../stores/apiStore';
+import Loading from '../components/Loading.vue';
 
 let api = useAPI();
 let baseUrl = api.getAPI + "Guilds";
+let loading = ref(true);
 let store = useUserStore();
 let user = store.getUser;
 const gridSize = ref(20);
@@ -29,7 +31,7 @@ let showKeybinds = ref(true);
 let clickMode = ref('add');
 let locationDetailsOpen = ref(false);
 let locationDetails = ref([])
-
+let mapKeyOpen = ref(true);
 let hideInstructions = ref(false);
 let hideKeybinds = ref(false);
 
@@ -184,6 +186,7 @@ let getMapData = async () => {
     } else {
       // console.log("Error fetching thread data: ", response.statusText);
     }
+    loading.value = false;
 };
 
 const formatMapData = (data) => {
@@ -622,6 +625,18 @@ const contentCount = (index) => {
 const toggleLocationDetails = () => {
     locationDetailsOpen.value = !locationDetailsOpen.value;
 }
+
+const toggleMapKey = () => {
+    mapKeyOpen.value = !mapKeyOpen.value;
+}
+
+const getMapKeyIcon = () => {
+    if (mapKeyOpen.value){
+        return 'close';
+    } else {
+        return 'cog';
+    }
+}
 </script>
 
 <style scoped>
@@ -896,19 +911,28 @@ const toggleLocationDetails = () => {
 
 .map-key {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -205px;
+    left: -135px;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.8);
     border: 5px solid rgba(0, 0, 0, 0.8);
     border-bottom: none;
     border-left: none;
     color: white;
+    transition: bottom 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.map-key-open {
+    bottom: 0;
+    left: 0;
 }
 </style>
 
 <template>
-    <div @wheel="wheelZoom" class=" map-board-container uk-overflow-hidden uk-margin-bottom">
+    <div v-if="loading">
+        <Loading />
+    </div>
+    <div v-if="!loading" @wheel="wheelZoom" class=" map-board-container uk-overflow-hidden uk-margin-bottom">
         <div id="verraContainer" class="verra uk-position-relative">
             <div class="verra-map-container uk-flex uk-flex-center">
                 <div id="VerraMap" class="verra-map uk-position-relative" :data-src="Verra" uk-img></div>
@@ -973,10 +997,16 @@ const toggleLocationDetails = () => {
                 </div>
             </div>
         </div>
-        <div class="top-controls">
-            <select class="goa-input" name="layerSelect" id="layerSelect" v-model="layer">
+        <div class="top-controls uk-flex uk-flex-middle ">
+            <button @click="toggleMarkMap()" class="uk-icon-button uk-margin-right">
+                <span uk-icon="icon: location"></span>
+            </button>
+            <select class="goa-input uk-margin-right" name="layerSelect" id="layerSelect" v-model="layer">
                 <option class="map-option" v-for="layer in layers">{{ layer }}</option>
             </select>
+            <button @click="toggleRemoveMap()" class="uk-icon-button">
+                <span uk-icon="icon: trash"></span>
+            </button>
         </div>
         <div class="controls uk-flex uk-flex-column uk-flex-middle">
             <button class="uk-icon-button uk-margin-small-bottom" @click="zoomIn"><span uk-icon="icon: plus-circle"></span></button>
@@ -987,38 +1017,35 @@ const toggleLocationDetails = () => {
             <button class="uk-icon-button uk-margin-small-bottom" @click="moveLeft"><span uk-icon="icon: chevron-left"></span></button>
             <button class="uk-icon-button" @click="moveRight"><span uk-icon="icon: chevron-right"></span></button>
         </div>
-        <div class="bottom-controls uk-flex uk-flex-column uk-flex-middle">
-            <button @click="toggleMarkMap()" class="uk-icon-button uk-margin-small-bottom">
-                <span uk-icon="icon: location"></span>
-            </button>
-            <button @click="toggleRemoveMap()" class="uk-icon-button">
-                <span uk-icon="icon: trash"></span>
-            </button>
-        </div>
-        <div class="map-key">
-            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
-                <span class="icon-key uk-margin-right" uk-icon="icon: world; ratio: 1.5"></span>
-                <span class="text-primary">Dungeon</span>
+        <div class="map-key uk-flex" :class="{'map-key-open' : mapKeyOpen}">
+            <div class="map-key-data uk-margin-right">
+                <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                    <span class="icon-key uk-margin-right" uk-icon="icon: world; ratio: 1.5"></span>
+                    <span class="text-primary">Dungeon</span>
+                </div>
+                <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                    <span class="icon-key uk-margin-right" uk-icon="icon: github; ratio: 1.5"></span>
+                    <span class="text-primary">Mob</span>
+                </div>
+                <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                    <span class="icon-key uk-margin-right" uk-icon="icon: home; ratio: 1.5"></span>
+                    <span class="text-primary">Node</span>
+                </div>
+                <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                    <span class="icon-key uk-margin-right" uk-icon="icon: location; ratio: 1.5"></span>
+                    <span class="text-primary">Quest</span>
+                </div>
+                <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
+                    <span class="icon-key uk-margin-right" uk-icon="icon: apple; ratio: 1.5"></span>
+                    <span class="text-primary">Resource</span>
+                </div>
+                <div class="map-key-item uk-flex uk-flex-middle">
+                    <span class="icon-key uk-margin-right" uk-icon="icon: info; ratio: 1.5"></span>
+                    <span class="text-primary">Strategy</span>
+                </div>
             </div>
-            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
-                <span class="icon-key uk-margin-right" uk-icon="icon: github; ratio: 1.5"></span>
-                <span class="text-primary">Mob</span>
-            </div>
-            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
-                <span class="icon-key uk-margin-right" uk-icon="icon: home; ratio: 1.5"></span>
-                <span class="text-primary">Node</span>
-            </div>
-            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
-                <span class="icon-key uk-margin-right" uk-icon="icon: location; ratio: 1.5"></span>
-                <span class="text-primary">Quest</span>
-            </div>
-            <div class="map-key-item uk-flex uk-flex-middle uk-margin-small-bottom">
-                <span class="icon-key uk-margin-right" uk-icon="icon: apple; ratio: 1.5"></span>
-                <span class="text-primary">Resource</span>
-            </div>
-            <div class="map-key-item uk-flex uk-flex-middle">
-                <span class="icon-key uk-margin-right" uk-icon="icon: info; ratio: 1.5"></span>
-                <span class="text-primary">Strategy</span>
+            <div class="key-button">
+                <span @click="toggleMapKey" class="text-primary" :uk-icon="'icon: ' + getMapKeyIcon()"></span>
             </div>
         </div>
     </div>
