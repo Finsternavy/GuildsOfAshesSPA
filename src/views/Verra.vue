@@ -616,7 +616,11 @@ const contentCount = (index) => {
     let count = 0;
     dataCells.value.forEach((cell) => {
         if (cell.cell == index){
-            count++;
+            if (layer.value == 'All'){
+                count++;
+            } else if (cell.layer == layer.value){
+                count++;
+            }
         }
     });
     return count;
