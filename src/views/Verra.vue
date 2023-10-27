@@ -12,6 +12,8 @@ const gridSize = ref(20);
 const gridColumns = ref(80);
 const gridRows = ref(80);
 
+let warningText = ref(null);
+
 let activeCell = ref({
     guildID: user.GuildID,
     author: user.Username,
@@ -187,24 +189,36 @@ let getMapData = async () => {
 const formatMapData = (data) => {
     let allData = [];
 
-    data.Dungeons.forEach((dungeon) => {
-        allData.push(dungeon);
-    });
-    data.Mobs.forEach((mob) => {
-        allData.push(mob);
-    });
-    data.Nodes.forEach((node) => {
-        allData.push(node);
-    });
-    data.Quests.forEach((quest) => {
-        allData.push(quest);
-    });
-    data.Resources.forEach((resource) => {
-        allData.push(resource);
-    });
-    data.Strategy.forEach((strategy) => {
-        allData.push(strategy);
-    });
+    if (data && data.Dungeons){
+        data.Dungeons.forEach((dungeon) => {
+            allData.push(dungeon);
+        });
+    };
+    if (data && data.Mobs){
+        data.Mobs.forEach((mob) => {
+            allData.push(mob);
+        });
+    };
+    if (data && data.Nodes){
+        data.Nodes.forEach((node) => {
+            allData.push(node);
+        });
+    };
+    if (data && data.Quests){
+        data.Quests.forEach((quest) => {
+            allData.push(quest);
+        });
+    };
+    if (data && data.Resources){
+        data.Resources.forEach((resource) => {
+            allData.push(resource);
+        });
+    };
+    if (data && data.Strategy){
+        data.Strategy.forEach((strategy) => {
+            allData.push(strategy);
+        });
+    };
     console.log("allData: ", allData);
     return allData;
 }
@@ -214,6 +228,32 @@ let addMapData = async (location) => {
     let call = location;
     console.log("call: ", call);
     let response = await fetch(baseUrl + "/addMapData", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+      },
+      body: JSON.stringify(call),
+    });
+  
+    if (response.ok) {
+      let data = await response.json();
+      // console.log("Create Guild response data: ", data);
+      console.log("data: ", data);
+      // threads.value = data.Data;
+    } else {
+      // console.log("Error fetching thread data: ", response.statusText);
+    }
+};
+
+
+let removeMapData = async (location) => {
+    // console.log("Attempting to create guild..");
+    let call = location;
+    console.log("call: ", call);
+    let response = await fetch(baseUrl + "/deleteMapData", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -334,19 +374,19 @@ const submitLocation = () => {
 const removeLocation = (index) => {
     // console.log('removeLocation');
     activeCell.value.cell = index;
-    // if (activeCell.value.cell){
-    //     dataCells.value.splice(dataCells.value.indexOf(activeCell.value.cell), 1);
-    //     activeCell.value = {};
-    // }
     if (dataCells.value.length > 0){
         dataCells.value.forEach((cell, i) => {
             if (cell.cell == index){
-                dataCells.value.splice(i, 1);
+                if (user.Username == cell.author || user.Rank.RankName == 'Guild Leader'){
+                    dataCells.value.splice(i, 1);
+                    removeMapData(cell);
+                } else {
+                    warningText.value = "You do not have permission to remove this location.";
+                }
             }
         })
     }
     clickMode.value = 'add';
-    // toggleMarkMap('add');
 }
 
 
@@ -617,12 +657,16 @@ const toggleLocationDetails = () => {
     overflow: hidden;
 }
 .location {
+    position: absolute;
     box-sizing: border-box;
     color: white;
     background-color: red;
     border-radius: 50%;
     margin: none;
     scale: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-25%, -25%);
     /* z-index: 20000; */
     pointer-events: all;
     /* padding: 2px; */
@@ -770,13 +814,16 @@ const toggleLocationDetails = () => {
                         class="map-cell uk-flex uk-flex-center uk-flex-middle uk-margin-remove uk-padding-remove uk-position-relative"
                         :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
-                            <span class="location uk-position-center" v-if="hasContent(index)" uk-icon="icon: location; ratio: 1"></span>
+                            <span class="location" v-if="hasContent(index)" uk-icon="icon: location; ratio: 1"></span>
                     </div>
                 </div>
             </div>
         </div>
         <div v-if="mapWarningText" class="map-warnings-container">
             <span>{{ mapWarningText }}</span>
+        </div>
+        <div v-if="warningText" class="map-warnings-container">
+            <span>{{ warningText }} <span @click="warningText = null" class="uk-icon-button">X</span></span>
         </div>
         <div class="instructions uk-flex uk-flex-column">
             <div class="help uk-flex uk-flex-column uk-position-relative uk-margin-small-right uk-margin-small-bottom" :class="{'instructions-open' : showHelp}">
