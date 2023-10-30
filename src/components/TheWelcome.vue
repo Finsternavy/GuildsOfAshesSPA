@@ -20,7 +20,7 @@ const acknowledgeNotice = () => {
 
 <style scoped>
 .hero {
-  box-shadow: inset 0 0 10px 10px var(--vt-c-black);
+  /* box-shadow: inset 0 0 10px 10px var(--vt-c-black); */
 }
 
 .text-goa-red {
@@ -66,7 +66,7 @@ const acknowledgeNotice = () => {
 </style>
 
 <template>
-  <div class=" uk-margin-large-bottom">
+  <div class="uk-margin-large-bottom">
     <div class="hero goa-container uk-padding uk-margin-bottom uk-width-1-1">
       <!-- <div class="goa-logo" :data-src="GoaLogo" uk-img></div> -->
       <div class="logo-container uk-margin-bottom"
@@ -74,22 +74,25 @@ const acknowledgeNotice = () => {
         <img class="guild-logo-upload uk-background-cover" :src="GoaLogo" alt="Uploaded Image" uk-img />
       </div>
       <div class="hero-message">
-        <p><span class="text-goa-red uk-text-lead">Welcome!</span> to Guilds of Ashes. This site was built as a portfolio project to demonstrate my skills as a web developer while also serving as a potential hub for the guild I am a member of. The site is still under development and it and all features may or may not be fully functional.</p>
+        <span class="text-goa-red uk-text-lead uk-text-uppercase">Welcome !!!</span>
+        <p>Welcome to Guilds of Ashes, a meticulously crafted online platform. Created as a showcase of my proficiency in web development, this site also functions as a central hub for the esteemed guild of which I am an active member. Please note that the site is currently undergoing continuous development, and some features may still be in the refinement phase. Thank you for your understanding and patience as we strive to deliver a seamless user experience.</p>
 
-        <span class="uk-text-lead text-goa-red">The Goals</span>
-        <p>The functional goals of this site are: </p>
+        <p>Please utilize the <span class="goa-button" disabled>Feedback</span> menu link to report any bugs or to submit feature requests.</p>
+
+        <div class="uk-text-lead text-goa-red">The Objectives</div>
+        <p>This website aims to achieve the following functional goals:</p>
         <ul>
           <li>
-            Streamline guild recruitment and the application process
+            Simplify the process of guild recruitment and applications
           </li>
           <li>
-            Provide a place for guild members to communicate and organize
+            Establish a centralized platform for effective communication and coordination among guild members
           </li>
           <li>
-            Provide guild leaders with tools to manage their guild
+            Equip guild leaders with comprehensive tools for efficient guild management
           </li>
           <li>
-            Provide a place for members to view guildmates character classes to form parties or get help with character profession related services
+            Provide a dedicated space for members to access information about guildmates' character classes, facilitating the formation of parties and obtaining assistance with character-related professional services
           </li>
         </ul>
         <span class="uk-text-lead text-goa-red">Getting started</span>
@@ -105,6 +108,7 @@ const acknowledgeNotice = () => {
           <div class="left">
             <h4 class="text-orange"><span uk-icon="icon: star"></span> Recently Added <span uk-icon="icon: star"></span></h4>
             <ul>
+              <li class="text-orange uk-text-lead">Interactive Guild Map !</li>
               <li>Guild Calendar</li>
               <li>Event scheduling on the calendar</li>
               <li>Recurring events on the calendar</li>
@@ -115,7 +119,6 @@ const acknowledgeNotice = () => {
               <li>Background selection at guild creation</li>
               <li>Custom color themes at guild creation</li>
               <li>Rich text editor for guild banner and description</li>
-              <li>Added 20+ custom fonts</li>
             </ul>
           </div>
           <div class="center">
@@ -128,7 +131,6 @@ const acknowledgeNotice = () => {
               <li>Guild Data Metrix</li>
               <li>Ongoing Bug Fixes</li>
               <li>Ongoing Feature Improvements</li>
-              <li>Mobile Friendly Layout</li>
             </ul>
           </div>
           <div class="right">

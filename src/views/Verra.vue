@@ -641,6 +641,28 @@ const getMapKeyIcon = () => {
         return 'cog';
     }
 }
+
+const getIcon = (layer) => {
+    if (layer == 'Dungeon'){
+        return 'world';
+    }
+    if (layer == 'Mob'){
+        return 'github';
+    }
+    if (layer == 'Node'){
+        return 'home';
+    }
+    if (layer == 'Quest'){
+        return 'location';
+    }
+    if (layer == 'Resource'){
+        return 'apple';
+    }
+    if (layer == 'Strategy'){
+        return 'info';
+    }
+    return 'question';
+}
 </script>
 
 <style scoped>
@@ -930,6 +952,11 @@ const getMapKeyIcon = () => {
     bottom: 0;
     left: 0;
 }
+
+.location-info {
+    border-radius: 20px;
+    padding: 20px;
+}
 </style>
 
 <template>
@@ -984,6 +1011,7 @@ const getMapKeyIcon = () => {
                     <li class="uk-text-bold text-button">Click and drag the map to move it around.</li>
                     <li class="uk-text-bold text-button">Use the scroll wheel to zoom in and out.</li>
                     <li class="uk-text-bold text-button">You can also navigate with the control cluster in the upper right corner.</li>
+                    <li class="uk-text-bold text-button">Check out the keybinds for useful shortcuts.</li>
                 </ul>
             </div>
             <div class="help uk-position-relative" :class="{'instructions-open' : showKeybinds}">
@@ -1087,25 +1115,25 @@ const getMapKeyIcon = () => {
     </div>
     <div v-if="locationDetailsOpen && locationDetails.length > 0" class="location-details uk-margin-bottom uk-padding-small">
         <button @click="toggleLocationDetails" class="goa-button uk-float-right">Close</button>
-        <div class="uk-flex">
-            <div class="uk-flex uk-flex-column uk-margin-right uk-margin-bottom">
-                <label class="text-primary" for="locationCell">Location #</label>
-                <input id="locationCell" class="goa-input" type="text" :value="locationDetails[0].cell">
-            </div>
+        <div class="uk-flex uk-flex-column">
+                <p id="locationCell" class="uk-margin-right uk-margin-remove-bottom" type="text">
+                    <span class="text-primary">Cell ID: </span>
+                    {{ locationDetails[0].cell }}
+                </p>
+                <!-- Add x y coordinate-->
+                <p id="locationCoordinates" class="uk-margin-right uk-margin-remove-vertical" type="text">
+                    <span class="text-primary">X:</span> 
+                    {{ Math.floor(locationDetails[0].cell / gridColumns) }}, 
+                    <span class="text-primary">Y: </span>{{ locationDetails[0].cell % gridColumns }}
+                </p>
         </div>
-        <div v-for="location in locationDetails" class="uk-margin-top">
-            <div class="uk-flex uk-flex-column">
-                <label class="text-primary" for="locationLayer">Layer</label>
-                <input id="locationLayer" class="goa-input" type="text" :value="location.layer">    
+        <div v-for="location, index in locationDetails" class="location-info uk-margin-top background-bright-alpha">
+            <div class="uk-flex">
+                <!-- <label class="text-primary" for="locationName">Name</label> -->
+                <span class="text-primary uk-margin-small-right" :uk-icon="'icon: ' + getIcon(location.layer)"></span>
+                <span>{{ location.name }}</span>
             </div>
-            <div class="uk-flex uk-flex-column">
-                <label class="text-primary" for="locationName">Name</label>
-                <input id="locationName" class="goa-input" type="text" :value="location.name">
-            </div>
-            <div class="uk-flex uk-flex-column">
-                <label class="text-primary" for="locationDescription">Description</label>
-                <textarea id="locationDescription" class="goa-input" type="text"  :value="location.description"></textarea>
-            </div>
+            <p class="uk-margin-remove-bottom" >{{ location.description }}</p>
         </div>
     </div>
 </template>
