@@ -1020,6 +1020,11 @@ const getIcon = (layer) => {
     color: red!important;
 }
 
+.uk-icon-button:hover {
+    background-color: red!important;
+    color: white!important;
+}
+
 .location-border {
     /* height: 100%;
     width: 100%;
@@ -1041,15 +1046,15 @@ const getIcon = (layer) => {
                 @mousedown="handleMouseDown"
                 @mousemove="moveImage"
                 @mouseup="handleMouseUp"
-                @touchmove="moveImage">
+                @touchstart="handleMouseDown"
+                @touchmove="moveImage"
+                @touchend="handleMouseUp">
                     <div v-for="row, index in (gridColumns * gridRows)" 
                         :key="index" 
                         class="map-cell uk-flex uk-flex-center uk-flex-middle uk-margin-remove uk-padding-remove uk-position-relative"
                         :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
-                            <div class="location-border">
-                                <span class="location" v-if="hasContent(index)" :uk-icon="'icon:' + getLocationIcon(index) + '; ratio: 1'"></span>
-                            </div>
+                            <span class="location" v-if="hasContent(index)" :uk-icon="'icon:' + getLocationIcon(index) + '; ratio: 1'"></span>
                             <span class="location-count" v-if="contentCount(index) > 1">{{contentCount(index)}}</span>
                     </div>
                 </div>
