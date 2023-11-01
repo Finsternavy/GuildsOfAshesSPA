@@ -277,6 +277,41 @@ let removeMapData = async (location) => {
     }
 };
 
+let removeMapDataByIndex = async (celllocation, index) => {
+    // console.log("Attempting to create guild..");
+    celllocation.index = index;
+    if (user.Username != celllocation.author){
+        if (user.Rank.RankName != 'Guild Leader'){
+            warningText.value = "You do not have permission to remove this location.";
+            return;
+        }
+    }
+    let call = celllocation;
+    console.log("call: ", call);
+    let response = await fetch(baseUrl + "/deleteMapDataByIndex", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+      },
+      body: JSON.stringify(call),
+    });
+  
+    if (response.ok) {
+      let data = await response.json();
+      // console.log("Create Guild response data: ", data);
+      console.log("data: ", data);
+    //   location.reload();
+    getMapData();
+    toggleLocationDetails();
+      // threads.value = data.Data;
+    } else {
+      // console.log("Error fetching thread data: ", response.statusText);
+    }
+};
+
 const handleKeyDown = (event) => {
     // console.log(event.key)
     if (event.key == 'Control'){
@@ -385,6 +420,11 @@ const removeLocation = (index) => {
         dataCells.value.forEach((cell, i) => {
             if (cell.cell == index){
                 if (user.Username == cell.author || user.Rank.RankName == 'Guild Leader'){
+                    let count = contentCount(index);
+                    if (count > 1){
+                        warningText.value = "This location has multiple markers. Please select the content you wish to remove by clicking on the location and then clicking the remove button next to the content you wish to remove.";
+                        return;
+                    }
                     dataCells.value.splice(i, 1);
                     removeMapData(cell);
                 } else {
@@ -1128,11 +1168,17 @@ const getIcon = (layer) => {
                 </p>
         </div>
         <div v-for="location, index in locationDetails" class="location-info uk-margin-top background-bright-alpha">
-            <div class="uk-flex">
+            <div class="uk-flex uk-flex-between uk-flex-middle">
                 <!-- <label class="text-primary" for="locationName">Name</label> -->
-                <span class="text-primary uk-margin-small-right" :uk-icon="'icon: ' + getIcon(location.layer)"></span>
-                <span>{{ location.name }}</span>
+                <div>
+                    <span class="text-primary uk-margin-small-right" :uk-icon="'icon: ' + getIcon(location.layer)"></span>
+                    <span>{{ location.name }}</span>
+                </div>
+                <div v-if="user.Username == location.author || user.Rank.RankName == 'Guild Leader'">
+                    <button @click="removeMapDataByIndex(location, index)" class="uk-icon-button"><span  uk-icon="icon: trash"></span></button>
+                </div>
             </div>
+            <span class="text-primary uk-margin-small-right">Posted by: </span><span>{{ location.author }}</span>
             <p class="uk-margin-remove-bottom" >{{ location.description }}</p>
         </div>
     </div>
