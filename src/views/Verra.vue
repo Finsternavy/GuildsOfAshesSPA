@@ -422,7 +422,7 @@ const removeLocation = (index) => {
                 if (user.Username == cell.author || user.Rank.RankName == 'Guild Leader'){
                     let count = contentCount(index);
                     if (count > 1){
-                        warningText.value = "This location has multiple markers. Please select the content you wish to remove by clicking on the location and then clicking the remove button next to the content you wish to remove.";
+                        warningText.value = "This location has multiple markers. Please select the marker you wish to remove by clicking on the location then click the remove button next to the marker you wish to remove.";
                         return;
                     }
                     dataCells.value.splice(i, 1);
@@ -781,6 +781,16 @@ const getIcon = (layer) => {
     background-color: rgba(119, 13, 13, 0.8);
     border-radius: 50%;
 }
+.map-cell::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* outline: 1px solid rgba(0, 0, 0, 0.2) */
+
+}
 
 .circle::after {
     content: '';
@@ -813,6 +823,7 @@ const getIcon = (layer) => {
     pointer-events: all;
     /* padding: 2px; */
     transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 .location:hover {
@@ -861,7 +872,7 @@ const getIcon = (layer) => {
     top: 65px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px;
+    padding: 20px;
     width: fit-content;
     height: fit-content;
     border-radius: 30px;
@@ -889,6 +900,7 @@ const getIcon = (layer) => {
     width: fit-content;
     background-color: var(--background-color-alpha);
     transition: padding 0.3s ease-in-out;
+    cursor: pointer;
 }
 .instructions-open {
     padding: 10px;
@@ -997,6 +1009,22 @@ const getIcon = (layer) => {
     border-radius: 20px;
     padding: 20px;
 }
+
+.key-button {
+    cursor: pointer;
+}
+
+.uk-icon-button {
+    cursor: pointer;
+    background-color: black!important;
+    color: red!important;
+}
+
+.location-border {
+    /* height: 100%;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.2); */
+}
 </style>
 
 <template>
@@ -1012,13 +1040,16 @@ const getIcon = (layer) => {
                 <div class="map-grid uk-width-1-1"
                 @mousedown="handleMouseDown"
                 @mousemove="moveImage"
-                @mouseup="handleMouseUp">
+                @mouseup="handleMouseUp"
+                @touchmove="moveImage">
                     <div v-for="row, index in (gridColumns * gridRows)" 
                         :key="index" 
                         class="map-cell uk-flex uk-flex-center uk-flex-middle uk-margin-remove uk-padding-remove uk-position-relative"
                         :class="{'disabled' : !markMap,}"
                         @click="setActiveCell(index)">
-                            <span class="location" v-if="hasContent(index)" :uk-icon="'icon:' + getLocationIcon(index) + '; ratio: 1'"></span>
+                            <div class="location-border">
+                                <span class="location" v-if="hasContent(index)" :uk-icon="'icon:' + getLocationIcon(index) + '; ratio: 1'"></span>
+                            </div>
                             <span class="location-count" v-if="contentCount(index) > 1">{{contentCount(index)}}</span>
                     </div>
                 </div>
@@ -1027,13 +1058,16 @@ const getIcon = (layer) => {
         <div v-if="mapWarningText" class="map-warnings-container">
             <span>{{ mapWarningText }}</span>
         </div>
-        <div v-if="warningText" class="map-warnings-container">
-            <span>{{ warningText }} <span @click="warningText = null" class="uk-icon-button">X</span></span>
+        <div v-if="warningText" class="map-warnings-container uk-flex uk-flex-between uk-flex-middle">
+            <span class="uk-margin-right">{{ warningText }} </span>
+            <div>
+                <span @click="warningText = null" class="uk-icon-button">X</span>
+            </div>
         </div>
         <div class="instructions uk-flex uk-flex-column">
             <div class="help uk-flex uk-flex-column uk-position-relative uk-margin-small-right uk-margin-small-bottom" :class="{'instructions-open' : showHelp}">
                 <!-- Add checkbox for user to select to start this menu as closed next load -->
-                <span @click="toggleHelp" class="text-primary" uk-icon="icon: question; ratio: 1.5"></span>
+                <span @click="toggleHelp" class="uk-icon-button" uk-icon="icon: question; ratio: 1.5"></span>
                 <ul v-if="showHelp" >
                     <div class="uk-position-top-right uk-margin-small-top uk-margin-small-right">
                         <input class="uk-checkbox uk-margin-small-right" type="checkbox" v-model="hideInstructions">
@@ -1055,7 +1089,7 @@ const getIcon = (layer) => {
                 </ul>
             </div>
             <div class="help uk-position-relative" :class="{'instructions-open' : showKeybinds}">
-                <span @click="toggleKeybinds" class="text-primary settings-icon" uk-icon="icon: settings; ratio: 1.3"></span>
+                <span @click="toggleKeybinds" class="uk-icon-button settings-icon" uk-icon="icon: settings; ratio: 1.3"></span>
                 <div v-if="showKeybinds" class="keybinds-menu">
                     <div class="uk-position-top-right uk-margin-small-top uk-margin-small-right">
                         <input class="uk-checkbox uk-margin-small-right" type="checkbox" v-model="hideKeybinds">
@@ -1170,7 +1204,7 @@ const getIcon = (layer) => {
         <div v-for="location, index in locationDetails" class="location-info uk-margin-top background-bright-alpha">
             <div class="uk-flex uk-flex-between uk-flex-middle">
                 <!-- <label class="text-primary" for="locationName">Name</label> -->
-                <div>
+                <div class="uk-margin-right">
                     <span class="text-primary uk-margin-small-right" :uk-icon="'icon: ' + getIcon(location.layer)"></span>
                     <span>{{ location.name }}</span>
                 </div>
