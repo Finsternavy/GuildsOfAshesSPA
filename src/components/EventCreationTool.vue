@@ -40,10 +40,29 @@ onBeforeMount(() => {
   // console.log("User: ", user.value);
   eventOrganizer.value = user.value.Username;
   console.log("Props.data : ", props.data);
-  eventStartDate.value = props.data.activeDate.year + '-' + props.data.activeDate.month + '-' + props.data.activeDate.day;
-  // console.log("Event start date: ", eventStartDate.value);
-  eventEndDate.value = props.data.activeDate.year + '-' + props.data.activeDate.month + '-' + props.data.activeDate.day;
+  eventStartDate.value = standerdizeDate(props.data.activeDate);
+  console.log("Event start date: ", eventStartDate.value);
+  eventEndDate.value = standerdizeDate(props.data.activeDate);
 })
+
+const standerdizeDate = (dateIn) => {
+  console.log("Date in: ", dateIn);
+  let tmpDate = dateIn;
+  let day = tmpDate.day;
+  let month = tmpDate.month;
+  let year = tmpDate.year;
+  console.log("Day: ", day);
+  if (day < 10){
+    console.log("Day length is less than 2: ", day);
+    day = '0' + day;
+  }
+  if (month < 10){
+    month = '0' + month;
+  }
+  let dateString = year + '-' + month + '-' + day;
+  console.log("Setting startDate to: ", dateString);
+  return dateString;
+}
 
 
 let dataOut = computed(() => {
