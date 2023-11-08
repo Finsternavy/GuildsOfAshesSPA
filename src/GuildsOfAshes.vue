@@ -18,6 +18,10 @@ import AOCTropicalBay from "./public/AOCimages/AOCTropicalBay.jpg";
 import AOCVaeluneCityA from "./public/AOCimages/AOCVaeluneCityA.png";
 import AOCVaeluneEncampment from "./public/AOCimages/AOCVaeluneEncampment.png";
 import AOCWaterfall from "./public/AOCimages/AOCWaterfall.png";
+import AOCDragon from "./public/AOCimages/AOCDragon.jpg";
+import AOCJan2023 from "./public/AOCimages/AOCJanuary2023.jpg";
+import AOCMay2023 from "./public/AOCimages/AOCMay2023.jpg";
+import AOCSeptember2023 from "./public/AOCimages/AOCSeptember2023.jpg";
 
 let imagePrefix = "/src/public/AOCimages/";
 
@@ -28,7 +32,11 @@ let imagePrefix = "/src/public/AOCimages/";
 let backgroundImages = [
   AOC_castle,
   AOC2023March,
+  AOCDragon,
   AOCGoblinVillage,
+  AOCJan2023,
+  AOCMay2023,
+  AOCSeptember2023,
   AOCJanuary,
   AOCKaelarCamp,
   AOCKaelarCityA,
