@@ -43,6 +43,7 @@ onBeforeMount(() => {
   eventStartDate.value = standerdizeDate(props.data.activeDate);
   console.log("Event start date: ", eventStartDate.value);
   eventEndDate.value = standerdizeDate(props.data.activeDate);
+  console.log("RecurringChecked: ", recurringChecked.value);
 })
 
 const standerdizeDate = (dateIn) => {
@@ -107,17 +108,20 @@ const validateEvent = () => {
     warningMessage.value.push('Start date cannot be after end date.');
   }
 
-  if (dataOut.value['Recurring'] && dataOut.value['RecurringFrequency'] == null || dataOut.value['RecurringFrequency'] == '' || dataOut.value['RecurringFrequency'] == undefined) {
-    warningMessage.value.push('Recurring frequency is required.');
+  if (recurringChecked.value == true) {
+    if (dataOut.value['Recurring'] == true && dataOut.value['RecurringFrequency'] == null || dataOut.value['RecurringFrequency'] == '' || dataOut.value['RecurringFrequency'] == undefined) {
+      warningMessage.value.push('Recurring frequency is required.');
+    }
+  
+    if (dataOut.value['Recurring'] = true && dataOut.value['RecurringEndDate'] < dataOut.value['StartDate']) {
+      warningMessage.value.push('Recurring end date cannot be before start date.');
+    }
+  
+    if (dataOut.value['Recurring'] = true && dataOut.value['RecurringEndDate'] == null || dataOut.value['RecurringEndDate'] == '' || dataOut.value['RecurringEndDate'] == undefined) {
+      warningMessage.value.push('Recurring end date cannot be before end date.');
+    }
   }
 
-  if (dataOut.value['Recurring'] && dataOut.value['RecurringEndDate'] < dataOut.value['StartDate']) {
-    warningMessage.value.push('Recurring end date cannot be before start date.');
-  }
-
-  if (dataOut.value['Recurring'] && dataOut.value['RecurringEndDate'] == null || dataOut.value['RecurringEndDate'] == '' || dataOut.value['RecurringEndDate'] == undefined) {
-    warningMessage.value.push('Recurring end date cannot be before end date.');
-  }
 }
 
 const createEvent = () => {
@@ -166,7 +170,7 @@ const close = () => {
 .event-creation-tool {
   position: fixed;
   max-height: 70%;
-  height: 700px;
+  height: fit-content;
   max-height: fit-content;
   max-width: 90%;
   top: 50%;
@@ -229,7 +233,7 @@ const close = () => {
             </div>
             <div class="uk-flex uk-margin-small-top">
               <label for="IsRecurring" class="text-accent uk-margin-right">Is Recurring?</label>
-              <input type="checkbox" name="IsRecurring" id="IsRecurring" :value="true" v-model="recurringChecked">
+              <input type="checkbox" name="IsRecurring" id="IsRecurring" v-model="recurringChecked">
             </div>
             <div v-if="recurringChecked" class="uk-flex uk-margin-top uk-child-width-1-2">
               <div class=" uk-flex uk-flex-column uk-margin-small-right">

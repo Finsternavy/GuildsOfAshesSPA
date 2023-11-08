@@ -71,7 +71,12 @@ const upcomingEvents = computed(() => {
       if (event.StartDate) {
         let eventDate = new Date(event.StartDate);
         let today = new Date();
-        if (eventDate.getDate() + 1 >= today.getDate() && eventDate - today < (604800000 * 2)) { // 604800000 = 1 week in milliseconds
+        // not perfect but it works
+        let computedEventDate = (eventDate.getFullYear() * 12 * 30) + (eventDate.getMonth() * 30) + eventDate.getDate();
+        let computedToday = (today.getFullYear() * 12 * 30) + (today.getMonth() * 30) + today.getDate();
+        console.log("Computed event date: ", computedEventDate);
+        console.log("Computed today: ", computedToday);
+        if (computedEventDate + 1 >= computedToday && eventDate - today < (604800000 * 2)) { // 604800000 = 1 week in milliseconds
           events.push(event);
         }
       }
