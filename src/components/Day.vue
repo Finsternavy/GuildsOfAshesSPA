@@ -308,7 +308,7 @@ input, textarea {
 </style>
 
 <template>
-    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column uk-visible@m' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool">
+    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column uk-visible@m' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool" :disabled="!day">
         <!-- <label v-if="index < 7 " class="day-label">{{ dayText }}</label>  -->
         <div class="uk-flex">
             <div :class="{'uk-flex' : day, hidden : !day}">

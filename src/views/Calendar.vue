@@ -21,6 +21,8 @@ let activeDate = ref(null);
 let showEventDetails = ref(false);
 let activeEventDetails = ref(null);
 
+let currentMonth = ref(null);
+
 onBeforeMount(()=> {
   user.value = store.getUser;
   guildStore = useGuildStore();
@@ -57,8 +59,15 @@ const activeEventData = ref({
   day: null,
 });
 
-const month = computed(() => {
+const CurrentMonth = computed(() => {
     let date = new Date().getMonth();
+    // let month = data.getMonth();
+    // console.log(date);
+    return date;
+})
+
+const currentYear = computed(() => {
+    let date = new Date().getFullYear();
     // let month = data.getMonth();
     // console.log(date);
     return date;
@@ -104,29 +113,55 @@ const getEvents = async () => {
 }
 
 const getCurrentMonthAsString = (offset) => {
-// console.log("Offset: ", offset);
+  console.log("Offset: ", offset);
   const today = new Date();
   const currentMonthIndex = today.getMonth();
-  const currentMonth = months[currentMonthIndex + offset];
-    // console.log(currentMonth)
+  console.log("Current month index: ", currentMonthIndex + offset);
+  let tmpMonth = currentMonthIndex + offset;
+  if (tmpMonth == 12){
+    tmpMonth = 0;
+  }
+  const currentMonth = months[tmpMonth];
+  console.log(currentMonth)
   return currentMonth;
 }
 
+const getMonth = (month) => {
+  let tmpMonth = month;
+  // console.log("Check if month is greater than 12: ", month);
+  if (month > 12){
+    tmpMonth = month - 13;
+  }
+  // console.log("Return month: ", tmpMonth);
+  return tmpMonth;
+}
 
-const generateCalendar = (year, month) => {
+
+const generateCalendar = (yearIn, monthIn) => {
+  // console.log("Year in: ", yearIn, "Month in: ", monthIn);
+  let tmpMonth = monthIn;
+  let tmpYear = yearIn;
+  if (monthIn == 0){
+    tmpMonth = 1;
+    tmpYear = yearIn + 1;
+    // console.log("Changed month and year to: ", tmpMonth, tmpYear);
+    // console.log("Year and tmpYear: ", yearIn, tmpYear);
+  }
+  // console.log("Generating Calendar for: ", tmpMonth, ' / ', tmpYear);
   const calendarArray = [];
 
   // Create a Date object for the 1st day of the specified month and year
-  const firstDayOfMonth = new Date(year, month - 1, 1);
+  const firstDayOfMonth = new Date(tmpYear, tmpMonth - 1, 1);
 //   console.log("First day of month: ", firstDayOfMonth);
   const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  console.log("First day: ", firstDayOfWeek);
 
   // Calculate the number of empty entries to insert at the beginning
   const emptyEntriesAtStart = (firstDayOfWeek);
 //   console.log("Empty entries at start: ", emptyEntriesAtStart);
 
   // Calculate the number of days in the specified month and year
-  const daysInMonth = new Date(year, month, 0).getDate();
+  const daysInMonth = new Date(tmpYear, tmpMonth, 0).getDate();
 //   console.log("Days in month: ", daysInMonth);
 
   // Populate the calendarArray with empty entries at the beginning
@@ -136,7 +171,7 @@ const generateCalendar = (year, month) => {
 
   // Populate the calendarArray with the days of the month
   for (let day = 1; day <= daysInMonth; day++) {
-    calendarArray.push({ day: day, month: month, year: year });
+    calendarArray.push({ day: day, month: tmpMonth, year: tmpYear });
   }
 
   // Calculate the number of empty entries to insert at the end to ensure it ends on Saturday
@@ -372,22 +407,25 @@ const setActiveDay = (date, index) => {
   // if (doc.classList.contains("disabled")){
   //   return;
   // }
-  let screenwidth = window.innerWidth;
-  // console.log("Screen width: ", screenwidth);
-      let monthText = months[date.month - 1];
-      // console.log("Setting active date to: ", date)
-      activeMonth.value = monthText;
-      activeDay.value = date.day;
-      activeDate.value = date;
-      // console.log("activeDate: ", activeDate.value);
-      // activeEventData.value.data = getDayData(date);
-      // activeEventData.value.day = newData.day;
-      // activeEventData.value.date = newData;
-      // console.log("Active event data: ", activeEventData.value);
-      // if (screenwidth < 960){
-      if (screenwidth < 960){
-        showMobileDay.value = true;
-      }
+  if (date && date.month){
+    let screenwidth = window.innerWidth;
+    // console.log("Screen width: ", screenwidth);
+    let monthText = months[date.month - 1];
+    // console.log("Setting active date to: ", date)
+    console.log("date: ", date);
+    activeMonth.value = monthText;
+    activeDay.value = date.day;
+    activeDate.value = date;
+    // console.log("activeDate: ", activeDate.value);
+    // activeEventData.value.data = getDayData(date);
+    // activeEventData.value.day = newData.day;
+    // activeEventData.value.date = newData;
+    // console.log("Active event data: ", activeEventData.value);
+    // if (screenwidth < 960){
+    if (screenwidth < 960){
+      showMobileDay.value = true;
+    }
+  }
   // showMobileDay.value = !showMobileDay.value;
 }
 
@@ -676,7 +714,7 @@ input, textarea {
       </div>
       <div class="calendar-container">
         <!-- @click="openMenu(date, 10)" -->
-        <div v-for="date, index in generateCalendar(2023, 10)" @click="setActiveDay(date)" :class="{'disabled' : !date}">
+        <div v-for="date, index in generateCalendar(currentYear, getMonth(CurrentMonth + 1))" @click="setActiveDay(date)" :class="{'disabled' : !date}">
           <Day v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]" :Today="today"/>
         </div>
       </div>
@@ -688,7 +726,7 @@ input, textarea {
       </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
-          <div v-for="date, index in generateCalendar(2023, 11)" @click="setActiveDay(date)">
+          <div v-for="date, index in generateCalendar(currentYear,  getMonth(CurrentMonth + 2))" @click="setActiveDay(date)">
             <Day  v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
           </div>
         </div>
@@ -700,7 +738,7 @@ input, textarea {
       </div>
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
-          <div v-for="date, index in generateCalendar(2023, 12)" @click="setActiveDay(date)">
+          <div v-for="date, index in generateCalendar(currentYear,  getMonth(CurrentMonth + 3))" @click="setActiveDay(date)">
             <Day v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
           </div>
         </div>
