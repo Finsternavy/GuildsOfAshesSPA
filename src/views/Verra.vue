@@ -77,6 +77,13 @@ watch(hideKeybinds, (value) => {
     }
 });
 
+watch(layer, (value) => {
+    console.log("Layer changed: ", value);
+    locationDetailsOpen.value = false;
+    // activeCell.layer = value;
+    // console.log("activeCell: ", activeCell);
+});
+
 const keybinds = [
     {
         bind: 'Ctrl',
