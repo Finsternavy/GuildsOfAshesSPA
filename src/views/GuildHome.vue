@@ -31,6 +31,12 @@ let showContent = ref(false);
 
 let background = ref();
 
+let canEditDescription = ref(false);
+let canEditLogo = ref(false);
+let canEditBanner = ref(false);
+
+let showLeaderControls = ref(false);
+
 onBeforeMount(() => {
   userStore = useUserStore();
   guildStore = useGuildStore();
@@ -74,8 +80,8 @@ const upcomingEvents = computed(() => {
         // not perfect but it works
         let computedEventDate = (eventDate.getFullYear() * 12 * 30) + (eventDate.getMonth() * 30) + eventDate.getDate();
         let computedToday = (today.getFullYear() * 12 * 30) + (today.getMonth() * 30) + today.getDate();
-        console.log("Computed event date: ", computedEventDate);
-        console.log("Computed today: ", computedToday);
+        // console.log("Computed event date: ", computedEventDate);
+        // console.log("Computed today: ", computedToday);
         if (computedEventDate + 1 >= computedToday && eventDate - today < (604800000 * 2)) { // 604800000 = 1 week in milliseconds
           events.push(event);
         }
@@ -202,6 +208,36 @@ let approveApplication = async (application) => {
     }
 }
 
+const saveDescription = async () => {
+  let call = {
+        GuildName: guild.value.Name,
+        Description: guild.value.Description,
+        ID: guild.value.ID,
+    };
+    console.log("call: ", call);
+    let response = await fetch(baseUrl + "/updateGuildDescription", {
+    method: "POST",
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT",
+    },
+    body: JSON.stringify(call),
+    });
+
+    if (response.ok) {
+        let data = await response.json();
+        console.log("Response from save description: ", data);
+        canEditDescription.value = false;
+        // await getGuildData();
+        // inbox.value = guild.value.Applications;
+        // getGuildData();
+    } else {
+        // console.log("Error during deny application: ", response.statusText);
+    }
+}
+
 let apply = () => {
   if (guild.value.AutoApprove) {
     return alert("You can apply!");
@@ -218,6 +254,14 @@ const getBanner = () => {
   let doc = document.getElementById("GuildBanner");
   console.log("Banner inner html: ", doc);
   // return `guild.value.Banner`;
+}
+
+const toggleEditDescription = () => {
+  canEditDescription.value = !canEditDescription.value;
+}
+
+const toggleShowLeaderControls = () => {
+  showLeaderControls.value = !showLeaderControls.value;
 }
 </script>
 
@@ -315,6 +359,7 @@ const getBanner = () => {
   z-index: 100;
   border-radius: 30px;
   margin-bottom: 40px;
+  background-color: transparent;
 }
 
 .goa-container-mod {
@@ -430,6 +475,35 @@ const getBanner = () => {
 .banner-container {
   z-index: -1!important;
 }
+
+.tooltip {
+  opacity: 0;
+  position: absolute;
+  transform: translate(-40px, 40px);
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  min-width: 100px;
+  pointer-events: none;
+}
+
+.tooltip-right{
+  opacity: 0;
+  position: absolute;
+  transform: translate(40px, 40px);
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  min-width: 100px;
+  pointer-events: none;
+}
+
+.leader-controls:hover .tooltip,
+.leader-controls:hover .tooltip-right {
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
+  padding: 10px;
+  opacity: 1;
+}
+
 </style>
 
 <template>
@@ -449,34 +523,37 @@ const getBanner = () => {
     <div class="center-content uk-width-expand uk-flex uk-flex-column">
         <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-margin-medium-bottom" uk-stick="start: 0">
         
-        <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-between">
-      
+        <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-right">
+          <div v-if="showLeaderControls">
             <!-- Move this to an admin control panel | probably option under the user icon -->
-          <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
-            class="goa-button uk-flex uk-flex-middle">
-            <span  uk-icon="icon: warning" class=""></span>
-            <span class="uk-margin-small-left">New Applications!</span>
-          </button>
+            <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
+              class="goa-button uk-flex uk-flex-middle">
+              <span uk-icon="icon: warning" class=""></span>
+              <span class="uk-margin-small-left">New Applications!</span>
+            </button>
+            <button
+              @click="createApplication" class="leader-controls uk-icon-button uk-margin-left">
+              <div class="tooltip">Edit Application</div>
+              <span uk-icon="icon: file-edit"></span>
+            </button>
+            <button
+              @click="" class="leader-controls uk-icon-button uk-margin-left">
+              <div class="tooltip">Edit Logo</div>
+              <span uk-icon="icon: bookmark"></span>
+            </button>
+            <button
+              @click="" class="leader-controls uk-icon-button uk-margin-left">
+              <span class="tooltip">Edit Colors</span>
+              <span uk-icon="icon: paint-bucket"></span>
+            </button>
+          </div>
+
           <button
-            @click="createApplication" class="goa-button uk-margin-left">
-            Create Application
+            @click="toggleShowLeaderControls" class="leader-controls uk-icon-button uk-margin-left">
+            <span class="tooltip">Toggle Leader Controls</span>
+            <span uk-icon="icon: cog"></span>
           </button>
-          <button
-            @click="" class="goa-button uk-margin-left">
-            Change Logo
-          </button>
-          <button
-            @click="" class="goa-button uk-margin-left">
-            Edit Banner
-          </button>
-          <button
-            @click="" class="goa-button uk-margin-left">
-            Edit Info
-          </button>
-          <button
-            @click="" class="goa-button uk-margin-left">
-            Edit Colors
-          </button>
+
         </div>
         <Loading v-model="showContent" :message="'Loading Guild ...'" />
         <div v-if="showContent" class="guild-home">
@@ -582,7 +659,17 @@ const getBanner = () => {
       
             <!-- This is where we display the rich text -->
             <!-- <div v-html="guild.Description" class="uk-margin-large-top"></div> -->
-            <Editor class="uk-margin-large-bottom" v-if="guild.Description" v-model="guild.Description" :viewOnly="true"/>
+            <div class="edit-button-container uk-flex uk-flex-between uk-margin-small-bottom">
+              <button @click="toggleEditDescription" v-if="user.Rank.RankName == 'Guild Leader' && showLeaderControls" class="leader-controls uk-icon-button">
+                <div class="tooltip-right">Edit Guild Description</div>
+                <span class="" uk-icon="icon: pencil"></span>
+              </button>
+              <button v-if="canEditDescription" @click="saveDescription" class="uk-icon-button">
+                <span uk-icon="icon: check"></span>
+              </button>
+            </div>
+            <Editor class="uk-margin-large-bottom" v-if="guild.Description && !canEditDescription" v-model="guild.Description" :viewOnly="true"/>
+            <Editor v-else class="uk-margin-large-bottom" v-if="guild.Description && canEditDescription" v-model="guild.Description"/>
           </div>
           <!-- Only show if guild leader or mod issues alert-->
           <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">
