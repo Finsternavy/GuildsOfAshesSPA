@@ -108,6 +108,7 @@ const acknowledgeNotice = () => {
           <div class="left">
             <h4 class="text-orange"><span uk-icon="icon: star"></span> Recently Added <span uk-icon="icon: star"></span></h4>
             <ul>
+              <li>Guild Details Editing</li>
               <li class="text-orange uk-text-lead">Interactive Guild Map !</li>
               <li>Guild Calendar</li>
               <li>Event scheduling on the calendar</li>
@@ -126,7 +127,6 @@ const acknowledgeNotice = () => {
             <ul>
               <li>Guild Leader Controls Panel</li>
               <li>Guild Application Editing</li>
-              <li>Guild Details Editing</li>
               <li>Guild Roster Management Features</li>
               <li>Guild Data Metrix</li>
               <li>Ongoing Bug Fixes</li>
