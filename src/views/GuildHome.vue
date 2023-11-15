@@ -489,7 +489,17 @@ const toggleShowLeaderControls = () => {
 .tooltip-right{
   opacity: 0;
   position: absolute;
-  transform: translate(40px, 40px);
+  transform: translate(40px, -50px);
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  min-width: 100px;
+  pointer-events: none;
+}
+
+.tooltip-top {
+  opacity: 0;
+  position: absolute;
+  transform: translate(-40px, -40px);
   transition: all 0.3s ease-in-out;
   border-radius: 10px;
   min-width: 100px;
@@ -497,7 +507,8 @@ const toggleShowLeaderControls = () => {
 }
 
 .leader-controls:hover .tooltip,
-.leader-controls:hover .tooltip-right {
+.leader-controls:hover .tooltip-right,
+.leader-controls:hover .tooltip-top {
   background-color: var(--primary-color);
   color: var(--button-text-color);
   padding: 10px;
@@ -664,7 +675,8 @@ const toggleShowLeaderControls = () => {
                 <div class="tooltip-right">Edit Guild Description</div>
                 <span class="" uk-icon="icon: pencil"></span>
               </button>
-              <button v-if="canEditDescription" @click="saveDescription" class="uk-icon-button">
+              <button v-if="canEditDescription" @click="saveDescription" class="leader-controls uk-icon-button">
+                <div class="tooltip-top">Save</div>
                 <span uk-icon="icon: check"></span>
               </button>
             </div>
