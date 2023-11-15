@@ -262,6 +262,10 @@ const toggleEditDescription = () => {
 
 const toggleShowLeaderControls = () => {
   showLeaderControls.value = !showLeaderControls.value;
+
+  if (canEditDescription.value) {
+    canEditDescription.value = false;
+  }
 }
 </script>
 
@@ -534,7 +538,7 @@ const toggleShowLeaderControls = () => {
     <div class="center-content uk-width-expand uk-flex uk-flex-column">
         <div class="guild-banner-test-container guild-banner-test uk-position-relative uk-background-primary  uk-margin-medium-bottom" uk-stick="start: 0">
         
-        <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-right">
+        <div v-if="guildLeaderName == username" class="guild-control-container goa-container-no-radius uk-flex uk-flex-right uk-margin-remove-bottom">
           <div v-if="showLeaderControls">
             <!-- Move this to an admin control panel | probably option under the user icon -->
             <button  v-if="inbox && inbox.length > 0"  uk-toggle="target: #Inbox; animation: uk-animation-fade" 
@@ -675,7 +679,7 @@ const toggleShowLeaderControls = () => {
                 <div class="tooltip-right">Edit Guild Description</div>
                 <span class="" uk-icon="icon: pencil"></span>
               </button>
-              <button v-if="canEditDescription" @click="saveDescription" class="leader-controls uk-icon-button">
+              <button v-if="canEditDescription && showLeaderControls" @click="saveDescription" class="leader-controls uk-icon-button">
                 <div class="tooltip-top">Save</div>
                 <span uk-icon="icon: check"></span>
               </button>
