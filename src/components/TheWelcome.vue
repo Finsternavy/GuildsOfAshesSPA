@@ -61,6 +61,8 @@ const acknowledgeNotice = () => {
 
 .logo-container,
 .guild-logo-upload {
+  /* max-width: 80%; */
+  background-position: center;
   border-radius: 0px;
 }
 </style>
@@ -69,8 +71,7 @@ const acknowledgeNotice = () => {
   <div class="uk-margin-large-bottom">
     <div class="hero goa-container uk-padding uk-margin-bottom uk-width-1-1">
       <!-- <div class="goa-logo" :data-src="GoaLogo" uk-img></div> -->
-      <div class="logo-container uk-margin-bottom"
-        >
+      <div class="logo-container uk-margin-bottom uk-position-relative">
         <img class="guild-logo-upload uk-background-cover" :src="GoaLogo" alt="Uploaded Image" uk-img />
       </div>
       <div class="hero-message">
