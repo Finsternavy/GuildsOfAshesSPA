@@ -675,7 +675,7 @@ const toggleShowLeaderControls = () => {
             <!-- This is where we display the rich text -->
             <!-- <div v-html="guild.Description" class="uk-margin-large-top"></div> -->
             <div class="edit-button-container uk-flex uk-flex-between uk-margin-small-bottom">
-              <button @click="toggleEditDescription" v-if="user.Rank.RankName == 'Guild Leader' && showLeaderControls" class="leader-controls uk-icon-button">
+              <button @click="toggleEditDescription" v-if="user && user.Rank.RankName == 'Guild Leader' && showLeaderControls" class="leader-controls uk-icon-button">
                 <div class="tooltip-right">Edit Guild Description</div>
                 <span class="" uk-icon="icon: pencil"></span>
               </button>
