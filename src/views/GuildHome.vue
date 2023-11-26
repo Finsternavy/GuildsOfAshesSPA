@@ -149,7 +149,7 @@ let getGuildData = async () => {
 };
 
 let denyApplication = async (application) => {
-    // console.log("Attempting to deny application for: ", application.User.Username);
+    console.log("Attempting to deny application for: ", application.User.Username);
     let call = {
         GuildID: application.GuildID,
         User: application.User
@@ -618,7 +618,7 @@ const toggleShowLeaderControls = () => {
                   <button class="goa-button goa-success-button" uk-toggle="target: #ApprovalRank">Grant Full Membership</button>
                 </div>
                 <div class="Approve-container">
-                  <button class="goa-button goa-deny-button uk-width-small">Deny</button>
+                  <button class="goa-button goa-deny-button uk-width-small" @click="denyApplication(application)">Deny</button>
                 </div>
               </div>
               <div id="ApprovalRank" class="approval-rank-container" hidden>
