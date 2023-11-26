@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from "vue";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 import GoaLogo from "../public/Images/GoALogoFinalwithwordsandShadow.png";
+import SkillBar from "../components/SkillBar.vue";
 
 let selectedClass = ref();
 const noticeAcknowledged = ref(false);
@@ -109,8 +110,9 @@ const acknowledgeNotice = () => {
           <div class="left">
             <h4 class="text-orange"><span uk-icon="icon: star"></span> Recently Added <span uk-icon="icon: star"></span></h4>
             <ul>
+              <li class="text-orange uk-text-lead">Added Skill Bar in Profile ( Prototype )</li>
               <li>Guild Details Editing</li>
-              <li class="text-orange uk-text-lead">Interactive Guild Map !</li>
+              <li>Interactive Guild Map !</li>
               <li>Guild Calendar</li>
               <li>Event scheduling on the calendar</li>
               <li>Recurring events on the calendar</li>
@@ -149,6 +151,9 @@ const acknowledgeNotice = () => {
         </div>
       </div>
     </div>
+    <!-- <div class="goa-container uk-margin-bottom">
+      <SkillBar />
+    </div> -->
     <div class="character-matrix goa-container uk-padding">
       <h3 class="uk-text-center uk-light text-goa-red uk-text-bold">Sitewide Poll!</h3>
       <p class="uk-text-center">What class will you main in Ashes of Creation?</p>

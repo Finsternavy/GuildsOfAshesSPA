@@ -5,7 +5,8 @@ import { useGuildStore } from "../stores/guildStore";
 import CharacterMatrix from "../components/CharacterMatrix.vue";
 import MemberCard from "../components/MemberCard.vue";
 import router from "../router/routes";
-import { useAPI } from '../stores/apiStore'
+import { useAPI } from '../stores/apiStore';
+import SkillBar from "../components/SkillBar.vue";
 
 let store = useUserStore();
 let guildStore;
@@ -198,9 +199,12 @@ label {
     </div>
     <div class="goa-container uk-padding user-info uk-flex uk-flex-column uk-margin-large-bottom">
       <h4 class="text-goa-red">User Details</h4>
-      <div class="uk-margin-bottom uk-width-1-1 uk-flex uk-flex-center">
+      <div class="uk-margin-bottom uk-width-1-1 uk-flex uk-flex-column uk-flex-center">
         <div class="uk-width-1-1">
           <MemberCard  :member="user" />
+        </div>
+        <div>
+          <SkillBar />
         </div>
       </div>
       <div v-if="user" class="user-details uk-padding uk-padding-remove-vertical uk-flex uk-flex-around uk-margin-bottom uk-child-width-1-1 uk-child-width-1-3@s" uk-grid>
