@@ -202,6 +202,7 @@ li > a {
           <RouterLink to="/guild/about"><span class="link">About</span></RouterLink> -->
           <div @click="navigate('/guild/calendar')"><span class="link">Calendar</span></div>
           <div @click="navigate('/guild/verra')"><span class="link">Map</span></div>
+          <div @click="navigate('/slots')"><span class="link">Slots</span></div>
         </div>
       </div>
       <div class="login-profile-container uk-width-small">
