@@ -313,6 +313,7 @@ const changeAbility = (bar, index) => {
     width: 75px;
     margin-inline: 3px;
     outline: 2px solid #4f4f4f;
+    cursor: pointer;
 }
 .ability-icon {
     width: 75px;
@@ -323,7 +324,7 @@ const changeAbility = (bar, index) => {
     max-width: fit-content;
     margin: 3px!important;
     outline: 2px solid #4f4f4f;
-
+    cursor: pointer;
 }
 
 .ability-grid {
