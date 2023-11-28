@@ -779,7 +779,7 @@ const toggleShowBonusMessage = () => {
                     <div class="uk-flex">
                         <span class="uk-margin-right">Balance: ${{ myBalance }}</span>
                         <button @click="play" class="goa-button">Play (${{ spinCost }})</button>
-                        <button @click="toggleFeature" class="goa-button">Toggle Feature</button>
+                        <!-- <button @click="toggleFeature" class="goa-button">Toggle Feature</button> -->
                     </div>
                 </div>
             </div>
