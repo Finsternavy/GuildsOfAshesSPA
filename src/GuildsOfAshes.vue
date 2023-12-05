@@ -22,7 +22,7 @@ import AOCDragon from "./public/AOCimages/AOCDragon.jpg";
 import AOCJan2023 from "./public/AOCimages/AOCJanuary2023.jpg";
 import AOCMay2023 from "./public/AOCimages/AOCMay2023.jpg";
 import AOCSeptember2023 from "./public/AOCimages/AOCSeptember2023.jpg";
-import Pond from "./public/AOCimages/Pond.png";
+import Pond from "./public/AOCimages/pond.png";
 
 let imagePrefix = "/src/public/AOCimages/";
 
