@@ -685,7 +685,7 @@ const toggleShowLeaderControls = () => {
               </button>
             </div>
             <Editor class="uk-margin-large-bottom" v-if="guild.Description && !canEditDescription" v-model="guild.Description" :viewOnly="true"/>
-            <Editor v-else class="uk-margin-large-bottom" v-if="guild.Description && canEditDescription" v-model="guild.Description"/>
+            <Editor  class="uk-margin-large-bottom" v-if=" canEditDescription" v-model="guild.Description"/>
           </div>
           <!-- Only show if guild leader or mod issues alert-->
           <div v-if="guild.Alerts.length > 0" class="guild-alerts goa-alert-container uk-padding">

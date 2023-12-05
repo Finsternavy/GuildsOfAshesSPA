@@ -23,6 +23,7 @@ import AOCDragon from "../public/AOCimages/AOCDragon.jpg";
 import AOCJan2023 from "../public/AOCimages/AOCJanuary2023.jpg";
 import AOCMay2023 from "../public/AOCimages/AOCMay2023.jpg";
 import AOCSeptember2023 from "../public/AOCimages/AOCSeptember2023.jpg";
+import Pond from "../public/AOCimages/pond.png";
 import { useGuildStore } from "../stores/guildStore";
 
 
@@ -86,6 +87,7 @@ const backgroundImages = [
   AOCTropicalBay,
   AOCVaeluneCityA,
   AOCVaeluneEncampment,
+  Pond,
   AOCWaterfall,
 ]
 
@@ -246,8 +248,8 @@ const shiftRankUp = (index) => {
 
 const setBackground = (image) => {
   console.log("Setting guild background to: ", image);
-  guildStore.setGuild(guild.value);
   guild.value.Background = image;
+  guildStore.setGuild(guild.value);
 }
 
 const guildValid = () => {
