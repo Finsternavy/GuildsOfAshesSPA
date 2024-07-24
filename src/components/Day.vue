@@ -84,6 +84,55 @@ const toggleMobileDay = () => {
 
 </script>
 
+
+<template>
+    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column uk-visible@m' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool" :disabled="!day">
+        <!-- <label v-if="index < 7 " class="day-label">{{ dayText }}</label>  -->
+        <div class="uk-flex">
+            <div :class="{'uk-flex' : day, hidden : !day}">
+                <span class="day-number">{{ day }}</span>
+            </div>
+            <div v-if="day && !past" class="add-event-button uk-position-top-right" @click="createEvent">
+                <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
+            </div>
+        </div>
+        <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span> <!-- This is overlay for passed days-->
+        <div class="event-icon-container uk-flex uk-height-auto grid">
+            <div v-for="event in props.Data" @click="showEventDetails(event)" class="uk-text-center">
+                <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
+                    <span :class="{'event-icon': {}, 'guild-play' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: play; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                </div>
+                <div v-if="event.EventType == 'meeting'" class="meeting-bg uk-position-relative">
+                    <span :class="{'event-icon': {}, 'meeting' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: users; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                </div>
+                <div v-if="event.EventType == 'deadline'" class="deadline-bg uk-position-relative">
+                    <span  :class="{' event-icon' : {}, 'deadline': !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                </div>
+                <div v-if="event.EventType == 'startDate'"  class="start-date-bg uk-position-relative">
+                    <span :class="{' event-icon': {}, 'startDate' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
+                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="uk-hidden@m">
+        <div class="mobile-day-container uk-flex uk-position-relative uk-width-1-1">
+            <div :class="{'uk-flex uk-flex-center uk-flex-middle day-mobile uk-width-1-1' : day,
+                'past': past && day, 'today' : today, 'disabled' : !day,
+                'has-events' : props.Data && props.Data.length > 0, hidden : !day}">
+                {{ day }}
+            </div>
+            <span v-if="past && day" class="uk-position-center text-primary" uk-icon="icon: close; ratio: 1">
+            </span>
+        </div>
+    </div>
+    
+</template>
+
 <style scoped>
 .day-container{
     position: relative;
@@ -306,50 +355,3 @@ input, textarea {
     cursor: pointer;
 }
 </style>
-
-<template>
-    <div :class="{'day-container uk-position-relative uk-flex uk-flex-column uk-visible@m' : {}, 'past': past && day, 'today' : today, 'disabled' : !day}" @click="showEventTool" :disabled="!day">
-        <!-- <label v-if="index < 7 " class="day-label">{{ dayText }}</label>  -->
-        <div class="uk-flex">
-            <div :class="{'uk-flex' : day, hidden : !day}">
-                <span class="day-number">{{ day }}</span>
-            </div>
-            <div v-if="day && !past" class="add-event-button uk-position-top-right" @click="createEvent">
-                <span class="uk-color-secondary" uk-icon="icon: plus; ratio: 1"></span>
-            </div>
-        </div>
-        <span v-if="past && day" class="uk-position-center" uk-icon="icon: close; ratio: 6;"></span> <!-- This is overlay for passed days-->
-        <div class="event-icon-container uk-flex uk-height-auto grid">
-            <div v-for="event in props.Data" @click="showEventDetails(event)" class="uk-text-center">
-                <div v-if="event.EventType == 'guildPlay'"  class="guild-play-bg uk-position-relative">
-                    <span :class="{'event-icon': {}, 'guild-play' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: play; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
-                </div>
-                <div v-if="event.EventType == 'meeting'" class="meeting-bg uk-position-relative">
-                    <span :class="{'event-icon': {}, 'meeting' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: users; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
-                </div>
-                <div v-if="event.EventType == 'deadline'" class="deadline-bg uk-position-relative">
-                    <span  :class="{' event-icon' : {}, 'deadline': !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
-                </div>
-                <div v-if="event.EventType == 'startDate'"  class="start-date-bg uk-position-relative">
-                    <span :class="{' event-icon': {}, 'startDate' : !event.Canceled, 'canceled-icon' : event.Canceled}" uk-icon="icon: clock; ratio: 1"></span>
-                    <span v-if="event.Canceled" class="canceled uk-width-1-1 uk-height-1-1" uk-icon="icon: ban; ratio: 2"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="uk-hidden@m">
-        <div class="mobile-day-container uk-flex uk-position-relative uk-width-1-1">
-            <div :class="{'uk-flex uk-flex-center uk-flex-middle day-mobile uk-width-1-1' : day,
-                'past': past && day, 'today' : today, 'disabled' : !day,
-                'has-events' : props.Data && props.Data.length > 0, hidden : !day}">
-                {{ day }}
-            </div>
-            <span v-if="past && day" class="uk-position-center text-primary" uk-icon="icon: close; ratio: 1;"></span>
-        </div>
-    </div>
-    
-</template>
