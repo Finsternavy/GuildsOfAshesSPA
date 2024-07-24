@@ -100,7 +100,7 @@ const getEvents = async () => {
 
   if (response.ok) {
     let data = await response.json();
-    // console.log("Guild data: ", data);
+    console.log("Guild data: ", data);
     events.value = data.Data;
     if (events.value.length < 1){
       events.value = [];
@@ -319,16 +319,20 @@ const addRecurringEvent = (data) => {
 }
 
 const getDayData = (day) => {
-  // console.log("Get day data: ", day);
+  console.log("Get day data: ", day);
   if (day != null){
-    let date = day.year + "-" + day.month + "-" + day.day;
+    let date = day.year + "-" + (day.month.toString().length > 1? day.month : '0' + day.month + "-") + day.day;
       // console.log("Day: ", date);
       let data = [];
       events.value.forEach(event => {
-        // console.log("Event: ", event.StartDate)
-        // console.log("Compared to date: ", date);
+        // console.log("Event: ", event);
+        if (event.StartDate == '2024-07-25') {
+          console.log("Event: ", event.StartDate);
+          console.log("Compared to date: ", date);
+
+        }
         if (event.StartDate == date){
-          // console.log("Pushing: ", event.StartDate);
+          console.log("Pushing: ", event.StartDate);
           data.push(event);
         }
       });
@@ -727,7 +731,7 @@ input, textarea {
         <div class="calendar-container">
           <!-- @click="openMenu(date, 10)" -->
           <div v-for="date, index in generateCalendar(currentYear,  getMonth(CurrentMonth + 2))" @click="setActiveDay(date)">
-            <Day  v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
+            <Day v-model="events" :Data="getDayData(date)" :setEventDetails="setEventDetails" :createEvent="createEvent" :Index="index" :Date="date" :DayText="days[index]"/>
           </div>
         </div>
     </div>
